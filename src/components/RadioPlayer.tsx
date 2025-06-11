@@ -5,9 +5,15 @@ interface RadioPlayerProps {
   streamUrl: string;
   likes: number;
   dislikes: number;
+  listeners: number;
 }
 
-const RadioPlayer = ({ streamUrl, likes, dislikes }: RadioPlayerProps) => {
+const RadioPlayer = ({
+  streamUrl,
+  likes,
+  dislikes,
+  listeners,
+}: RadioPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.7);
   const [userLiked, setUserLiked] = useState<boolean | null>(null);
@@ -90,6 +96,19 @@ const RadioPlayer = ({ streamUrl, likes, dislikes }: RadioPlayerProps) => {
           onChange={(e) => setVolume(parseFloat(e.target.value))}
           className="w-32 accent-purple-400"
         />
+      </div>
+
+      {/* Счетчик слушателей */}
+      <div className="flex items-center justify-center mb-6">
+        <div className="flex items-center justify-center space-x-3 text-purple-200">
+          <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+          <span className="text-lg">
+            <span className="font-bold text-white">
+              {listeners.toLocaleString()}
+            </span>{" "}
+            слушают
+          </span>
+        </div>
       </div>
 
       {/* Лайки и дизлайки */}

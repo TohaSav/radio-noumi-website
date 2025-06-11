@@ -1,6 +1,5 @@
 import { useRadioStats } from "@/hooks/useRadioStats";
 import RadioPlayer from "@/components/RadioPlayer";
-import ListenerCounter from "@/components/ListenerCounter";
 import LiveChat from "@/components/LiveChat";
 import TopChart from "@/components/TopChart";
 import NewReleases from "@/components/NewReleases";
@@ -17,10 +16,8 @@ const Index = () => {
           streamUrl="https://myradio24.org/61673"
           likes={stats.likes}
           dislikes={stats.dislikes}
+          listeners={stats.listeners}
         />
-
-        {/* Счетчик слушателей */}
-        <ListenerCounter count={stats.listeners} />
 
         {/* Живой чат */}
         <LiveChat activeUsers={stats.listeners} />
