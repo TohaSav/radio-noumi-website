@@ -22,19 +22,17 @@ const Index = () => {
           dislikes={stats.dislikes}
         />
 
+        {/* Живой чат */}
+        <LiveChat activeUsers={stats.listeners} />
+
         {/* Кнопка заказа */}
         <OrderButton />
 
         {/* Основной контент */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Левая колонка - Топ чарт */}
           <div className="lg:col-span-1">
             <TopChart />
-          </div>
-
-          {/* Средняя колонка - Чат */}
-          <div className="lg:col-span-1">
-            <LiveChat activeUsers={stats.listeners} />
           </div>
 
           {/* Правая колонка - Новинки */}
