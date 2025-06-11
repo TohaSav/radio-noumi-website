@@ -58,12 +58,12 @@ const ReelsViewer = ({
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 pt-16 bg-black"
+      className="fixed inset-0 pt-16 bg-black flex items-center justify-center"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Основной контент Reel */}
-      <div className="relative h-full w-full flex items-center justify-center">
+      {/* Основной контент Reel - телефонный формат 9:16 */}
+      <div className="relative w-80 h-[600px] bg-black rounded-2xl overflow-hidden shadow-2xl">
         {/* Фоновое изображение/видео */}
         <div
           className="absolute inset-0 bg-cover bg-center"
@@ -75,26 +75,26 @@ const ReelsViewer = ({
         <button
           onClick={handlePrev}
           disabled={currentIndex === 0}
-          className="absolute left-4 top-1/2 -translate-y-1/2 p-2 text-white/70 hover:text-white disabled:opacity-30 transition-colors"
+          className="absolute left-2 top-1/2 -translate-y-1/2 p-1 text-white/70 hover:text-white disabled:opacity-30 transition-colors"
         >
-          <Icon name="ChevronUp" size={32} />
+          <Icon name="ChevronUp" size={20} />
         </button>
 
         <button
           onClick={handleNext}
           disabled={currentIndex === reels.length - 1}
-          className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-white/70 hover:text-white disabled:opacity-30 transition-colors"
+          className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-white/70 hover:text-white disabled:opacity-30 transition-colors"
         >
-          <Icon name="ChevronDown" size={32} />
+          <Icon name="ChevronDown" size={20} />
         </button>
 
         {/* Боковая панель с действиями */}
-        <div className="absolute right-4 bottom-20 flex flex-col gap-6">
+        <div className="absolute right-2 bottom-16 flex flex-col gap-3">
           {/* Лайк */}
           <div className="flex flex-col items-center">
             <button
               onClick={() => onLikeReel(currentReel.id)}
-              className={`p-3 rounded-full transition-colors ${
+              className={`p-2 rounded-full transition-colors ${
                 currentReel.isLiked
                   ? "text-red-500"
                   : "text-white/70 hover:text-white"
@@ -102,54 +102,54 @@ const ReelsViewer = ({
             >
               <Icon
                 name="Heart"
-                size={28}
+                size={20}
                 fill={currentReel.isLiked ? "currentColor" : "none"}
               />
             </button>
-            <span className="text-white text-sm font-medium">
+            <span className="text-white text-xs font-medium">
               {currentReel.likes}
             </span>
           </div>
 
           {/* Комментарии */}
           <div className="flex flex-col items-center">
-            <button className="p-3 text-white/70 hover:text-white transition-colors">
-              <Icon name="MessageCircle" size={28} />
+            <button className="p-2 text-white/70 hover:text-white transition-colors">
+              <Icon name="MessageCircle" size={20} />
             </button>
-            <span className="text-white text-sm font-medium">
+            <span className="text-white text-xs font-medium">
               {currentReel.comments}
             </span>
           </div>
 
           {/* Поделиться */}
-          <button className="p-3 text-white/70 hover:text-white transition-colors">
-            <Icon name="Share" size={28} />
+          <button className="p-2 text-white/70 hover:text-white transition-colors">
+            <Icon name="Share" size={20} />
           </button>
 
           {/* Удалить (только для админа) */}
           {canDelete && (
             <button
               onClick={() => onDeleteReel(currentReel.id)}
-              className="p-3 text-red-400 hover:text-red-300 transition-colors"
+              className="p-2 text-red-400 hover:text-red-300 transition-colors"
             >
-              <Icon name="Trash2" size={28} />
+              <Icon name="Trash2" size={18} />
             </button>
           )}
         </div>
 
         {/* Информация о пользователе и описание */}
-        <div className="absolute bottom-6 left-4 right-24">
-          <div className="flex items-center gap-3 mb-3">
+        <div className="absolute bottom-3 left-3 right-16">
+          <div className="flex items-center gap-2 mb-2">
             <img
               src={currentReel.avatar}
               alt={currentReel.username}
-              className="w-12 h-12 rounded-full border-2 border-white"
+              className="w-8 h-8 rounded-full border border-white"
             />
             <div>
-              <h3 className="text-white font-semibold">
+              <h3 className="text-white font-semibold text-sm">
                 {currentReel.username}
               </h3>
-              <p className="text-white/70 text-sm">
+              <p className="text-white/70 text-xs">
                 {Math.floor(
                   (Date.now() - currentReel.timestamp.getTime()) / (1000 * 60),
                 )}{" "}
@@ -158,17 +158,17 @@ const ReelsViewer = ({
             </div>
           </div>
 
-          <p className="text-white text-lg leading-relaxed">
+          <p className="text-white text-sm leading-relaxed">
             {currentReel.description}
           </p>
         </div>
 
         {/* Индикатор позиции */}
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 flex gap-1">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 flex gap-1">
           {reels.map((_, index) => (
             <div
               key={index}
-              className={`w-1 h-8 rounded-full transition-colors ${
+              className={`w-0.5 h-6 rounded-full transition-colors ${
                 index === currentIndex ? "bg-white" : "bg-white/30"
               }`}
             />

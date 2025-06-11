@@ -67,21 +67,21 @@ const UploadReelModal = ({ onClose, onUpload }: UploadReelModalProps) => {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl max-w-md w-full p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-900">Загрузить Reel</h2>
+      <div className="bg-white rounded-lg max-w-sm w-full p-4">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-bold text-gray-900">Загрузить Reel</h2>
           <button
             onClick={onClose}
-            className="p-2 text-gray-400 hover:text-gray-600"
+            className="p-1 text-gray-400 hover:text-gray-600"
           >
-            <Icon name="X" size={20} />
+            <Icon name="X" size={18} />
           </button>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-3">
           {/* Выбор файла */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Выберите видео
             </label>
             <input
@@ -93,11 +93,11 @@ const UploadReelModal = ({ onClose, onUpload }: UploadReelModalProps) => {
             />
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="w-full p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-purple-400 transition-colors flex flex-col items-center gap-2"
+              className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-purple-400 transition-colors flex flex-col items-center gap-1"
             >
-              <Icon name="Upload" size={32} className="text-gray-400" />
-              <span className="text-gray-600">
-                {selectedFile ? selectedFile.name : "Нажмите для выбора видео"}
+              <Icon name="Upload" size={24} className="text-gray-400" />
+              <span className="text-gray-600 text-sm">
+                {selectedFile ? selectedFile.name : "Выбрать видео"}
               </span>
             </button>
           </div>
@@ -107,7 +107,7 @@ const UploadReelModal = ({ onClose, onUpload }: UploadReelModalProps) => {
             <div className="relative">
               <video
                 src={URL.createObjectURL(selectedFile)}
-                className="w-full h-48 object-cover rounded-lg"
+                className="w-full h-32 object-cover rounded-lg"
                 controls
               />
             </div>
@@ -115,38 +115,38 @@ const UploadReelModal = ({ onClose, onUpload }: UploadReelModalProps) => {
 
           {/* Описание */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Описание
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Расскажите о своем видео..."
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
-              rows={3}
+              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none text-sm"
+              rows={2}
               maxLength={200}
             />
-            <div className="text-right text-sm text-gray-500 mt-1">
+            <div className="text-right text-xs text-gray-500 mt-1">
               {description.length}/200
             </div>
           </div>
         </div>
 
-        <div className="flex gap-3 mt-6">
+        <div className="flex gap-2 mt-4">
           <button
             onClick={onClose}
-            className="flex-1 px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            className="flex-1 px-3 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm"
           >
             Отмена
           </button>
           <button
             onClick={handleUpload}
             disabled={!selectedFile || !description.trim() || isUploading}
-            className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-medium hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
+            className="flex-1 px-3 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-medium hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-1 text-sm"
           >
             {isUploading ? (
               <>
-                <Icon name="Loader2" size={16} className="animate-spin" />
+                <Icon name="Loader2" size={14} className="animate-spin" />
                 Загрузка...
               </>
             ) : (
