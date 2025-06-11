@@ -93,18 +93,40 @@ const LiveChat = ({ activeUsers }: LiveChatProps) => {
       setMessageId((prev) => prev + 1);
     };
 
-    // Добавляем сообщение каждые 3 секунды
+    // Инициализируем чат с несколькими сообщениями сразу
+    const initializeChat = () => {
+      const initialMessages: ChatMessage[] = [];
+      let id = 0;
+
+      // Создаем 15 начальных сообщений
+      for (let i = 0; i < 15; i++) {
+        const randomUser =
+          userNames[Math.floor(Math.random() * userNames.length)];
+        const randomTopic =
+          chatTopics[Math.floor(Math.random() * chatTopics.length)];
+
+        initialMessages.push({
+          id: id++,
+          user: randomUser,
+          message: randomTopic,
+          timestamp: new Date(Date.now() - (15 - i) * 60000), // Распределяем по времени
+        });
+      }
+
+      setMessages(initialMessages);
+      setMessageId(id);
+    };
+
+    // Инициализируем чат сразу
+    initializeChat();
+
+    // Добавляем новые сообщения каждые 3 секунды
     const interval = setInterval(() => {
       addMessage();
     }, 3000);
 
-    // Добавляем первые несколько сообщений
-    setTimeout(() => addMessage(), 1000);
-    setTimeout(() => addMessage(), 3000);
-    setTimeout(() => addMessage(), 5000);
-
     return () => clearInterval(interval);
-  }, [messageId]);
+  }, []);
 
   useEffect(() => {
     if (chatRef.current) {
