@@ -11,13 +11,7 @@ interface Track {
 
 const TopChart = () => {
   const [isAdmin, setIsAdmin] = useState(false);
-  const [tracks, setTracks] = useState<Track[]>([
-    { id: 1, name: "Summer Vibes", likes: 1250, dislikes: 23 },
-    { id: 2, name: "Midnight Dreams", likes: 980, dislikes: 45 },
-    { id: 3, name: "Electric Soul", likes: 756, dislikes: 12 },
-    { id: 4, name: "City Lights", likes: 623, dislikes: 8 },
-    { id: 5, name: "Ocean Waves", likes: 445, dislikes: 15 },
-  ]);
+  const [tracks, setTracks] = useState<Track[]>([]);
 
   const [newTrackName, setNewTrackName] = useState("");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
