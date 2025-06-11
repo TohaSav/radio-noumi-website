@@ -41,6 +41,11 @@ const Stories = () => {
     setStories((prev) => [newStory, ...prev]);
   };
 
+  const handleDeleteStory = (storyId: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // Предотвращаем открытие истории при клике на удаление
+    setStories((prev) => prev.filter((story) => story.id !== storyId));
+  };
+
   const openStory = (index: number) => {
     setSelectedStoryIndex(index);
   };
@@ -73,24 +78,36 @@ const Stories = () => {
 
           {/* Истории */}
           {stories.map((story, index) => (
-            <button
+            <div
               key={story.id}
-              onClick={() => openStory(index)}
-              className="flex-shrink-0 flex flex-col items-center gap-2 group"
+              className="flex-shrink-0 flex flex-col items-center gap-2 relative"
             >
-              <div className="w-16 h-16 rounded-full p-0.5 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">
-                <div className="w-full h-full rounded-full border-2 border-gray-900 overflow-hidden">
-                  <img
-                    src={story.image}
-                    alt={story.author}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
+              <button onClick={() => openStory(index)} className="group">
+                <div className="w-16 h-16 rounded-full p-0.5 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">
+                  <div className="w-full h-full rounded-full border-2 border-gray-900 overflow-hidden">
+                    <img
+                      src={story.image}
+                      alt={story.author}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
                 </div>
-              </div>
-              <span className="text-xs text-white/70 group-hover:text-white transition-colors max-w-[60px] truncate">
+              </button>
+
+              {/* Кнопка удаления (только для админа) */}
+              {isAdmin && (
+                <button
+                  onClick={(e) => handleDeleteStory(story.id, e)}
+                  className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
+                >
+                  <Icon name="X" size={12} className="text-white" />
+                </button>
+              )}
+
+              <span className="text-xs text-white/70 hover:text-white transition-colors max-w-[60px] truncate">
                 {story.author}
               </span>
-            </button>
+            </div>
           ))}
         </div>
       </div>
