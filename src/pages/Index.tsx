@@ -12,15 +12,15 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
       <div className="container mx-auto px-4 py-8 space-y-8">
-        {/* Счетчик слушателей */}
-        <ListenerCounter count={stats.listeners} />
-
         {/* Главный плеер */}
         <RadioPlayer
           streamUrl="https://myradio24.org/61673"
           likes={stats.likes}
           dislikes={stats.dislikes}
         />
+
+        {/* Счетчик слушателей */}
+        <ListenerCounter count={stats.listeners} />
 
         {/* Живой чат */}
         <LiveChat activeUsers={stats.listeners} />
