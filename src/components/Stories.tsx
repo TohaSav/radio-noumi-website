@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import StoryModal from "@/components/StoryModal";
+import UploadStoryModal from "@/components/UploadStoryModal";
 import Icon from "@/components/ui/icon";
 
 interface Story {
@@ -8,6 +9,7 @@ interface Story {
   image: string;
   author: string;
   timestamp: number;
+  type: "image" | "video";
 }
 
 const Stories = () => {
@@ -15,13 +17,28 @@ const Stories = () => {
   const [selectedStoryIndex, setSelectedStoryIndex] = useState<number | null>(
     null,
   );
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
   // Пустой массив историй - все фотки удалены
-  const [stories] = useState<Story[]>([]);
+  const [stories, setStories] = useState<Story[]>([]);
 
   const handleAddStory = () => {
-    // Здесь будет логика добавления истории
-    console.log("Добавить историю");
+    setIsUploadModalOpen(true);
+  };
+
+  const handleUpload = async (file: File, author: string) => {
+    // Создание URL для предварительного просмотра
+    const fileUrl = URL.createObjectURL(file);
+
+    const newStory: Story = {
+      id: `story-${Date.now()}`,
+      image: fileUrl,
+      author,
+      timestamp: Date.now(),
+      type: file.type.startsWith("video/") ? "video" : "image",
+    };
+
+    setStories((prev) => [newStory, ...prev]);
   };
 
   const openStory = (index: number) => {
@@ -87,6 +104,13 @@ const Stories = () => {
           initialStoryIndex={selectedStoryIndex}
         />
       )}
+
+      {/* Модальное окно загрузки */}
+      <UploadStoryModal
+        isOpen={isUploadModalOpen}
+        onClose={() => setIsUploadModalOpen(false)}
+        onUpload={handleUpload}
+      />
     </>
   );
 };
