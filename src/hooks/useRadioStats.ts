@@ -7,11 +7,34 @@ interface RadioStats {
 }
 
 export const useRadioStats = (): RadioStats => {
-  const [stats, setStats] = useState<RadioStats>({
-    listeners: 1500000,
-    likes: 58000,
-    dislikes: 10,
-  });
+  // Функция для загрузки данных из localStorage
+  const loadStatsFromStorage = (): RadioStats => {
+    try {
+      const saved = localStorage.getItem("radioStats");
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (error) {
+      console.warn("Не удалось загрузить статистику из localStorage");
+    }
+    // Возвращаем начальные значения если нет сохраненных данных
+    return {
+      listeners: 1500000,
+      likes: 58000,
+      dislikes: 10,
+    };
+  };
+
+  // Функция для сохранения данных в localStorage
+  const saveStatsToStorage = (stats: RadioStats) => {
+    try {
+      localStorage.setItem("radioStats", JSON.stringify(stats));
+    } catch (error) {
+      console.warn("Не удалось сохранить статистику в localStorage");
+    }
+  };
+
+  const [stats, setStats] = useState<RadioStats>(loadStatsFromStorage);
 
   useEffect(() => {
     // Обновление счетчика слушателей каждые 3 секунды для реалистичности
@@ -36,27 +59,40 @@ export const useRadioStats = (): RadioStats => {
         // Минимум 1,500,000 слушателей
         const newListeners = Math.max(1500000, prev.listeners + change);
 
-        return {
+        const newStats = {
           ...prev,
           listeners: newListeners,
         };
+
+        // Сохраняем обновленную статистику
+        saveStatsToStorage(newStats);
+
+        return newStats;
       });
     }, 3000); // Обновление каждые 3 секунды
 
     // Обновление лайков каждые 10 минут (+2)
     const likesInterval = setInterval(() => {
-      setStats((prev) => ({
-        ...prev,
-        likes: prev.likes + 2,
-      }));
+      setStats((prev) => {
+        const newStats = {
+          ...prev,
+          likes: prev.likes + 2,
+        };
+        saveStatsToStorage(newStats);
+        return newStats;
+      });
     }, 600000);
 
     // Обновление дизлайков каждые 5 часов (+1)
     const dislikesInterval = setInterval(() => {
-      setStats((prev) => ({
-        ...prev,
-        dislikes: prev.dislikes + 1,
-      }));
+      setStats((prev) => {
+        const newStats = {
+          ...prev,
+          dislikes: prev.dislikes + 1,
+        };
+        saveStatsToStorage(newStats);
+        return newStats;
+      });
     }, 18000000);
 
     return () => {
