@@ -1,4 +1,6 @@
 import { useRadioStats } from "@/hooks/useRadioStats";
+import { Link } from "react-router-dom";
+import Icon from "@/components/ui/icon";
 import RadioPlayer from "@/components/RadioPlayer";
 import LiveChat from "@/components/LiveChat";
 import TopChart from "@/components/TopChart";
@@ -12,6 +14,18 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
       <div className="container mx-auto px-4 py-8 space-y-8">
+        {/* Навигация */}
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold text-white">Radio Noumi</h1>
+          <Link
+            to="/reels"
+            className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors"
+          >
+            <Icon name="Play" size={20} />
+            <span>Reels</span>
+          </Link>
+        </div>
+
         {/* Stories */}
         <Stories />
 
