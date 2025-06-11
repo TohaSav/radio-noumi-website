@@ -22,6 +22,35 @@ const ReelsViewer = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [touchStart, setTouchStart] = useState(0);
 
+  // Обработка клавиатуры для ПК
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case "ArrowUp":
+        case "ArrowLeft":
+          e.preventDefault();
+          handlePrev();
+          break;
+        case "ArrowDown":
+        case "ArrowRight":
+        case " ":
+          e.preventDefault();
+          handleNext();
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [currentIndex, reels.length]);
+
+  // Фокус для работы клавиш
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.focus();
+    }
+  }, []);
+
   const currentReel = reels[currentIndex];
 
   const handleNext = () => {
@@ -58,9 +87,10 @@ const ReelsViewer = ({
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 pt-16 bg-black flex items-center justify-center"
+      className="fixed inset-0 pt-16 bg-black flex items-center justify-center outline-none"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      tabIndex={0}
     >
       {/* Основной контент Reel - телефонный формат 9:16 */}
       <div className="relative w-80 h-[600px] bg-black rounded-2xl overflow-hidden shadow-2xl">
