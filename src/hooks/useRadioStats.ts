@@ -8,28 +8,40 @@ interface RadioStats {
 
 export const useRadioStats = (): RadioStats => {
   const [stats, setStats] = useState<RadioStats>({
-    listeners: 1150000,
+    listeners: 1500000,
     likes: 58000,
     dislikes: 10,
   });
 
   useEffect(() => {
-    // Обновление счетчика слушателей каждые 30 секунд
+    // Обновление счетчика слушателей каждые 3 секунды для реалистичности
     const listenersInterval = setInterval(() => {
       setStats((prev) => {
         const currentHour = new Date().getHours();
         // Больше активности вечером/ночью (18-02)
         const isPeakTime = currentHour >= 18 || currentHour <= 2;
-        const maxChange = isPeakTime ? 500 : 200;
-        const change =
-          Math.floor(Math.random() * maxChange) - Math.floor(maxChange / 3);
+
+        // Случайные колебания: 70% шанс роста, 30% шанс падения
+        const shouldGrow = Math.random() > 0.3;
+
+        // Размер изменения зависит от времени суток
+        const baseChange = isPeakTime ? 150 : 80;
+        const randomChange = Math.floor(Math.random() * baseChange) + 10;
+
+        // Применяем рост или падение
+        const change = shouldGrow
+          ? randomChange
+          : -Math.floor(randomChange * 0.6);
+
+        // Минимум 1,500,000 слушателей
+        const newListeners = Math.max(1500000, prev.listeners + change);
 
         return {
           ...prev,
-          listeners: Math.max(1000000, prev.listeners + change),
+          listeners: newListeners,
         };
       });
-    }, 30000);
+    }, 3000); // Обновление каждые 3 секунды
 
     // Обновление лайков каждые 10 минут (+2)
     const likesInterval = setInterval(() => {
