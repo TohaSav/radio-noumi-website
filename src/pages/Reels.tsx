@@ -129,9 +129,14 @@ const Reels = () => {
     );
   };
 
+  const handleAddReel = (newReel: Reel) => {
+    setReels((prev) => [newReel, ...prev]);
+    setCurrentIndex(0);
+  };
+
   return (
     <div className="min-h-screen bg-black">
-      <ReelsNavigation />
+      <ReelsNavigation onAddReel={handleAddReel} />
       <ReelsViewer
         reels={reels}
         currentIndex={currentIndex}
