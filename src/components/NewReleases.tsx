@@ -12,32 +12,13 @@ interface Release {
 
 const NewReleases = () => {
   const [isAdmin] = useState(false); // В реальном приложении это будет из контекста auth
-  const [releases, setReleases] = useState<Release[]>([
-    {
-      id: 1,
-      name: "Neon Nights",
-      cover:
-        "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop&crop=center",
-      likes: 342,
-      dislikes: 12,
-    },
-    {
-      id: 2,
-      name: "Digital Dreams",
-      cover:
-        "https://images.unsplash.com/photo-1571974599782-87624638275c?w=200&h=200&fit=crop&crop=center",
-      likes: 156,
-      dislikes: 8,
-    },
-    {
-      id: 3,
-      name: "Cosmic Dance",
-      cover:
-        "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=200&h=200&fit=crop&crop=center",
-      likes: 89,
-      dislikes: 3,
-    },
-  ]);
+  const [releases, setReleases] = useState<Release[]>([]);
+
+  // Расширенные поля для админа
+  const [newReleaseTitle, setNewReleaseTitle] = useState("");
+  const [newReleaseArtist, setNewReleaseArtist] = useState("");
+  const [newReleasePlays, setNewReleasePlays] = useState("");
+  const [newReleaseLikes, setNewReleaseLikes] = useState("");
 
   const [newReleaseName, setNewReleaseName] = useState("");
   const [uploadedCover, setUploadedCover] = useState<File | null>(null);
@@ -87,18 +68,22 @@ const NewReleases = () => {
   };
 
   const handleAddRelease = () => {
-    if (!newReleaseName.trim() || !uploadedCover) return;
+    if (!newReleaseTitle.trim() || !newReleaseArtist.trim() || !uploadedCover)
+      return;
 
     const newRelease: Release = {
       id: Date.now(),
-      name: newReleaseName.trim(),
+      name: `${newReleaseArtist.trim()} - ${newReleaseTitle.trim()}`,
       cover: coverPreview,
-      likes: 0,
+      likes: parseInt(newReleaseLikes) || 0,
       dislikes: 0,
     };
 
     setReleases((prev) => [newRelease, ...prev]);
-    setNewReleaseName("");
+    setNewReleaseTitle("");
+    setNewReleaseArtist("");
+    setNewReleasePlays("");
+    setNewReleaseLikes("");
     setUploadedCover(null);
     setCoverPreview("");
   };
@@ -118,8 +103,29 @@ const NewReleases = () => {
             <input
               type="text"
               placeholder="Название трека"
-              value={newReleaseName}
-              onChange={(e) => setNewReleaseName(e.target.value)}
+              value={newReleaseTitle}
+              onChange={(e) => setNewReleaseTitle(e.target.value)}
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+            <input
+              type="text"
+              placeholder="Имя исполнителя"
+              value={newReleaseArtist}
+              onChange={(e) => setNewReleaseArtist(e.target.value)}
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+            <input
+              type="number"
+              placeholder="Количество прослушиваний"
+              value={newReleasePlays}
+              onChange={(e) => setNewReleasePlays(e.target.value)}
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+            <input
+              type="number"
+              placeholder="Количество лайков"
+              value={newReleaseLikes}
+              onChange={(e) => setNewReleaseLikes(e.target.value)}
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
             <div>
@@ -147,6 +153,14 @@ const NewReleases = () => {
               Добавить новинку
             </button>
           </div>
+        </div>
+      )}
+
+      {releases.length === 0 && !isAdmin && (
+        <div className="text-center py-12 text-gray-500">
+          <Icon name="Music" size={48} className="mx-auto mb-4 opacity-50" />
+          <p className="text-lg">Пока нет новинок</p>
+          <p className="text-sm">Следите за обновлениями!</p>
         </div>
       )}
 
