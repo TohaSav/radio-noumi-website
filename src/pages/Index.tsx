@@ -4,6 +4,7 @@ import LiveChat from "@/components/LiveChat";
 import TopChart from "@/components/TopChart";
 import NewReleases from "@/components/NewReleases";
 import OrderButton from "@/components/OrderButton";
+import Stories from "@/components/Stories";
 
 const Index = () => {
   const stats = useRadioStats();
@@ -11,6 +12,9 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
       <div className="container mx-auto px-4 py-8 space-y-8">
+        {/* Stories */}
+        <Stories />
+
         {/* Главный плеер */}
         <RadioPlayer
           streamUrl="https://myradio24.org/61673"
