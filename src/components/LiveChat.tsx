@@ -93,13 +93,10 @@ const LiveChat = ({ activeUsers }: LiveChatProps) => {
       setMessageId((prev) => prev + 1);
     };
 
-    // Добавляем сообщение каждые 5-15 секунд
-    const interval = setInterval(
-      () => {
-        addMessage();
-      },
-      Math.random() * 10000 + 5000,
-    );
+    // Добавляем сообщение каждые 3 секунды
+    const interval = setInterval(() => {
+      addMessage();
+    }, 3000);
 
     // Добавляем первые несколько сообщений
     setTimeout(() => addMessage(), 1000);
