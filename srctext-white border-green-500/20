@@ -1,0 +1,40 @@
+/hooks/useRadioStats.ts">
+      <div className="flex items-center justify
+import { useState, useEffect }-center space-x-3"> from 'react';
+
+interface RadioStats {
+        <div className="relative">
+          <Icon
+  listeners: number;
+  likes: number name="Users" size={24} className="text;
+  dislikes: number-green-400" />
+          <div;
+}
+
+export const useRadioStats = () => {
+  const [stats, className="absolute -top-1 -right- setStats] = useState<RadioStats>({
+    1 w-3 h-3 bg-green-400 rounded-full animatelisteners: 1150000,
+    likes-pulse"></div>
+        : 58000,
+    </div>
+        <div className="text-center">
+          <p className="text-sm text-green-200dislikes: 10
+  });
+
+  useEffect(() => {
+    // Обновление лайков каждые 10">Сейчас н минут (+2)
+    const likас слушают</p>
+          <p className="text-2xl font-esInterval = setInterval(() => {
+      setStatsbold text-green-300">
+            {listeners.toLocaleString()}
+          (prev => ({ ...prev, likes: prev.likes + 2 }));
+    }, 10 * 60 * 1000);
+
+    // Обновление дизлайков каждые 5</p>
+        </div>
+      </div> часов (+1)
+    </Card>
+  );
+};
+
+export default ListenerCounter;
