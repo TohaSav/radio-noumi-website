@@ -8,6 +8,18 @@ interface RadioPlayerProps {
   listeners: number;
 }
 
+interface Firework {
+  id: number;
+  x: number;
+  y: number;
+}
+
+interface HeartEmoji {
+  id: number;
+  x: number;
+  y: number;
+}
+
 const RadioPlayer = ({
   streamUrl,
   likes,
@@ -17,13 +29,55 @@ const RadioPlayer = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.7);
   const [userLiked, setUserLiked] = useState<boolean | null>(null);
+  const [fireworks, setFireworks] = useState<Firework[]>([]);
+  const [heartEmojis, setHeartEmojis] = useState<HeartEmoji[]>([]);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const playerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume;
     }
   }, [volume]);
+
+  const createFirework = (x: number, y: number) => {
+    const newFirework: Firework = {
+      id: Date.now() + Math.random(),
+      x,
+      y,
+    };
+    setFireworks((prev) => [...prev, newFirework]);
+
+    setTimeout(() => {
+      setFireworks((prev) => prev.filter((fw) => fw.id !== newFirework.id));
+    }, 1500);
+  };
+
+  const createHeartEmoji = (x: number, y: number) => {
+    const newHeart: HeartEmoji = {
+      id: Date.now() + Math.random(),
+      x,
+      y,
+    };
+    setHeartEmojis((prev) => [...prev, newHeart]);
+
+    setTimeout(() => {
+      setHeartEmojis((prev) =>
+        prev.filter((heart) => heart.id !== newHeart.id),
+      );
+    }, 2000);
+  };
+
+  const handlePlayerClick = (e: React.MouseEvent) => {
+    if (playerRef.current) {
+      const rect = playerRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      createFirework(x, y);
+      createHeartEmoji(x, y);
+    }
+  };
 
   const togglePlay = () => {
     if (audioRef.current) {
@@ -45,8 +99,55 @@ const RadioPlayer = ({
   };
 
   return (
-    <div className="bg-gradient-to-br from-purple-900 to-indigo-900 rounded-2xl p-8 shadow-2xl">
+    <div
+      ref={playerRef}
+      onClick={handlePlayerClick}
+      className="relative bg-gradient-to-br from-purple-900 to-indigo-900 rounded-2xl p-8 shadow-2xl cursor-pointer overflow-hidden"
+    >
       <audio ref={audioRef} src={streamUrl} />
+
+      {/* Фейерверки */}
+      {fireworks.map((firework) => (
+        <div
+          key={firework.id}
+          className="absolute pointer-events-none"
+          style={{
+            left: firework.x,
+            top: firework.y,
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <div className="firework">
+            {[...Array(8)].map((_, i) => (
+              <div
+                key={i}
+                className="firework-particle"
+                style={
+                  {
+                    "--angle": `${i * 45}deg`,
+                    "--color": `hsl(${Math.random() * 360}, 70%, 60%)`,
+                  } as React.CSSProperties
+                }
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+
+      {/* Сердечки-эмодзи */}
+      {heartEmojis.map((heart) => (
+        <div
+          key={heart.id}
+          className="absolute pointer-events-none text-4xl animate-heart-float"
+          style={{
+            left: heart.x,
+            top: heart.y,
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          💕
+        </div>
+      ))}
 
       {/* Логотип и название */}
       <div className="text-center mb-8">

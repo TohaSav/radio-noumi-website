@@ -99,3 +99,60 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .firework {
+    position: relative;
+    width: 10px;
+    height: 10px;
+  }
+
+  .firework-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--color);
+    border-radius: 50%;
+    animation: firework-explode 1.5s ease-out forwards;
+    transform-origin: center;
+    transform: rotate(var(--angle)) translateX(0);
+  }
+
+  @keyframes firework-explode {
+    0% {
+      transform: rotate(var(--angle)) translateX(0) scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: rotate(var(--angle)) translateX(60px) scale(1.5);
+      opacity: 0.8;
+    }
+    100% {
+      transform: rotate(var(--angle)) translateX(100px) scale(0);
+      opacity: 0;
+    }
+  }
+
+  @keyframes heart-float {
+    0% {
+      transform: translate(-50%, -50%) scale(0) rotate(0deg);
+      opacity: 0;
+    }
+    20% {
+      transform: translate(-50%, -50%) scale(1.2) rotate(5deg);
+      opacity: 1;
+    }
+    50% {
+      transform: translate(-50%, -70%) scale(1) rotate(-3deg);
+      opacity: 0.9;
+    }
+    100% {
+      transform: translate(-50%, -100%) scale(0.3) rotate(0deg);
+      opacity: 0;
+    }
+  }
+
+  .animate-heart-float {
+    animation: heart-float 2s ease-out forwards;
+  }
+}
