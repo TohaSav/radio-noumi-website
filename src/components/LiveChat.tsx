@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import Icon from "@/components/ui/icon";
 
 interface ChatMessage {
   id: number;
@@ -14,7 +15,10 @@ interface LiveChatProps {
 const LiveChat = ({ activeUsers }: LiveChatProps) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [messageId, setMessageId] = useState(0);
+  const [newMessage, setNewMessage] = useState("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const userNames = [
     "Анна",
@@ -42,6 +46,156 @@ const LiveChat = ({ activeUsers }: LiveChatProps) => {
     "Анастасия",
     "Игорь",
   ];
+
+  const popularEmojis = [
+    "😀",
+    "😃",
+    "😄",
+    "😊",
+    "😍",
+    "🥰",
+    "😘",
+    "😗",
+    "😙",
+    "😚",
+    "😋",
+    "😛",
+    "😝",
+    "😜",
+    "🤪",
+    "🤨",
+    "🧐",
+    "🤓",
+    "😎",
+    "🤩",
+    "🥳",
+    "😏",
+    "😒",
+    "😞",
+    "😔",
+    "😟",
+    "😕",
+    "🙁",
+    "☹️",
+    "😣",
+    "😖",
+    "😫",
+    "😩",
+    "🥺",
+    "😢",
+    "😭",
+    "😤",
+    "😠",
+    "😡",
+    "🤬",
+    "🤯",
+    "😳",
+    "🥵",
+    "🥶",
+    "😱",
+    "😨",
+    "😰",
+    "😥",
+    "😓",
+    "🤗",
+    "🤔",
+    "🤭",
+    "🤫",
+    "🤥",
+    "😶",
+    "😐",
+    "😑",
+    "😬",
+    "🙄",
+    "😯",
+    "👍",
+    "👎",
+    "👌",
+    "🤌",
+    "🤏",
+    "✌️",
+    "🤞",
+    "🤟",
+    "🤘",
+    "🤙",
+    "👈",
+    "👉",
+    "👆",
+    "🖕",
+    "👇",
+    "☝️",
+    "👋",
+    "🤚",
+    "🖐",
+    "✋",
+    "🖖",
+    "👏",
+    "🙌",
+    "🤲",
+    "🤝",
+    "🙏",
+    "✍️",
+    "💪",
+    "🦾",
+    "🦿",
+    "❤️",
+    "🧡",
+    "💛",
+    "💚",
+    "💙",
+    "💜",
+    "🖤",
+    "🤍",
+    "🤎",
+    "💔",
+    "❣️",
+    "💕",
+    "💞",
+    "💓",
+    "💗",
+    "💖",
+    "💘",
+    "💝",
+    "💟",
+    "☮️",
+    "🔥",
+    "⭐",
+    "🌟",
+    "✨",
+    "⚡",
+    "☀️",
+    "🌙",
+    "🌈",
+    "🎉",
+    "🎊",
+  ];
+
+  const handleEmojiSelect = (emoji: string) => {
+    setNewMessage((prev) => prev + emoji);
+    setShowEmojiPicker(false);
+    inputRef.current?.focus();
+  };
+
+  const handleSendMessage = () => {
+    if (newMessage.trim()) {
+      const message: ChatMessage = {
+        id: messageId,
+        user: "Вы",
+        message: newMessage,
+        timestamp: new Date(),
+      };
+
+      setMessages((prev) => [...prev, message].slice(-50));
+      setMessageId((prev) => prev + 1);
+      setNewMessage("");
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSendMessage();
+    }
+  };
 
   const chatTopics = [
     "Классная музыка сегодня!",
@@ -171,15 +325,47 @@ const LiveChat = ({ activeUsers }: LiveChatProps) => {
 
       <div className="p-4 border-t bg-gray-50">
         <div className="flex space-x-2">
-          <input
-            type="text"
-            placeholder="Напишите сообщение..."
-            className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-            disabled
-          />
+          <div className="flex-1 relative">
+            <input
+              ref={inputRef}
+              type="text"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Напишите сообщение..."
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+          </div>
+
+          <div className="relative">
+            <button
+              onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+              className="px-3 py-2 text-gray-600 hover:text-purple-600 transition-colors"
+              type="button"
+            >
+              <Icon name="Smile" size={20} />
+            </button>
+
+            {showEmojiPicker && (
+              <div className="absolute bottom-full right-0 mb-2 bg-white border rounded-lg shadow-lg p-3 w-64 max-h-48 overflow-y-auto z-10">
+                <div className="grid grid-cols-8 gap-1">
+                  {popularEmojis.map((emoji, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleEmojiSelect(emoji)}
+                      className="w-8 h-8 flex items-center justify-center text-lg hover:bg-gray-100 rounded"
+                    >
+                      {emoji}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
           <button
+            onClick={handleSendMessage}
             className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-            disabled
           >
             Отправить
           </button>
