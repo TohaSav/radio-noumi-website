@@ -10,7 +10,7 @@ interface Track {
 }
 
 const TopChart = () => {
-  const [isAdmin] = useState(false); // В реальном приложении это будет из контекста auth
+  const [isAdmin, setIsAdmin] = useState(false);
   const [tracks, setTracks] = useState<Track[]>([
     { id: 1, name: "Summer Vibes", likes: 1250, dislikes: 23 },
     { id: 2, name: "Midnight Dreams", likes: 980, dislikes: 45 },
@@ -74,9 +74,21 @@ const TopChart = () => {
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-6">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800 font-montserrat">
-        Топ Чарт
-      </h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-800 font-montserrat">
+          Топ Чарт
+        </h2>
+        <button
+          onClick={() => setIsAdmin(!isAdmin)}
+          className={`px-3 py-1 rounded-full text-sm transition-colors ${
+            isAdmin
+              ? "bg-purple-600 text-white"
+              : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+          }`}
+        >
+          {isAdmin ? "Выйти из админки" : "Админ"}
+        </button>
+      </div>
 
       {isAdmin && (
         <div className="mb-6 p-4 bg-gray-50 rounded-lg">
