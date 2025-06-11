@@ -16,30 +16,8 @@ const Stories = () => {
     null,
   );
 
-  // Демо истории
-  const [stories] = useState<Story[]>([
-    {
-      id: "1",
-      image:
-        "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=600&fit=crop",
-      author: "Radio Noumi",
-      timestamp: Date.now() - 3600000,
-    },
-    {
-      id: "2",
-      image:
-        "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&h=600&fit=crop",
-      author: "DJ Mix",
-      timestamp: Date.now() - 7200000,
-    },
-    {
-      id: "3",
-      image:
-        "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=400&h=600&fit=crop",
-      author: "Live Concert",
-      timestamp: Date.now() - 10800000,
-    },
-  ]);
+  // Пустой массив историй - все фотки удалены
+  const [stories] = useState<Story[]>([]);
 
   const handleAddStory = () => {
     // Здесь будет логика добавления истории
