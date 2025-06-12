@@ -29,6 +29,12 @@ const RadioPlayer = ({
     overall: 0,
   });
 
+  // Состояние для счетчика слушателей
+  const [listenerCount, setListenerCount] = useState(() => {
+    const saved = localStorage.getItem("radioListenerCount");
+    return saved ? parseInt(saved, 10) : 2987250;
+  });
+
   const audioRef = useRef<HTMLAudioElement>(null);
   const { setupAudioAnalysis, analyzeAudio, stopAnalysis } = useAudioAnalysis();
   const {
@@ -47,6 +53,19 @@ const RadioPlayer = ({
       audioRef.current.crossOrigin = "anonymous";
     }
   }, [volume]);
+
+  // Эффект для увеличения счетчика слушателей
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setListenerCount((prev) => {
+        const newCount = prev + Math.floor(Math.random() * 3) + 1; // Увеличиваем на 1-3
+        localStorage.setItem("radioListenerCount", newCount.toString());
+        return newCount;
+      });
+    }, 5000); // Обновляем каждые 5 секунд
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -178,6 +197,12 @@ const RadioPlayer = ({
                   className="text-gray-600 sm:w-5 sm:h-5"
                 />
               </button>
+
+              {/* Счетчик слушателей */}
+              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <Icon name="Users" size={16} />
+                <span>{listenerCount.toLocaleString("ru-RU")}</span>
+              </div>
 
               {/* Кнопка поделиться */}
               <button
