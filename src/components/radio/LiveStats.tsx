@@ -48,7 +48,7 @@ const LiveStats = ({ isPlaying }: LiveStatsProps) => {
   return (
     <div className="flex flex-col items-center space-y-4 mt-6">
       {/* Слушатели */}
-      <div className="flex items-center space-x-2 text-gray-700">
+      <div className="flex items-center space-x-2 text-white">
         <div
           className={`w-2 h-2 rounded-full ${isPlaying ? "bg-green-500 animate-pulse" : "bg-gray-400"}`}
         />
@@ -61,13 +61,11 @@ const LiveStats = ({ isPlaying }: LiveStatsProps) => {
       <div className="flex items-center space-x-6">
         <div className="flex items-center space-x-2">
           <Icon name="ThumbsUp" size={20} className="text-green-600" />
-          <span className="text-green-600 font-medium">
-            {formatNumber(likes)}
-          </span>
+          <span className="text-white font-medium">{formatNumber(likes)}</span>
         </div>
         <div className="flex items-center space-x-2">
           <Icon name="ThumbsDown" size={20} className="text-red-500" />
-          <span className="text-red-500 font-medium">
+          <span className="text-white font-medium">
             {formatNumber(dislikes)}
           </span>
         </div>
