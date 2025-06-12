@@ -29,10 +29,10 @@ const Index = () => {
         <div className="absolute top-2 right-4 z-20">
           <Link
             to="/dating"
-            className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white px-4 py-2 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center gap-2"
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-medium rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
           >
-            <Icon name="Heart" size={18} />
-            <span className="font-medium">Знакомства</span>
+            <Icon name="Heart" size={16} />
+            <span className="text-sm font-semibold">Знакомства</span>
           </Link>
         </div>
 
