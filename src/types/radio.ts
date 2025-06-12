@@ -5,20 +5,11 @@ export interface AudioData {
   overall: number;
 }
 
-export interface Firework {
-  id: number;
-  x: number;
-  y: number;
-}
-
-export interface HeartEmoji {
-  id: number;
-  x: number;
-  y: number;
-}
-
 export type MusicType = "club" | "bass" | "slow" | "normal";
 
 export interface RadioPlayerProps {
   streamUrl: string;
+  likes?: number;
+  dislikes?: number;
+  listeners?: number;
 }

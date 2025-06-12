@@ -1,12 +1,37 @@
 import { useState, useRef, useEffect } from "react";
-import { Play, Pause, Volume2 } from "lucide-react";
-import { RadioPlayerProps } from "@/types/radio";
+import { useAudioAnalysis } from "@/hooks/useAudioAnalysis";
+import { AudioData, MusicType } from "@/types/radio";
+import AnimatedWaves from "@/components/radio/AnimatedWaves";
+import AudioVisualizer from "@/components/radio/AudioVisualizer";
+import PlayButton from "@/components/radio/PlayButton";
+import Icon from "@/components/ui/icon";
 
-const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
+interface RadioPlayerProps {
+  streamUrl: string;
+  likes?: number;
+  dislikes?: number;
+  listeners?: number;
+}
+
+const RadioPlayer = ({
+  streamUrl,
+  likes = 0,
+  dislikes = 0,
+  listeners = 0,
+}: RadioPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.7);
+  const [audioData, setAudioData] = useState<AudioData>({
+    bassLevel: 0,
+    midLevel: 0,
+    trebleLevel: 0,
+    overall: 0,
+  });
+  const [musicType, setMusicType] = useState<MusicType>("normal");
+  const [pulseIntensity, setPulseIntensity] = useState(0);
 
   const audioRef = useRef<HTMLAudioElement>(null);
+  const { setupAudioAnalysis, analyzeAudio, stopAnalysis } = useAudioAnalysis();
 
   useEffect(() => {
     if (audioRef.current) {
@@ -14,12 +39,33 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
     }
   }, [volume]);
 
+  useEffect(() => {
+    const { bassLevel, midLevel, overall } = audioData;
+
+    // Определение типа музыки на основе анализа
+    if (bassLevel > 0.7 && midLevel > 0.6) {
+      setMusicType("club");
+    } else if (bassLevel > 0.6) {
+      setMusicType("bass");
+    } else if (overall < 0.3) {
+      setMusicType("slow");
+    } else {
+      setMusicType("normal");
+    }
+
+    // Установка интенсивности пульса
+    setPulseIntensity(overall);
+  }, [audioData]);
+
   const togglePlay = () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
+        stopAnalysis();
       } else {
         audioRef.current.play();
+        setupAudioAnalysis(audioRef.current);
+        analyzeAudio(setAudioData);
       }
       setIsPlaying(!isPlaying);
     }
@@ -30,46 +76,104 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-md mx-auto">
+    <div className="relative bg-gradient-to-br from-purple-900/20 via-violet-800/20 to-indigo-900/20 backdrop-blur-lg rounded-3xl p-8 max-w-lg mx-auto border border-white/10 shadow-2xl overflow-hidden">
       <audio ref={audioRef} src={streamUrl} />
 
-      <div className="text-center mb-6">
-        <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">
-          Radio Player
+      {/* Анимированные волны */}
+      <AnimatedWaves
+        audioData={audioData}
+        isPlaying={isPlaying}
+        musicType={musicType}
+        pulseIntensity={pulseIntensity}
+      />
+
+      {/* Заголовок */}
+      <div className="text-center mb-8 relative z-10">
+        <h2 className="text-2xl font-bold text-white mb-2 drop-shadow-lg">
+          Radio Noumi
         </h2>
-        <p className="text-gray-600 dark:text-gray-300">
-          {isPlaying ? "Now Playing" : "Ready to Play"}
+        <p className="text-white/80 text-sm">
+          {isPlaying ? "В эфире" : "Готов к воспроизведению"}
         </p>
       </div>
 
-      <div className="flex items-center justify-center mb-6">
-        <button
-          onClick={togglePlay}
-          className="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-4 transition-colors"
-        >
-          {isPlaying ? (
-            <Pause className="w-8 h-8" />
-          ) : (
-            <Play className="w-8 h-8" />
-          )}
-        </button>
+      {/* Аудиовизуализатор */}
+      <AudioVisualizer
+        audioData={audioData}
+        isPlaying={isPlaying}
+        musicType={musicType}
+        pulseIntensity={pulseIntensity}
+      />
+
+      {/* Кнопка воспроизведения */}
+      <div className="flex items-center justify-center mb-8 relative z-10">
+        <PlayButton isPlaying={isPlaying} onToggle={togglePlay} />
       </div>
 
-      <div className="flex items-center space-x-3">
-        <Volume2 className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.1"
-          value={volume}
-          onChange={handleVolumeChange}
-          className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-        />
-        <span className="text-sm text-gray-600 dark:text-gray-300 w-8">
+      {/* Управление громкостью */}
+      <div className="flex items-center space-x-4 mb-6 relative z-10">
+        <Icon name="Volume2" className="w-5 h-5 text-white/70" />
+        <div className="flex-1 relative">
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.1"
+            value={volume}
+            onChange={handleVolumeChange}
+            className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer slider"
+          />
+          <div
+            className="absolute top-0 left-0 h-2 bg-gradient-to-r from-purple-400 to-violet-600 rounded-lg pointer-events-none"
+            style={{ width: `${volume * 100}%` }}
+          />
+        </div>
+        <span className="text-sm text-white/70 w-10 text-right">
           {Math.round(volume * 100)}%
         </span>
       </div>
+
+      {/* Статистика */}
+      <div className="flex justify-between items-center text-sm text-white/60 relative z-10">
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-1">
+            <Icon name="Heart" className="w-4 h-4" />
+            <span>{likes}</span>
+          </div>
+          <div className="flex items-center space-x-1">
+            <Icon name="Users" className="w-4 h-4" />
+            <span>{listeners}</span>
+          </div>
+        </div>
+        <div className="text-xs opacity-70">
+          {musicType === "club" && "🎵 Клубная"}
+          {musicType === "bass" && "🎸 Басы"}
+          {musicType === "slow" && "🎼 Медленная"}
+          {musicType === "normal" && "🎶 Обычная"}
+        </div>
+      </div>
+
+      <style jsx>{`
+        .slider::-webkit-slider-thumb {
+          appearance: none;
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background: linear-gradient(45deg, #a855f7, #8b5cf6);
+          cursor: pointer;
+          box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
+        }
+
+        .slider::-moz-range-thumb {
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background: linear-gradient(45deg, #a855f7, #8b5cf6);
+          cursor: pointer;
+          border: none;
+          box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
+        }
+      `}</style>
     </div>
   );
 };
