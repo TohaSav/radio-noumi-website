@@ -75,7 +75,7 @@ const Reels = () => {
   const [reels, setReels] = useState<Reel[]>(generateDemoReels());
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Автоматическое добавление новых Reels каждые 10 минут
+  // Автоматическое добавление новых Reels каждые 5 минут
   useEffect(() => {
     const addNewReel = () => {
       const usernames = [
@@ -87,6 +87,8 @@ const Reels = () => {
         "sound_wizard",
         "track_hunter",
         "mix_master",
+        "dj_night_owl",
+        "radio_addict",
       ];
 
       const descriptions = [
@@ -96,6 +98,8 @@ const Reels = () => {
         "✨ Музыка для души",
         "🎵 Новинка в ротации",
         "💃 Невозможно не танцевать!",
+        "🎧 Слушаю уже час подряд",
+        "🚀 Космическая подборка!",
       ];
 
       const newReel: Reel = {
@@ -109,13 +113,39 @@ const Reels = () => {
         comments: Math.floor(Math.random() * 50) + 10,
         timestamp: new Date(),
         isLiked: false,
+        commentsList: [],
       };
 
       setReels((prev) => [newReel, ...prev]);
     };
 
-    const interval = setInterval(addNewReel, 10 * 60 * 1000); // 10 минут
+    const interval = setInterval(addNewReel, 5 * 60 * 1000); // 5 минут
     return () => clearInterval(interval);
+  }, []);
+
+  // Имитация активности пользователей
+  useEffect(() => {
+    const simulateActivity = () => {
+      setReels((prev) =>
+        prev.map((reel) => {
+          const shouldUpdate = Math.random() < 0.3; // 30% шанс обновления
+          if (!shouldUpdate) return reel;
+
+          const likeChange =
+            Math.random() < 0.7 ? Math.floor(Math.random() * 3) + 1 : 0;
+          const commentChange = Math.random() < 0.4 ? 1 : 0;
+
+          return {
+            ...reel,
+            likes: reel.likes + likeChange,
+            comments: reel.comments + commentChange,
+          };
+        }),
+      );
+    };
+
+    const activityInterval = setInterval(simulateActivity, 30000); // каждые 30 сек
+    return () => clearInterval(activityInterval);
   }, []);
 
   const handleDeleteReel = (reelId: string) => {
