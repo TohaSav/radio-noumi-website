@@ -36,14 +36,14 @@ const Index = () => {
           </Link>
         </div>
 
-        {/* AnimatedTitle с увеличенным отступом сверху */}
-        <div className="flex justify-center items-center pt-20 sm:pt-16 md:pt-20 pb-4">
-          <AnimatedTitle />
-        </div>
-
         {/* Stories перемещены ниже заголовка */}
         <div className="transform hover:scale-[1.02] transition-transform duration-300">
           <Stories />
+        </div>
+
+        {/* AnimatedTitle после Stories */}
+        <div className="flex justify-center items-center py-8">
+          <AnimatedTitle />
         </div>
 
         <div className="flex items-center justify-center gap-4">
