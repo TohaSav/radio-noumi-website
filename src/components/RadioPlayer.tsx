@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { useAudioAnalysis } from "@/hooks/useAudioAnalysis";
+import { useFireworks } from "@/hooks/useFireworks";
 import { AudioData, MusicType } from "@/types/radio";
-import AnimatedWaves from "@/components/radio/AnimatedWaves";
-import AudioVisualizer from "@/components/radio/AudioVisualizer";
 import PlayButton from "@/components/radio/PlayButton";
-import Icon from "@/components/ui/icon";
+import LiveStats from "@/components/radio/LiveStats";
+import FireworksEffect from "@/components/radio/FireworksEffect";
+import Balloons from "@/components/radio/Balloons";
 
 interface RadioPlayerProps {
   streamUrl: string;
@@ -28,10 +29,12 @@ const RadioPlayer = ({
     overall: 0,
   });
   const [musicType, setMusicType] = useState<MusicType>("normal");
-  const [pulseIntensity, setPulseIntensity] = useState(0);
+  const [showEffects, setShowEffects] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const { setupAudioAnalysis, analyzeAudio, stopAnalysis } = useAudioAnalysis();
+  const { fireworks, heartEmojis, createFirework, createHeartEmoji } =
+    useFireworks();
 
   useEffect(() => {
     if (audioRef.current) {
@@ -52,9 +55,6 @@ const RadioPlayer = ({
     } else {
       setMusicType("normal");
     }
-
-    // Установка интенсивности пульса
-    setPulseIntensity(overall);
   }, [audioData]);
 
   const togglePlay = () => {
@@ -62,27 +62,62 @@ const RadioPlayer = ({
       if (isPlaying) {
         audioRef.current.pause();
         stopAnalysis();
+        setShowEffects(false);
       } else {
         audioRef.current.play();
         setupAudioAnalysis(audioRef.current);
         analyzeAudio(setAudioData);
+
+        // Запускаем эффекты при нажатии Play
+        setShowEffects(true);
+
+        // Создаем фейерверки в разных местах экрана
+        setTimeout(
+          () =>
+            createFirework(window.innerWidth * 0.2, window.innerHeight * 0.3),
+          200,
+        );
+        setTimeout(
+          () =>
+            createFirework(window.innerWidth * 0.8, window.innerHeight * 0.4),
+          400,
+        );
+        setTimeout(
+          () =>
+            createFirework(window.innerWidth * 0.5, window.innerHeight * 0.2),
+          600,
+        );
+        setTimeout(
+          () =>
+            createFirework(window.innerWidth * 0.1, window.innerHeight * 0.6),
+          800,
+        );
+        setTimeout(
+          () =>
+            createFirework(window.innerWidth * 0.9, window.innerHeight * 0.7),
+          1000,
+        );
+
+        // Скрываем эффекты через 3 секунды
+        setTimeout(() => setShowEffects(false), 3000);
       }
       setIsPlaying(!isPlaying);
     }
   };
 
-  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setVolume(parseFloat(e.target.value));
-  };
-
   return (
-    <div className="flex justify-center py-8">
-      <div className="relative">
-        <audio ref={audioRef} src={streamUrl} />
+    <div className="flex flex-col items-center py-8">
+      <audio ref={audioRef} src={streamUrl} />
 
-        {/* Кнопка воспроизведения по центру */}
-        <PlayButton isPlaying={isPlaying} onToggle={togglePlay} />
-      </div>
+      {/* Кнопка воспроизведения */}
+      <PlayButton isPlaying={isPlaying} onToggle={togglePlay} />
+
+      {/* Живая статистика */}
+      <LiveStats isPlaying={isPlaying} />
+
+      {/* Эффекты */}
+      <FireworksEffect fireworks={fireworks} heartEmojis={heartEmojis} />
+      <Balloons show={showEffects} />
     </div>
   );
 };
