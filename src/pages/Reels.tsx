@@ -119,7 +119,7 @@ const Reels = () => {
       setReels((prev) => [newReel, ...prev]);
     };
 
-    const interval = setInterval(addNewReel, 5 * 60 * 1000); // 5 минут
+    const interval = setInterval(addNewReel, 2 * 60 * 1000); // 2 минуты
     return () => clearInterval(interval);
   }, []);
 
