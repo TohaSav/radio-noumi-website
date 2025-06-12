@@ -240,13 +240,11 @@ const RadioPlayer = ({
       className="relative overflow-hidden rounded-3xl shadow-2xl cursor-pointer"
       style={{
         background: `
-          radial-gradient(circle at 20% 50%, rgba(168, 85, 247, ${0.4 + getPulseIntensity() * 0.3}) 0%, transparent 50%),
-          radial-gradient(circle at 80% 20%, rgba(59, 130, 246, ${0.3 + audioData.bassLevel * 0.4}) 0%, transparent 50%),
-          radial-gradient(circle at 40% 80%, rgba(236, 72, 153, ${0.2 + audioData.midLevel * 0.3}) 0%, transparent 50%),
+          radial-gradient(circle at 20% 50%, rgba(168, 85, 247, 0.4) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+          radial-gradient(circle at 40% 80%, rgba(236, 72, 153, 0.2) 0%, transparent 50%),
           linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e3a8a 100%)
         `,
-        transform: `scale(${1 + getPulseIntensity() * 0.02})`,
-        transition: "transform 0.1s ease-out",
       }}
     >
       <audio ref={audioRef} src={streamUrl} crossOrigin="anonymous" />
@@ -256,15 +254,12 @@ const RadioPlayer = ({
         className="absolute inset-0 opacity-30"
         style={{
           background: `
-            conic-gradient(from ${audioData.overall * 360}deg at 50% 50%, 
+            conic-gradient(from 0deg at 50% 50%, 
               rgba(168, 85, 247, 0.8), 
               rgba(59, 130, 246, 0.6), 
               rgba(236, 72, 153, 0.4), 
               rgba(168, 85, 247, 0.8))
           `,
-          animation: isPlaying
-            ? `spin ${20 / (1 + getPulseIntensity())}s linear infinite`
-            : "none",
         }}
       />
 
@@ -274,9 +269,7 @@ const RadioPlayer = ({
           <h1
             className="text-5xl font-bold text-white mb-3 font-montserrat drop-shadow-lg"
             style={{
-              textShadow: `0 0 ${20 + getPulseIntensity() * 30}px rgba(255, 255, 255, 0.5)`,
-              transform: `scale(${1 + audioData.bassLevel * 0.05})`,
-              transition: "all 0.1s ease-out",
+              textShadow: "0 0 20px rgba(255, 255, 255, 0.5)",
             }}
           >
             Radio Noumi
@@ -430,19 +423,12 @@ const RadioPlayer = ({
             </div>
           )}
 
-          <button
-            onClick={togglePlay}
-            className="relative group z-10"
-            style={{
-              transform: `scale(${1 + getPulseIntensity() * 0.1})`,
-              transition: "transform 0.1s ease-out",
-            }}
-          >
+          <button onClick={togglePlay} className="relative group z-10">
             <div
               className="absolute inset-0 rounded-full blur-lg opacity-60"
               style={{
-                background: `radial-gradient(circle, rgba(168, 85, 247, ${0.8 + getPulseIntensity() * 0.4}) 0%, transparent 70%)`,
-                transform: `scale(${1.2 + audioData.bassLevel * 0.3})`,
+                background:
+                  "radial-gradient(circle, rgba(168, 85, 247, 0.8) 0%, transparent 70%)",
               }}
             />
             <div className="relative bg-white text-purple-900 p-6 rounded-full hover:bg-purple-50 transition-all duration-200 shadow-2xl group-hover:shadow-purple-500/25">
@@ -481,8 +467,7 @@ const RadioPlayer = ({
               className="w-3 h-3 rounded-full animate-pulse"
               style={{
                 backgroundColor: "#10b981",
-                boxShadow: `0 0 ${10 + getPulseIntensity() * 20}px rgba(16, 185, 129, 0.8)`,
-                animationDuration: `${1.5 - getPulseIntensity() * 0.5}s`,
+                boxShadow: "0 0 10px rgba(16, 185, 129, 0.8)",
               }}
             />
             <span className="text-xl">
@@ -503,12 +488,6 @@ const RadioPlayer = ({
                 ? "bg-red-500 text-white shadow-lg shadow-red-500/25"
                 : "bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm"
             }`}
-            style={{
-              transform:
-                userLiked === true
-                  ? `scale(${1 + audioData.bassLevel * 0.1})`
-                  : "scale(1)",
-            }}
           >
             <Icon
               name="Heart"
