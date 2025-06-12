@@ -4,6 +4,10 @@ import Icon from "@/components/ui/icon";
 import ProfileCard from "./ProfileCard";
 import { useState, useEffect } from "react";
 
+// Ключи для localStorage
+const STORAGE_KEY = "dating_chat_messages";
+const USED_MESSAGES_KEY = "dating_chat_used_messages";
+
 interface ChatSectionProps {
   messages: Message[];
   activeTab: string;
@@ -29,6 +33,28 @@ const ChatSection = ({
 }: ChatSectionProps) => {
   const [onlineCount, setOnlineCount] = useState(1500000);
   const [usedMessages, setUsedMessages] = useState<Set<string>>(new Set());
+
+  // Загрузка сохраненных использованных сообщений при инициализации
+  useEffect(() => {
+    const savedUsedMessages = localStorage.getItem(USED_MESSAGES_KEY);
+    if (savedUsedMessages) {
+      try {
+        const parsedMessages = JSON.parse(savedUsedMessages);
+        setUsedMessages(new Set(parsedMessages));
+      } catch (error) {
+        console.error("Ошибка загрузки использованных сообщений:", error);
+      }
+    }
+  }, []);
+
+  // Сохранение использованных сообщений в localStorage
+  const saveUsedMessages = (messages: Set<string>) => {
+    try {
+      localStorage.setItem(USED_MESSAGES_KEY, JSON.stringify([...messages]));
+    } catch (error) {
+      console.error("Ошибка сохранения использованных сообщений:", error);
+    }
+  };
 
   const femaleNames = [
     "Анна",
@@ -150,7 +176,9 @@ const ChatSection = ({
       fullMessage = `${femaleNames[0]}:${message}`;
     }
 
-    setUsedMessages((prev) => new Set([...prev, fullMessage]));
+    const newUsedMessages = new Set([...usedMessages, fullMessage]);
+    setUsedMessages(newUsedMessages);
+    saveUsedMessages(newUsedMessages);
     return { name: fullMessage.split(":")[0], text: message };
   };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   Dialog,
@@ -14,6 +14,9 @@ import ProfileCard from "@/components/dating/ProfileCard";
 import ProfileForm from "@/components/dating/ProfileForm";
 import ChatSection from "@/components/dating/ChatSection";
 import UserPanel from "@/components/dating/UserPanel";
+
+// Ключ для localStorage
+const MESSAGES_STORAGE_KEY = "dating_chat_all_messages";
 
 const DatingChat = () => {
   const [showProfileModal, setShowProfileModal] = useState(false);
@@ -49,16 +52,7 @@ const DatingChat = () => {
     },
   ]);
   const [likes, setLikes] = useState<Like[]>([]);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "msg1",
-      text: "Привет всем! Кто тут новенький? 😊",
-      userId: "user1",
-      userName: "Анна",
-      chatType: "general",
-      timestamp: new Date(Date.now() - 300000),
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [messageInput, setMessageInput] = useState("");
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("general");
@@ -75,11 +69,38 @@ const DatingChat = () => {
     about: "",
   });
 
+  const handleChatSelect = (userName: string) => {};
+
   const [registerForm, setRegisterForm] = useState({
     login: "",
     email: "",
     password: "",
   });
+
+  // Загрузка сохраненных сообщений при инициализации
+  useEffect(() => {
+    const savedMessages = localStorage.getItem(MESSAGES_STORAGE_KEY);
+    if (savedMessages) {
+      try {
+        const parsedMessages = JSON.parse(savedMessages).map((msg: any) => ({
+          ...msg,
+          timestamp: new Date(msg.timestamp),
+        }));
+        setMessages(parsedMessages);
+      } catch (error) {
+        console.error("Ошибка загрузки сообщений:", error);
+      }
+    }
+  }, []);
+
+  // Сохранение сообщений в localStorage при каждом изменении
+  const saveMessages = (newMessages: Message[]) => {
+    try {
+      localStorage.setItem(MESSAGES_STORAGE_KEY, JSON.stringify(newMessages));
+    } catch (error) {
+      console.error("Ошибка сохранения сообщений:", error);
+    }
+  };
 
   // Фоновое радио
   useEffect(() => {
@@ -133,6 +154,14 @@ const DatingChat = () => {
     setLikes([...likes, newLike]);
   };
 
+  const addMessage = (message: Message) => {
+    setMessages((prev) => {
+      const newMessages = [...prev, message];
+      saveMessages(newMessages);
+      return newMessages;
+    });
+  };
+
   const handleRegisterSubmit = () => {
     const newUser: User = {
       id: Date.now().toString(),
@@ -158,7 +187,7 @@ const DatingChat = () => {
       timestamp: new Date(),
     };
 
-    setMessages([...messages, newMessage]);
+    addMessage(newMessage);
     setMessageInput("");
   };
 
