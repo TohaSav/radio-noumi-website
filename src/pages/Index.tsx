@@ -18,8 +18,11 @@ const Index = () => {
       <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-30" />
 
       <div className="container mx-auto px-4 py-8 space-y-8 relative z-10">
-        <div className="flex items-center justify-center gap-4">
+        <div className="absolute top-4 left-4 z-20">
           <ReelsButton />
+        </div>
+
+        <div className="flex items-center justify-center gap-4">
           <RadioPlayer streamUrl="https://myradio24.org/61673" />
         </div>
         {/* Заголовок с улучшенной типографикой */}
