@@ -51,11 +51,11 @@ const DatingChat = () => {
       name: profileForm.name,
       age: parseInt(profileForm.age),
       city: profileForm.city,
-      height: parseInt(profileForm.height),
-      weight: parseInt(profileForm.weight),
+      height: profileForm.height,
+      weight: profileForm.weight,
       lookingFor: profileForm.lookingFor,
       about: profileForm.about,
-      timestamp: new Date(),
+      userId: currentUser.id,
     };
 
     setProfiles([...profiles, newProfile]);
@@ -72,11 +72,23 @@ const DatingChat = () => {
     });
   };
 
-  const handleRegister = () => {
+  const handleLike = (profileId: string) => {
+    if (!currentUser) return;
+
+    const newLike: Like = {
+      id: Date.now().toString(),
+      fromUserId: currentUser.id,
+      toProfileId: profileId,
+    };
+
+    setLikes([...likes, newLike]);
+  };
+
+  const handleRegisterSubmit = () => {
     const newUser: User = {
+      id: Date.now().toString(),
       login: registerForm.login,
       email: registerForm.email,
-      password: registerForm.password,
     };
 
     setCurrentUser(newUser);
@@ -85,122 +97,139 @@ const DatingChat = () => {
     setRegisterForm({ login: "", email: "", password: "" });
   };
 
-  const handleLike = (profileId: string) => {
-    if (!currentUser) return;
-
-    const newLike: Like = {
-      id: Date.now().toString(),
-      profileId,
-      likerName: currentUser.login,
-      timestamp: new Date(),
-    };
-
-    setLikes([...likes, newLike]);
-  };
-
   const handleSendMessage = () => {
     if (!messageInput.trim() || !currentUser) return;
 
-    if (!isLoggedIn) {
-      setShowProfileModal(true);
-      return;
-    }
-
     const newMessage: Message = {
       id: Date.now().toString(),
-      from: currentUser.login,
-      to: selectedChat || undefined,
-      content: messageInput,
+      text: messageInput,
+      userId: currentUser.id,
+      userName: currentUser.login,
+      chatType: selectedChat || "general",
       timestamp: new Date(),
-      type: selectedChat ? "private" : "public",
     };
 
     setMessages([...messages, newMessage]);
     setMessageInput("");
   };
 
-  const handleSelectChat = (username: string) => {
-    setSelectedChat(username);
-    setActiveTab("private");
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-red-50 p-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-6">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-2">
-            💕 Чат знакомств
-          </h1>
-          <p className="text-gray-600">Найдите свою вторую половинку</p>
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-100 flex">
+      {/* Основной чат */}
+      <div className="flex-1 flex flex-col">
+        <div className="bg-white shadow-sm border-b p-4">
+          <h1 className="text-2xl font-bold text-pink-600">💕 Чат знакомств</h1>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          <div className="lg:col-span-2 space-y-6">
-            <div className="max-h-96 overflow-y-auto">
-              {profiles.map((profile) => (
-                <ProfileCard
-                  key={profile.id}
-                  profile={profile}
-                  onLike={handleLike}
-                />
-              ))}
-              {profiles.length === 0 && (
-                <div className="text-center py-12 text-gray-500">
-                  <Icon
-                    name="Heart"
-                    size={48}
-                    className="mx-auto mb-4 text-pink-300"
-                  />
-                  <p>Пока нет анкет. Станьте первым!</p>
-                </div>
-              )}
-            </div>
-          </div>
+        <ChatSection
+          messages={messages}
+          activeTab={activeTab}
+          selectedChat={selectedChat}
+          onTabChange={setActiveTab}
+          onChatSelect={setSelectedChat}
+        />
 
-          <div className="lg:col-span-1">
-            <ChatSection
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-              selectedChat={selectedChat}
-              messageInput={messageInput}
-              setMessageInput={setMessageInput}
-              isLoggedIn={isLoggedIn}
-              currentUser={currentUser}
-              messages={messages}
-              onSendMessage={handleSendMessage}
-              onShowProfile={() => setShowProfileModal(true)}
-              onSelectChat={handleSelectChat}
+        <div className="p-4 bg-white border-t">
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={messageInput}
+              onChange={(e) => setMessageInput(e.target.value)}
+              onFocus={() => !isLoggedIn && setShowRegisterForm(true)}
+              placeholder="Написать сообщение..."
+              className="flex-1 px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-pink-300"
             />
+            <button
+              onClick={() => {
+                if (!isLoggedIn) {
+                  setShowRegisterForm(true);
+                } else {
+                  setShowProfileModal(true);
+                }
+              }}
+              className="px-6 py-2 bg-pink-500 text-white rounded-full hover:bg-pink-600 transition-colors"
+            >
+              Отправить
+            </button>
           </div>
+        </div>
 
-          <div className="lg:col-span-1">
-            <UserPanel
-              isLoggedIn={isLoggedIn}
-              currentUser={currentUser}
-              likes={likes}
-              onShowRegister={() => setShowRegisterForm(true)}
-              registerForm={registerForm}
-              onRegisterFormChange={setRegisterForm}
-              onRegister={handleRegister}
-              showRegisterForm={showRegisterForm}
-              setShowRegisterForm={setShowRegisterForm}
+        {/* Профили */}
+        <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {profiles.map((profile) => (
+            <ProfileCard
+              key={profile.id}
+              profile={profile}
+              onLike={handleLike}
+              currentUserId={currentUser?.id}
             />
-          </div>
+          ))}
         </div>
       </div>
 
+      {/* Боковая панель */}
+      <UserPanel
+        isLoggedIn={isLoggedIn}
+        currentUser={currentUser}
+        likes={likes}
+        profiles={profiles}
+        onRegisterClick={() => setShowRegisterForm(true)}
+      />
+
+      {/* Модальные окна */}
       <Dialog open={showProfileModal} onOpenChange={setShowProfileModal}>
-        <DialogContent className="max-w-sm aspect-[9/16] max-h-[85vh] overflow-hidden">
+        <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-center text-pink-600">
-              💕 Создание анкеты
-            </DialogTitle>
+            <DialogTitle>Создать анкету</DialogTitle>
           </DialogHeader>
           <ProfileForm
-            formData={profileForm}
-            onFormChange={setProfileForm}
+            form={profileForm}
+            onChange={setProfileForm}
             onSubmit={handleProfileSubmit}
           />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showRegisterForm} onOpenChange={setShowRegisterForm}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Регистрация</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="Логин"
+              value={registerForm.login}
+              onChange={(e) =>
+                setRegisterForm({ ...registerForm, login: e.target.value })
+              }
+              className="w-full px-3 py-2 border rounded-lg"
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              value={registerForm.email}
+              onChange={(e) =>
+                setRegisterForm({ ...registerForm, email: e.target.value })
+              }
+              className="w-full px-3 py-2 border rounded-lg"
+            />
+            <input
+              type="password"
+              placeholder="Пароль"
+              value={registerForm.password}
+              onChange={(e) =>
+                setRegisterForm({ ...registerForm, password: e.target.value })
+              }
+              className="w-full px-3 py-2 border rounded-lg"
+            />
+            <button
+              onClick={handleRegisterSubmit}
+              className="w-full py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+            >
+              Зарегистрироваться
+            </button>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
