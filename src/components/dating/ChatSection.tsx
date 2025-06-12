@@ -313,10 +313,10 @@ const ChatSection = ({
           <div className="mb-4">
             <Button
               onClick={onCreateProfile}
-              className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-medium"
+              className="w-full bg-white/10 backdrop-blur-md border border-white/20 text-white font-medium rounded-full transition-all duration-300 hover:bg-white/20 hover:scale-105 shadow-lg hover:shadow-xl"
             >
               <Icon name="Plus" size={16} className="mr-2" />
-              Создать анкету
+              Добавить анкету
             </Button>
           </div>
 

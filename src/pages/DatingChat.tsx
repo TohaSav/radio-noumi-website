@@ -176,10 +176,74 @@ const DatingChat = () => {
 
   // Автоматическое добавление анкет каждые 30-90 секунд
   useEffect(() => {
+    // Уникальные пулы фотографий для каждого пола
+    const malePhotos = [
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400",
+      "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=400",
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400",
+      "https://images.unsplash.com/photo-1463453091185-61582044d556?w=400",
+      "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400",
+      "https://images.unsplash.com/photo-1522556189639-b150ed9c4330?w=400",
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400",
+      "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400",
+    ];
+
+    const femalePhotos = [
+      "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400",
+      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400",
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400",
+      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400",
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400",
+      "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=400",
+      "https://images.unsplash.com/photo-1506863530036-1efeddceb993?w=400",
+      "https://images.unsplash.com/photo-1525134479668-1bee5c7c6845?w=400",
+      "https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=400",
+    ];
+
+    // Отслеживание использованных фотографий
+    const usedMalePhotos = new Set<string>();
+    const usedFemalePhotos = new Set<string>();
+
+    // Заполняем сеты уже используемыми фотографиями
+    profiles.forEach((profile) => {
+      if (profile.gender === "male" && malePhotos.includes(profile.photo)) {
+        usedMalePhotos.add(profile.photo);
+      } else if (
+        profile.gender === "female" &&
+        femalePhotos.includes(profile.photo)
+      ) {
+        usedFemalePhotos.add(profile.photo);
+      }
+    });
+
+    // Функция для получения уникальной фотографии
+    const getUniquePhoto = (gender: "male" | "female"): string => {
+      const photos = gender === "male" ? malePhotos : femalePhotos;
+      const usedPhotos = gender === "male" ? usedMalePhotos : usedFemalePhotos;
+
+      const availablePhotos = photos.filter((photo) => !usedPhotos.has(photo));
+
+      if (availablePhotos.length === 0) {
+        // Если все фотографии использованы, сбрасываем сет
+        usedPhotos.clear();
+        return photos[Math.floor(Math.random() * photos.length)];
+      }
+
+      const selectedPhoto =
+        availablePhotos[Math.floor(Math.random() * availablePhotos.length)];
+      usedPhotos.add(selectedPhoto);
+      return selectedPhoto;
+    };
+
     const interval = setInterval(
       () => {
         const generateRandomProfile = (): Profile => {
           const isFemale = Math.random() > 0.4; // больше женских анкет
+          const gender = isFemale ? "female" : "male";
+          const uniquePhoto = getUniquePhoto(gender);
 
           const femaleProfiles = [
             {
@@ -189,8 +253,6 @@ const DatingChat = () => {
               about:
                 "Маркетолог в IT. Обожаю йогу на рассвете и спонтанные путешествия. Ищу мужчину с чувством юмора и добрым сердцем.",
               lookingFor: "Серьезные отношения",
-              photo:
-                "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400",
             },
             {
               name: "Виктория",
@@ -198,92 +260,34 @@ const DatingChat = () => {
               city: "СПб",
               about:
                 "Стоматолог с душой художника. Фотографирую закаты, готовлю авторские десерты. Мечтаю о партнере для совместных открытий.",
-              lookingFor: "Спутник жизни",
-              photo:
-                "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400",
+              lookingFor: "Серьезные отношения",
             },
             {
-              name: "Ксения",
-              age: 22,
+              name: "Мария",
+              age: 23,
               city: "Екатеринбург",
               about:
-                "Танцую контемпорари, изучаю корейский язык. Студентка архитектуры. Открыта миру и новым знакомствам!",
-              lookingFor: "Дружба и общение",
-              photo:
-                "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400",
-            },
-            {
-              name: "Марина",
-              age: 29,
-              city: "Казань",
-              about:
-                "Финансист и мама прекрасного сына 5 лет. Верю в искренность и взаимопонимание. Готова открыть сердце для настоящей любви.",
-              lookingFor: "Создание семьи",
-              photo:
-                "https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=400",
-            },
-            {
-              name: "Елизавета",
-              age: 26,
-              city: "Новосибирск",
-              about:
-                "UX-дизайнер, волонтер в приюте для животных. Мечтаю о горных походах вдвоем и уютных вечерах дома с любимым человеком.",
-              lookingFor: "Приключения вместе",
-              photo:
-                "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400",
-            },
-            {
-              name: "Анастасия",
-              age: 23,
-              city: "Краснодар",
-              about:
-                "Учу детей любить природу и науку. В свободное время рисую акварелью. Ищу мужчину, который разделит мои ценности.",
-              lookingFor: "Взаимопонимание",
-              photo:
-                "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400",
-            },
-            {
-              name: "Дарья",
-              age: 25,
-              city: "Ростов-на-Дону",
-              about:
-                "Журналист-культуролог. Пишу о современном искусстве, читаю лекции в музеях. Ценю глубокие разговоры и интеллектуальную близость.",
-              lookingFor: "Духовная близость",
-              photo:
-                "https://images.unsplash.com/photo-1506863530036-1efeddceb993?w=400",
+                "Психолог и любитель книг. Верю в силу позитивного мышления. Ищу надежного спутника жизни.",
+              lookingFor: "Серьезные отношения",
             },
           ];
 
           const maleProfiles = [
             {
-              name: "Александр",
-              age: 30,
-              city: "Москва",
+              name: "Андрей",
+              age: 29,
+              city: "Новосибирск",
               about:
-                "Senior-разработчик в финтехе. По выходным готовлю для друзей, играю в теннис. Ищу умную спутницу для совместного роста.",
-              lookingFor: "Серьезные отношения",
-              photo:
-                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
-            },
-            {
-              name: "Дмитрий",
-              age: 32,
-              city: "СПб",
-              about:
-                "Кардиохирург, спасаю жизни каждый день. Увлекаюсь астрофотографией и альпинизмом. Готов создать крепкую семью с правильной девушкой.",
-              lookingFor: "Создание семьи",
-              photo:
-                "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400",
+                "Инженер-программист. Увлекаюсь альпинизмом и фотографией. Ищу спутницу для активного отдыха.",
+              lookingFor: "Дружба и общение",
             },
             {
               name: "Максим",
-              age: 26,
-              city: "Екатеринбург",
+              age: 31,
+              city: "Казань",
               about:
-                "Основатель экологического стартапа. Вегетарианец, медитирую, занимаюсь скалолазанием. Ищу единомышленницу для совместных свершений.",
-              lookingFor: "Партнерство в жизни",
-              photo:
-                "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400",
+                "Предприниматель в сфере IT. Люблю путешествия и новые впечатления. Ищу вторую половинку.",
+              lookingFor: "Серьезные отношения",
             },
           ];
 
@@ -292,8 +296,8 @@ const DatingChat = () => {
             : maleProfiles[Math.floor(Math.random() * maleProfiles.length)];
 
           return {
-            id: `auto_${Date.now()}_${Math.random()}`,
-            photo: profileData.photo,
+            id: Date.now().toString(),
+            photo: uniquePhoto,
             name: profileData.name,
             age: profileData.age,
             city: profileData.city,
@@ -305,8 +309,8 @@ const DatingChat = () => {
               : `${65 + Math.floor(Math.random() * 35)} кг`,
             lookingFor: profileData.lookingFor,
             about: profileData.about,
-            userId: `auto_user_${Date.now()}`,
-            gender: isFemale ? "female" : "male",
+            userId: `user_${Date.now()}`,
+            gender: gender,
           };
         };
 
