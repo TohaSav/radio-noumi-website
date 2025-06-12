@@ -14,7 +14,7 @@ const AnimatedTitle: React.FC = () => {
 
   return (
     <div className="relative mb-12">
-      <h1 className="text-3xl md:text-6xl lg:text-7xl font-black bg-gradient-to-r from-yellow-300 via-pink-300 via-purple-300 to-cyan-300 bg-clip-text text-transparent mb-6 drop-shadow-2xl filter brightness-110">
+      <h1 className="text-3xl md:text-6xl lg:text-7xl font-black bg-gradient-to-r from-yellow-400 via-pink-500 via-purple-500 via-blue-500 to-cyan-400 bg-[length:400%_400%] animate-gradient-shift bg-clip-text text-transparent mb-6 drop-shadow-2xl">
         {title.split("").map((letter, index) => (
           <span key={index} className="relative inline-block">
             {letter}
