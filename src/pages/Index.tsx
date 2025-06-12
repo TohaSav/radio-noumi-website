@@ -24,6 +24,15 @@ const Index = () => {
 
         <div className="flex items-center justify-center gap-4">
           <RadioPlayer streamUrl="https://myradio24.org/61673" />
+          <div className="absolute top-4 right-4 z-20">
+            <Link
+              to="/dating"
+              className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white px-4 py-2 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center gap-2"
+            >
+              <Icon name="Heart" size={18} />
+              <span className="font-medium">Знакомства</span>
+            </Link>
+          </div>
         </div>
         {/* Заголовок с улучшенной типографикой */}
         <div className="text-center mb-10">
