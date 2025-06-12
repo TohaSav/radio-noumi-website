@@ -9,6 +9,7 @@ export interface Profile {
   lookingFor: string;
   about: string;
   userId: string;
+  gender: "male" | "female";
 }
 
 export interface User {

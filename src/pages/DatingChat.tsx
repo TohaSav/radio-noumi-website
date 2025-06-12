@@ -36,6 +36,7 @@ const DatingChat = () => {
       lookingFor: "Серьезные отношения",
       about: "Люблю путешествовать и читать книги. Работаю дизайнером.",
       userId: "user1",
+      gender: "female",
     },
     {
       id: "2",
@@ -49,6 +50,7 @@ const DatingChat = () => {
       lookingFor: "Дружба и общение",
       about: "Программист, увлекаюсь спортом и кино.",
       userId: "user2",
+      gender: "male",
     },
   ]);
   const [likes, setLikes] = useState<Like[]>([]);
@@ -56,6 +58,9 @@ const DatingChat = () => {
   const [messageInput, setMessageInput] = useState("");
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("general");
+  const [genderFilter, setGenderFilter] = useState<"all" | "male" | "female">(
+    "all",
+  );
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const [profileForm, setProfileForm] = useState({
@@ -108,6 +113,95 @@ const DatingChat = () => {
       audioRef.current.volume = 0.3;
       audioRef.current.play().catch(() => {});
     }
+  }, []);
+
+  // Автоматическое добавление анкет каждые 5 минут
+  useEffect(() => {
+    const interval = setInterval(
+      () => {
+        const generateRandomProfile = (): Profile => {
+          const isFemale = Math.random() > 0.5;
+          const femaleNames = [
+            "Анна",
+            "Мария",
+            "Елена",
+            "Екатерина",
+            "Наталья",
+            "Ольга",
+            "Татьяна",
+            "Светлана",
+          ];
+          const maleNames = [
+            "Александр",
+            "Дмитрий",
+            "Максим",
+            "Сергей",
+            "Андрей",
+            "Алексей",
+            "Артём",
+            "Илья",
+          ];
+          const cities = [
+            "Москва",
+            "СПб",
+            "Екатеринбург",
+            "Новосибирск",
+            "Казань",
+            "Краснодар",
+          ];
+          const lookingForOptions = [
+            "Серьезные отношения",
+            "Дружба и общение",
+            "Совместный досуг",
+            "Спутник жизни",
+          ];
+
+          const name = isFemale
+            ? femaleNames[Math.floor(Math.random() * femaleNames.length)]
+            : maleNames[Math.floor(Math.random() * maleNames.length)];
+
+          const femalePhotos = [
+            "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400",
+            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400",
+            "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400",
+          ];
+
+          const malePhotos = [
+            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400",
+            "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400",
+          ];
+
+          return {
+            id: `auto_${Date.now()}_${Math.random()}`,
+            photo: isFemale
+              ? femalePhotos[Math.floor(Math.random() * femalePhotos.length)]
+              : malePhotos[Math.floor(Math.random() * malePhotos.length)],
+            name,
+            age: 18 + Math.floor(Math.random() * 32),
+            city: cities[Math.floor(Math.random() * cities.length)],
+            height: isFemale
+              ? `${155 + Math.floor(Math.random() * 20)} см`
+              : `${170 + Math.floor(Math.random() * 25)} см`,
+            weight: isFemale
+              ? `${45 + Math.floor(Math.random() * 25)} кг`
+              : `${65 + Math.floor(Math.random() * 35)} кг`,
+            lookingFor:
+              lookingForOptions[
+                Math.floor(Math.random() * lookingForOptions.length)
+              ],
+            about: `Привет! Меня зовут ${name}, живу в городе ${cities[Math.floor(Math.random() * cities.length)]}.`,
+            userId: `auto_user_${Date.now()}`,
+            gender: isFemale ? "female" : "male",
+          };
+        };
+
+        setProfiles((prev) => [...prev, generateRandomProfile()]);
+      },
+      5 * 60 * 1000,
+    ); // 5 минут
+
+    return () => clearInterval(interval);
   }, []);
 
   const handleProfileSubmit = () => {
@@ -206,45 +300,51 @@ const DatingChat = () => {
 
       {/* Хедер */}
       <div className="bg-white/80 backdrop-blur-sm shadow-lg border-b border-pink-200/50">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-4">
+        <div className="container mx-auto px-2 md:px-4 py-3 md:py-4 flex justify-between items-center">
+          <div className="flex items-center gap-2 md:gap-4">
             <Link
               to="/"
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-800"
+              className="flex items-center gap-1 md:gap-2 text-gray-600 hover:text-gray-800"
             >
-              <Icon name="ArrowLeft" size={20} />
-              <span>Radio Noumi</span>
+              <Icon name="ArrowLeft" size={16} className="md:w-5 md:h-5" />
+              <span className="text-sm md:text-base">Radio Noumi</span>
             </Link>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-2">
-              <Icon name="Heart" size={24} />
-              Чат знакомств
+            <h1 className="text-lg md:text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-1 md:gap-2">
+              <Icon name="Heart" size={18} className="md:w-6 md:h-6" />
+              <span className="hidden sm:inline">Чат знакомств</span>
+              <span className="sm:hidden">Знакомства</span>
             </h1>
           </div>
-          <div className="flex items-center gap-3 text-sm text-gray-600">
+          <div className="hidden md:flex items-center gap-3 text-sm text-gray-600">
             <Icon name="Radio" size={16} />
             <span>Фоновое радио</span>
           </div>
         </div>
       </div>
 
-      <div className="flex-1 flex">
+      <div className="flex-1 flex flex-col md:flex-row">
         {/* Основной чат */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col min-h-0">
           <ChatSection
             messages={messages}
             activeTab={activeTab}
             selectedChat={selectedChat}
             onTabChange={setActiveTab}
             onChatSelect={setSelectedChat}
-            profiles={profiles}
+            profiles={profiles.filter(
+              (profile) =>
+                genderFilter === "all" || profile.gender === genderFilter,
+            )}
             onLike={handleLike}
             currentUserId={currentUser?.id}
             onAddMessage={(msg) => setMessages((prev) => [...prev, msg])}
+            genderFilter={genderFilter}
+            onGenderFilterChange={setGenderFilter}
           />
 
           {/* Поле ввода */}
-          <div className="p-4 bg-white/90 border-t border-pink-200/50">
-            <div className="flex gap-3 max-w-4xl mx-auto">
+          <div className="p-2 md:p-4 bg-white/90 border-t border-pink-200/50">
+            <div className="flex gap-2 md:gap-3 max-w-4xl mx-auto">
               <Input
                 type="text"
                 value={messageInput}
@@ -255,27 +355,35 @@ const DatingChat = () => {
                     ? "Написать сообщение..."
                     : "Нажмите для создания анкеты..."
                 }
-                className="flex-1"
+                className="flex-1 text-sm md:text-base"
                 onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
               />
               <Button
                 onClick={handleSendMessage}
                 disabled={!messageInput.trim() || !isLoggedIn}
+                size={window.innerWidth < 768 ? "sm" : "default"}
               >
-                <Icon name="Send" size={16} />
+                <Icon name="Send" size={14} className="md:w-4 md:h-4" />
               </Button>
             </div>
           </div>
         </div>
 
-        {/* Боковая панель */}
-        <UserPanel
-          isLoggedIn={isLoggedIn}
-          currentUser={currentUser}
-          likes={likes}
-          profiles={profiles}
-          onRegisterClick={() => setShowRegisterForm(true)}
-        />
+        {/* Боковая панель - скрыта на мобильных */}
+        <div className="hidden md:block">
+          <UserPanel
+            isLoggedIn={isLoggedIn}
+            currentUser={currentUser}
+            likes={likes}
+            profiles={profiles.filter(
+              (profile) =>
+                genderFilter === "all" || profile.gender === genderFilter,
+            )}
+            onRegisterClick={() => setShowRegisterForm(true)}
+            genderFilter={genderFilter}
+            onGenderFilterChange={setGenderFilter}
+          />
+        </div>
       </div>
 
       {/* Модальные окна */}
