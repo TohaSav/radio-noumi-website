@@ -44,7 +44,7 @@ const Index = () => {
         </div>
         {/* Заголовок с улучшенной типографикой */}
         <div className="text-center mb-10">
-          <h1 className="text-6xl md:text-7xl font-black bg-gradient-to-r from-yellow-300 via-pink-300 via-purple-300 to-cyan-300 bg-clip-text text-transparent mb-6 drop-shadow-2xl filter brightness-110">
+          <h1 className="text-3xl md:text-6xl lg:text-7xl font-black bg-gradient-to-r from-yellow-300 via-pink-300 via-purple-300 to-cyan-300 bg-clip-text text-transparent mb-6 drop-shadow-2xl filter brightness-110">
             Radio Noumi
           </h1>
           <p className="text-2xl text-white font-medium drop-shadow-lg backdrop-blur-sm bg-black/20 px-6 py-3 rounded-full">
