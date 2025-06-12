@@ -115,12 +115,12 @@ const DatingChat = () => {
     }
   }, []);
 
-  // Автоматическое добавление анкет каждые 2 минуты
+  // Автоматическое добавление анкет каждые 1-3 минуты
   useEffect(() => {
     const interval = setInterval(
       () => {
         const generateRandomProfile = (): Profile => {
-          const isFemale = Math.random() > 0.5; // 50/50 соотношение
+          const isFemale = Math.random() > 0.5;
 
           const femaleProfiles = [
             {
@@ -353,15 +353,14 @@ const DatingChat = () => {
 
         setProfiles((prev) => [...prev, generateRandomProfile()]);
       },
-      2 * 60 * 1000, // 2 минуты
+      Math.random() * 120000 + 60000, // от 1 до 3 минут
     );
 
     return () => clearInterval(interval);
   }, []);
 
-  // Автоматические сообщения каждые 15-45 секунд
+  // Автоматические сообщения с уникальным контентом
   useEffect(() => {
-    // Большая база уникальных сообщений от реальных людей
     const uniqueDatingMessages = [
       "Привет всем! Меня зовут Анна, ищу серьёзные отношения в Москве 💕",
       "Дмитрий здесь! Кто любит активный отдых и походы? Давайте знакомиться! 🏔️",
@@ -470,30 +469,25 @@ const DatingChat = () => {
       "Анфиса здесь! Горшечница, леплю посуду и надежды 🏺",
     ];
 
-    // Ключ для хранения использованных сообщений
     const USED_MESSAGES_KEY = "used_dating_messages";
 
-    // Функция для получения использованных сообщений
     const getUsedMessages = (): string[] => {
       const stored = localStorage.getItem(USED_MESSAGES_KEY);
       return stored ? JSON.parse(stored) : [];
     };
 
-    // Функция для сохранения использованного сообщения
     const saveUsedMessage = (message: string) => {
       const used = getUsedMessages();
       used.push(message);
       localStorage.setItem(USED_MESSAGES_KEY, JSON.stringify(used));
     };
 
-    // Функция для получения неиспользованного сообщения
     const getUnusedMessage = (): string | null => {
       const usedMessages = getUsedMessages();
       const availableMessages = uniqueDatingMessages.filter(
         (msg) => !usedMessages.includes(msg),
       );
 
-      // Если все сообщения использованы, очищаем историю
       if (availableMessages.length === 0) {
         localStorage.removeItem(USED_MESSAGES_KEY);
         return uniqueDatingMessages[0];
@@ -508,7 +502,6 @@ const DatingChat = () => {
       const messageText = getUnusedMessage();
       if (!messageText) return;
 
-      // Извлекаем имя из сообщения (первое слово после приветствия)
       const nameMatch = messageText.match(
         /зовут (\w+)|(\w+) здесь|(\w+),|(\w+) из/,
       );
