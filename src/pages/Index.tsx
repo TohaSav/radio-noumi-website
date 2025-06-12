@@ -26,7 +26,7 @@ const Index = () => {
           <ReelsButton />
         </div>
 
-        <div className="absolute top-2 right-4 z-20">
+        <div className="fixed top-4 right-4 z-50">
           <Link
             to="/dating"
             className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white px-4 py-2 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center gap-2"
