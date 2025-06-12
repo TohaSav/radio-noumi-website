@@ -36,8 +36,8 @@ const Index = () => {
           </Link>
         </div>
 
-        {/* AnimatedTitle теперь между кнопками */}
-        <div className="flex justify-center items-center pt-14 pb-6">
+        {/* AnimatedTitle с увеличенным отступом сверху */}
+        <div className="flex justify-center items-center pt-20 sm:pt-16 md:pt-20 pb-4">
           <AnimatedTitle />
         </div>
 
