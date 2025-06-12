@@ -20,6 +20,13 @@ interface HeartEmoji {
   y: number;
 }
 
+interface AudioData {
+  bassLevel: number;
+  midLevel: number;
+  trebleLevel: number;
+  overall: number;
+}
+
 const RadioPlayer = ({
   streamUrl,
   likes,
@@ -31,14 +38,134 @@ const RadioPlayer = ({
   const [userLiked, setUserLiked] = useState<boolean | null>(null);
   const [fireworks, setFireworks] = useState<Firework[]>([]);
   const [heartEmojis, setHeartEmojis] = useState<HeartEmoji[]>([]);
+  const [audioData, setAudioData] = useState<AudioData>({
+    bassLevel: 0,
+    midLevel: 0,
+    trebleLevel: 0,
+    overall: 0,
+  });
+
   const audioRef = useRef<HTMLAudioElement>(null);
   const playerRef = useRef<HTMLDivElement>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const dataArrayRef = useRef<Uint8Array | null>(null);
+  const animationFrameRef = useRef<number>();
 
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume;
     }
   }, [volume]);
+
+  useEffect(() => {
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      if (audioContextRef.current) {
+        audioContextRef.current.close();
+      }
+    };
+  }, []);
+
+  const setupAudioAnalysis = () => {
+    if (!audioRef.current || audioContextRef.current) return;
+
+    try {
+      audioContextRef.current = new AudioContext();
+      const source = audioContextRef.current.createMediaElementSource(
+        audioRef.current,
+      );
+      analyserRef.current = audioContextRef.current.createAnalyser();
+
+      analyserRef.current.fftSize = 256;
+      const bufferLength = analyserRef.current.frequencyBinCount;
+      dataArrayRef.current = new Uint8Array(bufferLength);
+
+      source.connect(analyserRef.current);
+      analyserRef.current.connect(audioContextRef.current.destination);
+
+      analyzeAudio();
+    } catch (error) {
+      console.warn("Web Audio API not supported:", error);
+    }
+  };
+
+  const analyzeAudio = () => {
+    if (!analyserRef.current || !dataArrayRef.current) return;
+
+    analyserRef.current.getByteFrequencyData(dataArrayRef.current);
+
+    const bassEnd = Math.floor(dataArrayRef.current.length * 0.1);
+    const midEnd = Math.floor(dataArrayRef.current.length * 0.4);
+
+    let bassSum = 0;
+    let midSum = 0;
+    let trebleSum = 0;
+    let overallSum = 0;
+
+    for (let i = 0; i < dataArrayRef.current.length; i++) {
+      const value = dataArrayRef.current[i];
+      overallSum += value;
+
+      if (i < bassEnd) {
+        bassSum += value;
+      } else if (i < midEnd) {
+        midSum += value;
+      } else {
+        trebleSum += value;
+      }
+    }
+
+    setAudioData({
+      bassLevel: bassSum / bassEnd / 255,
+      midLevel: midSum / (midEnd - bassEnd) / 255,
+      trebleLevel: trebleSum / (dataArrayRef.current.length - midEnd) / 255,
+      overall: overallSum / dataArrayRef.current.length / 255,
+    });
+
+    animationFrameRef.current = requestAnimationFrame(analyzeAudio);
+  };
+
+  const getMusicType = () => {
+    const { bassLevel, midLevel, overall } = audioData;
+
+    if (bassLevel > 0.7 && overall > 0.6) return "club";
+    if (bassLevel > 0.5 && midLevel > 0.4) return "bass";
+    if (overall < 0.3) return "slow";
+    return "normal";
+  };
+
+  const getPulseIntensity = () => {
+    const musicType = getMusicType();
+    const { bassLevel, overall } = audioData;
+
+    switch (musicType) {
+      case "club":
+        return Math.max(0.8, bassLevel * 1.5);
+      case "bass":
+        return Math.max(0.6, bassLevel * 1.2);
+      case "slow":
+        return Math.max(0.2, overall * 0.5);
+      default:
+        return Math.max(0.4, overall * 0.8);
+    }
+  };
+
+  const getVisualizerBars = () => {
+    const musicType = getMusicType();
+    const intensity = getPulseIntensity();
+
+    return Array.from({ length: 12 }, (_, i) => {
+      const baseHeight = 20;
+      const maxHeight =
+        musicType === "club" ? 80 : musicType === "bass" ? 60 : 40;
+      const randomFactor = Math.random() * intensity;
+
+      return baseHeight + (maxHeight - baseHeight) * randomFactor;
+    });
+  };
 
   const createFirework = (x: number, y: number) => {
     const newFirework: Firework = {
@@ -83,8 +210,16 @@ const RadioPlayer = ({
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
+        if (animationFrameRef.current) {
+          cancelAnimationFrame(animationFrameRef.current);
+        }
       } else {
         audioRef.current.play();
+        if (!audioContextRef.current) {
+          setupAudioAnalysis();
+        } else {
+          analyzeAudio();
+        }
       }
       setIsPlaying(!isPlaying);
     }
@@ -102,15 +237,201 @@ const RadioPlayer = ({
     <div
       ref={playerRef}
       onClick={handlePlayerClick}
-      className="relative bg-gradient-to-br from-purple-900 to-indigo-900 rounded-2xl p-8 shadow-2xl cursor-pointer overflow-hidden"
+      className="relative overflow-hidden rounded-3xl shadow-2xl cursor-pointer"
+      style={{
+        background: `
+          radial-gradient(circle at 20% 50%, rgba(168, 85, 247, ${0.4 + getPulseIntensity() * 0.3}) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(59, 130, 246, ${0.3 + audioData.bassLevel * 0.4}) 0%, transparent 50%),
+          radial-gradient(circle at 40% 80%, rgba(236, 72, 153, ${0.2 + audioData.midLevel * 0.3}) 0%, transparent 50%),
+          linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e3a8a 100%)
+        `,
+        transform: `scale(${1 + getPulseIntensity() * 0.02})`,
+        transition: "transform 0.1s ease-out",
+      }}
     >
-      <audio ref={audioRef} src={streamUrl} />
+      <audio ref={audioRef} src={streamUrl} crossOrigin="anonymous" />
 
-      {/* Фейерверки */}
+      {/* Анимированный фон */}
+      <div
+        className="absolute inset-0 opacity-30"
+        style={{
+          background: `
+            conic-gradient(from ${audioData.overall * 360}deg at 50% 50%, 
+              rgba(168, 85, 247, 0.8), 
+              rgba(59, 130, 246, 0.6), 
+              rgba(236, 72, 153, 0.4), 
+              rgba(168, 85, 247, 0.8))
+          `,
+          animation: isPlaying
+            ? `spin ${20 / (1 + getPulseIntensity())}s linear infinite`
+            : "none",
+        }}
+      />
+
+      <div className="relative z-10 p-8">
+        {/* Логотип и название */}
+        <div className="text-center mb-8">
+          <h1
+            className="text-5xl font-bold text-white mb-3 font-montserrat drop-shadow-lg"
+            style={{
+              textShadow: `0 0 ${20 + getPulseIntensity() * 30}px rgba(255, 255, 255, 0.5)`,
+              transform: `scale(${1 + audioData.bassLevel * 0.05})`,
+              transition: "all 0.1s ease-out",
+            }}
+          >
+            Radio Noumi
+          </h1>
+          <p className="text-purple-200 text-lg">
+            Твоя музыка, твое настроение
+          </p>
+          <div className="mt-2 text-sm text-purple-300">
+            Режим:{" "}
+            {getMusicType() === "club"
+              ? "🎵 Клубная"
+              : getMusicType() === "bass"
+                ? "🎶 С басами"
+                : getMusicType() === "slow"
+                  ? "🎼 Медленная"
+                  : "🎵 Обычная"}
+          </div>
+        </div>
+
+        {/* Современная визуализация */}
+        <div className="flex justify-center mb-8">
+          <div className="flex items-end space-x-1 h-20">
+            {getVisualizerBars().map((height, i) => (
+              <div
+                key={i}
+                className="w-2 rounded-t-full transition-all duration-75 ease-out"
+                style={{
+                  height: isPlaying ? `${height}px` : "20px",
+                  background: `linear-gradient(to top, 
+                    rgba(168, 85, 247, ${0.8 + audioData.bassLevel * 0.4}), 
+                    rgba(59, 130, 246, ${0.6 + audioData.midLevel * 0.4}), 
+                    rgba(236, 72, 153, ${0.4 + audioData.trebleLevel * 0.6}))`,
+                  boxShadow: isPlaying
+                    ? `0 0 ${10 + getPulseIntensity() * 20}px rgba(168, 85, 247, 0.6)`
+                    : "none",
+                  animationDelay: `${i * 0.05}s`,
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Центральная кнопка воспроизведения */}
+        <div className="flex items-center justify-center mb-8">
+          <button
+            onClick={togglePlay}
+            className="relative group"
+            style={{
+              transform: `scale(${1 + getPulseIntensity() * 0.1})`,
+              transition: "transform 0.1s ease-out",
+            }}
+          >
+            <div
+              className="absolute inset-0 rounded-full blur-lg opacity-60"
+              style={{
+                background: `radial-gradient(circle, rgba(168, 85, 247, ${0.8 + getPulseIntensity() * 0.4}) 0%, transparent 70%)`,
+                transform: `scale(${1.2 + audioData.bassLevel * 0.3})`,
+              }}
+            />
+            <div className="relative bg-white text-purple-900 p-6 rounded-full hover:bg-purple-50 transition-all duration-200 shadow-2xl group-hover:shadow-purple-500/25">
+              <Icon name={isPlaying ? "Pause" : "Play"} size={40} />
+            </div>
+          </button>
+        </div>
+
+        {/* Громкость */}
+        <div className="flex items-center justify-center space-x-4 mb-8">
+          <Icon name="Volume2" size={24} className="text-white" />
+          <div className="relative w-40">
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.1"
+              value={volume}
+              onChange={(e) => setVolume(parseFloat(e.target.value))}
+              className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer"
+              style={{
+                background: `linear-gradient(to right, 
+                  rgba(168, 85, 247, 0.8) 0%, 
+                  rgba(168, 85, 247, 0.8) ${volume * 100}%, 
+                  rgba(255, 255, 255, 0.2) ${volume * 100}%, 
+                  rgba(255, 255, 255, 0.2) 100%)`,
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Счетчик слушателей */}
+        <div className="flex items-center justify-center mb-6">
+          <div className="flex items-center justify-center space-x-3 text-purple-200">
+            <div
+              className="w-3 h-3 rounded-full animate-pulse"
+              style={{
+                backgroundColor: "#10b981",
+                boxShadow: `0 0 ${10 + getPulseIntensity() * 20}px rgba(16, 185, 129, 0.8)`,
+                animationDuration: `${1.5 - getPulseIntensity() * 0.5}s`,
+              }}
+            />
+            <span className="text-xl">
+              <span className="font-bold text-white">
+                {listeners.toLocaleString()}
+              </span>{" "}
+              слушают
+            </span>
+          </div>
+        </div>
+
+        {/* Лайки и дизлайки */}
+        <div className="flex justify-center space-x-8">
+          <button
+            onClick={handleLike}
+            className={`flex items-center space-x-2 px-6 py-3 rounded-full transition-all duration-200 ${
+              userLiked === true
+                ? "bg-red-500 text-white shadow-lg shadow-red-500/25"
+                : "bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm"
+            }`}
+            style={{
+              transform:
+                userLiked === true
+                  ? `scale(${1 + audioData.bassLevel * 0.1})`
+                  : "scale(1)",
+            }}
+          >
+            <Icon
+              name="Heart"
+              size={24}
+              className={userLiked === true ? "fill-current" : ""}
+            />
+            <span className="font-semibold">{likes.toLocaleString()}</span>
+          </button>
+
+          <button
+            onClick={handleDislike}
+            className={`flex items-center space-x-2 px-6 py-3 rounded-full transition-all duration-200 ${
+              userLiked === false
+                ? "bg-gray-500 text-white shadow-lg shadow-gray-500/25"
+                : "bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm"
+            }`}
+          >
+            <Icon
+              name="HeartCrack"
+              size={24}
+              className={userLiked === false ? "fill-current" : ""}
+            />
+            <span className="font-semibold">{dislikes.toLocaleString()}</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Фейерверки и сердечки остаются без изменений */}
       {fireworks.map((firework) => (
         <div
           key={firework.id}
-          className="absolute pointer-events-none"
+          className="absolute pointer-events-none z-20"
           style={{
             left: firework.x,
             top: firework.y,
@@ -134,11 +455,10 @@ const RadioPlayer = ({
         </div>
       ))}
 
-      {/* Сердечки-эмодзи */}
       {heartEmojis.map((heart) => (
         <div
           key={heart.id}
-          className="absolute pointer-events-none text-4xl animate-heart-float"
+          className="absolute pointer-events-none text-4xl animate-heart-float z-20"
           style={{
             left: heart.x,
             top: heart.y,
@@ -148,104 +468,6 @@ const RadioPlayer = ({
           💕
         </div>
       ))}
-
-      {/* Логотип и название */}
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-white mb-2 font-montserrat">
-          Radio Noumi
-        </h1>
-        <p className="text-purple-200">Твоя музыка, твое настроение</p>
-      </div>
-
-      {/* Визуализация */}
-      <div className="flex justify-center mb-8">
-        <div className="flex space-x-2">
-          {[...Array(5)].map((_, i) => (
-            <div
-              key={i}
-              className={`w-3 bg-purple-400 rounded-full transition-all duration-300 ${
-                isPlaying ? "animate-pulse" : ""
-              }`}
-              style={{
-                height: isPlaying ? `${Math.random() * 40 + 20}px` : "20px",
-                animationDelay: `${i * 0.1}s`,
-              }}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Основные контролы */}
-      <div className="flex items-center justify-center space-x-6 mb-8">
-        <button
-          onClick={togglePlay}
-          className="bg-white text-purple-900 p-4 rounded-full hover:bg-purple-100 transition-colors shadow-lg"
-        >
-          <Icon name={isPlaying ? "Pause" : "Play"} size={32} />
-        </button>
-      </div>
-
-      {/* Громкость */}
-      <div className="flex items-center justify-center space-x-4 mb-8">
-        <Icon name="Volume2" size={20} className="text-white" />
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.1"
-          value={volume}
-          onChange={(e) => setVolume(parseFloat(e.target.value))}
-          className="w-32 accent-purple-400"
-        />
-      </div>
-
-      {/* Счетчик слушателей */}
-      <div className="flex items-center justify-center mb-6">
-        <div className="flex items-center justify-center space-x-3 text-purple-200">
-          <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-          <span className="text-lg">
-            <span className="font-bold text-white">
-              {listeners.toLocaleString()}
-            </span>{" "}
-            слушают
-          </span>
-        </div>
-      </div>
-
-      {/* Лайки и дизлайки */}
-      <div className="flex justify-center space-x-8">
-        <button
-          onClick={handleLike}
-          className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-colors ${
-            userLiked === true
-              ? "bg-red-500 text-white"
-              : "bg-white/20 text-white hover:bg-white/30"
-          }`}
-        >
-          <Icon
-            name="Heart"
-            size={20}
-            className={userLiked === true ? "fill-current" : ""}
-          />
-          <span>{likes.toLocaleString()}</span>
-        </button>
-
-        <button
-          onClick={handleDislike}
-          className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-colors ${
-            userLiked === false
-              ? "bg-gray-500 text-white"
-              : "bg-white/20 text-white hover:bg-white/30"
-          }`}
-        >
-          <Icon
-            name="HeartCrack"
-            size={20}
-            className={userLiked === false ? "fill-current" : ""}
-          />
-          <span>{dislikes.toLocaleString()}</span>
-        </button>
-      </div>
     </div>
   );
 };
