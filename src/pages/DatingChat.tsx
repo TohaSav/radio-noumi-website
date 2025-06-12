@@ -20,9 +20,129 @@ const DatingChat = () => {
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [profiles, setProfiles] = useState<Profile[]>([
+    {
+      id: "1",
+      photo:
+        "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400",
+      name: "Анна",
+      age: 25,
+      city: "Москва",
+      height: "165 см",
+      weight: "55 кг",
+      lookingFor: "Серьезные отношения",
+      about: "Люблю путешествовать и читать книги. Работаю дизайнером.",
+      userId: "user1",
+    },
+    {
+      id: "2",
+      photo:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+      name: "Дмитрий",
+      age: 28,
+      city: "СПб",
+      height: "180 см",
+      weight: "75 кг",
+      lookingFor: "Дружба и общение",
+      about: "Программист, увлекаюсь спортом и кино.",
+      userId: "user2",
+    },
+    {
+      id: "3",
+      photo:
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400",
+      name: "Елена",
+      age: 23,
+      city: "Екатеринбург",
+      height: "170 см",
+      weight: "58 кг",
+      lookingFor: "Романтические отношения",
+      about: "Студентка медицинского, обожаю животных и природу.",
+      userId: "user3",
+    },
+    {
+      id: "4",
+      photo:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400",
+      name: "Алексей",
+      age: 32,
+      city: "Новосибирск",
+      height: "175 см",
+      weight: "80 кг",
+      lookingFor: "Серьезные отношения",
+      about: "Инженер, люблю готовить и играть на гитаре.",
+      userId: "user4",
+    },
+    {
+      id: "5",
+      photo:
+        "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400",
+      name: "Мария",
+      age: 26,
+      city: "Казань",
+      height: "162 см",
+      weight: "52 кг",
+      lookingFor: "Дружба и общение",
+      about: "Учитель английского, путешествую и изучаю языки.",
+      userId: "user5",
+    },
+    {
+      id: "6",
+      photo:
+        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400",
+      name: "Артём",
+      age: 29,
+      city: "Ростов-на-Дону",
+      height: "183 см",
+      weight: "78 кг",
+      lookingFor: "Романтические отношения",
+      about: "Фотограф, обожаю закаты и горы.",
+      userId: "user6",
+    },
+  ]);
   const [likes, setLikes] = useState<Like[]>([]);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: "msg1",
+      text: "Привет всем! Кто тут новенький? 😊",
+      userId: "user1",
+      userName: "Анна",
+      chatType: "general",
+      timestamp: new Date(Date.now() - 300000),
+    },
+    {
+      id: "msg2",
+      text: "Всем доброго времени суток! Как дела?",
+      userId: "user2",
+      userName: "Дмитрий",
+      chatType: "general",
+      timestamp: new Date(Date.now() - 240000),
+    },
+    {
+      id: "msg3",
+      text: "Отличная погода сегодня! Кто-нибудь хочет прогуляться?",
+      userId: "user3",
+      userName: "Елена",
+      chatType: "general",
+      timestamp: new Date(Date.now() - 180000),
+    },
+    {
+      id: "msg4",
+      text: "А я вот вчера в кино ходил, классный фильм посмотрел!",
+      userId: "user4",
+      userName: "Алексей",
+      chatType: "general",
+      timestamp: new Date(Date.now() - 120000),
+    },
+    {
+      id: "msg5",
+      text: "Кто-нибудь изучает иностранные языки? Можем практиковаться вместе 📚",
+      userId: "user5",
+      userName: "Мария",
+      chatType: "general",
+      timestamp: new Date(Date.now() - 60000),
+    },
+  ]);
   const [messageInput, setMessageInput] = useState("");
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("general");
