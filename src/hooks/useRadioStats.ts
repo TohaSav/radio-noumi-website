@@ -19,7 +19,7 @@ export const useRadioStats = (): RadioStats => {
     }
     // Возвращаем начальные значения если нет сохраненных данных
     return {
-      listeners: 1500000,
+      listeners: 1900000,
       likes: 58000,
       dislikes: 10,
     };
@@ -56,8 +56,8 @@ export const useRadioStats = (): RadioStats => {
           ? randomChange
           : -Math.floor(randomChange * 0.6);
 
-        // Минимум 1,500,000 слушателей
-        const newListeners = Math.max(1500000, prev.listeners + change);
+        // Минимум 1,900,000 слушателей
+        const newListeners = Math.max(1900000, prev.listeners + change);
 
         const newStats = {
           ...prev,

@@ -1,11 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import Icon from "@/components/ui/icon";
+import { useRadioStats } from "@/hooks/useRadioStats";
 
 interface RadioPlayerProps {
   streamUrl: string;
-  likes: number;
-  dislikes: number;
-  listeners: number;
 }
 
 interface Firework {
@@ -27,12 +25,7 @@ interface AudioData {
   overall: number;
 }
 
-const RadioPlayer = ({
-  streamUrl,
-  likes,
-  dislikes,
-  listeners,
-}: RadioPlayerProps) => {
+const RadioPlayer = ({ streamUrl }: { streamUrl: string }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.7);
   const [userLiked, setUserLiked] = useState<boolean | null>(null);
@@ -44,6 +37,8 @@ const RadioPlayer = ({
     trebleLevel: 0,
     overall: 0,
   });
+
+  const { listeners, likes, dislikes } = useRadioStats();
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const playerRef = useRef<HTMLDivElement>(null);
