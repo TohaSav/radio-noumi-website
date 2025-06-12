@@ -61,12 +61,7 @@ const Index = () => {
         </div>
 
         {/* Основной контент */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Топ чарт */}
-          <div className="bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-md rounded-3xl p-8 border border-white/20 hover:bg-gradient-to-br hover:from-white/20 hover:to-white/10 transition-all duration-500 shadow-2xl shadow-purple-500/20">
-            <TopChart />
-          </div>
-
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
           {/* Новинки */}
           <div className="bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-md rounded-3xl p-8 border border-white/20 hover:bg-gradient-to-br hover:from-white/20 hover:to-white/10 transition-all duration-500 shadow-2xl shadow-pink-500/20">
             <NewReleases />
