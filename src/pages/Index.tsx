@@ -25,6 +25,13 @@ const Index = () => {
               <Icon name="Play" size={20} />
               <span>Reels</span>
             </Link>
+            <Link
+              to="/dating"
+              className="flex items-center gap-2 bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg transition-colors"
+            >
+              <Icon name="Heart" size={20} />
+              <span>Знакомства</span>
+            </Link>
           </div>
         </div>
 

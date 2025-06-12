@@ -1,174 +1,122 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import Icon from "@/components/ui/icon";
-import { User, Like } from "@/types/dating";
+import { User, Like, Profile } from "@/types/dating";
 
 interface UserPanelProps {
   isLoggedIn: boolean;
   currentUser: User | null;
   likes: Like[];
-  onShowRegister: () => void;
-  registerForm: {
-    login: string;
-    email: string;
-    password: string;
-  };
-  onRegisterFormChange: (form: any) => void;
-  onRegister: () => void;
-  showRegisterForm: boolean;
-  setShowRegisterForm: (show: boolean) => void;
+  profiles: Profile[];
+  onRegisterClick: () => void;
 }
 
 const UserPanel = ({
   isLoggedIn,
   currentUser,
   likes,
-  onShowRegister,
-  registerForm,
-  onRegisterFormChange,
-  onRegister,
-  showRegisterForm,
-  setShowRegisterForm,
+  profiles,
+  onRegisterClick,
 }: UserPanelProps) => {
   const getMyLikes = () => {
-    return likes.filter((like) => {
-      return currentUser && like.likerName !== currentUser.login;
+    if (!currentUser) return [];
+
+    const myProfile = profiles.find((p) => p.userId === currentUser.id);
+    if (!myProfile) return [];
+
+    return likes.filter((like) => like.toProfileId === myProfile.id);
+  };
+
+  const getLikerNames = () => {
+    const myLikes = getMyLikes();
+    return myLikes.map((like) => {
+      const likerProfile = profiles.find((p) => p.userId === like.fromUserId);
+      return likerProfile?.name || "Неизвестный";
     });
   };
 
   return (
-    <Card className="p-6 h-[600px] overflow-y-auto">
-      <h2 className="text-xl font-semibold mb-4 text-pink-600">
-        💕 Личный кабинет
-      </h2>
+    <div className="w-80 bg-white border-l border-gray-200 flex flex-col">
+      <div className="p-4 border-b border-gray-200">
+        <h2 className="text-lg font-semibold text-pink-600 flex items-center gap-2">
+          <Icon name="User" size={20} />
+          Личный кабинет
+        </h2>
+      </div>
 
-      {!isLoggedIn ? (
-        <div className="space-y-4">
-          {!showRegisterForm ? (
-            <>
-              <p className="text-gray-600 text-sm">
+      <div className="flex-1 p-4">
+        {!isLoggedIn ? (
+          <div className="space-y-4">
+            <div className="text-center p-6 bg-pink-50 rounded-lg">
+              <Icon
+                name="Heart"
+                size={48}
+                className="mx-auto text-pink-400 mb-3"
+              />
+              <p className="text-gray-600 text-sm mb-4">
                 Войдите для доступа к функциям знакомств
               </p>
               <Button
-                onClick={() => setShowRegisterForm(true)}
+                onClick={onRegisterClick}
                 className="w-full bg-pink-500 hover:bg-pink-600"
               >
                 Регистрация
               </Button>
-            </>
-          ) : (
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-medium text-gray-700">
-                  Логин
-                </label>
-                <Input
-                  value={registerForm.login}
-                  onChange={(e) =>
-                    onRegisterFormChange({
-                      ...registerForm,
-                      login: e.target.value,
-                    })
-                  }
-                  placeholder="Ваш логин"
-                  className="mt-1"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700">
-                  Email
-                </label>
-                <Input
-                  type="email"
-                  value={registerForm.email}
-                  onChange={(e) =>
-                    onRegisterFormChange({
-                      ...registerForm,
-                      email: e.target.value,
-                    })
-                  }
-                  placeholder="your@email.com"
-                  className="mt-1"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700">
-                  Пароль
-                </label>
-                <Input
-                  type="password"
-                  value={registerForm.password}
-                  onChange={(e) =>
-                    onRegisterFormChange({
-                      ...registerForm,
-                      password: e.target.value,
-                    })
-                  }
-                  placeholder="Пароль"
-                  className="mt-1"
-                />
-              </div>
-              <div className="flex gap-2">
-                <Button
-                  onClick={onRegister}
-                  className="flex-1 bg-pink-500 hover:bg-pink-600"
-                  disabled={
-                    !registerForm.login ||
-                    !registerForm.email ||
-                    !registerForm.password
-                  }
-                >
-                  Зарегистрироваться
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => setShowRegisterForm(false)}
-                >
-                  Отмена
-                </Button>
-              </div>
             </div>
-          )}
-        </div>
-      ) : (
-        <div className="space-y-4">
-          <div className="p-4 bg-pink-50 rounded-lg border-2 border-pink-200">
-            <p className="font-medium text-pink-800">💖 Добро пожаловать!</p>
-            <p className="text-sm text-pink-600">{currentUser?.login}</p>
           </div>
-
-          <div>
-            <h3 className="font-medium mb-3 text-gray-800">❤️ Вы нравитесь:</h3>
-            <div className="space-y-2 max-h-64 overflow-y-auto">
-              {getMyLikes().map((like) => (
-                <div
-                  key={like.id}
-                  className="p-3 bg-red-50 rounded-lg border border-red-200"
-                >
-                  <p className="text-sm font-medium text-red-800">
-                    <Icon
-                      name="Heart"
-                      size={14}
-                      className="inline mr-2 text-red-500"
-                    />
-                    {like.likerName}
-                  </p>
-                  <span className="text-xs text-red-600">
-                    {like.timestamp.toLocaleTimeString()}
-                  </span>
+        ) : (
+          <div className="space-y-4">
+            <Card className="p-4 bg-gradient-to-r from-pink-50 to-purple-50 border-pink-200">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center">
+                  <Icon name="User" size={20} className="text-white" />
                 </div>
-              ))}
-              {getMyLikes().length === 0 && (
-                <p className="text-sm text-gray-500 text-center py-4">
-                  Пока никто не поставил лайк 💔
-                </p>
-              )}
+                <div>
+                  <p className="font-medium text-pink-800">
+                    {currentUser.login}
+                  </p>
+                  <p className="text-xs text-pink-600">{currentUser.email}</p>
+                </div>
+              </div>
+            </Card>
+
+            <div>
+              <h3 className="font-medium mb-3 text-gray-800 flex items-center gap-2">
+                <Icon name="Heart" size={16} className="text-red-500" />
+                Вы нравитесь ({getLikerNames().length})
+              </h3>
+
+              <div className="space-y-2 max-h-48 overflow-y-auto">
+                {getLikerNames().map((name, index) => (
+                  <div
+                    key={index}
+                    className="p-3 bg-red-50 rounded-lg border border-red-200"
+                  >
+                    <p className="text-sm font-medium text-red-800 flex items-center gap-2">
+                      <Icon name="Heart" size={14} className="text-red-500" />
+                      {name}
+                    </p>
+                  </div>
+                ))}
+
+                {getLikerNames().length === 0 && (
+                  <div className="text-center py-6">
+                    <Icon
+                      name="HeartCrack"
+                      size={32}
+                      className="mx-auto text-gray-300 mb-2"
+                    />
+                    <p className="text-sm text-gray-500">
+                      Пока никто не поставил лайк
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </Card>
+        )}
+      </div>
+    </div>
   );
 };
 

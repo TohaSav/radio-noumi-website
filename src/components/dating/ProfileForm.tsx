@@ -14,26 +14,22 @@ interface ProfileFormData {
 }
 
 interface ProfileFormProps {
-  formData: ProfileFormData;
-  onFormChange: (data: ProfileFormData) => void;
+  form: ProfileFormData;
+  onChange: (data: ProfileFormData) => void;
   onSubmit: () => void;
 }
 
-const ProfileForm = ({
-  formData,
-  onFormChange,
-  onSubmit,
-}: ProfileFormProps) => {
+const ProfileForm = ({ form, onChange, onSubmit }: ProfileFormProps) => {
   const handleChange = (field: keyof ProfileFormData, value: string) => {
-    onFormChange({ ...formData, [field]: value });
+    onChange({ ...form, [field]: value });
   };
 
   return (
-    <div className="space-y-4 h-[70vh] overflow-y-auto">
+    <div className="space-y-4 max-h-[70vh] overflow-y-auto p-1">
       <div>
         <label className="text-sm font-medium text-gray-700">Фото (URL)</label>
         <Input
-          value={formData.photo}
+          value={form.photo}
           onChange={(e) => handleChange("photo", e.target.value)}
           placeholder="https://example.com/photo.jpg"
           className="mt-1"
@@ -41,9 +37,9 @@ const ProfileForm = ({
       </div>
 
       <div>
-        <label className="text-sm font-medium text-gray-700">Имя</label>
+        <label className="text-sm font-medium text-gray-700">Имя *</label>
         <Input
-          value={formData.name}
+          value={form.name}
           onChange={(e) => handleChange("name", e.target.value)}
           placeholder="Ваше имя"
           className="mt-1"
@@ -51,10 +47,10 @@ const ProfileForm = ({
       </div>
 
       <div>
-        <label className="text-sm font-medium text-gray-700">Возраст</label>
+        <label className="text-sm font-medium text-gray-700">Возраст *</label>
         <Input
           type="number"
-          value={formData.age}
+          value={form.age}
           onChange={(e) => handleChange("age", e.target.value)}
           placeholder="25"
           className="mt-1"
@@ -64,7 +60,7 @@ const ProfileForm = ({
       <div>
         <label className="text-sm font-medium text-gray-700">Город</label>
         <Input
-          value={formData.city}
+          value={form.city}
           onChange={(e) => handleChange("city", e.target.value)}
           placeholder="Москва"
           className="mt-1"
@@ -72,23 +68,21 @@ const ProfileForm = ({
       </div>
 
       <div>
-        <label className="text-sm font-medium text-gray-700">Рост (см)</label>
+        <label className="text-sm font-medium text-gray-700">Рост</label>
         <Input
-          type="number"
-          value={formData.height}
+          value={form.height}
           onChange={(e) => handleChange("height", e.target.value)}
-          placeholder="175"
+          placeholder="175 см"
           className="mt-1"
         />
       </div>
 
       <div>
-        <label className="text-sm font-medium text-gray-700">Вес (кг)</label>
+        <label className="text-sm font-medium text-gray-700">Вес</label>
         <Input
-          type="number"
-          value={formData.weight}
+          value={form.weight}
           onChange={(e) => handleChange("weight", e.target.value)}
-          placeholder="70"
+          placeholder="70 кг"
           className="mt-1"
         />
       </div>
@@ -96,9 +90,9 @@ const ProfileForm = ({
       <div>
         <label className="text-sm font-medium text-gray-700">Кого ищете</label>
         <Input
-          value={formData.lookingFor}
+          value={form.lookingFor}
           onChange={(e) => handleChange("lookingFor", e.target.value)}
-          placeholder="Девушку для серьезных отношений"
+          placeholder="Девушку для отношений"
           className="mt-1"
         />
       </div>
@@ -106,10 +100,10 @@ const ProfileForm = ({
       <div>
         <label className="text-sm font-medium text-gray-700">О себе</label>
         <Textarea
-          value={formData.about}
+          value={form.about}
           onChange={(e) => handleChange("about", e.target.value)}
           placeholder="Расскажите о себе..."
-          rows={4}
+          rows={3}
           className="mt-1"
         />
       </div>
@@ -117,9 +111,9 @@ const ProfileForm = ({
       <Button
         onClick={onSubmit}
         className="w-full bg-pink-500 hover:bg-pink-600"
-        disabled={!formData.name || !formData.age}
+        disabled={!form.name || !form.age}
       >
-        Отправить анкету
+        Отправить анкету 💕
       </Button>
     </div>
   );

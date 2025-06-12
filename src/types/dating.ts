@@ -4,31 +4,30 @@ export interface Profile {
   name: string;
   age: number;
   city: string;
-  height: number;
-  weight: number;
+  height: string;
+  weight: string;
   lookingFor: string;
   about: string;
-  timestamp: Date;
+  userId: string;
 }
 
 export interface User {
+  id: string;
   login: string;
   email: string;
-  password: string;
 }
 
 export interface Like {
   id: string;
-  profileId: string;
-  likerName: string;
-  timestamp: Date;
+  fromUserId: string;
+  toProfileId: string;
 }
 
 export interface Message {
   id: string;
-  from: string;
-  to?: string;
-  content: string;
+  text: string;
+  userId: string;
+  userName: string;
+  chatType: string;
   timestamp: Date;
-  type: "public" | "private";
 }
