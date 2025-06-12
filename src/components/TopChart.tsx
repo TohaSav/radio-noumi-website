@@ -108,12 +108,14 @@ const TopChart = () => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Топ Чарт</h2>
+    <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8 border border-white/50">
+      <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+        Топ Чарт
+      </h2>
 
       {isAdmin && (
-        <div className="mb-8 p-6 bg-gradient-to-r from-orange-50 to-red-50 rounded-xl border border-orange-100">
-          <h3 className="font-semibold mb-4 text-orange-800 text-lg">
+        <div className="mb-10 p-8 bg-gradient-to-br from-orange-100 to-red-100 rounded-2xl border-2 border-orange-200 shadow-lg">
+          <h3 className="font-bold mb-6 text-orange-900 text-xl">
             Добавить песню в чарт
           </h3>
 
@@ -195,10 +197,10 @@ const TopChart = () => {
           {songs.map((song, index) => (
             <div
               key={song.id}
-              className="flex items-center gap-4 p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:shadow-md transition-shadow"
+              className="flex items-center gap-4 p-6 bg-gradient-to-r from-orange-50 via-white to-red-50 rounded-xl hover:shadow-xl transition-all duration-300 border border-orange-100"
             >
               {/* Позиция в чарте */}
-              <div className="flex-shrink-0 w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-sm">
+              <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full flex items-center justify-center font-bold text-lg shadow-lg">
                 {index + 1}
               </div>
 

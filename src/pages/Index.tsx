@@ -13,10 +13,12 @@ const Index = () => {
   const stats = useRadioStats();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 relative overflow-hidden">
-      {/* Фоновые эффекты */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent" />
-      <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-30" />
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 through-pink-800 to-orange-900 relative overflow-hidden">
+      {/* Многослойные фоновые эффекты */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-cyan-400/30 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-rose-400/20 via-transparent to-transparent" />
+      <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIzIi8+PC9nPjwvZz48L3N2Zz4=')] opacity-40" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
 
       <div className="container mx-auto px-4 py-8 space-y-8 relative z-10">
         <div className="absolute top-4 left-4 z-20">
@@ -37,14 +39,14 @@ const Index = () => {
         </div>
         {/* Заголовок с улучшенной типографикой */}
         <div className="text-center mb-10">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-white via-purple-200 to-violet-300 bg-clip-text text-transparent mb-4 drop-shadow-lg">
+          <h1 className="text-6xl md:text-7xl font-black bg-gradient-to-r from-yellow-300 via-pink-300 through-purple-300 to-cyan-300 bg-clip-text text-transparent mb-6 drop-shadow-2xl filter brightness-110">
             Radio Noumi
           </h1>
-          <p className="text-xl text-white/80 font-light">
+          <p className="text-2xl text-white font-medium drop-shadow-lg backdrop-blur-sm bg-black/20 px-6 py-3 rounded-full">
             Твоя музыка, твое настроение
           </p>
-          <div className="mt-4 flex justify-center">
-            <div className="h-1 w-24 bg-gradient-to-r from-purple-400 to-violet-600 rounded-full" />
+          <div className="mt-6 flex justify-center">
+            <div className="h-2 w-32 bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 rounded-full shadow-lg shadow-pink-500/50" />
           </div>
         </div>
 
@@ -61,22 +63,22 @@ const Index = () => {
         {/* Основной контент */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Топ чарт */}
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300">
+          <div className="bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-md rounded-3xl p-8 border border-white/20 hover:bg-gradient-to-br hover:from-white/20 hover:to-white/10 transition-all duration-500 shadow-2xl shadow-purple-500/20">
             <TopChart />
           </div>
 
           {/* Новинки */}
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300">
+          <div className="bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-md rounded-3xl p-8 border border-white/20 hover:bg-gradient-to-br hover:from-white/20 hover:to-white/10 transition-all duration-500 shadow-2xl shadow-pink-500/20">
             <NewReleases />
           </div>
         </div>
 
         {/* Дополнительная информация */}
-        <div className="bg-gradient-to-r from-purple-900/30 to-violet-900/30 backdrop-blur-sm rounded-2xl p-8 border border-white/10 text-center">
-          <h3 className="text-2xl font-bold text-white mb-4">
+        <div className="bg-gradient-to-r from-purple-600/40 via-pink-600/40 to-orange-600/40 backdrop-blur-lg rounded-3xl p-10 border border-white/25 text-center shadow-2xl shadow-pink-500/30">
+          <h3 className="text-3xl font-bold text-white mb-6 drop-shadow-lg">
             Слушай лучшую музыку
           </h3>
-          <p className="text-white/70 text-lg max-w-2xl mx-auto">
+          <p className="text-white/90 text-xl max-w-2xl mx-auto leading-relaxed drop-shadow-md">
             Наслаждайся качественным звуком, интерактивными эффектами и огромной
             библиотекой треков. Радио Noumi - это новый уровень музыкального
             опыта.
@@ -84,8 +86,8 @@ const Index = () => {
         </div>
 
         {/* Футер */}
-        <div className="text-center text-white/60 mt-12 pb-6">
-          <p className="text-sm">
+        <div className="text-center text-white/80 mt-16 pb-8">
+          <p className="text-base drop-shadow-md">
             &copy; 2024 Radio Noumi. Твоя музыка, твое настроение
           </p>
         </div>

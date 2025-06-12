@@ -82,12 +82,14 @@ const NewReleases = () => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Новинки</h2>
+    <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8 border border-white/50">
+      <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+        Новинки
+      </h2>
 
       {isAdmin && (
-        <div className="mb-8 p-6 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl border border-purple-100">
-          <h3 className="font-semibold mb-4 text-purple-800 text-lg">
+        <div className="mb-10 p-8 bg-gradient-to-br from-purple-100 to-blue-100 rounded-2xl border-2 border-purple-200 shadow-lg">
+          <h3 className="font-bold mb-6 text-purple-900 text-xl">
             Добавить новую песню
           </h3>
 
@@ -165,7 +167,7 @@ const NewReleases = () => {
           {songs.map((song) => (
             <div
               key={song.id}
-              className="bg-gradient-to-b from-gray-50 to-gray-100 rounded-xl p-4 hover:shadow-lg transition-shadow"
+              className="bg-gradient-to-br from-purple-50 via-white to-blue-50 rounded-2xl p-6 hover:shadow-xl transition-all duration-300 border border-purple-100"
             >
               <div className="relative mb-4 group">
                 <img
