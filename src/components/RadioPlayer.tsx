@@ -109,29 +109,44 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
     <div
       ref={playerRef}
       onClick={handlePlayerClick}
-      className="relative overflow-hidden rounded-3xl shadow-2xl cursor-pointer"
+      className="relative overflow-hidden rounded-3xl shadow-2xl cursor-pointer backdrop-blur-sm border border-white/10"
       style={{
         background: `
-          radial-gradient(circle at 20% 50%, rgba(168, 85, 247, 0.4) 0%, transparent 50%),
-          radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
-          radial-gradient(circle at 40% 80%, rgba(236, 72, 153, 0.2) 0%, transparent 50%),
-          linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e3a8a 100%)
+          radial-gradient(circle at 20% 50%, rgba(168, 85, 247, 0.6) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.5) 0%, transparent 50%),
+          radial-gradient(circle at 40% 80%, rgba(236, 72, 153, 0.4) 0%, transparent 50%),
+          linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.95) 50%, rgba(30, 58, 138, 0.95) 100%)
         `,
+        boxShadow:
+          "0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 100px rgba(168, 85, 247, 0.3)",
       }}
     >
       <audio ref={audioRef} src={streamUrl} crossOrigin="anonymous" />
 
-      {/* Анимированный фон */}
+      {/* Анимированный фон с пульсацией */}
       <div
-        className="absolute inset-0 opacity-30"
+        className="absolute inset-0 opacity-20 animate-pulse"
         style={{
           background: `
-            conic-gradient(from 0deg at 50% 50%, 
+            conic-gradient(from ${audioData.overall * 360}deg at 50% 50%, 
               rgba(168, 85, 247, 0.8), 
               rgba(59, 130, 246, 0.6), 
               rgba(236, 72, 153, 0.4), 
+              rgba(34, 197, 94, 0.3),
               rgba(168, 85, 247, 0.8))
           `,
+          transform: `rotate(${audioData.overall * 45}deg) scale(${1 + pulseIntensity * 0.1})`,
+          transition: "all 0.3s ease-out",
+        }}
+      />
+
+      {/* Дополнительный слой с мерцанием */}
+      <div
+        className="absolute inset-0 opacity-10"
+        style={{
+          background: `radial-gradient(circle at ${50 + audioData.bassLevel * 20}% ${50 + audioData.midLevel * 20}%, rgba(255, 255, 255, 0.3) 0%, transparent 70%)`,
+          transform: `scale(${1 + audioData.trebleLevel * 0.2})`,
+          transition: "all 0.2s ease-out",
         }}
       />
 
