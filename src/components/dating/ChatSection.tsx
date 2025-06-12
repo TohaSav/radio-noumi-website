@@ -1,4 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import { Message, Profile } from "@/types/dating";
 import Icon from "@/components/ui/icon";
 import ProfileCard from "./ProfileCard";
@@ -18,6 +19,10 @@ interface ChatSectionProps {
   onLike: (profileId: string) => void;
   currentUserId?: string;
   onAddMessage: (message: Message) => void;
+  genderFilter: "all" | "male" | "female";
+  onGenderFilterChange: (filter: "all" | "male" | "female") => void;
+  onViewProfile: (profile: Profile) => void;
+  onCreateProfile: () => void;
 }
 
 const ChatSection = ({
@@ -30,6 +35,10 @@ const ChatSection = ({
   onLike,
   currentUserId,
   onAddMessage,
+  genderFilter,
+  onGenderFilterChange,
+  onViewProfile,
+  onCreateProfile,
 }: ChatSectionProps) => {
   const [onlineCount, setOnlineCount] = useState(1500000);
   const [usedMessages, setUsedMessages] = useState<Set<string>>(new Set());
@@ -231,21 +240,12 @@ const ChatSection = ({
       (msg.chatType === selectedChat || msg.userName === selectedChat),
   );
 
-  const [profilesGender, setProfilesGender] = useState<
-    "all" | "male" | "female"
-  >("all");
-
-  const filteredProfiles = profiles.filter((profile) => {
-    if (profilesGender === "all") return true;
-    return profile.gender === profilesGender;
-  });
-
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="flex-1 flex flex-col min-h-0">
       <Tabs
         value={activeTab}
         onValueChange={onTabChange}
-        className="flex-1 flex flex-col"
+        className="flex-1 flex flex-col min-h-0"
       >
         <TabsList className="bg-white/90 p-1 m-2 md:m-4 mb-2 shadow-sm relative flex-wrap md:flex-nowrap">
           <div className="absolute left-2 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-2 text-xs text-green-600 font-medium">
@@ -309,12 +309,23 @@ const ChatSection = ({
           value="profiles"
           className="flex-1 overflow-y-auto p-2 md:p-6"
         >
+          {/* Кнопка создания анкеты */}
+          <div className="mb-4">
+            <Button
+              onClick={onCreateProfile}
+              className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-medium"
+            >
+              <Icon name="Plus" size={16} className="mr-2" />
+              Создать анкету
+            </Button>
+          </div>
+
           {/* Фильтр по полу */}
           <div className="flex gap-2 mb-4 bg-white/90 p-2 rounded-lg shadow-sm">
             <button
-              onClick={() => setProfilesGender("all")}
+              onClick={() => onGenderFilterChange("all")}
               className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                profilesGender === "all"
+                genderFilter === "all"
                   ? "bg-pink-500 text-white"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
@@ -322,9 +333,9 @@ const ChatSection = ({
               Все
             </button>
             <button
-              onClick={() => setProfilesGender("male")}
+              onClick={() => onGenderFilterChange("male")}
               className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                profilesGender === "male"
+                genderFilter === "male"
                   ? "bg-blue-500 text-white"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
@@ -332,9 +343,9 @@ const ChatSection = ({
               Мужчины
             </button>
             <button
-              onClick={() => setProfilesGender("female")}
+              onClick={() => onGenderFilterChange("female")}
               className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                profilesGender === "female"
+                genderFilter === "female"
                   ? "bg-pink-500 text-white"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
@@ -344,11 +355,12 @@ const ChatSection = ({
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
-            {filteredProfiles.map((profile) => (
+            {profiles.map((profile) => (
               <ProfileCard
                 key={profile.id}
                 profile={profile}
                 onLike={onLike}
+                onViewProfile={onViewProfile}
                 currentUserId={currentUserId}
               />
             ))}

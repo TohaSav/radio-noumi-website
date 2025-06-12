@@ -6,14 +6,23 @@ import { Profile } from "@/types/dating";
 interface ProfileCardProps {
   profile: Profile;
   onLike: (profileId: string) => void;
+  onViewProfile: (profile: Profile) => void;
   currentUserId?: string;
 }
 
-const ProfileCard = ({ profile, onLike, currentUserId }: ProfileCardProps) => {
+const ProfileCard = ({
+  profile,
+  onLike,
+  onViewProfile,
+  currentUserId,
+}: ProfileCardProps) => {
   const isOwnProfile = profile.userId === currentUserId;
 
   return (
-    <Card className="overflow-hidden aspect-[3/4] md:aspect-[9/16] relative group hover:shadow-lg transition-shadow">
+    <Card
+      className="overflow-hidden aspect-[3/4] md:aspect-[9/16] relative group hover:shadow-lg transition-shadow cursor-pointer"
+      onClick={() => onViewProfile(profile)}
+    >
       <img
         src={
           profile.photo ||

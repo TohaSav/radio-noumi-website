@@ -9,6 +9,8 @@ interface UserPanelProps {
   likes: Like[];
   profiles: Profile[];
   onRegisterClick: () => void;
+  genderFilter: "all" | "male" | "female";
+  onGenderFilterChange: (filter: "all" | "male" | "female") => void;
 }
 
 const UserPanel = ({
@@ -17,6 +19,8 @@ const UserPanel = ({
   likes,
   profiles,
   onRegisterClick,
+  genderFilter,
+  onGenderFilterChange,
 }: UserPanelProps) => {
   const getMyLikes = () => {
     if (!currentUser) return [];
@@ -36,12 +40,12 @@ const UserPanel = ({
   };
 
   return (
-    <div className="w-80 bg-white/90 border-l border-gray-200 flex flex-col">
+    <div className="w-full md:w-80 bg-white/90 md:border-l border-gray-200 flex flex-col min-h-0">
       <div className="p-4 border-b border-gray-200">
         <h2 className="text-lg font-semibold">Личный кабинет</h2>
       </div>
 
-      <div className="flex-1 p-4">
+      <div className="flex-1 p-4 overflow-y-auto">
         {!isLoggedIn ? (
           <div className="space-y-4">
             <div className="text-center p-6 bg-gray-50 rounded-lg">

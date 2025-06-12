@@ -15,44 +15,19 @@ import ProfileForm from "@/components/dating/ProfileForm";
 import ChatSection from "@/components/dating/ChatSection";
 import UserPanel from "@/components/dating/UserPanel";
 
-// Ключ для localStorage
+// Ключи для localStorage
 const MESSAGES_STORAGE_KEY = "dating_chat_all_messages";
+const PROFILES_STORAGE_KEY = "dating_chat_profiles";
 
 const DatingChat = () => {
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showViewProfileModal, setShowViewProfileModal] = useState(false);
+  const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
   const [showRegisterForm, setShowRegisterForm] = useState(false);
+  const [showMobilePanel, setShowMobilePanel] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [profiles, setProfiles] = useState<Profile[]>([
-    {
-      id: "1",
-      photo:
-        "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400",
-      name: "Анна",
-      age: 25,
-      city: "Москва",
-      height: "165 см",
-      weight: "55 кг",
-      lookingFor: "Серьезные отношения",
-      about: "Люблю путешествовать и читать книги. Работаю дизайнером.",
-      userId: "user1",
-      gender: "female",
-    },
-    {
-      id: "2",
-      photo:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
-      name: "Дмитрий",
-      age: 28,
-      city: "СПб",
-      height: "180 см",
-      weight: "75 кг",
-      lookingFor: "Дружба и общение",
-      about: "Программист, увлекаюсь спортом и кино.",
-      userId: "user2",
-      gender: "male",
-    },
-  ]);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
   const [likes, setLikes] = useState<Like[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [messageInput, setMessageInput] = useState("");
@@ -82,8 +57,9 @@ const DatingChat = () => {
     password: "",
   });
 
-  // Загрузка сохраненных сообщений при инициализации
+  // Загрузка сохраненных данных при инициализации
   useEffect(() => {
+    // Загрузка сообщений
     const savedMessages = localStorage.getItem(MESSAGES_STORAGE_KEY);
     if (savedMessages) {
       try {
@@ -96,6 +72,80 @@ const DatingChat = () => {
         console.error("Ошибка загрузки сообщений:", error);
       }
     }
+
+    // Загрузка анкет
+    const savedProfiles = localStorage.getItem(PROFILES_STORAGE_KEY);
+    if (savedProfiles) {
+      try {
+        const parsedProfiles = JSON.parse(savedProfiles);
+        setProfiles(parsedProfiles);
+      } catch (error) {
+        console.error("Ошибка загрузки анкет:", error);
+        // Если ошибка загрузки, устанавливаем дефолтные анкеты
+        setProfiles([
+          {
+            id: "1",
+            photo:
+              "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400",
+            name: "Анна",
+            age: 25,
+            city: "Москва",
+            height: "165 см",
+            weight: "55 кг",
+            lookingFor: "Серьезные отношения",
+            about: "Люблю путешествовать и читать книги. Работаю дизайнером.",
+            userId: "user1",
+            gender: "female",
+          },
+          {
+            id: "2",
+            photo:
+              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+            name: "Дмитрий",
+            age: 28,
+            city: "СПб",
+            height: "180 см",
+            weight: "75 кг",
+            lookingFor: "Дружба и общение",
+            about: "Программист, увлекаюсь спортом и кино.",
+            userId: "user2",
+            gender: "male",
+          },
+        ]);
+      }
+    } else {
+      // Устанавливаем дефолтные анкеты если нет сохраненных
+      setProfiles([
+        {
+          id: "1",
+          photo:
+            "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400",
+          name: "Анна",
+          age: 25,
+          city: "Москва",
+          height: "165 см",
+          weight: "55 кг",
+          lookingFor: "Серьезные отношения",
+          about: "Люблю путешествовать и читать книги. Работаю дизайнером.",
+          userId: "user1",
+          gender: "female",
+        },
+        {
+          id: "2",
+          photo:
+            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+          name: "Дмитрий",
+          age: 28,
+          city: "СПб",
+          height: "180 см",
+          weight: "75 кг",
+          lookingFor: "Дружба и общение",
+          about: "Программист, увлекаюсь спортом и кино.",
+          userId: "user2",
+          gender: "male",
+        },
+      ]);
+    }
   }, []);
 
   // Сохранение сообщений в localStorage при каждом изменении
@@ -104,6 +154,15 @@ const DatingChat = () => {
       localStorage.setItem(MESSAGES_STORAGE_KEY, JSON.stringify(newMessages));
     } catch (error) {
       console.error("Ошибка сохранения сообщений:", error);
+    }
+  };
+
+  // Сохранение анкет в localStorage
+  const saveProfiles = (newProfiles: Profile[]) => {
+    try {
+      localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(newProfiles));
+    } catch (error) {
+      console.error("Ошибка сохранения анкет:", error);
     }
   };
 
@@ -251,7 +310,11 @@ const DatingChat = () => {
           };
         };
 
-        setProfiles((prev) => [...prev, generateRandomProfile()]);
+        setProfiles((prev) => {
+          const newProfiles = [...prev, generateRandomProfile()];
+          saveProfiles(newProfiles);
+          return newProfiles;
+        });
       },
       Math.random() * 60000 + 30000, // от 30 секунд до 1.5 минут
     );
@@ -438,7 +501,11 @@ const DatingChat = () => {
       userId: currentUser.id,
     };
 
-    setProfiles([...profiles, newProfile]);
+    setProfiles((prev) => {
+      const newProfiles = [...prev, newProfile];
+      saveProfiles(newProfiles);
+      return newProfiles;
+    });
     setShowProfileModal(false);
     setProfileForm({
       photo: "",
