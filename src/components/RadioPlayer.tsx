@@ -204,6 +204,47 @@ const RadioPlayer = ({
                 <span>{listenerCount.toLocaleString("ru-RU")}</span>
               </div>
 
+              {/* Счетчик лайков */}
+              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <Icon name="Heart" size={16} />
+                <span>
+                  {(() => {
+                    const baseCount = 79580;
+                    const stored = localStorage.getItem("radioLikes");
+                    const savedTime = localStorage.getItem("radioLikesTime");
+
+                    if (stored && savedTime) {
+                      const timeDiff = Math.floor(
+                        (Date.now() - parseInt(savedTime)) / 60000,
+                      );
+                      const currentCount = parseInt(stored) + timeDiff * 10;
+                      localStorage.setItem(
+                        "radioLikes",
+                        currentCount.toString(),
+                      );
+                      localStorage.setItem(
+                        "radioLikesTime",
+                        Date.now().toString(),
+                      );
+
+                      if (currentCount >= 1000000) {
+                        return (currentCount / 1000000).toFixed(1) + "M";
+                      } else if (currentCount >= 1000) {
+                        return (currentCount / 1000).toFixed(1) + "K";
+                      }
+                      return currentCount.toLocaleString("ru-RU");
+                    } else {
+                      localStorage.setItem("radioLikes", baseCount.toString());
+                      localStorage.setItem(
+                        "radioLikesTime",
+                        Date.now().toString(),
+                      );
+                      return "79.6K";
+                    }
+                  })()}
+                </span>
+              </div>
+
               {/* Кнопка поделиться */}
               <button
                 onClick={handleShare}
