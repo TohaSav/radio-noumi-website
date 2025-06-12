@@ -3,6 +3,7 @@ import { useAudioAnalysis } from "@/hooks/useAudioAnalysis";
 import { useFireworks } from "@/hooks/useFireworks";
 import { AudioData, MusicType } from "@/types/radio";
 import PlayButton from "@/components/radio/PlayButton";
+import VolumeControl from "@/components/radio/VolumeControl";
 import LiveStats from "@/components/radio/LiveStats";
 import FireworksEffect from "@/components/radio/FireworksEffect";
 import Balloons from "@/components/radio/Balloons";
@@ -111,6 +112,9 @@ const RadioPlayer = ({
 
       {/* Кнопка воспроизведения */}
       <PlayButton isPlaying={isPlaying} onToggle={togglePlay} />
+
+      {/* Регулятор громкости */}
+      <VolumeControl volume={volume} onVolumeChange={setVolume} />
 
       {/* Живая статистика */}
       <LiveStats isPlaying={isPlaying} />
