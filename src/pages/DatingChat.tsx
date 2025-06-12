@@ -210,6 +210,7 @@ const DatingChat = () => {
             profiles={profiles}
             onLike={handleLike}
             currentUserId={currentUser?.id}
+            onAddMessage={(msg) => setMessages((prev) => [...prev, msg])}
           />
 
           {/* Поле ввода */}

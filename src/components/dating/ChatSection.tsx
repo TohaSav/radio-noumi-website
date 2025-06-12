@@ -2,6 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Message, Profile } from "@/types/dating";
 import Icon from "@/components/ui/icon";
 import ProfileCard from "./ProfileCard";
+import { useState, useEffect } from "react";
 
 interface ChatSectionProps {
   messages: Message[];
@@ -12,6 +13,7 @@ interface ChatSectionProps {
   profiles: Profile[];
   onLike: (profileId: string) => void;
   currentUserId?: string;
+  onAddMessage: (message: Message) => void;
 }
 
 const ChatSection = ({
@@ -23,7 +25,174 @@ const ChatSection = ({
   profiles,
   onLike,
   currentUserId,
+  onAddMessage,
 }: ChatSectionProps) => {
+  const [onlineCount, setOnlineCount] = useState(5000);
+  const [usedMessages, setUsedMessages] = useState<Set<string>>(new Set());
+
+  const femaleNames = [
+    "Анна",
+    "Мария",
+    "Елена",
+    "Екатерина",
+    "Наталья",
+    "Ольга",
+    "Татьяна",
+    "Светлана",
+    "Ирина",
+    "Юлия",
+    "Дарья",
+    "Алина",
+    "Виктория",
+    "Полина",
+    "Кристина",
+    "Валерия",
+    "София",
+    "Милана",
+    "Карина",
+    "Диана",
+  ];
+
+  const maleNames = [
+    "Александр",
+    "Дмитрий",
+    "Максим",
+    "Сергей",
+    "Андрей",
+    "Алексей",
+    "Артём",
+    "Илья",
+    "Кирилл",
+    "Михаил",
+    "Никита",
+    "Матвей",
+    "Роман",
+    "Егор",
+    "Арсений",
+    "Иван",
+    "Денис",
+    "Тимур",
+    "Владислав",
+    "Павел",
+  ];
+
+  const messageTemplates = [
+    "Привет всем! Как дела? 😊",
+    "Кто тут новенький?",
+    "Отличная погода сегодня!",
+    "Ищу интересных людей для общения",
+    "Всем хорошего дня! ☀️",
+    "Кто любит путешествовать?",
+    "Может кто-то хочет прогуляться?",
+    "Ищу единомышленников",
+    "Привет! Расскажите о себе",
+    "Как провели выходные?",
+    "Кто увлекается спортом?",
+    "Давайте знакомиться! 💫",
+    "Отличное настроение сегодня!",
+    "Ищу серьезные отношения",
+    "Кто любит кино?",
+    "Прекрасный вечер для знакомств",
+    "Всем привет из Москвы!",
+    "Кто за активный отдых?",
+    "Ищу девушку/парня для общения",
+    "Как ваши планы на вечер?",
+    "Кто любит музыку?",
+    "Давайте дружить! 🤝",
+    "Отличный день для новых знакомств",
+    "Кто тут из Питера?",
+    "Ищу интересную компанию",
+    "Всем удачного дня!",
+    "Кто увлекается фотографией?",
+    "Может встретимся?",
+    "Хорошего всем настроения! 🌟",
+    "Ищу вторую половинку",
+  ];
+
+  const cities = [
+    "Москва",
+    "СПб",
+    "Екатеринбург",
+    "Новосибирск",
+    "Казань",
+    "Краснодар",
+  ];
+
+  const generateUniqueMessage = () => {
+    let attempts = 0;
+    let message = "";
+    let fullMessage = "";
+
+    do {
+      const names = Math.random() > 0.5 ? femaleNames : maleNames;
+      const name = names[Math.floor(Math.random() * names.length)];
+      const city = cities[Math.floor(Math.random() * cities.length)];
+      const template =
+        messageTemplates[Math.floor(Math.random() * messageTemplates.length)];
+
+      // Добавляем вариации к базовому сообщению
+      const variations = [
+        template,
+        `${template} Кто из ${city}?`,
+        `${template} 💕`,
+        `${name} здесь! ${template}`,
+        `${template} Жду ответа!`,
+      ];
+
+      message = variations[Math.floor(Math.random() * variations.length)];
+      fullMessage = `${name}:${message}`;
+      attempts++;
+    } while (usedMessages.has(fullMessage) && attempts < 50);
+
+    if (attempts >= 50) {
+      // Если не смогли найти уникальное, создаем с timestamp
+      message = `${messageTemplates[Math.floor(Math.random() * messageTemplates.length)]} (${Date.now()})`;
+      fullMessage = `${femaleNames[0]}:${message}`;
+    }
+
+    setUsedMessages((prev) => new Set([...prev, fullMessage]));
+    return { name: fullMessage.split(":")[0], text: message };
+  };
+
+  // Счетчик онлайн пользователей
+  useEffect(() => {
+    const interval = setInterval(
+      () => {
+        setOnlineCount((prev) => {
+          const change = Math.floor(Math.random() * 20) - 10; // от -10 до +10
+          const newCount = prev + change;
+          return Math.max(4950, Math.min(5200, newCount)); // диапазон 4950-5200
+        });
+      },
+      3000 + Math.random() * 2000,
+    ); // каждые 3-5 секунд
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Генерация сообщений от ботов
+  useEffect(() => {
+    const interval = setInterval(
+      () => {
+        if (activeTab === "general") {
+          const { name, text } = generateUniqueMessage();
+          const newMessage: Message = {
+            id: `bot_${Date.now()}_${Math.random()}`,
+            text,
+            userId: `bot_${name}`,
+            userName: name,
+            chatType: "general",
+            timestamp: new Date(),
+          };
+          onAddMessage(newMessage);
+        }
+      },
+      5000 + Math.random() * 10000,
+    ); // каждые 5-15 секунд
+
+    return () => clearInterval(interval);
+  }, [activeTab, onAddMessage]);
+
   const generalMessages = messages.filter((msg) => msg.chatType === "general");
   const privateMessages = messages.filter(
     (msg) =>
@@ -38,7 +207,11 @@ const ChatSection = ({
         onValueChange={onTabChange}
         className="flex-1 flex flex-col"
       >
-        <TabsList className="bg-white/90 p-1 m-4 mb-2 shadow-sm">
+        <TabsList className="bg-white/90 p-1 m-4 mb-2 shadow-sm relative">
+          <div className="absolute left-2 top-1/2 -translate-y-1/2 flex items-center gap-2 text-xs text-green-600 font-medium">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span>{onlineCount.toLocaleString()}</span>
+          </div>
           <TabsTrigger value="general" className="flex-1">
             Общий чат
           </TabsTrigger>
