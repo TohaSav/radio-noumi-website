@@ -7,6 +7,8 @@ interface Story {
   image: string;
   author: string;
   timestamp: number;
+  type: "image" | "video";
+  reactions?: { [emoji: string]: number };
 }
 
 interface StoryModalProps {
@@ -14,6 +16,7 @@ interface StoryModalProps {
   onClose: () => void;
   stories: Story[];
   initialStoryIndex: number;
+  onAddReaction: (storyId: string, emoji: string) => void;
 }
 
 const StoryModal = ({
@@ -21,9 +24,39 @@ const StoryModal = ({
   onClose,
   stories,
   initialStoryIndex,
+  onAddReaction,
 }: StoryModalProps) => {
   const [currentIndex, setCurrentIndex] = useState(initialStoryIndex);
   const [progress, setProgress] = useState(0);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [floatingEmojis, setFloatingEmojis] = useState<
+    { id: string; emoji: string; x: number; y: number }[]
+  >([]);
+
+  const emojis = ["❤️", "😍", "😂", "😮", "😢", "👏", "🔥", "💯"];
+
+  const handleEmojiSelect = (emoji: string) => {
+    onAddReaction(currentStory.id, emoji);
+
+    // Добавляем плавающий эмодзи
+    const floatingEmoji = {
+      id: Date.now().toString(),
+      emoji,
+      x: Math.random() * 200 + 100,
+      y: Math.random() * 100 + 300,
+    };
+
+    setFloatingEmojis((prev) => [...prev, floatingEmoji]);
+
+    // Убираем плавающий эмодзи через 3 секунды
+    setTimeout(() => {
+      setFloatingEmojis((prev) =>
+        prev.filter((e) => e.id !== floatingEmoji.id),
+      );
+    }, 3000);
+
+    setShowEmojiPicker(false);
+  };
 
   useEffect(() => {
     if (!isOpen) return;
@@ -119,12 +152,84 @@ const StoryModal = ({
             </button>
           </div>
 
-          {/* Story image */}
-          <img
-            src={currentStory.image}
-            alt="Story"
-            className="w-full h-full object-cover"
-          />
+          {/* Story content */}
+          {currentStory.type === "video" ? (
+            <video
+              src={currentStory.image}
+              className="w-full h-full object-cover"
+              autoPlay
+              muted
+              playsInline
+              loop
+            />
+          ) : (
+            <img
+              src={currentStory.image}
+              alt="Story"
+              className="w-full h-full object-cover"
+            />
+          )}
+
+          {/* Floating emojis */}
+          {floatingEmojis.map(({ id, emoji, x, y }) => (
+            <div
+              key={id}
+              className="absolute pointer-events-none text-2xl animate-bounce"
+              style={{
+                left: `${x}px`,
+                top: `${y}px`,
+                animation: "float-up 3s ease-out forwards",
+              }}
+            >
+              {emoji}
+            </div>
+          ))}
+
+          {/* Bottom controls */}
+          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between z-10">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                className="w-10 h-10 bg-black/30 rounded-full flex items-center justify-center hover:bg-black/50 transition-colors"
+              >
+                <Icon name="Heart" size={20} className="text-white" />
+              </button>
+
+              {/* Показать реакции */}
+              {currentStory.reactions &&
+                Object.keys(currentStory.reactions).length > 0 && (
+                  <div className="flex gap-1">
+                    {Object.entries(currentStory.reactions)
+                      .slice(0, 3)
+                      .map(([emoji, count]) => (
+                        <span
+                          key={emoji}
+                          className="bg-black/30 px-2 py-1 rounded-full text-white text-sm"
+                        >
+                          {emoji} {count}
+                        </span>
+                      ))}
+                  </div>
+                )}
+            </div>
+          </div>
+
+          {/* Emoji picker */}
+          {showEmojiPicker && (
+            <div className="absolute bottom-16 left-4 right-4 bg-black/80 rounded-2xl p-3 z-20">
+              <div className="grid grid-cols-4 gap-2">
+                {emojis.map((emoji) => (
+                  <button
+                    key={emoji}
+                    onClick={() => handleEmojiSelect(emoji)}
+                    className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center text-2xl hover:bg-white/20 transition-colors"
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Navigation areas */}
           <button
@@ -140,5 +245,28 @@ const StoryModal = ({
     </Dialog>
   );
 };
+
+// Add CSS animation for floating emojis
+const style = document.createElement("style");
+style.textContent = `
+  @keyframes float-up {
+    0% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: translateY(-100px) scale(1.2);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-200px) scale(0.8);
+    }
+  }
+`;
+if (!document.head.querySelector("style[data-story-modal]")) {
+  style.setAttribute("data-story-modal", "true");
+  document.head.appendChild(style);
+}
 
 export default StoryModal;

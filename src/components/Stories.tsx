@@ -10,6 +10,7 @@ interface Story {
   author: string;
   timestamp: number;
   type: "image" | "video";
+  reactions?: { [emoji: string]: number };
 }
 
 const Stories = () => {
@@ -21,6 +22,9 @@ const Stories = () => {
 
   // Пустой массив историй - все фотки удалены
   const [stories, setStories] = useState<Story[]>([]);
+  const [selectedEmojis, setSelectedEmojis] = useState<{
+    [storyId: string]: string[];
+  }>({});
 
   const handleAddStory = () => {
     setIsUploadModalOpen(true);
@@ -39,6 +43,33 @@ const Stories = () => {
     };
 
     setStories((prev) => [newStory, ...prev]);
+  };
+
+  const handleAddReaction = (storyId: string, emoji: string) => {
+    setStories((prev) =>
+      prev.map((story) => {
+        if (story.id === storyId) {
+          const reactions = { ...story.reactions };
+          reactions[emoji] = (reactions[emoji] || 0) + 1;
+          return { ...story, reactions };
+        }
+        return story;
+      }),
+    );
+
+    // Добавляем эмодзи в список выбранных для анимации
+    setSelectedEmojis((prev) => ({
+      ...prev,
+      [storyId]: [...(prev[storyId] || []), emoji],
+    }));
+
+    // Убираем эмодзи через 2 секунды
+    setTimeout(() => {
+      setSelectedEmojis((prev) => ({
+        ...prev,
+        [storyId]: (prev[storyId] || []).filter((_, index) => index !== 0),
+      }));
+    }, 2000);
   };
 
   const handleDeleteStory = (storyId: string, e: React.MouseEvent) => {
@@ -82,17 +113,69 @@ const Stories = () => {
               key={story.id}
               className="flex-shrink-0 flex flex-col items-center gap-2 relative"
             >
-              <button onClick={() => openStory(index)} className="group">
+              <button
+                onClick={() => openStory(index)}
+                className="group relative"
+              >
                 <div className="w-16 h-16 rounded-full p-0.5 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">
                   <div className="w-full h-full rounded-full border-2 border-gray-900 overflow-hidden">
-                    <img
-                      src={story.image}
-                      alt={story.author}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                    />
+                    {story.type === "video" ? (
+                      <video
+                        src={story.image}
+                        className="w-full h-full object-cover"
+                        muted
+                        playsInline
+                      />
+                    ) : (
+                      <img
+                        src={story.image}
+                        alt={story.author}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                    )}
                   </div>
                 </div>
+
+                {/* Индикатор видео */}
+                {story.type === "video" && (
+                  <div className="absolute bottom-1 right-1 w-4 h-4 bg-black/50 rounded-full flex items-center justify-center">
+                    <Icon name="Play" size={8} className="text-white" />
+                  </div>
+                )}
+
+                {/* Анимированные эмодзи */}
+                {selectedEmojis[story.id]?.map((emoji, emojiIndex) => (
+                  <div
+                    key={emojiIndex}
+                    className="absolute animate-bounce text-lg"
+                    style={{
+                      top: `${20 + emojiIndex * 10}%`,
+                      left: `${50 + (emojiIndex % 2 === 0 ? 10 : -10)}%`,
+                      animationDelay: `${emojiIndex * 0.2}s`,
+                      animationDuration: "2s",
+                    }}
+                  >
+                    {emoji}
+                  </div>
+                ))}
               </button>
+
+              {/* Счетчик реакций */}
+              {story.reactions && Object.keys(story.reactions).length > 0 && (
+                <div className="flex gap-1 text-xs">
+                  {Object.entries(story.reactions)
+                    .slice(0, 3)
+                    .map(([emoji, count]) => (
+                      <span
+                        key={emoji}
+                        className="bg-black/20 px-1 rounded text-white/70"
+                      >
+                        {emoji}
+                        {count}
+                      </span>
+                    ))}
+                </div>
+              )}
 
               {/* Кнопка удаления (только для админа) */}
               {isAdmin && (
@@ -119,6 +202,8 @@ const Stories = () => {
           onClose={closeStoryModal}
           stories={stories}
           initialStoryIndex={selectedStoryIndex}
+          onAddReaction={handleAddReaction}
+          selectedEmojis={selectedEmojis}
         />
       )}
 
