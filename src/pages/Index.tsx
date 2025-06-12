@@ -36,16 +36,6 @@ const Index = () => {
           <Stories />
         </div>
 
-        {/* Главный плеер */}
-        <div className="flex justify-center">
-          <RadioPlayer
-            streamUrl="https://myradio24.org/61673"
-            likes={stats.likes}
-            dislikes={stats.dislikes}
-            listeners={stats.listeners}
-          />
-        </div>
-
         {/* Живой чат */}
         <div className="transform hover:scale-[1.01] transition-transform duration-300">
           <LiveChat activeUsers={stats.listeners} />
