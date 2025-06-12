@@ -17,13 +17,22 @@ const Index = () => {
         {/* Навигация */}
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-white">Radio Noumi</h1>
-          <Link
-            to="/reels"
-            className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors"
-          >
-            <Icon name="Play" size={20} />
-            <span>Reels</span>
-          </Link>
+          <div className="flex gap-3">
+            <Link
+              to="/reels"
+              className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors"
+            >
+              <Icon name="Play" size={20} />
+              <span>Reels</span>
+            </Link>
+            <Link
+              to="/dating-chat"
+              className="flex items-center gap-2 bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg transition-colors"
+            >
+              <Icon name="Heart" size={20} />
+              <span>Знакомства</span>
+            </Link>
+          </div>
         </div>
 
         {/* Stories */}
