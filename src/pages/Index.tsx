@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { useRadioStats } from "@/hooks/useRadioStats";
 import RadioPlayer from "@/components/RadioPlayer";
-import LiveChat from "@/components/LiveChat";
 import TopChart from "@/components/TopChart";
 import NewReleases from "@/components/NewReleases";
 import OrderButton from "@/components/OrderButton";
@@ -52,11 +51,6 @@ const Index = () => {
         {/* Stories с улучшенной анимацией */}
         <div className="transform hover:scale-[1.02] transition-transform duration-300">
           <Stories />
-        </div>
-
-        {/* Живой чат */}
-        <div className="transform hover:scale-[1.01] transition-transform duration-300">
-          <LiveChat activeUsers={stats.listeners} />
         </div>
 
         {/* Кнопка заказа */}
