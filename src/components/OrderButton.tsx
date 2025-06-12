@@ -12,7 +12,7 @@ const OrderButton = () => {
       >
         🎵 Заказать свою песню
       </button>
-      <p className="text-gray-600 mt-2 text-sm">Свяжитесь с нами в WhatsApp</p>
+      <p className="text-white mt-2 text-sm">Свяжитесь с нами в WhatsApp</p>
     </div>
   );
 };
