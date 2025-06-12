@@ -204,10 +204,34 @@ const RadioPlayer = ({
                 <span>{listenerCount.toLocaleString("ru-RU")}</span>
               </div>
 
-              {/* Счетчик лайков */}
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <Icon name="Heart" size={16} />
-                <span>
+              {/* Интерактивный счетчик лайков */}
+              <button
+                onClick={() => {
+                  const currentLikes = parseInt(
+                    localStorage.getItem("radioLikes") || "79580",
+                  );
+                  const userLikes = parseInt(
+                    localStorage.getItem("userLikes") || "0",
+                  );
+                  const newUserLikes = userLikes + 1;
+
+                  localStorage.setItem(
+                    "radioLikes",
+                    (currentLikes + 1).toString(),
+                  );
+                  localStorage.setItem("userLikes", newUserLikes.toString());
+
+                  // Обновить состояние для перерендера
+                  window.dispatchEvent(new Event("storage"));
+                }}
+                className="flex items-center space-x-2 text-sm hover:text-red-500 transition-colors group"
+              >
+                <Icon
+                  name="Heart"
+                  size={16}
+                  className={`transition-colors ${parseInt(localStorage.getItem("userLikes") || "0") > 0 ? "text-red-500 fill-red-500" : "group-hover:text-red-500"}`}
+                />
+                <span className="group-hover:text-red-500">
                   {(() => {
                     const baseCount = 79580;
                     const stored = localStorage.getItem("radioLikes");
@@ -233,17 +257,17 @@ const RadioPlayer = ({
                         return (currentCount / 1000).toFixed(1) + "K";
                       }
                       return currentCount.toLocaleString("ru-RU");
-                    } else {
-                      localStorage.setItem("radioLikes", baseCount.toString());
-                      localStorage.setItem(
-                        "radioLikesTime",
-                        Date.now().toString(),
-                      );
-                      return "79.6K";
                     }
+
+                    localStorage.setItem("radioLikes", baseCount.toString());
+                    localStorage.setItem(
+                      "radioLikesTime",
+                      Date.now().toString(),
+                    );
+                    return "79.6K";
                   })()}
                 </span>
-              </div>
+              </button>
 
               {/* Кнопка поделиться */}
               <button
