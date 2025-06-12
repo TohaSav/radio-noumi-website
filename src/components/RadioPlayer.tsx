@@ -112,7 +112,7 @@ const RadioPlayer = ({
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4">
+    <>
       <audio
         ref={audioRef}
         src={streamUrl}
@@ -120,148 +120,117 @@ const RadioPlayer = ({
         crossOrigin="anonymous"
       />
 
-      {/* Основной плеер */}
-      <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 md:p-6 shadow-2xl border border-white/20">
-        <div className="flex items-center justify-between gap-4">
-          {/* Левая часть - иконка музыки */}
-          <div className="flex-shrink-0">
-            <div className="w-12 h-12 md:w-14 md:h-14 bg-gray-800 rounded-xl flex items-center justify-center">
-              <Icon name="Music" size={24} className="text-white" />
+      {/* Фиксированный плеер внизу */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-t border-gray-200/50 shadow-2xl">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4">
+          <div className="flex items-center justify-between gap-2 sm:gap-3 md:gap-4">
+            {/* Левая часть - иконка музыки */}
+            <div className="flex-shrink-0">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-800 rounded-lg flex items-center justify-center">
+                <Icon
+                  name="Music"
+                  size={16}
+                  className="text-white sm:w-5 sm:h-5"
+                />
+              </div>
             </div>
-          </div>
 
-          {/* Центральная часть - кнопка play и информация */}
-          <div className="flex items-center gap-4 flex-1 min-w-0">
             {/* Кнопка play/pause */}
             <button
               onClick={togglePlay}
-              className={`relative w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 ${
+              className={`flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 ${
                 isPlaying
-                  ? "bg-white text-gray-800 shadow-lg"
-                  : "bg-white/20 text-white hover:bg-white/30"
+                  ? "bg-gray-800 text-white shadow-lg"
+                  : "bg-gray-200 text-gray-800 hover:bg-gray-300"
               }`}
             >
               {isPlaying && (
-                <div className="absolute -inset-1 rounded-full border-2 border-white/50 animate-ping" />
+                <div className="absolute -inset-1 rounded-full border-2 border-gray-400/50 animate-ping" />
               )}
               <Icon
                 name={isPlaying ? "Pause" : "Play"}
-                size={20}
-                className="transition-colors duration-200"
+                size={16}
+                className="transition-colors duration-200 sm:w-5 sm:h-5"
               />
             </button>
 
-            {/* Время и название */}
-            <div className="flex-1 min-w-0">
-              <div className="text-white/60 text-sm md:text-base font-mono">
+            {/* Центральная часть - время и название */}
+            <div className="flex-1 min-w-0 px-2 sm:px-3">
+              <div className="text-gray-500 text-xs sm:text-sm font-mono">
                 {currentTime}
               </div>
-              <div className="text-white text-sm md:text-lg font-medium truncate">
+              <div className="text-gray-800 text-sm sm:text-base font-medium truncate">
                 Открой глаза
               </div>
             </div>
-          </div>
 
-          {/* Правая часть - управление */}
-          <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
-            {/* Кнопка меню */}
-            <button className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-white/20 transition-colors flex items-center justify-center">
-              <Icon name="Menu" size={18} className="text-white" />
-            </button>
-
-            {/* Кнопка поделиться */}
-            <button
-              onClick={handleShare}
-              className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-white/20 transition-colors flex items-center justify-center"
-            >
-              <Icon name="Share2" size={18} className="text-white" />
-            </button>
-
-            {/* Громкость */}
-            <div className="relative">
-              <button
-                onClick={() => setShowVolumeSlider(!showVolumeSlider)}
-                className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-white/20 transition-colors flex items-center justify-center"
-              >
+            {/* Правая часть - управление */}
+            <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+              {/* Кнопка меню - скрыта на очень маленьких экранах */}
+              <button className="hidden xs:flex w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors items-center justify-center">
                 <Icon
-                  name={
-                    volume === 0
-                      ? "VolumeX"
-                      : volume < 0.5
-                        ? "Volume1"
-                        : "Volume2"
-                  }
-                  size={18}
-                  className="text-white"
+                  name="Menu"
+                  size={16}
+                  className="text-gray-600 sm:w-5 sm:h-5"
                 />
               </button>
 
-              {/* Слайдер громкости */}
-              {showVolumeSlider && (
-                <div className="absolute right-0 top-full mt-2 bg-black/80 backdrop-blur-sm rounded-lg p-3 z-10">
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    value={volume}
-                    onChange={(e) => setVolume(parseFloat(e.target.value))}
-                    className="w-20 h-2 bg-white/20 rounded-lg appearance-none cursor-pointer
-                               [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 
-                               [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white
-                               [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-lg"
+              {/* Кнопка поделиться */}
+              <button
+                onClick={handleShare}
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors flex items-center justify-center"
+              >
+                <Icon
+                  name="Share2"
+                  size={16}
+                  className="text-gray-600 sm:w-5 sm:h-5"
+                />
+              </button>
+
+              {/* Громкость */}
+              <div className="relative">
+                <button
+                  onClick={() => setShowVolumeSlider(!showVolumeSlider)}
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors flex items-center justify-center"
+                >
+                  <Icon
+                    name={
+                      volume === 0
+                        ? "VolumeX"
+                        : volume < 0.5
+                          ? "Volume1"
+                          : "Volume2"
+                    }
+                    size={16}
+                    className="text-gray-600 sm:w-5 sm:h-5"
                   />
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+                </button>
 
-        {/* Статистика внизу для мобильных */}
-        <div className="mt-4 pt-4 border-t border-white/10 md:hidden">
-          <div className="flex items-center justify-center gap-6 text-sm">
-            <div className="flex items-center gap-2">
-              <div
-                className={`w-2 h-2 rounded-full ${isPlaying ? "bg-green-500 animate-pulse" : "bg-gray-400"}`}
-              />
-              <span className="text-white/80">2.1M слушателей</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-1">
-                <Icon name="ThumbsUp" size={16} className="text-green-500" />
-                <span className="text-white/80">67K</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Icon name="ThumbsDown" size={16} className="text-red-500" />
-                <span className="text-white/80">115</span>
+                {/* Слайдер громкости */}
+                {showVolumeSlider && (
+                  <div className="absolute right-0 bottom-full mb-2 bg-white shadow-xl rounded-lg p-3 border border-gray-200">
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      value={volume}
+                      onChange={(e) => setVolume(parseFloat(e.target.value))}
+                      className="w-20 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer
+                                 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 
+                                 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-gray-800
+                                 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-lg"
+                    />
+                  </div>
+                )}
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Статистика для десктопа */}
-      <div className="hidden md:flex items-center justify-center gap-8 mt-6 text-white/80">
-        <div className="flex items-center gap-2">
-          <div
-            className={`w-3 h-3 rounded-full ${isPlaying ? "bg-green-500 animate-pulse" : "bg-gray-400"}`}
-          />
-          <span className="text-lg">2.1M слушателей</span>
-        </div>
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-2">
-            <Icon name="ThumbsUp" size={20} className="text-green-500" />
-            <span className="text-lg">67K</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Icon name="ThumbsDown" size={20} className="text-red-500" />
-            <span className="text-lg">115</span>
           </div>
         </div>
       </div>
 
       {/* Эффекты остаются */}
-      <div className="fixed inset-0 pointer-events-none z-50">
+      <div className="fixed inset-0 pointer-events-none z-40">
         {fireworks.map((firework) => (
           <div
             key={firework.id}
@@ -302,7 +271,7 @@ const RadioPlayer = ({
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 };
 

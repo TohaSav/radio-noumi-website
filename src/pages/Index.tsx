@@ -20,7 +20,7 @@ const Index = () => {
       <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIzIi8+PC9nPjwvZz48L3N2Zz4=')] opacity-40" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
 
-      <div className="container mx-auto px-4 py-8 space-y-8 relative z-10">
+      <div className="container mx-auto px-4 py-8 space-y-8 relative z-10 pb-24">
         <div className="absolute top-4 left-4 z-20">
           <ReelsButton />
         </div>
