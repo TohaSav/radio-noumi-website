@@ -3,6 +3,14 @@ import { useAuth } from "@/hooks/useAuth";
 import ReelsViewer from "@/components/ReelsViewer";
 import ReelsNavigation from "@/components/ReelsNavigation";
 
+export interface Comment {
+  id: string;
+  username: string;
+  avatar: string;
+  text: string;
+  timestamp: Date;
+}
+
 export interface Reel {
   id: string;
   username: string;
@@ -13,6 +21,7 @@ export interface Reel {
   comments: number;
   timestamp: Date;
   isLiked: boolean;
+  commentsList: Comment[];
 }
 
 // Демо данные для Reels
@@ -29,6 +38,7 @@ const generateDemoReels = (): Reel[] => [
     comments: 45,
     timestamp: new Date(Date.now() - 5 * 60 * 1000),
     isLiked: false,
+    commentsList: [],
   },
   {
     id: "2",
@@ -42,6 +52,7 @@ const generateDemoReels = (): Reel[] => [
     comments: 32,
     timestamp: new Date(Date.now() - 15 * 60 * 1000),
     isLiked: true,
+    commentsList: [],
   },
   {
     id: "3",
@@ -55,6 +66,7 @@ const generateDemoReels = (): Reel[] => [
     comments: 28,
     timestamp: new Date(Date.now() - 25 * 60 * 1000),
     isLiked: false,
+    commentsList: [],
   },
 ];
 
@@ -129,6 +141,31 @@ const Reels = () => {
     );
   };
 
+  const handleAddComment = (reelId: string, comment: string) => {
+    const { user } = useAuth();
+    if (!user) return;
+
+    const newComment = {
+      id: Date.now().toString(),
+      username: user.username,
+      avatar: `https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face`,
+      text: comment,
+      timestamp: new Date(),
+    };
+
+    setReels((prev) =>
+      prev.map((reel) =>
+        reel.id === reelId
+          ? {
+              ...reel,
+              commentsList: [newComment, ...reel.commentsList],
+              comments: reel.comments + 1,
+            }
+          : reel,
+      ),
+    );
+  };
+
   const handleAddReel = (newReel: Reel) => {
     setReels((prev) => [newReel, ...prev]);
     setCurrentIndex(0);
@@ -143,6 +180,7 @@ const Reels = () => {
         onIndexChange={setCurrentIndex}
         onDeleteReel={handleDeleteReel}
         onLikeReel={handleLikeReel}
+        onAddComment={handleAddComment}
         canDelete={isAdmin}
       />
     </div>

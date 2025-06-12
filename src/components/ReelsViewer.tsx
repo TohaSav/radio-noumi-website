@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import Icon from "@/components/ui/icon";
 import { Reel } from "@/pages/Reels";
+import ReelsComments from "@/components/ReelsComments";
 
 interface ReelsViewerProps {
   reels: Reel[];
@@ -8,6 +9,7 @@ interface ReelsViewerProps {
   onIndexChange: (index: number) => void;
   onDeleteReel: (reelId: string) => void;
   onLikeReel: (reelId: string) => void;
+  onAddComment: (reelId: string, comment: string) => void;
   canDelete: boolean;
 }
 
@@ -17,10 +19,12 @@ const ReelsViewer = ({
   onIndexChange,
   onDeleteReel,
   onLikeReel,
+  onAddComment,
   canDelete,
 }: ReelsViewerProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [touchStart, setTouchStart] = useState(0);
+  const [showComments, setShowComments] = useState(false);
 
   // Обработка клавиатуры для ПК
   useEffect(() => {
@@ -143,7 +147,10 @@ const ReelsViewer = ({
 
           {/* Комментарии */}
           <div className="flex flex-col items-center">
-            <button className="p-2 text-white/70 hover:text-white transition-colors">
+            <button
+              onClick={() => setShowComments(true)}
+              className="p-2 text-white/70 hover:text-white transition-colors"
+            >
               <Icon name="MessageCircle" size={20} />
             </button>
             <span className="text-white text-xs font-medium">
@@ -205,6 +212,14 @@ const ReelsViewer = ({
           ))}
         </div>
       </div>
+
+      {/* Модальное окно комментариев */}
+      <ReelsComments
+        reel={currentReel}
+        isOpen={showComments}
+        onClose={() => setShowComments(false)}
+        onAddComment={onAddComment}
+      />
     </div>
   );
 };
