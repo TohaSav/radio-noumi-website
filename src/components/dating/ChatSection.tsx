@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Message } from "@/types/dating";
-import { Icon } from "@/components/ui/icon";
+import Icon from "@/components/ui/icon";
 
 interface ChatSectionProps {
   messages: Message[];
