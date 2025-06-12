@@ -25,6 +25,11 @@ const Index = () => {
           <ReelsButton />
         </div>
 
+        {/* Stories перемещены в самый верх */}
+        <div className="transform hover:scale-[1.02] transition-transform duration-300 pt-16">
+          <Stories />
+        </div>
+
         <div className="flex items-center justify-center gap-4">
           <RadioPlayer streamUrl="https://myradio24.org/61673" />
           <div className="absolute top-4 right-4 z-20">
@@ -48,11 +53,6 @@ const Index = () => {
           <div className="mt-6 flex justify-center">
             <div className="h-2 w-32 bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 rounded-full shadow-lg shadow-pink-500/50" />
           </div>
-        </div>
-
-        {/* Stories с улучшенной анимацией */}
-        <div className="transform hover:scale-[1.02] transition-transform duration-300">
-          <Stories />
         </div>
 
         {/* Кнопка заказа */}
