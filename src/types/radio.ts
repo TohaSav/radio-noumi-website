@@ -13,3 +13,21 @@ export interface RadioPlayerProps {
   dislikes?: number;
   listeners?: number;
 }
+
+export interface Firework {
+  id: string;
+  x: number;
+  y: number;
+}
+
+export interface HeartEmoji {
+  id: string;
+  x: number;
+  y: number;
+}
+
+export interface CryingEmoji {
+  id: string;
+  x: number;
+  y: number;
+}

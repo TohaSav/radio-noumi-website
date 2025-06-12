@@ -1,11 +1,16 @@
-import { Firework, HeartEmoji } from "@/types/radio";
+import { Firework, HeartEmoji, CryingEmoji } from "@/types/radio";
 
 interface FireworksEffectProps {
   fireworks: Firework[];
   heartEmojis: HeartEmoji[];
+  cryingEmojis: CryingEmoji[];
 }
 
-const FireworksEffect = ({ fireworks, heartEmojis }: FireworksEffectProps) => {
+const FireworksEffect = ({
+  fireworks,
+  heartEmojis,
+  cryingEmojis,
+}: FireworksEffectProps) => {
   return (
     <>
       {/* Фейерверки */}
@@ -48,6 +53,21 @@ const FireworksEffect = ({ fireworks, heartEmojis }: FireworksEffectProps) => {
           }}
         >
           💕
+        </div>
+      ))}
+
+      {/* Плачущие смайлики */}
+      {cryingEmojis.map((crying) => (
+        <div
+          key={crying.id}
+          className="absolute pointer-events-none text-4xl animate-crying-fall z-20"
+          style={{
+            left: crying.x,
+            top: crying.y,
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          😭
         </div>
       ))}
     </>

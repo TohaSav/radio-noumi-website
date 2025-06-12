@@ -1,9 +1,10 @@
 import { useState, useCallback } from "react";
-import { Firework, HeartEmoji } from "@/types/radio";
+import { Firework, HeartEmoji, CryingEmoji } from "@/types/radio";
 
 export const useFireworks = () => {
   const [fireworks, setFireworks] = useState<Firework[]>([]);
   const [heartEmojis, setHeartEmojis] = useState<HeartEmoji[]>([]);
+  const [cryingEmojis, setCryingEmojis] = useState<CryingEmoji[]>([]);
 
   const createFirework = useCallback((x: number, y: number) => {
     const newFirework: Firework = {
@@ -33,10 +34,28 @@ export const useFireworks = () => {
     }, 2000);
   }, []);
 
+  const createCryingEmoji = (x: number, y: number) => {
+    const newCryingEmoji: CryingEmoji = {
+      id: Math.random().toString(36).substr(2, 9),
+      x,
+      y,
+    };
+
+    setCryingEmojis((prev) => [...prev, newCryingEmoji]);
+
+    setTimeout(() => {
+      setCryingEmojis((prev) =>
+        prev.filter((emoji) => emoji.id !== newCryingEmoji.id),
+      );
+    }, 3000);
+  };
+
   return {
     fireworks,
     heartEmojis,
+    cryingEmojis,
     createFirework,
     createHeartEmoji,
+    createCryingEmoji,
   };
 };

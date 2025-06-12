@@ -34,8 +34,14 @@ const RadioPlayer = ({
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const { setupAudioAnalysis, analyzeAudio, stopAnalysis } = useAudioAnalysis();
-  const { fireworks, heartEmojis, createFirework, createHeartEmoji } =
-    useFireworks();
+  const {
+    fireworks,
+    heartEmojis,
+    cryingEmojis,
+    createFirework,
+    createHeartEmoji,
+    createCryingEmoji,
+  } = useFireworks();
 
   useEffect(() => {
     if (audioRef.current) {
@@ -67,6 +73,16 @@ const RadioPlayer = ({
         audioRef.current.pause();
         stopAnalysis();
         setShowEffects(false);
+
+        // Создаем плачущие смайлики при остановке
+        for (let i = 0; i < 5; i++) {
+          setTimeout(() => {
+            createCryingEmoji(
+              Math.random() * window.innerWidth,
+              Math.random() * 100,
+            );
+          }, i * 200);
+        }
       } else {
         try {
           // Быстрый старт воспроизведения
@@ -124,7 +140,11 @@ const RadioPlayer = ({
       <LiveStats isPlaying={isPlaying} />
 
       {/* Эффекты */}
-      <FireworksEffect fireworks={fireworks} heartEmojis={heartEmojis} />
+      <FireworksEffect
+        fireworks={fireworks}
+        heartEmojis={heartEmojis}
+        cryingEmojis={cryingEmojis}
+      />
       <Balloons show={showEffects} />
     </div>
   );
