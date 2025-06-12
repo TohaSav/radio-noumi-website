@@ -115,82 +115,197 @@ const DatingChat = () => {
     }
   }, []);
 
-  // Автоматическое добавление анкет каждые 5 минут
+  // Автоматическое добавление анкет каждые 3 минуты
   useEffect(() => {
     const interval = setInterval(
       () => {
         const generateRandomProfile = (): Profile => {
-          const isFemale = Math.random() > 0.5;
-          const femaleNames = [
-            "Анна",
-            "Мария",
-            "Елена",
-            "Екатерина",
-            "Наталья",
-            "Ольга",
-            "Татьяна",
-            "Светлана",
-          ];
-          const maleNames = [
-            "Александр",
-            "Дмитрий",
-            "Максим",
-            "Сергей",
-            "Андрей",
-            "Алексей",
-            "Артём",
-            "Илья",
-          ];
-          const cities = [
-            "Москва",
-            "СПб",
-            "Екатеринбург",
-            "Новосибирск",
-            "Казань",
-            "Краснодар",
-          ];
-          const lookingForOptions = [
-            "Серьезные отношения",
-            "Дружба и общение",
-            "Совместный досуг",
-            "Спутник жизни",
+          const isFemale = Math.random() > 0.4; // 60% женщин, 40% мужчин
+
+          const femaleProfiles = [
+            {
+              name: "Алёна",
+              age: 24,
+              city: "Москва",
+              about:
+                "Работаю маркетологом, люблю йогу и путешествия. Ищу серьёзные отношения с добрым человеком.",
+              lookingFor: "Серьезные отношения",
+              photo:
+                "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400",
+            },
+            {
+              name: "Виктория",
+              age: 27,
+              city: "СПб",
+              about:
+                "Врач-стоматолог, увлекаюсь фотографией и готовкой. Хочу встретить своего человека.",
+              lookingFor: "Спутник жизни",
+              photo:
+                "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400",
+            },
+            {
+              name: "Ксения",
+              age: 22,
+              city: "Екатеринбург",
+              about:
+                "Студентка последнего курса, танцую и изучаю языки. Открыта к новым знакомствам.",
+              lookingFor: "Дружба и общение",
+              photo:
+                "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400",
+            },
+            {
+              name: "Марина",
+              age: 29,
+              city: "Казань",
+              about:
+                "Финансист, мама сына 5 лет. Ищу понимающего партнёра для создания семьи.",
+              lookingFor: "Серьезные отношения",
+              photo:
+                "https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=400",
+            },
+            {
+              name: "Елизавета",
+              age: 26,
+              city: "Новосибирск",
+              about:
+                "IT-дизайнер, обожаю животных и активный отдых. Хочу найти спутника для приключений.",
+              lookingFor: "Совместный досуг",
+              photo:
+                "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400",
+            },
+            {
+              name: "Анастасия",
+              age: 23,
+              city: "Краснодар",
+              about:
+                "Учитель начальных классов, люблю детей и природу. Мечтаю о крепкой семье.",
+              lookingFor: "Спутник жизни",
+              photo:
+                "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400",
+            },
+            {
+              name: "Дарья",
+              age: 25,
+              city: "Ростов-на-Дону",
+              about:
+                "Журналист, пишу статьи о культуре. Ценю интеллектуальные беседы и честность.",
+              lookingFor: "Серьезные отношения",
+              photo:
+                "https://images.unsplash.com/photo-1506863530036-1efeddceb993?w=400",
+            },
+            {
+              name: "Полина",
+              age: 28,
+              city: "Волгоград",
+              about:
+                "Психолог, помогаю людям решать проблемы. Сама ищу гармоничные отношения.",
+              lookingFor: "Серьезные отношения",
+              photo:
+                "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=400",
+            },
           ];
 
-          const name = isFemale
-            ? femaleNames[Math.floor(Math.random() * femaleNames.length)]
-            : maleNames[Math.floor(Math.random() * maleNames.length)];
-
-          const femalePhotos = [
-            "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400",
-            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400",
-            "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400",
+          const maleProfiles = [
+            {
+              name: "Александр",
+              age: 30,
+              city: "Москва",
+              about:
+                "Инженер-программист, занимаюсь спортом. Ищу умную и добрую спутницу жизни.",
+              lookingFor: "Серьезные отношения",
+              photo:
+                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+            },
+            {
+              name: "Дмитрий",
+              age: 32,
+              city: "СПб",
+              about:
+                "Врач-хирург, люблю читать и путешествовать. Хочу создать крепкую семью.",
+              lookingFor: "Спутник жизни",
+              photo:
+                "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400",
+            },
+            {
+              name: "Максим",
+              age: 26,
+              city: "Екатеринбург",
+              about:
+                "Предприниматель, развиваю свой бизнес. Ищу девушку для серьёзных отношений.",
+              lookingFor: "Серьезные отношения",
+              photo:
+                "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400",
+            },
+            {
+              name: "Артём",
+              age: 28,
+              city: "Казань",
+              about:
+                "Архитектор, создаю красивые здания. Мечтаю найти свою музу и построить семью.",
+              lookingFor: "Спутник жизни",
+              photo:
+                "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400",
+            },
+            {
+              name: "Сергей",
+              age: 31,
+              city: "Новосибирск",
+              about:
+                "Учитель физики, увлекаюсь астрономией. Ищу умную собеседницу и верную спутницу.",
+              lookingFor: "Серьезные отношения",
+              photo:
+                "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400",
+            },
+            {
+              name: "Андрей",
+              age: 29,
+              city: "Краснодар",
+              about:
+                "Менеджер по продажам, активный и целеустремлённый. Хочу найти девушку для совместной жизни.",
+              lookingFor: "Серьезные отношения",
+              photo:
+                "https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=400",
+            },
+            {
+              name: "Илья",
+              age: 25,
+              city: "Ростов-на-Дону",
+              about:
+                "Дизайнер интерьеров, творческая личность. Ищу вдохновляющую девушку для отношений.",
+              lookingFor: "Совместный досуг",
+              photo:
+                "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400",
+            },
+            {
+              name: "Владислав",
+              age: 27,
+              city: "Волгоград",
+              about:
+                "Повар в ресторане, умею готовить вкусно. Хочу радовать любимую женщину каждый день.",
+              lookingFor: "Спутник жизни",
+              photo:
+                "https://images.unsplash.com/photo-1521119989659-a83eee488004?w=400",
+            },
           ];
 
-          const malePhotos = [
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
-            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400",
-            "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400",
-          ];
+          const profileData = isFemale
+            ? femaleProfiles[Math.floor(Math.random() * femaleProfiles.length)]
+            : maleProfiles[Math.floor(Math.random() * maleProfiles.length)];
 
           return {
             id: `auto_${Date.now()}_${Math.random()}`,
-            photo: isFemale
-              ? femalePhotos[Math.floor(Math.random() * femalePhotos.length)]
-              : malePhotos[Math.floor(Math.random() * malePhotos.length)],
-            name,
-            age: 18 + Math.floor(Math.random() * 32),
-            city: cities[Math.floor(Math.random() * cities.length)],
+            photo: profileData.photo,
+            name: profileData.name,
+            age: profileData.age,
+            city: profileData.city,
             height: isFemale
               ? `${155 + Math.floor(Math.random() * 20)} см`
               : `${170 + Math.floor(Math.random() * 25)} см`,
             weight: isFemale
               ? `${45 + Math.floor(Math.random() * 25)} кг`
               : `${65 + Math.floor(Math.random() * 35)} кг`,
-            lookingFor:
-              lookingForOptions[
-                Math.floor(Math.random() * lookingForOptions.length)
-              ],
-            about: `Привет! Меня зовут ${name}, живу в городе ${cities[Math.floor(Math.random() * cities.length)]}.`,
+            lookingFor: profileData.lookingFor,
+            about: profileData.about,
             userId: `auto_user_${Date.now()}`,
             gender: isFemale ? "female" : "male",
           };
@@ -198,8 +313,8 @@ const DatingChat = () => {
 
         setProfiles((prev) => [...prev, generateRandomProfile()]);
       },
-      5 * 60 * 1000,
-    ); // 5 минут
+      3 * 60 * 1000,
+    ); // 3 минуты
 
     return () => clearInterval(interval);
   }, []);
