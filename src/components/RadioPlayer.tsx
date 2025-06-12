@@ -3,6 +3,7 @@ import { useAudioAnalysis } from "@/hooks/useAudioAnalysis";
 import { useFireworks } from "@/hooks/useFireworks";
 import { AudioData, MusicType } from "@/types/radio";
 import Icon from "@/components/ui/icon";
+import MusicWaves from "@/components/MusicWaves";
 
 interface RadioPlayerProps {
   streamUrl?: string;
@@ -113,6 +114,9 @@ const RadioPlayer = ({
 
   return (
     <>
+      {/* Анимированные музыкальные волны */}
+      <MusicWaves isPlaying={isPlaying} audioData={audioData} />
+
       <audio
         ref={audioRef}
         src={streamUrl}
