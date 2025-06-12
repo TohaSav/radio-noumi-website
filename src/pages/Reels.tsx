@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { useCapacitor } from "@/hooks/useCapacitor";
-import MobileLayout from "@/components/MobileLayout";
 import ReelsViewer from "@/components/ReelsViewer";
 import ReelsNavigation from "@/components/ReelsNavigation";
 

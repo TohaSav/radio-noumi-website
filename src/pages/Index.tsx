@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useRadioStats } from "@/hooks/useRadioStats";
-import { useCapacitor } from "@/hooks/useCapacitor";
 import MobileLayout from "@/components/MobileLayout";
 import RadioPlayer from "@/components/RadioPlayer";
 import LiveChat from "@/components/LiveChat";
@@ -11,11 +10,6 @@ import Stories from "@/components/Stories";
 
 const Index = () => {
   const stats = useRadioStats();
-  const { initializeApp } = useCapacitor();
-
-  useEffect(() => {
-    initializeApp();
-  }, []);
 
   return (
     <MobileLayout>

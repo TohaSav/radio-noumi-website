@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useCapacitor } from "@/hooks/useCapacitor";
-import MobileLayout from "@/components/MobileLayout";
 import {
   Dialog,
   DialogContent,
@@ -17,7 +15,6 @@ import ChatSection from "@/components/dating/ChatSection";
 import UserPanel from "@/components/dating/UserPanel";
 
 const DatingChat = () => {
-  const { isAndroid } = useCapacitor();
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -430,207 +427,205 @@ const DatingChat = () => {
   };
 
   return (
-    <MobileLayout>
-      <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-100 flex flex-col">
-        {/* Фоновое радио */}
-        <audio ref={audioRef} loop>
-          <source src="https://myradio24.org/61673" type="audio/mpeg" />
-        </audio>
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-100 flex flex-col">
+      {/* Фоновое радио */}
+      <audio ref={audioRef} loop>
+        <source src="https://myradio24.org/61673" type="audio/mpeg" />
+      </audio>
 
-        {/* Хедер */}
-        <div className="bg-white/80 backdrop-blur-sm shadow-lg border-b border-pink-200/50">
-          <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div className="flex items-center gap-4">
-              <Link
-                to="/"
-                className="flex items-center gap-2 text-gray-600 hover:text-gray-800"
-              >
-                <Icon name="ArrowLeft" size={20} />
-                <span>Radio Noumi</span>
-              </Link>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-2 animate-fade-in">
-                <Icon name="Heart" size={24} />
-                Чат знакомств
-              </h1>
-            </div>
-            <div className="flex items-center gap-3 text-sm text-gray-600 bg-white/60 px-3 py-2 rounded-full shadow-sm">
-              <Icon name="Radio" size={16} />
-              <span>Фоновое радио</span>
-            </div>
+      {/* Хедер */}
+      <div className="bg-white/80 backdrop-blur-sm shadow-lg border-b border-pink-200/50">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <Link
+              to="/"
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-800"
+            >
+              <Icon name="ArrowLeft" size={20} />
+              <span>Radio Noumi</span>
+            </Link>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-2 animate-fade-in">
+              <Icon name="Heart" size={24} />
+              Чат знакомств
+            </h1>
+          </div>
+          <div className="flex items-center gap-3 text-sm text-gray-600 bg-white/60 px-3 py-2 rounded-full shadow-sm">
+            <Icon name="Radio" size={16} />
+            <span>Фоновое радио</span>
           </div>
         </div>
-
-        <div className="flex-1 flex">
-          {/* Основной чат */}
-          <div className="flex-1 flex flex-col">
-            <ChatSection
-              messages={messages}
-              activeTab={activeTab}
-              selectedChat={selectedChat}
-              onTabChange={setActiveTab}
-              onChatSelect={setSelectedChat}
-            />
-
-            {/* Поле ввода */}
-            <div className="p-4 bg-gradient-to-r from-white to-pink-50/50 border-t border-pink-200/50 backdrop-blur-sm">
-              <div className="flex gap-3 max-w-4xl mx-auto">
-                <Input
-                  type="text"
-                  value={messageInput}
-                  onChange={(e) => setMessageInput(e.target.value)}
-                  onFocus={handleInputFocus}
-                  placeholder={
-                    isLoggedIn
-                      ? "Написать сообщение..."
-                      : "Нажмите для создания анкеты..."
-                  }
-                  className="flex-1 border-pink-200 focus:border-pink-400 focus:ring-pink-400/20 bg-white/90 placeholder:text-pink-400/70 transition-all duration-300"
-                  onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-                />
-                <Button
-                  onClick={handleSendMessage}
-                  disabled={!messageInput.trim() || !isLoggedIn}
-                  className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
-                >
-                  <Icon name="Send" size={16} />
-                </Button>
-              </div>
-            </div>
-
-            {/* Профили */}
-            <div className="p-6 bg-gradient-to-br from-pink-50/80 to-purple-50/80 backdrop-blur-sm">
-              <div className="max-w-7xl mx-auto">
-                <h2 className="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-                  Анкеты участников 💕
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {profiles.map((profile, index) => (
-                    <div
-                      key={profile.id}
-                      className="animate-fade-in"
-                      style={{ animationDelay: `${index * 0.1}s` }}
-                    >
-                      <ProfileCard
-                        profile={profile}
-                        onLike={handleLike}
-                        currentUserId={currentUser?.id}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Боковая панель */}
-          <UserPanel
-            isLoggedIn={isLoggedIn}
-            currentUser={currentUser}
-            likes={likes}
-            profiles={profiles}
-            onRegisterClick={() => setShowRegisterForm(true)}
-          />
-        </div>
-
-        {/* Модальные окна */}
-        <Dialog open={showProfileModal} onOpenChange={setShowProfileModal}>
-          <DialogContent className="max-w-md max-h-[90vh] overflow-hidden">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
-                <Icon name="User" size={20} />
-                Создать анкету
-              </DialogTitle>
-            </DialogHeader>
-            <ProfileForm
-              form={profileForm}
-              onChange={setProfileForm}
-              onSubmit={handleProfileSubmit}
-            />
-          </DialogContent>
-        </Dialog>
-
-        <Dialog open={showRegisterForm} onOpenChange={setShowRegisterForm}>
-          <DialogContent className="max-w-md">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
-                <Icon name="UserPlus" size={20} />
-                Регистрация
-              </DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-medium text-gray-700">
-                  Логин *
-                </label>
-                <Input
-                  type="text"
-                  placeholder="Ваш логин"
-                  value={registerForm.login}
-                  onChange={(e) =>
-                    setRegisterForm({ ...registerForm, login: e.target.value })
-                  }
-                  className="mt-1"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700">
-                  Email *
-                </label>
-                <Input
-                  type="email"
-                  placeholder="your@email.com"
-                  value={registerForm.email}
-                  onChange={(e) =>
-                    setRegisterForm({ ...registerForm, email: e.target.value })
-                  }
-                  className="mt-1"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700">
-                  Пароль *
-                </label>
-                <Input
-                  type="password"
-                  placeholder="Пароль"
-                  value={registerForm.password}
-                  onChange={(e) =>
-                    setRegisterForm({
-                      ...registerForm,
-                      password: e.target.value,
-                    })
-                  }
-                  className="mt-1"
-                />
-              </div>
-              <div className="flex gap-2">
-                <Button
-                  onClick={handleRegisterSubmit}
-                  disabled={
-                    !registerForm.login ||
-                    !registerForm.email ||
-                    !registerForm.password
-                  }
-                  className="flex-1 bg-pink-500 hover:bg-pink-600"
-                >
-                  Зарегистрироваться
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setShowRegisterForm(false);
-                    setShowProfileModal(true);
-                  }}
-                  disabled={!isLoggedIn}
-                >
-                  Анкета
-                </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
       </div>
-    </MobileLayout>
+
+      <div className="flex-1 flex">
+        {/* Основной чат */}
+        <div className="flex-1 flex flex-col">
+          <ChatSection
+            messages={messages}
+            activeTab={activeTab}
+            selectedChat={selectedChat}
+            onTabChange={setActiveTab}
+            onChatSelect={setSelectedChat}
+          />
+
+          {/* Поле ввода */}
+          <div className="p-4 bg-gradient-to-r from-white to-pink-50/50 border-t border-pink-200/50 backdrop-blur-sm">
+            <div className="flex gap-3 max-w-4xl mx-auto">
+              <Input
+                type="text"
+                value={messageInput}
+                onChange={(e) => setMessageInput(e.target.value)}
+                onFocus={handleInputFocus}
+                placeholder={
+                  isLoggedIn
+                    ? "Написать сообщение..."
+                    : "Нажмите для создания анкеты..."
+                }
+                className="flex-1 border-pink-200 focus:border-pink-400 focus:ring-pink-400/20 bg-white/90 placeholder:text-pink-400/70 transition-all duration-300"
+                onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+              />
+              <Button
+                onClick={handleSendMessage}
+                disabled={!messageInput.trim() || !isLoggedIn}
+                className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+              >
+                <Icon name="Send" size={16} />
+              </Button>
+            </div>
+          </div>
+
+          {/* Профили */}
+          <div className="p-6 bg-gradient-to-br from-pink-50/80 to-purple-50/80 backdrop-blur-sm">
+            <div className="max-w-7xl mx-auto">
+              <h2 className="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                Анкеты участников 💕
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {profiles.map((profile, index) => (
+                  <div
+                    key={profile.id}
+                    className="animate-fade-in"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <ProfileCard
+                      profile={profile}
+                      onLike={handleLike}
+                      currentUserId={currentUser?.id}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Боковая панель */}
+        <UserPanel
+          isLoggedIn={isLoggedIn}
+          currentUser={currentUser}
+          likes={likes}
+          profiles={profiles}
+          onRegisterClick={() => setShowRegisterForm(true)}
+        />
+      </div>
+
+      {/* Модальные окна */}
+      <Dialog open={showProfileModal} onOpenChange={setShowProfileModal}>
+        <DialogContent className="max-w-md max-h-[90vh] overflow-hidden">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Icon name="User" size={20} />
+              Создать анкету
+            </DialogTitle>
+          </DialogHeader>
+          <ProfileForm
+            form={profileForm}
+            onChange={setProfileForm}
+            onSubmit={handleProfileSubmit}
+          />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showRegisterForm} onOpenChange={setShowRegisterForm}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Icon name="UserPlus" size={20} />
+              Регистрация
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium text-gray-700">
+                Логин *
+              </label>
+              <Input
+                type="text"
+                placeholder="Ваш логин"
+                value={registerForm.login}
+                onChange={(e) =>
+                  setRegisterForm({ ...registerForm, login: e.target.value })
+                }
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-700">
+                Email *
+              </label>
+              <Input
+                type="email"
+                placeholder="your@email.com"
+                value={registerForm.email}
+                onChange={(e) =>
+                  setRegisterForm({ ...registerForm, email: e.target.value })
+                }
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-700">
+                Пароль *
+              </label>
+              <Input
+                type="password"
+                placeholder="Пароль"
+                value={registerForm.password}
+                onChange={(e) =>
+                  setRegisterForm({
+                    ...registerForm,
+                    password: e.target.value,
+                  })
+                }
+                className="mt-1"
+              />
+            </div>
+            <div className="flex gap-2">
+              <Button
+                onClick={handleRegisterSubmit}
+                disabled={
+                  !registerForm.login ||
+                  !registerForm.email ||
+                  !registerForm.password
+                }
+                className="flex-1 bg-pink-500 hover:bg-pink-600"
+              >
+                Зарегистрироваться
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowRegisterForm(false);
+                  setShowProfileModal(true);
+                }}
+                disabled={!isLoggedIn}
+              >
+                Анкета
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 };
 
