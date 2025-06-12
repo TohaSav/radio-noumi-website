@@ -22,18 +22,11 @@ const Index = () => {
       <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
 
       <div className="container mx-auto px-4 py-8 space-y-8 relative z-10 pb-24">
-        <div className="absolute top-4 left-4 z-20">
+        <div className="absolute top-2 left-4 z-20">
           <ReelsButton />
         </div>
 
-        {/* AnimatedTitle перемещен в самый верх между кнопками */}
-        <div className="flex justify-center items-center pt-16 pb-4">
-          <div className="mx-auto">
-            <AnimatedTitle />
-          </div>
-        </div>
-
-        <div className="absolute top-4 right-4 z-20">
+        <div className="absolute top-2 right-4 z-20">
           <Link
             to="/dating"
             className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white px-4 py-2 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center gap-2"
@@ -41,6 +34,11 @@ const Index = () => {
             <Icon name="Heart" size={18} />
             <span className="font-medium">Знакомства</span>
           </Link>
+        </div>
+
+        {/* AnimatedTitle теперь между кнопками */}
+        <div className="flex justify-center items-center pt-14 pb-6">
+          <AnimatedTitle />
         </div>
 
         {/* Stories перемещены ниже заголовка */}
