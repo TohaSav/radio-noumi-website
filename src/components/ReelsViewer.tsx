@@ -105,23 +105,6 @@ const ReelsViewer = ({
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
 
-        {/* Навигация */}
-        <button
-          onClick={handlePrev}
-          disabled={currentIndex === 0}
-          className="absolute left-2 top-1/2 -translate-y-1/2 p-2 text-white/70 hover:text-white disabled:opacity-30 transition-colors bg-black/20 rounded-full"
-        >
-          <Icon name="ChevronUp" size={24} />
-        </button>
-
-        <button
-          onClick={handleNext}
-          disabled={currentIndex === reels.length - 1}
-          className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-white/70 hover:text-white disabled:opacity-30 transition-colors bg-black/20 rounded-full"
-        >
-          <Icon name="ChevronDown" size={24} />
-        </button>
-
         {/* Боковая панель с действиями */}
         <div className="absolute right-3 bottom-20 flex flex-col gap-4">
           {/* Лайк */}
@@ -211,6 +194,25 @@ const ReelsViewer = ({
             />
           ))}
         </div>
+      </div>
+
+      {/* Навигация справа от video */}
+      <div className="absolute right-8 top-1/2 -translate-y-1/2 flex flex-col gap-4">
+        <button
+          onClick={handlePrev}
+          disabled={currentIndex === 0}
+          className="p-3 text-white/70 hover:text-white disabled:opacity-30 transition-colors bg-black/30 rounded-full hover:bg-black/50"
+        >
+          <Icon name="ChevronUp" size={28} />
+        </button>
+
+        <button
+          onClick={handleNext}
+          disabled={currentIndex === reels.length - 1}
+          className="p-3 text-white/70 hover:text-white disabled:opacity-30 transition-colors bg-black/30 rounded-full hover:bg-black/50"
+        >
+          <Icon name="ChevronDown" size={28} />
+        </button>
       </div>
 
       {/* Модальное окно комментариев */}
