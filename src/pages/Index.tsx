@@ -22,9 +22,7 @@ const Index = () => {
       <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
 
       <div className="container mx-auto px-4 py-8 space-y-8 relative z-10 pb-24">
-        <div className="absolute top-2 left-4 z-20">
-          <ReelsButton />
-        </div>
+        <ReelsButton />
 
         {/* Кнопка знакомств слева по центру с фиксированным позиционированием */}
         <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-20">
