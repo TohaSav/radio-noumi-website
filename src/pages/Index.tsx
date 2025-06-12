@@ -13,7 +13,7 @@ const Index = () => {
   const stats = useRadioStats();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 through-pink-800 to-orange-900 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 via-pink-800 to-orange-900 relative overflow-hidden">
       {/* Многослойные фоновые эффекты */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-cyan-400/30 via-transparent to-transparent" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-rose-400/20 via-transparent to-transparent" />
@@ -44,7 +44,7 @@ const Index = () => {
         </div>
         {/* Заголовок с улучшенной типографикой */}
         <div className="text-center mb-10">
-          <h1 className="text-6xl md:text-7xl font-black bg-gradient-to-r from-yellow-300 via-pink-300 through-purple-300 to-cyan-300 bg-clip-text text-transparent mb-6 drop-shadow-2xl filter brightness-110">
+          <h1 className="text-6xl md:text-7xl font-black bg-gradient-to-r from-yellow-300 via-pink-300 via-purple-300 to-cyan-300 bg-clip-text text-transparent mb-6 drop-shadow-2xl filter brightness-110">
             Radio Noumi
           </h1>
           <p className="text-2xl text-white font-medium drop-shadow-lg backdrop-blur-sm bg-black/20 px-6 py-3 rounded-full">
