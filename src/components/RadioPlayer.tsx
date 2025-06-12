@@ -4,6 +4,7 @@ import { useFireworks } from "@/hooks/useFireworks";
 import { AudioData, MusicType } from "@/types/radio";
 import Icon from "@/components/ui/icon";
 import MusicWaves from "@/components/MusicWaves";
+import MusicIcons from "@/components/MusicIcons";
 
 interface RadioPlayerProps {
   streamUrl?: string;
@@ -149,11 +150,18 @@ const RadioPlayer = ({
           <div className="flex items-center justify-between gap-2 sm:gap-3 md:gap-4">
             {/* Левая часть - иконка музыки */}
             <div className="flex-shrink-0">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-800 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-800 rounded-lg flex items-center justify-center relative">
                 <Icon
                   name="Music"
                   size={16}
                   className="text-white sm:w-5 sm:h-5"
+                />
+                <MusicIcons
+                  isPlaying={isPlaying}
+                  triggerPosition={{
+                    x: 60, // Позиция обложки
+                    y: window.innerHeight - 100, // Снизу экрана
+                  }}
                 />
               </div>
             </div>
