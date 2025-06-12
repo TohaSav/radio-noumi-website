@@ -428,15 +428,15 @@ const DatingChat = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-100 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-100 flex flex-col">
       {/* Фоновое радио */}
       <audio ref={audioRef} loop>
         <source src="https://myradio24.org/61673" type="audio/mpeg" />
       </audio>
 
       {/* Хедер */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+      <div className="bg-white/80 backdrop-blur-sm shadow-lg border-b border-pink-200/50">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-4">
             <Link
               to="/"
@@ -445,12 +445,12 @@ const DatingChat = () => {
               <Icon name="ArrowLeft" size={20} />
               <span>Radio Noumi</span>
             </Link>
-            <h1 className="text-xl font-bold text-pink-600 flex items-center gap-2">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-2 animate-fade-in">
               <Icon name="Heart" size={24} />
               Чат знакомств
             </h1>
           </div>
-          <div className="flex items-center gap-2 text-sm text-gray-500">
+          <div className="flex items-center gap-3 text-sm text-gray-600 bg-white/60 px-3 py-2 rounded-full shadow-sm">
             <Icon name="Radio" size={16} />
             <span>Фоновое радио</span>
           </div>
@@ -469,8 +469,8 @@ const DatingChat = () => {
           />
 
           {/* Поле ввода */}
-          <div className="p-4 bg-white border-t">
-            <div className="flex gap-2">
+          <div className="p-4 bg-gradient-to-r from-white to-pink-50/50 border-t border-pink-200/50 backdrop-blur-sm">
+            <div className="flex gap-3 max-w-4xl mx-auto">
               <Input
                 type="text"
                 value={messageInput}
@@ -481,13 +481,13 @@ const DatingChat = () => {
                     ? "Написать сообщение..."
                     : "Нажмите для создания анкеты..."
                 }
-                className="flex-1"
+                className="flex-1 border-pink-200 focus:border-pink-400 focus:ring-pink-400/20 bg-white/90 placeholder:text-pink-400/70 transition-all duration-300"
                 onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
               />
               <Button
                 onClick={handleSendMessage}
                 disabled={!messageInput.trim() || !isLoggedIn}
-                className="bg-pink-500 hover:bg-pink-600"
+                className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 <Icon name="Send" size={16} />
               </Button>
@@ -495,15 +495,27 @@ const DatingChat = () => {
           </div>
 
           {/* Профили */}
-          <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-gray-50">
-            {profiles.map((profile) => (
-              <ProfileCard
-                key={profile.id}
-                profile={profile}
-                onLike={handleLike}
-                currentUserId={currentUser?.id}
-              />
-            ))}
+          <div className="p-6 bg-gradient-to-br from-pink-50/80 to-purple-50/80 backdrop-blur-sm">
+            <div className="max-w-7xl mx-auto">
+              <h2 className="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                Анкеты участников 💕
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {profiles.map((profile, index) => (
+                  <div
+                    key={profile.id}
+                    className="animate-fade-in"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <ProfileCard
+                      profile={profile}
+                      onLike={handleLike}
+                      currentUserId={currentUser?.id}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
