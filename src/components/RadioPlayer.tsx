@@ -76,7 +76,7 @@ const RadioPlayer = ({
   };
 
   return (
-    <div className="relative bg-gradient-to-br from-purple-900/20 via-violet-800/20 to-indigo-900/20 backdrop-blur-lg rounded-3xl p-8 max-w-lg mx-auto border border-white/10 shadow-2xl overflow-hidden">
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-br from-purple-900/95 via-violet-800/95 to-indigo-900/95 backdrop-blur-xl border-t border-white/10 shadow-2xl md:bottom-4 md:left-4 md:right-4 md:max-w-md md:mx-auto md:rounded-3xl md:border md:border-white/10 lg:max-w-lg">
       <audio ref={audioRef} src={streamUrl} />
 
       {/* Анимированные волны */}
