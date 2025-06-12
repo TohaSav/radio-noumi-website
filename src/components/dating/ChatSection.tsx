@@ -27,7 +27,7 @@ const ChatSection = ({
   currentUserId,
   onAddMessage,
 }: ChatSectionProps) => {
-  const [onlineCount, setOnlineCount] = useState(5000);
+  const [onlineCount, setOnlineCount] = useState(1500000);
   const [usedMessages, setUsedMessages] = useState<Set<string>>(new Set());
 
   const femaleNames = [
@@ -159,13 +159,16 @@ const ChatSection = ({
     const interval = setInterval(
       () => {
         setOnlineCount((prev) => {
-          const change = Math.floor(Math.random() * 20) - 10; // от -10 до +10
-          const newCount = prev + change;
-          return Math.max(4950, Math.min(5200, newCount)); // диапазон 4950-5200
+          // Более динамичные изменения в широком диапазоне
+          const changePercent = (Math.random() - 0.5) * 0.02; // от -1% до +1%
+          const change = Math.floor(prev * changePercent);
+          const randomBoost = Math.floor(Math.random() * 2000) - 1000; // дополнительный случайный сдвиг
+          const newCount = prev + change + randomBoost;
+          return Math.max(1500, Math.min(1800000, newCount)); // диапазон 1500-1800000
         });
       },
-      3000 + Math.random() * 2000,
-    ); // каждые 3-5 секунд
+      1500 + Math.random() * 3000, // каждые 1.5-4.5 секунды
+    );
 
     return () => clearInterval(interval);
   }, []);
