@@ -10,12 +10,10 @@ import ProfileCard from "@/components/dating/ProfileCard";
 import ProfileForm from "@/components/dating/ProfileForm";
 import ChatSection from "@/components/dating/ChatSection";
 import UserPanel from "@/components/dating/UserPanel";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 const DatingChat = () => {
   const [showProfileModal, setShowProfileModal] = useState(false);
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [profiles, setProfiles] = useState<Profile[]>([]);
@@ -83,7 +81,7 @@ const DatingChat = () => {
 
     setCurrentUser(newUser);
     setIsLoggedIn(true);
-    setShowRegisterModal(false);
+    setShowRegisterForm(false);
     setRegisterForm({ login: "", email: "", password: "" });
   };
 
@@ -127,114 +125,82 @@ const DatingChat = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 p-4">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <div className="lg:col-span-3 space-y-6">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">
-              💕 Чат знакомств
-            </h1>
-            <p className="text-gray-600">Найдите свою вторую половинку</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {profiles.map((profile) => (
-              <ProfileCard
-                key={profile.id}
-                profile={profile}
-                onLike={handleLike}
-              />
-            ))}
-          </div>
-
-          <ChatSection
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            selectedChat={selectedChat}
-            messageInput={messageInput}
-            setMessageInput={setMessageInput}
-            isLoggedIn={isLoggedIn}
-            currentUser={currentUser}
-            messages={messages}
-            onSendMessage={handleSendMessage}
-            onShowProfile={() => setShowProfileModal(true)}
-            onSelectChat={handleSelectChat}
-          />
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-red-50 p-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-6">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-2">
+            💕 Чат знакомств
+          </h1>
+          <p className="text-gray-600">Найдите свою вторую половинку</p>
         </div>
 
-        <div className="space-y-6">
-          <UserPanel
-            isLoggedIn={isLoggedIn}
-            currentUser={currentUser}
-            likes={likes}
-            onShowRegister={() => setShowRegisterModal(true)}
-          />
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <div className="lg:col-span-2 space-y-6">
+            <div className="max-h-96 overflow-y-auto">
+              {profiles.map((profile) => (
+                <ProfileCard
+                  key={profile.id}
+                  profile={profile}
+                  onLike={handleLike}
+                />
+              ))}
+              {profiles.length === 0 && (
+                <div className="text-center py-12 text-gray-500">
+                  <Icon
+                    name="Heart"
+                    size={48}
+                    className="mx-auto mb-4 text-pink-300"
+                  />
+                  <p>Пока нет анкет. Станьте первым!</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="lg:col-span-1">
+            <ChatSection
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              selectedChat={selectedChat}
+              messageInput={messageInput}
+              setMessageInput={setMessageInput}
+              isLoggedIn={isLoggedIn}
+              currentUser={currentUser}
+              messages={messages}
+              onSendMessage={handleSendMessage}
+              onShowProfile={() => setShowProfileModal(true)}
+              onSelectChat={handleSelectChat}
+            />
+          </div>
+
+          <div className="lg:col-span-1">
+            <UserPanel
+              isLoggedIn={isLoggedIn}
+              currentUser={currentUser}
+              likes={likes}
+              onShowRegister={() => setShowRegisterForm(true)}
+              registerForm={registerForm}
+              onRegisterFormChange={setRegisterForm}
+              onRegister={handleRegister}
+              showRegisterForm={showRegisterForm}
+              setShowRegisterForm={setShowRegisterForm}
+            />
+          </div>
         </div>
       </div>
 
       <Dialog open={showProfileModal} onOpenChange={setShowProfileModal}>
-        <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-sm aspect-[9/16] max-h-[85vh] overflow-hidden">
           <DialogHeader>
-            <DialogTitle>Создание анкеты</DialogTitle>
+            <DialogTitle className="text-center text-pink-600">
+              💕 Создание анкеты
+            </DialogTitle>
           </DialogHeader>
           <ProfileForm
             formData={profileForm}
             onFormChange={setProfileForm}
             onSubmit={handleProfileSubmit}
           />
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={showRegisterModal} onOpenChange={setShowRegisterModal}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>Регистрация</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <label className="text-sm font-medium">Логин</label>
-              <Input
-                value={registerForm.login}
-                onChange={(e) =>
-                  setRegisterForm({ ...registerForm, login: e.target.value })
-                }
-                placeholder="Ваш логин"
-              />
-            </div>
-            <div>
-              <label className="text-sm font-medium">Email</label>
-              <Input
-                type="email"
-                value={registerForm.email}
-                onChange={(e) =>
-                  setRegisterForm({ ...registerForm, email: e.target.value })
-                }
-                placeholder="your@email.com"
-              />
-            </div>
-            <div>
-              <label className="text-sm font-medium">Пароль</label>
-              <Input
-                type="password"
-                value={registerForm.password}
-                onChange={(e) =>
-                  setRegisterForm({ ...registerForm, password: e.target.value })
-                }
-                placeholder="Пароль"
-              />
-            </div>
-            <Button
-              onClick={handleRegister}
-              className="w-full"
-              disabled={
-                !registerForm.login ||
-                !registerForm.email ||
-                !registerForm.password
-              }
-            >
-              Зарегистрироваться
-            </Button>
-          </div>
         </DialogContent>
       </Dialog>
     </div>

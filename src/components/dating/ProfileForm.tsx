@@ -29,78 +29,94 @@ const ProfileForm = ({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 h-[70vh] overflow-y-auto">
       <div>
-        <label className="text-sm font-medium">Фото (URL)</label>
+        <label className="text-sm font-medium text-gray-700">Фото (URL)</label>
         <Input
           value={formData.photo}
           onChange={(e) => handleChange("photo", e.target.value)}
           placeholder="https://example.com/photo.jpg"
+          className="mt-1"
         />
       </div>
+
       <div>
-        <label className="text-sm font-medium">Имя</label>
+        <label className="text-sm font-medium text-gray-700">Имя</label>
         <Input
           value={formData.name}
           onChange={(e) => handleChange("name", e.target.value)}
           placeholder="Ваше имя"
+          className="mt-1"
         />
       </div>
+
       <div>
-        <label className="text-sm font-medium">Возраст</label>
+        <label className="text-sm font-medium text-gray-700">Возраст</label>
         <Input
           type="number"
           value={formData.age}
           onChange={(e) => handleChange("age", e.target.value)}
           placeholder="25"
+          className="mt-1"
         />
       </div>
+
       <div>
-        <label className="text-sm font-medium">Город</label>
+        <label className="text-sm font-medium text-gray-700">Город</label>
         <Input
           value={formData.city}
           onChange={(e) => handleChange("city", e.target.value)}
           placeholder="Москва"
+          className="mt-1"
         />
       </div>
+
       <div>
-        <label className="text-sm font-medium">Рост (см)</label>
+        <label className="text-sm font-medium text-gray-700">Рост (см)</label>
         <Input
           type="number"
           value={formData.height}
           onChange={(e) => handleChange("height", e.target.value)}
           placeholder="175"
+          className="mt-1"
         />
       </div>
+
       <div>
-        <label className="text-sm font-medium">Вес (кг)</label>
+        <label className="text-sm font-medium text-gray-700">Вес (кг)</label>
         <Input
           type="number"
           value={formData.weight}
           onChange={(e) => handleChange("weight", e.target.value)}
           placeholder="70"
+          className="mt-1"
         />
       </div>
+
       <div>
-        <label className="text-sm font-medium">Кого ищете</label>
+        <label className="text-sm font-medium text-gray-700">Кого ищете</label>
         <Input
           value={formData.lookingFor}
           onChange={(e) => handleChange("lookingFor", e.target.value)}
           placeholder="Девушку для серьезных отношений"
+          className="mt-1"
         />
       </div>
+
       <div>
-        <label className="text-sm font-medium">О себе</label>
+        <label className="text-sm font-medium text-gray-700">О себе</label>
         <Textarea
           value={formData.about}
           onChange={(e) => handleChange("about", e.target.value)}
           placeholder="Расскажите о себе..."
-          rows={3}
+          rows={4}
+          className="mt-1"
         />
       </div>
+
       <Button
         onClick={onSubmit}
-        className="w-full"
+        className="w-full bg-pink-500 hover:bg-pink-600"
         disabled={!formData.name || !formData.age}
       >
         Отправить анкету

@@ -46,21 +46,23 @@ const ChatSection = ({
   };
 
   return (
-    <Card className="p-6">
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
+    <Card className="p-6 h-[600px] flex flex-col">
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="flex-1 flex flex-col"
+      >
         <TabsList className="mb-4">
           <TabsTrigger value="general">Общий чат</TabsTrigger>
           {selectedChat && (
-            <TabsTrigger value="private">
-              Личные сообщения с {selectedChat}
-            </TabsTrigger>
+            <TabsTrigger value="private">Личные с {selectedChat}</TabsTrigger>
           )}
         </TabsList>
 
-        <TabsContent value="general" className="space-y-4">
-          <div className="h-64 overflow-y-auto border rounded-lg p-4 bg-white">
+        <TabsContent value="general" className="flex-1 flex flex-col">
+          <div className="flex-1 overflow-y-auto border rounded-lg p-4 bg-white mb-4">
             {getPublicMessages().map((msg) => (
-              <div key={msg.id} className="mb-3">
+              <div key={msg.id} className="mb-4">
                 <div className="flex items-center gap-2 mb-1">
                   <button
                     onClick={() => onSelectChat(msg.from)}
@@ -79,15 +81,15 @@ const ChatSection = ({
         </TabsContent>
 
         {selectedChat && (
-          <TabsContent value="private" className="space-y-4">
-            <div className="h-64 overflow-y-auto border rounded-lg p-4 bg-white">
+          <TabsContent value="private" className="flex-1 flex flex-col">
+            <div className="flex-1 overflow-y-auto border rounded-lg p-4 bg-white mb-4">
               {getPrivateMessages(selectedChat).map((msg) => (
                 <div
                   key={msg.id}
                   className={`mb-3 ${msg.from === currentUser?.login ? "text-right" : "text-left"}`}
                 >
                   <div
-                    className={`inline-block p-2 rounded-lg ${
+                    className={`inline-block p-3 rounded-lg max-w-xs ${
                       msg.from === currentUser?.login
                         ? "bg-blue-500 text-white"
                         : "bg-gray-200 text-gray-800"
@@ -105,7 +107,7 @@ const ChatSection = ({
         )}
       </Tabs>
 
-      <div className="flex gap-2 mt-4">
+      <div className="flex gap-2">
         <Input
           value={messageInput}
           onChange={(e) => setMessageInput(e.target.value)}
@@ -116,8 +118,13 @@ const ChatSection = ({
           }
           onFocus={() => !isLoggedIn && onShowProfile()}
           className="flex-1"
+          onKeyPress={(e) => e.key === "Enter" && onSendMessage()}
         />
-        <Button onClick={onSendMessage} disabled={!messageInput.trim()}>
+        <Button
+          onClick={onSendMessage}
+          disabled={!messageInput.trim()}
+          className="bg-pink-500 hover:bg-pink-600"
+        >
           <Icon name="Send" size={16} />
         </Button>
       </div>
