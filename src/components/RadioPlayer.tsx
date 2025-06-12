@@ -9,14 +9,14 @@ import FireworksEffect from "@/components/radio/FireworksEffect";
 import Balloons from "@/components/radio/Balloons";
 
 interface RadioPlayerProps {
-  streamUrl: string;
+  streamUrl?: string;
   likes?: number;
   dislikes?: number;
   listeners?: number;
 }
 
 const RadioPlayer = ({
-  streamUrl,
+  streamUrl = "https://myradio24.org/61673",
   likes = 0,
   dislikes = 0,
   listeners = 0,
@@ -40,6 +40,9 @@ const RadioPlayer = ({
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume;
+      // Улучшение качества звука
+      audioRef.current.preload = "auto";
+      audioRef.current.crossOrigin = "anonymous";
     }
   }, [volume]);
 
@@ -58,60 +61,61 @@ const RadioPlayer = ({
     }
   }, [audioData]);
 
-  const togglePlay = () => {
+  const togglePlay = async () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
         stopAnalysis();
         setShowEffects(false);
       } else {
-        audioRef.current.play();
-        setupAudioAnalysis(audioRef.current);
-        analyzeAudio(setAudioData);
+        try {
+          // Быстрый старт воспроизведения
+          await audioRef.current.play();
+          setupAudioAnalysis(audioRef.current);
+          analyzeAudio(setAudioData);
+          setShowEffects(true);
 
-        // Запускаем эффекты при нажатии Play
-        setShowEffects(true);
+          // Создаем фейерверки
+          setTimeout(
+            () =>
+              createFirework(window.innerWidth * 0.2, window.innerHeight * 0.3),
+            200,
+          );
+          setTimeout(
+            () =>
+              createFirework(window.innerWidth * 0.8, window.innerHeight * 0.4),
+            400,
+          );
+          setTimeout(
+            () =>
+              createFirework(window.innerWidth * 0.5, window.innerHeight * 0.2),
+            600,
+          );
 
-        // Создаем фейерверки в разных местах экрана
-        setTimeout(
-          () =>
-            createFirework(window.innerWidth * 0.2, window.innerHeight * 0.3),
-          200,
-        );
-        setTimeout(
-          () =>
-            createFirework(window.innerWidth * 0.8, window.innerHeight * 0.4),
-          400,
-        );
-        setTimeout(
-          () =>
-            createFirework(window.innerWidth * 0.5, window.innerHeight * 0.2),
-          600,
-        );
-        setTimeout(
-          () =>
-            createFirework(window.innerWidth * 0.1, window.innerHeight * 0.6),
-          800,
-        );
-        setTimeout(
-          () =>
-            createFirework(window.innerWidth * 0.9, window.innerHeight * 0.7),
-          1000,
-        );
-
-        // Скрываем эффекты через 3 секунды
-        setTimeout(() => setShowEffects(false), 3000);
+          setTimeout(() => setShowEffects(false), 3000);
+        } catch (error) {
+          console.error("Ошибка воспроизведения:", error);
+        }
       }
       setIsPlaying(!isPlaying);
     }
   };
 
   return (
-    <div className="flex flex-col items-center py-8">
-      <audio ref={audioRef} src={streamUrl} />
+    <div
+      className={`flex flex-col items-center py-8 ${isPlaying ? "animate-pulse" : ""}`}
+    >
+      <audio
+        ref={audioRef}
+        src={streamUrl}
+        preload="auto"
+        crossOrigin="anonymous"
+      />
 
-      {/* Кнопка воспроизведения */}
-      <PlayButton isPlaying={isPlaying} onToggle={togglePlay} />
+      {/* Пульсирующий контейнер кнопки */}
+      <div className={`mb-6 ${isPlaying ? "animate-pulse" : ""}`}>
+        <PlayButton isPlaying={isPlaying} onToggle={togglePlay} />
+      </div>
 
       {/* Регулятор громкости */}
       <VolumeControl volume={volume} onVolumeChange={setVolume} />
