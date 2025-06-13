@@ -34,13 +34,7 @@ export default defineConfig(({ mode }) => ({
       },
     },
     // Сжатие для уменьшения размера файлов
-    minify: "terser",
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-      },
-    },
+    minify: "esbuild",
     // Оптимизация чанков
     chunkSizeWarningLimit: 1000,
   },
