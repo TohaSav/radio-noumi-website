@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import StoryModal from "@/components/StoryModal";
 import UploadStoryModal from "@/components/UploadStoryModal";
 import Icon from "@/components/ui/icon";
+import { saveStoriesToStorage, loadStoriesFromStorage } from "@/utils/story";
 
 interface Story {
   id: string;
@@ -25,6 +26,19 @@ const Stories = () => {
   const [selectedEmojis, setSelectedEmojis] = useState<{
     [storyId: string]: string[];
   }>({});
+
+  // Загружаем истории из localStorage при инициализации
+  useEffect(() => {
+    const savedStories = loadStoriesFromStorage();
+    setStories(savedStories);
+  }, []);
+
+  // Сохраняем истории в localStorage при изменении
+  useEffect(() => {
+    if (stories.length > 0) {
+      saveStoriesToStorage(stories);
+    }
+  }, [stories]);
 
   const handleAddStory = () => {
     setIsUploadModalOpen(true);
