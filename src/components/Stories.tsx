@@ -87,7 +87,7 @@ const Stories = () => {
 
   return (
     <>
-      <div className="w-full px-4 py-4 bg-black">
+      <div className="w-full px-4 py-4 bg-transparent">
         <div className="flex items-start gap-4 overflow-x-auto scrollbar-hide pb-2">
           {/* Кнопка добавления истории (только для админа) */}
           {isAdmin && (
