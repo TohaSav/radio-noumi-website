@@ -75,7 +75,9 @@ const Reels = () => {
   const [reels, setReels] = useState<Reel[]>(generateDemoReels());
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Автоматическое добавление новых Reels каждые 5 минут
+  // Автоматическое добавление новых Reels каждые 30 секунд
+  const [usedVideoIds, setUsedVideoIds] = useState<Set<string>>(new Set());
+
   useEffect(() => {
     const addNewReel = () => {
       const usernames = [
@@ -89,6 +91,14 @@ const Reels = () => {
         "mix_master",
         "dj_night_owl",
         "radio_addict",
+        "music_vibes_pro",
+        "electronic_soul",
+        "beat_explorer",
+        "synth_master",
+        "groove_finder",
+        "tempo_rider",
+        "audio_wizard",
+        "frequency_hunter",
       ];
 
       const descriptions = [
@@ -100,28 +110,56 @@ const Reels = () => {
         "💃 Невозможно не танцевать!",
         "🎧 Слушаю уже час подряд",
         "🚀 Космическая подборка!",
+        "🌟 Лучший саундтрек дня",
+        "🎨 Музыкальное искусство",
+        "⚡ Энергия на максимум!",
+        "🌈 Позитивные вибрации",
       ];
 
+      // Генерируем уникальный ID для видео
+      let videoId: string;
+      let attempts = 0;
+      do {
+        videoId = (
+          1500000000000 + Math.floor(Math.random() * 500000000)
+        ).toString();
+        attempts++;
+      } while (usedVideoIds.has(videoId) && attempts < 50);
+
+      // Если не удалось найти уникальный ID, очищаем часть использованных
+      if (usedVideoIds.has(videoId)) {
+        const oldIds = Array.from(usedVideoIds).slice(
+          0,
+          Math.floor(usedVideoIds.size / 2),
+        );
+        setUsedVideoIds((prev) => {
+          const newSet = new Set(prev);
+          oldIds.forEach((id) => newSet.delete(id));
+          return newSet;
+        });
+      }
+
       const newReel: Reel = {
-        id: Date.now().toString(),
+        id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
         username: usernames[Math.floor(Math.random() * usernames.length)],
-        avatar: `https://images.unsplash.com/photo-${1500000000000 + Math.floor(Math.random() * 100000000)}?w=100&h=100&fit=crop&crop=face`,
-        videoUrl: `https://images.unsplash.com/photo-${1500000000000 + Math.floor(Math.random() * 100000000)}?w=400&h=600&fit=crop`,
+        avatar: `https://images.unsplash.com/photo-${videoId}?w=100&h=100&fit=crop&crop=face`,
+        videoUrl: `https://images.unsplash.com/photo-${videoId}?w=400&h=600&fit=crop`,
         description:
           descriptions[Math.floor(Math.random() * descriptions.length)],
-        likes: Math.floor(Math.random() * 300) + 50,
-        comments: Math.floor(Math.random() * 50) + 10,
+        likes: Math.floor(Math.random() * 500) + 50,
+        comments: Math.floor(Math.random() * 80) + 10,
         timestamp: new Date(),
         isLiked: false,
         commentsList: [],
       };
 
+      setUsedVideoIds((prev) => new Set(prev).add(videoId));
       setReels((prev) => [newReel, ...prev]);
     };
 
-    const interval = setInterval(addNewReel, 2 * 60 * 1000); // 2 минуты
+    const interval = setInterval(addNewReel, 30000); // 30 секунд
     return () => clearInterval(interval);
-  }, []);
+  }, [usedVideoIds]);
 
   // Имитация активности пользователей
   useEffect(() => {
