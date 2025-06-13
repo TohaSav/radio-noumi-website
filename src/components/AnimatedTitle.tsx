@@ -1,12 +1,8 @@
-import React from "react";
-
-const AnimatedTitle: React.FC = () => {
+const AnimatedTitle = () => {
   return (
-    <div className="relative">
-      <h1 className="text-3xl md:text-6xl lg:text-7xl font-black bg-gradient-to-r from-yellow-400 via-pink-500 via-purple-500 via-blue-500 to-cyan-400 bg-[length:400%_400%] animate-gradient-shift bg-clip-text text-transparent drop-shadow-2xl">
-        Radio Noumi
-      </h1>
-    </div>
+    <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 animate-fade-in">
+      🎵 Radio Noumi
+    </h1>
   );
 };
 
