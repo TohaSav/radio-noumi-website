@@ -35,10 +35,17 @@ const Index = () => {
         <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-20">
           <Link
             to="/dating"
-            className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white font-medium rounded-full transition-all duration-200 hover:bg-white/20"
+            className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white font-medium rounded-full transition-all duration-200 hover:bg-white/20 mb-3"
           >
             <Icon name="Heart" size={16} />
             <span className="text-sm font-semibold">Знакомства</span>
+          </Link>
+          <Link
+            to="/chat"
+            className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white font-medium rounded-full transition-all duration-200 hover:bg-white/20"
+          >
+            <Icon name="MessageCircle" size={16} />
+            <span className="text-sm font-semibold">Онлайн Чат</span>
           </Link>
         </div>
 

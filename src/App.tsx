@@ -10,6 +10,7 @@ import LoadingScreen from "@/components/LoadingScreen";
 const Index = lazy(() => import("./pages/Index"));
 const Reels = lazy(() => import("./pages/Reels"));
 const DatingChat = lazy(() => import("./pages/DatingChat"));
+const OnlineChat = lazy(() => import("./pages/OnlineChat"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/reels" element={<Reels />} />
             <Route path="/dating" element={<DatingChat />} />
+            <Route path="/chat" element={<OnlineChat />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
