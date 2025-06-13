@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Message, Profile } from "@/types/dating";
 import Icon from "@/components/ui/icon";
 import ProfileCard from "./ProfileCard";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // Ключи для localStorage
 const STORAGE_KEY = "dating_chat_messages";
@@ -40,8 +40,18 @@ const ChatSection = ({
   onViewProfile,
   onCreateProfile,
 }: ChatSectionProps) => {
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+
   const [onlineCount, setOnlineCount] = useState(1500000);
   const [usedMessages, setUsedMessages] = useState<Set<string>>(new Set());
+
+  // Автоматический скролл к последним сообщениям
+  useEffect(() => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   // Загрузка сохраненных использованных сообщений при инициализации
   useEffect(() => {
@@ -275,7 +285,7 @@ const ChatSection = ({
           value="general"
           className="flex-1 overflow-y-auto px-2 md:px-6 pb-4"
         >
-          <div className="space-y-3 md:space-y-4">
+          <div ref={messagesContainerRef} className="space-y-3 md:space-y-4">
             {generalMessages.map((msg) => (
               <div
                 key={msg.id}

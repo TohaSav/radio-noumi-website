@@ -36,6 +36,7 @@ const DatingChat = () => {
   const [genderFilter, setGenderFilter] = useState<"all" | "male" | "female">(
     "all",
   );
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const [profileForm, setProfileForm] = useState({
@@ -543,6 +544,16 @@ const DatingChat = () => {
     });
   };
 
+  // Автоматический скролл к последним сообщениям
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // Скролл при загрузке и добавлении новых сообщений
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   const handleRegisterSubmit = () => {
     const newUser: User = {
       id: Date.now().toString(),
@@ -615,31 +626,34 @@ const DatingChat = () => {
 
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
         {/* Основной чат */}
-        <div className="flex-1 flex flex-col min-h-0 order-1">
-          <ChatSection
-            messages={messages}
-            activeTab={activeTab}
-            selectedChat={selectedChat}
-            onTabChange={setActiveTab}
-            onChatSelect={setSelectedChat}
-            profiles={profiles.filter(
-              (profile) =>
-                genderFilter === "all" || profile.gender === genderFilter,
-            )}
-            onLike={handleLike}
-            currentUserId={currentUser?.id}
-            onAddMessage={(msg) => setMessages((prev) => [...prev, msg])}
-            genderFilter={genderFilter}
-            onGenderFilterChange={setGenderFilter}
-            onViewProfile={(profile) => {
-              setSelectedProfile(profile);
-              setShowViewProfileModal(true);
-            }}
-            onCreateProfile={() => setShowProfileModal(true)}
-          />
+        <div className="flex-1 flex flex-col min-h-0 order-1 relative">
+          <div className="flex-1 pb-20 overflow-hidden">
+            <ChatSection
+              messages={messages}
+              activeTab={activeTab}
+              selectedChat={selectedChat}
+              onTabChange={setActiveTab}
+              onChatSelect={setSelectedChat}
+              profiles={profiles.filter(
+                (profile) =>
+                  genderFilter === "all" || profile.gender === genderFilter,
+              )}
+              onLike={handleLike}
+              currentUserId={currentUser?.id}
+              onAddMessage={(msg) => setMessages((prev) => [...prev, msg])}
+              genderFilter={genderFilter}
+              onGenderFilterChange={setGenderFilter}
+              onViewProfile={(profile) => {
+                setSelectedProfile(profile);
+                setShowViewProfileModal(true);
+              }}
+              onCreateProfile={() => setShowProfileModal(true)}
+            />
+            <div ref={messagesEndRef} />
+          </div>
 
-          {/* Поле ввода */}
-          <div className="p-3 sm:p-4 bg-white/90 border-t border-pink-200/50 order-3 lg:order-2">
+          {/* Поле ввода - фиксированное */}
+          <div className="fixed bottom-0 left-0 right-0 lg:left-auto lg:right-80 p-3 sm:p-4 bg-white/95 backdrop-blur-sm border-t border-pink-200/50 z-10">
             <div className="flex gap-2 sm:gap-3 max-w-4xl mx-auto">
               <Input
                 type="text"
