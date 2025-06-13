@@ -251,13 +251,13 @@ const ChatSection = ({
   );
 
   return (
-    <div className="flex-1 flex flex-col min-h-0">
+    <div className="flex-1 flex flex-col min-h-0 h-full">
       <Tabs
         value={activeTab}
         onValueChange={onTabChange}
-        className="flex-1 flex flex-col min-h-0"
+        className="flex-1 flex flex-col min-h-0 h-full"
       >
-        <TabsList className="bg-white/90 p-1 m-2 md:m-4 mb-2 shadow-sm relative flex-wrap md:flex-nowrap">
+        <TabsList className="bg-white/90 p-1 m-2 md:m-4 mb-2 shadow-sm relative flex-wrap md:flex-nowrap flex-shrink-0">
           <div className="absolute left-2 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-2 text-xs text-green-600 font-medium">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
             <span>{onlineCount.toLocaleString()}</span>
@@ -276,16 +276,21 @@ const ChatSection = ({
         </TabsList>
 
         {/* Мобильный счетчик онлайн */}
-        <div className="md:hidden flex items-center justify-center gap-2 text-xs text-green-600 font-medium pb-2">
+        <div className="md:hidden flex items-center justify-center gap-2 text-xs text-green-600 font-medium pb-2 flex-shrink-0">
           <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
           <span>{onlineCount.toLocaleString()} онлайн</span>
         </div>
 
-        <TabsContent
-          value="general"
-          className="flex-1 overflow-y-auto px-2 md:px-6 pb-4"
-        >
-          <div ref={messagesContainerRef} className="space-y-3 md:space-y-4">
+        <TabsContent value="general" className="flex-1 min-h-0 h-full">
+          <div
+            ref={messagesContainerRef}
+            className="h-full overflow-y-auto px-2 md:px-6 pb-4 space-y-3 md:space-y-4"
+            style={{
+              height: "calc(100vh - 240px)",
+              minHeight: "400px",
+              maxHeight: "calc(100vh - 200px)",
+            }}
+          >
             {generalMessages.map((msg) => (
               <div
                 key={msg.id}
@@ -313,12 +318,21 @@ const ChatSection = ({
               </div>
             ))}
           </div>
+          </div>
         </TabsContent>
 
         <TabsContent
           value="profiles"
-          className="flex-1 overflow-y-auto p-2 md:p-6"
+          className="flex-1 min-h-0 h-full"
         >
+          <div 
+            className="h-full overflow-y-auto p-2 md:p-6"
+            style={{ 
+              height: 'calc(100vh - 240px)', 
+              minHeight: '400px',
+              maxHeight: 'calc(100vh - 200px)'
+            }}
+          >
           {/* Кнопка создания анкеты */}
           <div className="mb-4">
             <Button
@@ -375,14 +389,22 @@ const ChatSection = ({
               />
             ))}
           </div>
+          </div>
         </TabsContent>
 
         {selectedChat && (
           <TabsContent
             value="private"
-            className="flex-1 overflow-y-auto px-2 md:px-6 pb-4"
+            className="flex-1 min-h-0 h-full"
           >
-            <div className="space-y-3 md:space-y-4">
+            <div 
+              className="h-full overflow-y-auto px-2 md:px-6 pb-4 space-y-3 md:space-y-4"
+              style={{ 
+                height: 'calc(100vh - 240px)', 
+                minHeight: '400px',
+                maxHeight: 'calc(100vh - 200px)'
+              }}
+            >
               {privateMessages.map((msg) => (
                 <div
                   key={msg.id}
