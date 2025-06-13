@@ -271,7 +271,6 @@ const RadioPlayer = ({
               </button>
 
               {/* Кнопка поделиться удалена */}
-            </div>
 
               {/* Громкость */}
               <div className="relative">
@@ -311,6 +310,7 @@ const RadioPlayer = ({
                 )}
               </div>
             </div>
+          </div>
           </div>
         </div>
       </div>
