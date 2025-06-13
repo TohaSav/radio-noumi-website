@@ -311,7 +311,6 @@ const RadioPlayer = ({
               </div>
             </div>
           </div>
-          </div>
         </div>
       </div>
 
