@@ -5,6 +5,19 @@ import Icon from "@/components/ui/icon";
 import ProfileCard from "./ProfileCard";
 import { useState, useEffect, useRef } from "react";
 
+// Интерфейс для летящих сердечек
+interface FlyingHeart {
+  id: string;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  rotation: number;
+  scale: number;
+  opacity: number;
+  life: number;
+}
+
 // Ключи для localStorage
 const STORAGE_KEY = "dating_chat_messages";
 const USED_MESSAGES_KEY = "dating_chat_used_messages";
@@ -41,9 +54,12 @@ const ChatSection = ({
   onCreateProfile,
 }: ChatSectionProps) => {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const animationRef = useRef<number>();
 
   const [onlineCount, setOnlineCount] = useState(1500000);
   const [usedMessages, setUsedMessages] = useState<Set<string>>(new Set());
+  const [flyingHearts, setFlyingHearts] = useState<FlyingHeart[]>([]);
 
   // Автоматический скролл к последним сообщениям
   useEffect(() => {
@@ -243,6 +259,70 @@ const ChatSection = ({
     return () => clearInterval(interval);
   }, [activeTab, onAddMessage]);
 
+  // Анимация летящих сердечек
+  const createHearts = () => {
+    if (!buttonRef.current) return;
+
+    const rect = buttonRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    const newHearts: FlyingHeart[] = [];
+
+    // Создаем 8-12 сердечек
+    const heartsCount = 8 + Math.floor(Math.random() * 5);
+
+    for (let i = 0; i < heartsCount; i++) {
+      const angle = (Math.PI * 2 * i) / heartsCount + Math.random() * 0.5;
+      const speed = 2 + Math.random() * 4;
+
+      newHearts.push({
+        id: `heart_${Date.now()}_${i}`,
+        x: centerX,
+        y: centerY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - Math.random() * 2, // Легкий подъем вверх
+        rotation: Math.random() * 360,
+        scale: 0.8 + Math.random() * 0.4,
+        opacity: 1,
+        life: 60 + Math.random() * 40, // 60-100 кадров жизни
+      });
+    }
+
+    setFlyingHearts((prev) => [...prev, ...newHearts]);
+  };
+
+  // Анимационный цикл для сердечек
+  useEffect(() => {
+    const animate = () => {
+      setFlyingHearts((hearts) => {
+        return hearts
+          .map((heart) => ({
+            ...heart,
+            x: heart.x + heart.vx,
+            y: heart.y + heart.vy,
+            vy: heart.vy + 0.1, // Гравитация
+            rotation: heart.rotation + 3,
+            opacity: heart.opacity - 1 / heart.life,
+            life: heart.life - 1,
+          }))
+          .filter((heart) => heart.life > 0 && heart.opacity > 0);
+      });
+
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    if (flyingHearts.length > 0) {
+      animationRef.current = requestAnimationFrame(animate);
+    }
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [flyingHearts.length]);
+
   const generalMessages = messages.filter((msg) => msg.chatType === "general");
   const privateMessages = messages.filter(
     (msg) =>
@@ -330,14 +410,36 @@ const ChatSection = ({
             }}
           >
             {/* Кнопка создания анкеты */}
-            <div className="mb-4">
+            <div className="mb-4 relative">
               <Button
-                onClick={onCreateProfile}
+                ref={buttonRef}
+                onClick={() => {
+                  createHearts();
+                  onCreateProfile();
+                }}
+                onMouseEnter={createHearts}
                 className="w-full bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 hover:from-pink-600 hover:via-rose-600 hover:to-purple-700 text-white font-medium rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl border-0"
               >
                 <Icon name="Plus" size={16} className="mr-2" />
                 Добавить анкету
               </Button>
+
+              {/* Летящие сердечки */}
+              {flyingHearts.map((heart) => (
+                <div
+                  key={heart.id}
+                  className="fixed pointer-events-none z-50 text-red-500"
+                  style={{
+                    left: heart.x,
+                    top: heart.y,
+                    transform: `translate(-50%, -50%) rotate(${heart.rotation}deg) scale(${heart.scale})`,
+                    opacity: heart.opacity,
+                    fontSize: "16px",
+                  }}
+                >
+                  ❤️
+                </div>
+              ))}
             </div>
 
             {/* Фильтр по полу */}
