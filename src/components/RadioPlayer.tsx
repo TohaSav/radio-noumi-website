@@ -186,11 +186,7 @@ const RadioPlayer = ({
             </button>
 
             {/* Центральная часть - название */}
-            <div className="flex-1 min-w-0 px-2 sm:px-3">
-              <div className="text-gray-800 text-sm sm:text-base font-medium truncate">
-                Открой глаза
-              </div>
-            </div>
+            <div className="flex-1 min-w-0 px-2 sm:px-3"></div>
 
             {/* Правая часть - управление */}
             <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
