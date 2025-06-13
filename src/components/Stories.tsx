@@ -6,10 +6,10 @@ import Icon from "@/components/ui/icon";
 
 interface Story {
   id: string;
-  image: string;
+  media: { url: string; type: "image" | "video" }[];
   author: string;
   timestamp: number;
-  type: "image" | "video";
+  likes: number;
   reactions?: { [emoji: string]: number };
 }
 
@@ -30,16 +30,20 @@ const Stories = () => {
     setIsUploadModalOpen(true);
   };
 
-  const handleUpload = async (file: File, author: string) => {
-    // Создание URL для предварительного просмотра
-    const fileUrl = URL.createObjectURL(file);
+  const handleUpload = async (files: File[], author: string) => {
+    const mediaFiles = files.map((file) => ({
+      url: URL.createObjectURL(file),
+      type: file.type.startsWith("video/")
+        ? ("video" as const)
+        : ("image" as const),
+    }));
 
     const newStory: Story = {
       id: `story-${Date.now()}`,
-      image: fileUrl,
+      media: mediaFiles,
       author,
       timestamp: Date.now(),
-      type: file.type.startsWith("video/") ? "video" : "image",
+      likes: 0,
     };
 
     setStories((prev) => [newStory, ...prev]);
@@ -70,6 +74,17 @@ const Stories = () => {
         [storyId]: (prev[storyId] || []).filter((_, index) => index !== 0),
       }));
     }, 2000);
+  };
+
+  const handleLikeStory = (storyId: string) => {
+    setStories((prev) =>
+      prev.map((story) => {
+        if (story.id === storyId) {
+          return { ...story, likes: story.likes + 1 };
+        }
+        return story;
+      }),
+    );
   };
 
   const handleDeleteStory = (storyId: string, e: React.MouseEvent) => {
@@ -123,16 +138,16 @@ const Stories = () => {
                 <div className="w-20 h-20 rounded-full p-0.5 bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600 animate-pulse">
                   <div className="w-full h-full rounded-full bg-black p-0.5">
                     <div className="w-full h-full rounded-full overflow-hidden">
-                      {story.type === "video" ? (
+                      {story.media[0]?.type === "video" ? (
                         <video
-                          src={story.image}
+                          src={story.media[0].url}
                           className="w-full h-full object-cover"
                           muted
                           playsInline
                         />
                       ) : (
                         <img
-                          src={story.image}
+                          src={story.media[0]?.url}
                           alt={story.author}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                         />
@@ -141,8 +156,17 @@ const Stories = () => {
                   </div>
                 </div>
 
+                {/* Индикатор множественных файлов */}
+                {story.media.length > 1 && (
+                  <div className="absolute top-2 right-2 w-6 h-6 bg-black/70 rounded-full flex items-center justify-center">
+                    <span className="text-white text-xs font-bold">
+                      {story.media.length}
+                    </span>
+                  </div>
+                )}
+
                 {/* Индикатор видео */}
-                {story.type === "video" && (
+                {story.media[0]?.type === "video" && (
                   <div className="absolute bottom-2 right-2 w-5 h-5 bg-black/70 rounded-full flex items-center justify-center">
                     <Icon name="Play" size={10} className="text-white" />
                   </div>
@@ -191,6 +215,7 @@ const Stories = () => {
           stories={stories}
           initialStoryIndex={selectedStoryIndex}
           onAddReaction={handleAddReaction}
+          onLikeStory={handleLikeStory}
           selectedEmojis={selectedEmojis}
         />
       )}

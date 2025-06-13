@@ -13,7 +13,7 @@ import Icon from "@/components/ui/icon";
 interface UploadStoryModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onUpload: (file: File, author: string) => void;
+  onUpload: (files: File[], author: string) => void;
 }
 
 const UploadStoryModal = ({
@@ -21,16 +21,16 @@ const UploadStoryModal = ({
   onClose,
   onUpload,
 }: UploadStoryModalProps) => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [author, setAuthor] = useState("");
-  const [preview, setPreview] = useState<string | null>(null);
+  const [previews, setPreviews] = useState<string[]>([]);
   const [isUploading, setIsUploading] = useState(false);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+    const files = Array.from(event.target.files || []);
+    if (files.length === 0) return;
 
-    // Проверка типа файла
+    // Проверка типа файлов
     const allowedTypes = [
       "image/jpeg",
       "image/png",
@@ -38,35 +38,42 @@ const UploadStoryModal = ({
       "video/mp4",
       "video/webm",
     ];
-    if (!allowedTypes.includes(file.type)) {
-      alert(
-        "Поддерживаются только изображения (JPEG, PNG, GIF) и видео (MP4, WebM)",
-      );
-      return;
-    }
 
-    // Проверка размера (макс 50MB)
-    if (file.size > 50 * 1024 * 1024) {
-      alert("Файл слишком большой. Максимальный размер: 50MB");
-      return;
-    }
+    const validFiles = files.filter((file) => {
+      if (!allowedTypes.includes(file.type)) {
+        alert(`Файл ${file.name} не поддерживается`);
+        return false;
+      }
+      if (file.size > 50 * 1024 * 1024) {
+        alert(`Файл ${file.name} слишком большой (макс 50MB)`);
+        return false;
+      }
+      return true;
+    });
 
-    setSelectedFile(file);
+    setSelectedFiles((prev) => [...prev, ...validFiles]);
 
-    // Создание превью
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setPreview(e.target?.result as string);
-    };
-    reader.readAsDataURL(file);
+    // Создание превью для новых файлов
+    validFiles.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPreviews((prev) => [...prev, e.target?.result as string]);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const removeFile = (index: number) => {
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+    setPreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleUpload = async () => {
-    if (!selectedFile || !author.trim()) return;
+    if (selectedFiles.length === 0 || !author.trim()) return;
 
     setIsUploading(true);
     try {
-      await onUpload(selectedFile, author.trim());
+      await onUpload(selectedFiles, author.trim());
       handleClose();
     } catch (error) {
       console.error("Ошибка загрузки:", error);
@@ -76,14 +83,12 @@ const UploadStoryModal = ({
   };
 
   const handleClose = () => {
-    setSelectedFile(null);
+    setSelectedFiles([]);
     setAuthor("");
-    setPreview(null);
+    setPreviews([]);
     setIsUploading(false);
     onClose();
   };
-
-  const isVideo = selectedFile?.type.startsWith("video/");
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
@@ -106,6 +111,7 @@ const UploadStoryModal = ({
                 id="file-upload"
                 type="file"
                 accept="image/*,video/*"
+                multiple
                 onChange={handleFileSelect}
                 className="hidden"
               />
@@ -113,37 +119,52 @@ const UploadStoryModal = ({
                 htmlFor="file-upload"
                 className="flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-purple-400 transition-colors"
               >
-                {preview ? (
-                  <div className="relative w-full h-full">
-                    {isVideo ? (
+                <div className="text-center">
+                  <Icon
+                    name="Upload"
+                    size={24}
+                    className="mx-auto mb-2 text-gray-400"
+                  />
+                  <p className="text-sm text-gray-500">
+                    Выберите фото и видео (можно несколько)
+                  </p>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          {/* Превью выбранных файлов */}
+          {selectedFiles.length > 0 && (
+            <div>
+              <Label className="text-sm font-medium">
+                Выбрано файлов: {selectedFiles.length}
+              </Label>
+              <div className="mt-2 grid grid-cols-3 gap-2 max-h-40 overflow-y-auto">
+                {previews.map((preview, index) => (
+                  <div key={index} className="relative group">
+                    {selectedFiles[index]?.type.startsWith("video/") ? (
                       <video
                         src={preview}
-                        className="w-full h-full object-cover rounded-lg"
-                        controls
+                        className="w-full h-20 object-cover rounded-lg"
                       />
                     ) : (
                       <img
                         src={preview}
-                        alt="Превью"
-                        className="w-full h-full object-cover rounded-lg"
+                        alt={`Превью ${index + 1}`}
+                        className="w-full h-20 object-cover rounded-lg"
                       />
                     )}
+                    <button
+                      onClick={() => removeFile(index)}
+                      className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <Icon name="X" size={12} className="text-white" />
+                    </button>
                   </div>
-                ) : (
-                  <div className="text-center">
-                    <Icon
-                      name="Upload"
-                      size={24}
-                      className="mx-auto mb-2 text-gray-400"
-                    />
-                    <p className="text-sm text-gray-500">
-                      Нажмите для выбора фото или видео
-                    </p>
-                  </div>
-                )}
-              </label>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Имя автора */}
           <div>
@@ -170,7 +191,9 @@ const UploadStoryModal = ({
             </Button>
             <Button
               onClick={handleUpload}
-              disabled={!selectedFile || !author.trim() || isUploading}
+              disabled={
+                selectedFiles.length === 0 || !author.trim() || isUploading
+              }
               className="flex-1"
             >
               {isUploading ? (

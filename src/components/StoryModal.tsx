@@ -4,10 +4,10 @@ import Icon from "@/components/ui/icon";
 
 interface Story {
   id: string;
-  image: string;
+  media: { url: string; type: "image" | "video" }[];
   author: string;
   timestamp: number;
-  type: "image" | "video";
+  likes: number;
   reactions?: { [emoji: string]: number };
 }
 
@@ -17,6 +17,7 @@ interface StoryModalProps {
   stories: Story[];
   initialStoryIndex: number;
   onAddReaction: (storyId: string, emoji: string) => void;
+  onLikeStory?: (storyId: string) => void;
 }
 
 const StoryModal = ({
@@ -25,11 +26,15 @@ const StoryModal = ({
   stories,
   initialStoryIndex,
   onAddReaction,
+  onLikeStory,
 }: StoryModalProps) => {
   const [currentIndex, setCurrentIndex] = useState(initialStoryIndex);
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [showLikeHeart, setShowLikeHeart] = useState(false);
+  const [lastTap, setLastTap] = useState(0);
   const [floatingEmojis, setFloatingEmojis] = useState<
     { id: string; emoji: string; x: number; y: number }[]
   >([]);
@@ -57,6 +62,21 @@ const StoryModal = ({
     }, 3000);
 
     setShowEmojiPicker(false);
+  };
+
+  const handleDoubleTap = (e: React.TouchEvent | React.MouseEvent) => {
+    const now = Date.now();
+    if (now - lastTap < 300) {
+      // Двойной тап - лайк
+      if (onLikeStory) {
+        onLikeStory(currentStory.id);
+      }
+
+      // Показываем анимацию сердечка
+      setShowLikeHeart(true);
+      setTimeout(() => setShowLikeHeart(false), 1000);
+    }
+    setLastTap(now);
   };
 
   // Обработка пауз и воспроизведения
@@ -102,6 +122,7 @@ const StoryModal = ({
   const goToPrevious = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
+      setCurrentMediaIndex(0);
       setProgress(0);
     }
   };
@@ -109,9 +130,26 @@ const StoryModal = ({
   const goToNext = () => {
     if (currentIndex < stories.length - 1) {
       setCurrentIndex(currentIndex + 1);
+      setCurrentMediaIndex(0);
       setProgress(0);
     } else {
       onClose();
+    }
+  };
+
+  const goToPreviousMedia = () => {
+    if (currentMediaIndex > 0) {
+      setCurrentMediaIndex(currentMediaIndex - 1);
+      setProgress(0);
+    }
+  };
+
+  const goToNextMedia = () => {
+    if (currentMediaIndex < currentStory.media.length - 1) {
+      setCurrentMediaIndex(currentMediaIndex + 1);
+      setProgress(0);
+    } else {
+      goToNext();
     }
   };
 
@@ -167,7 +205,7 @@ const StoryModal = ({
                 <div className="w-full h-full bg-black rounded-full p-0.5">
                   <div className="w-full h-full rounded-full overflow-hidden">
                     <img
-                      src={currentStory.image}
+                      src={currentStory.media[0]?.url}
                       alt={currentStory.author}
                       className="w-full h-full object-cover"
                     />
@@ -184,6 +222,12 @@ const StoryModal = ({
               </div>
             </div>
             <div className="flex items-center gap-2">
+              {/* Индикатор медиа */}
+              {currentStory.media.length > 1 && (
+                <div className="text-white/70 text-xs">
+                  {currentMediaIndex + 1}/{currentStory.media.length}
+                </div>
+              )}
               <button className="text-white/70 hover:text-white transition-colors">
                 <Icon name="MoreHorizontal" size={20} />
               </button>
@@ -197,10 +241,14 @@ const StoryModal = ({
           </div>
 
           {/* Story content */}
-          <div className="relative w-full h-full max-w-md mx-auto">
-            {currentStory.type === "video" ? (
+          <div
+            className="relative w-full h-full max-w-md mx-auto"
+            onClick={handleDoubleTap}
+            onTouchEnd={handleDoubleTap}
+          >
+            {currentStory.media[currentMediaIndex]?.type === "video" ? (
               <video
-                src={currentStory.image}
+                src={currentStory.media[currentMediaIndex].url}
                 className="w-full h-full object-cover"
                 autoPlay
                 muted
@@ -209,10 +257,63 @@ const StoryModal = ({
               />
             ) : (
               <img
-                src={currentStory.image}
+                src={currentStory.media[currentMediaIndex]?.url}
                 alt="Story"
                 className="w-full h-full object-cover"
               />
+            )}
+
+            {/* Анимация лайка */}
+            {showLikeHeart && (
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none">
+                <div className="animate-ping">
+                  <Icon
+                    name="Heart"
+                    size={60}
+                    className="text-red-500 fill-red-500"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Навигация по медиа */}
+            {currentStory.media.length > 1 && (
+              <>
+                {currentMediaIndex > 0 && (
+                  <button
+                    onClick={goToPreviousMedia}
+                    className="absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-black/30 rounded-full flex items-center justify-center z-20"
+                  >
+                    <Icon name="ChevronLeft" size={16} className="text-white" />
+                  </button>
+                )}
+                {currentMediaIndex < currentStory.media.length - 1 && (
+                  <button
+                    onClick={goToNextMedia}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-black/30 rounded-full flex items-center justify-center z-20"
+                  >
+                    <Icon
+                      name="ChevronRight"
+                      size={16}
+                      className="text-white"
+                    />
+                  </button>
+                )}
+              </>
+            )}
+
+            {/* Точки индикации медиа */}
+            {currentStory.media.length > 1 && (
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-1 z-20">
+                {currentStory.media.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-2 h-2 rounded-full ${
+                      index === currentMediaIndex ? "bg-white" : "bg-white/30"
+                    }`}
+                  />
+                ))}
+              </div>
             )}
           </div>
 
@@ -244,10 +345,24 @@ const StoryModal = ({
           <div className="absolute bottom-8 left-4 right-4 flex items-center justify-between z-20">
             <div className="flex items-center gap-3">
               <button
+                onClick={() => onLikeStory?.(currentStory.id)}
+                className="w-12 h-12 bg-black/30 rounded-full flex items-center justify-center hover:bg-black/50 transition-colors"
+              >
+                <Icon name="Heart" size={24} className="text-red-500" />
+              </button>
+
+              {/* Счетчик лайков */}
+              {currentStory.likes > 0 && (
+                <span className="text-white text-sm font-medium">
+                  {currentStory.likes}
+                </span>
+              )}
+
+              <button
                 onClick={() => setShowEmojiPicker(!showEmojiPicker)}
                 className="w-12 h-12 bg-black/30 rounded-full flex items-center justify-center hover:bg-black/50 transition-colors"
               >
-                <Icon name="Heart" size={24} className="text-white" />
+                <Icon name="Smile" size={24} className="text-white" />
               </button>
 
               <button className="w-12 h-12 bg-black/30 rounded-full flex items-center justify-center hover:bg-black/50 transition-colors">
