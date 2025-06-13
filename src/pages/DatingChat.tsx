@@ -587,31 +587,35 @@ const DatingChat = () => {
 
       {/* Хедер */}
       <div className="bg-white/80 backdrop-blur-sm shadow-lg border-b border-pink-200/50">
-        <div className="container mx-auto px-2 md:px-4 py-3 md:py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2 md:gap-4">
+        <div className="container mx-auto px-3 sm:px-4 py-2 sm:py-4 flex justify-between items-center">
+          <div className="flex items-center gap-2 sm:gap-4">
             <Link
               to="/"
-              className="flex items-center gap-1 md:gap-2 text-gray-600 hover:text-gray-800"
+              className="flex items-center gap-1 sm:gap-2 text-gray-600 hover:text-gray-800"
             >
-              <Icon name="ArrowLeft" size={16} className="md:w-5 md:h-5" />
-              <span className="text-sm md:text-base">Radio Noumi</span>
+              <Icon name="ArrowLeft" size={16} className="sm:w-5 sm:h-5" />
+              <span className="text-sm sm:text-base">Radio Noumi</span>
             </Link>
-            <h1 className="text-lg md:text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-1 md:gap-2">
-              <Icon name="Heart" size={18} className="md:w-6 md:h-6" />
+            <h1 className="text-base sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-1 sm:gap-2">
+              <Icon
+                name="Heart"
+                size={16}
+                className="sm:w-5 sm:h-5 lg:w-6 lg:h-6"
+              />
               <span className="hidden sm:inline">Чат знакомств</span>
               <span className="sm:hidden">Знакомства</span>
             </h1>
           </div>
-          <div className="hidden md:flex items-center gap-3 text-sm text-gray-600">
+          <div className="hidden lg:flex items-center gap-3 text-sm text-gray-600">
             <Icon name="Radio" size={16} />
             <span>Фоновое радио</span>
           </div>
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col md:flex-row">
+      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
         {/* Основной чат */}
-        <div className="flex-1 flex flex-col min-h-0">
+        <div className="flex-1 flex flex-col min-h-0 order-1">
           <ChatSection
             messages={messages}
             activeTab={activeTab}
@@ -627,11 +631,16 @@ const DatingChat = () => {
             onAddMessage={(msg) => setMessages((prev) => [...prev, msg])}
             genderFilter={genderFilter}
             onGenderFilterChange={setGenderFilter}
+            onViewProfile={(profile) => {
+              setSelectedProfile(profile);
+              setShowViewProfileModal(true);
+            }}
+            onCreateProfile={() => setShowProfileModal(true)}
           />
 
           {/* Поле ввода */}
-          <div className="p-2 md:p-4 bg-white/90 border-t border-pink-200/50">
-            <div className="flex gap-2 md:gap-3 max-w-4xl mx-auto">
+          <div className="p-3 sm:p-4 bg-white/90 border-t border-pink-200/50 order-3 lg:order-2">
+            <div className="flex gap-2 sm:gap-3 max-w-4xl mx-auto">
               <Input
                 type="text"
                 value={messageInput}
@@ -642,22 +651,55 @@ const DatingChat = () => {
                     ? "Написать сообщение..."
                     : "Нажмите для создания анкеты..."
                 }
-                className="flex-1 text-sm md:text-base"
+                className="flex-1 text-sm sm:text-base h-10 sm:h-11"
                 onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
               />
               <Button
                 onClick={handleSendMessage}
                 disabled={!messageInput.trim() || !isLoggedIn}
-                size={window.innerWidth < 768 ? "sm" : "default"}
+                size="sm"
+                className="h-10 sm:h-11 px-3 sm:px-4"
               >
-                <Icon name="Send" size={14} className="md:w-4 md:h-4" />
+                <Icon name="Send" size={16} className="sm:w-4 sm:h-4" />
               </Button>
             </div>
           </div>
         </div>
 
-        {/* Боковая панель - скрыта на мобильных */}
-        <div className="hidden md:block">
+        {/* Боковая панель - мобильная версия */}
+        <div className="lg:hidden bg-white/90 border-t border-pink-200/50 order-2">
+          <button
+            onClick={() => setShowMobilePanel(!showMobilePanel)}
+            className="w-full p-3 flex items-center justify-center gap-2 text-gray-600 hover:text-gray-800"
+          >
+            <Icon name="User" size={16} />
+            <span className="text-sm">Личный кабинет</span>
+            <Icon
+              name={showMobilePanel ? "ChevronUp" : "ChevronDown"}
+              size={16}
+            />
+          </button>
+
+          {showMobilePanel && (
+            <div className="max-h-60 overflow-y-auto">
+              <UserPanel
+                isLoggedIn={isLoggedIn}
+                currentUser={currentUser}
+                likes={likes}
+                profiles={profiles.filter(
+                  (profile) =>
+                    genderFilter === "all" || profile.gender === genderFilter,
+                )}
+                onRegisterClick={() => setShowRegisterForm(true)}
+                genderFilter={genderFilter}
+                onGenderFilterChange={setGenderFilter}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Боковая панель - десктопная версия */}
+        <div className="hidden lg:block lg:w-80 order-2">
           <UserPanel
             isLoggedIn={isLoggedIn}
             currentUser={currentUser}
@@ -675,7 +717,7 @@ const DatingChat = () => {
 
       {/* Модальные окна */}
       <Dialog open={showProfileModal} onOpenChange={setShowProfileModal}>
-        <DialogContent className="max-w-md max-h-[90vh] overflow-hidden">
+        <DialogContent className="max-w-sm sm:max-w-md max-h-[90vh] overflow-y-auto mx-4">
           <DialogHeader>
             <DialogTitle>Создать анкету</DialogTitle>
           </DialogHeader>
@@ -688,7 +730,7 @@ const DatingChat = () => {
       </Dialog>
 
       <Dialog open={showRegisterForm} onOpenChange={setShowRegisterForm}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-sm sm:max-w-md mx-4">
           <DialogHeader>
             <DialogTitle>Регистрация</DialogTitle>
           </DialogHeader>
@@ -702,6 +744,7 @@ const DatingChat = () => {
                 onChange={(e) =>
                   setRegisterForm({ ...registerForm, login: e.target.value })
                 }
+                className="h-10 sm:h-11"
               />
             </div>
             <div>
@@ -713,6 +756,7 @@ const DatingChat = () => {
                 onChange={(e) =>
                   setRegisterForm({ ...registerForm, email: e.target.value })
                 }
+                className="h-10 sm:h-11"
               />
             </div>
             <div>
@@ -724,9 +768,10 @@ const DatingChat = () => {
                 onChange={(e) =>
                   setRegisterForm({ ...registerForm, password: e.target.value })
                 }
+                className="h-10 sm:h-11"
               />
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <Button
                 onClick={handleRegisterSubmit}
                 disabled={
@@ -734,7 +779,7 @@ const DatingChat = () => {
                   !registerForm.email ||
                   !registerForm.password
                 }
-                className="flex-1"
+                className="flex-1 h-10 sm:h-11"
               >
                 Зарегистрироваться
               </Button>
@@ -745,11 +790,56 @@ const DatingChat = () => {
                   setShowProfileModal(true);
                 }}
                 disabled={!isLoggedIn}
+                className="h-10 sm:h-11"
               >
                 Анкета
               </Button>
             </div>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={showViewProfileModal}
+        onOpenChange={setShowViewProfileModal}
+      >
+        <DialogContent className="max-w-sm sm:max-w-md mx-4">
+          <DialogHeader>
+            <DialogTitle>Анкета</DialogTitle>
+          </DialogHeader>
+          {selectedProfile && (
+            <div className="space-y-4">
+              <img
+                src={selectedProfile.photo}
+                alt={selectedProfile.name}
+                className="w-full h-64 object-cover rounded-lg"
+              />
+              <div>
+                <h3 className="text-lg font-bold">
+                  {selectedProfile.name}, {selectedProfile.age}
+                </h3>
+                <p className="text-sm text-gray-600">{selectedProfile.city}</p>
+              </div>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="font-medium">Рост:</span>{" "}
+                  {selectedProfile.height}
+                </div>
+                <div>
+                  <span className="font-medium">Вес:</span>{" "}
+                  {selectedProfile.weight}
+                </div>
+              </div>
+              <div>
+                <span className="font-medium">Ищет:</span>{" "}
+                {selectedProfile.lookingFor}
+              </div>
+              <div>
+                <span className="font-medium">О себе:</span>
+                <p className="text-sm mt-1">{selectedProfile.about}</p>
+              </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>
