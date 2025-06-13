@@ -1,6 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
+
+interface Comment {
+  id: string;
+  author: string;
+  text: string;
+  timestamp: number;
+}
 
 interface Story {
   id: string;
@@ -9,6 +18,7 @@ interface Story {
   timestamp: number;
   likes: number;
   reactions?: { [emoji: string]: number };
+  comments?: Comment[];
 }
 
 interface StoryModalProps {
@@ -32,12 +42,19 @@ const StoryModal = ({
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [showComments, setShowComments] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [showLikeHeart, setShowLikeHeart] = useState(false);
   const [lastTap, setLastTap] = useState(0);
   const [floatingEmojis, setFloatingEmojis] = useState<
     { id: string; emoji: string; x: number; y: number }[]
   >([]);
+  const [comments, setComments] = useState<{ [storyId: string]: Comment[] }>(
+    {},
+  );
+  const [newComment, setNewComment] = useState("");
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const emojis = ["❤️", "😍", "😂", "😮", "😢", "👏", "🔥", "💯"];
 
@@ -75,8 +92,29 @@ const StoryModal = ({
       // Показываем анимацию сердечка
       setShowLikeHeart(true);
       setTimeout(() => setShowLikeHeart(false), 1000);
+    } else {
+      // Одиночный тап - переключение медиа
+      goToNextMedia();
     }
     setLastTap(now);
+  };
+
+  const handleAddComment = () => {
+    if (!newComment.trim()) return;
+
+    const comment: Comment = {
+      id: Date.now().toString(),
+      author: "Гость",
+      text: newComment.trim(),
+      timestamp: Date.now(),
+    };
+
+    setComments((prev) => ({
+      ...prev,
+      [currentStory.id]: [...(prev[currentStory.id] || []), comment],
+    }));
+
+    setNewComment("");
   };
 
   // Обработка пауз и воспроизведения
@@ -85,53 +123,81 @@ const StoryModal = ({
   const handleTouchStart = () => setIsPaused(true);
   const handleTouchEnd = () => setIsPaused(false);
 
+  // Автоматическое воспроизведение и прогресс
   useEffect(() => {
-    if (!isOpen || isPaused) return;
+    if (!isOpen || isPaused) {
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+      }
+      return;
+    }
 
-    setCurrentIndex(initialStoryIndex);
+    const currentMedia = currentStory?.media[currentMediaIndex];
+    if (!currentMedia) return;
+
     setProgress(0);
 
-    const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          // Переход к следующей истории
-          if (currentIndex < stories.length - 1) {
-            setCurrentIndex(currentIndex + 1);
-            return 0;
-          } else {
-            onClose();
+    if (currentMedia.type === "video") {
+      // Для видео - слушаем событие окончания
+      const video = videoRef.current;
+      if (video) {
+        const handleVideoEnd = () => {
+          goToNextMedia();
+        };
+
+        const handleTimeUpdate = () => {
+          if (video.duration) {
+            const progress = (video.currentTime / video.duration) * 100;
+            setProgress(progress);
+          }
+        };
+
+        video.addEventListener("ended", handleVideoEnd);
+        video.addEventListener("timeupdate", handleTimeUpdate);
+
+        return () => {
+          video.removeEventListener("ended", handleVideoEnd);
+          video.removeEventListener("timeupdate", handleTimeUpdate);
+        };
+      }
+    } else {
+      // Для фото - 30 секунд
+      progressIntervalRef.current = setInterval(() => {
+        setProgress((prev) => {
+          if (prev >= 100) {
+            goToNextMedia();
             return 0;
           }
-        }
-        return prev + 0.67; // 15 секунд = 100 / 15 = 6.67 но делаем медленнее
-      });
-    }, 100);
+          return prev + 100 / 300; // 30 секунд = 3000ms / 100ms интервал
+        });
+      }, 100);
+    }
 
-    return () => clearInterval(progressInterval);
-  }, [
-    isOpen,
-    currentIndex,
-    stories.length,
-    onClose,
-    initialStoryIndex,
-    isPaused,
-  ]);
+    return () => {
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+      }
+    };
+  }, [isOpen, currentIndex, currentMediaIndex, isPaused, currentStory]);
+
+  // Сброс при смене истории
+  useEffect(() => {
+    setCurrentMediaIndex(0);
+    setProgress(0);
+    setShowComments(false);
+  }, [currentIndex]);
 
   const currentStory = stories[currentIndex];
 
   const goToPrevious = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
-      setCurrentMediaIndex(0);
-      setProgress(0);
     }
   };
 
   const goToNext = () => {
     if (currentIndex < stories.length - 1) {
       setCurrentIndex(currentIndex + 1);
-      setCurrentMediaIndex(0);
-      setProgress(0);
     } else {
       onClose();
     }
@@ -140,14 +206,15 @@ const StoryModal = ({
   const goToPreviousMedia = () => {
     if (currentMediaIndex > 0) {
       setCurrentMediaIndex(currentMediaIndex - 1);
-      setProgress(0);
+    } else if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+      setCurrentMediaIndex(stories[currentIndex - 1]?.media.length - 1 || 0);
     }
   };
 
   const goToNextMedia = () => {
     if (currentMediaIndex < currentStory.media.length - 1) {
       setCurrentMediaIndex(currentMediaIndex + 1);
-      setProgress(0);
     } else {
       goToNext();
     }
@@ -248,12 +315,12 @@ const StoryModal = ({
           >
             {currentStory.media[currentMediaIndex]?.type === "video" ? (
               <video
+                ref={videoRef}
                 src={currentStory.media[currentMediaIndex].url}
                 className="w-full h-full object-cover"
                 autoPlay
                 muted
                 playsInline
-                loop
               />
             ) : (
               <img
@@ -365,8 +432,16 @@ const StoryModal = ({
                 <Icon name="Smile" size={24} className="text-white" />
               </button>
 
-              <button className="w-12 h-12 bg-black/30 rounded-full flex items-center justify-center hover:bg-black/50 transition-colors">
+              <button
+                onClick={() => setShowComments(!showComments)}
+                className="w-12 h-12 bg-black/30 rounded-full flex items-center justify-center hover:bg-black/50 transition-colors"
+              >
                 <Icon name="MessageCircle" size={24} className="text-white" />
+                {comments[currentStory.id]?.length > 0 && (
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
+                    {comments[currentStory.id].length}
+                  </span>
+                )}
               </button>
 
               <button className="w-12 h-12 bg-black/30 rounded-full flex items-center justify-center hover:bg-black/50 transition-colors">
@@ -379,8 +454,77 @@ const StoryModal = ({
             </button>
           </div>
 
+          {/* Comments section */}
+          {showComments && (
+            <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-black/95 backdrop-blur-sm z-30 flex flex-col">
+              <div className="flex items-center justify-between p-4 border-b border-white/10">
+                <h3 className="text-white font-semibold">Комментарии</h3>
+                <button
+                  onClick={() => setShowComments(false)}
+                  className="text-white/70 hover:text-white"
+                >
+                  <Icon name="X" size={20} />
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto px-4 py-2">
+                {comments[currentStory.id]?.length > 0 ? (
+                  comments[currentStory.id].map((comment) => (
+                    <div key={comment.id} className="mb-3">
+                      <div className="flex items-start gap-2">
+                        <div className="w-8 h-8 bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600 rounded-full flex items-center justify-center text-xs text-white font-bold">
+                          {comment.author[0]}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-white font-medium text-sm">
+                              {comment.author}
+                            </span>
+                            <span className="text-white/50 text-xs">
+                              {Math.floor(
+                                (Date.now() - comment.timestamp) / 60000,
+                              )}
+                              м
+                            </span>
+                          </div>
+                          <p className="text-white/90 text-sm">
+                            {comment.text}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="flex items-center justify-center h-full">
+                    <p className="text-white/50">Пока нет комментариев</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="p-4 border-t border-white/10">
+                <div className="flex gap-2">
+                  <Input
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder="Добавить комментарий..."
+                    className="flex-1 bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                    onKeyPress={(e) => e.key === "Enter" && handleAddComment()}
+                  />
+                  <Button
+                    onClick={handleAddComment}
+                    disabled={!newComment.trim()}
+                    size="sm"
+                    className="bg-blue-500 hover:bg-blue-600"
+                  >
+                    <Icon name="Send" size={16} />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Emoji picker */}
-          {showEmojiPicker && (
+          {showEmojiPicker && !showComments && (
             <div className="absolute bottom-24 left-4 right-4 bg-black/90 rounded-2xl p-4 z-30 backdrop-blur-sm">
               <div className="grid grid-cols-4 gap-3">
                 {emojis.map((emoji) => (
