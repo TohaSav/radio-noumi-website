@@ -1,0 +1,20 @@
+{
+  "name": "Радио Приложение",
+  "short_name": "Радио",
+  "description": "Музыкальное радио приложение",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#4f46e5",
+  "theme_color": "#4f46e5",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["music", "entertainment"],
+  "lang": "ru",
+  "dir": "ltr"
+}

@@ -22,7 +22,11 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    // Разделение кода на чанки для ускорения загрузки
+    // Максимальное сжатие для медленного интернета
+    minify: "esbuild",
+    target: "es2015", // Поддержка старых браузеров
+    cssMinify: true,
+    // Агрессивное разделение кода
     rollupOptions: {
       output: {
         manualChunks: {
@@ -30,16 +34,27 @@ export default defineConfig(({ mode }) => ({
           router: ["react-router-dom"],
           ui: ["@radix-ui/react-dialog", "@radix-ui/react-toast"],
           utils: ["clsx", "tailwind-merge"],
+          icons: ["lucide-react"],
         },
+        // Оптимизация имен файлов для кеширования
+        chunkFileNames: "assets/[name]-[hash].js",
+        entryFileNames: "assets/[name]-[hash].js",
+        assetFileNames: "assets/[name]-[hash].[ext]",
       },
     },
-    // Сжатие для уменьшения размера файлов
-    minify: "esbuild",
-    // Оптимизация чанков
-    chunkSizeWarningLimit: 1000,
+    // Уменьшение лимита для предупреждений
+    chunkSizeWarningLimit: 500,
+    // Включение сжатия
+    reportCompressedSize: false, // Ускоряет сборку
   },
-  // Предварительная загрузка модулей
+  // Предварительная загрузка критичных модулей
   optimizeDeps: {
-    include: ["react", "react-dom", "react-router-dom"],
+    include: [
+      "react",
+      "react-dom",
+      "react-router-dom",
+      "@radix-ui/react-toast",
+      "lucide-react",
+    ],
   },
 }));

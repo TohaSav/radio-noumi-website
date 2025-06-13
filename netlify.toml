@@ -3,7 +3,51 @@
   publish = "dist"
   command = "npm run build"
 
+# Глобальные заголовки для оптимизации
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Кеширование для глобального доступа
+    Cache-Control = "public, s-maxage=31536000, max-age=0"
+    # Сжатие
+    Content-Encoding = "gzip, br"
+    # Безопасность
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    # Оптимизация для медленных соединений
+    Connection = "keep-alive"
+
+# Статические ресурсы - долгое кеширование
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Encoding = "gzip, br"
+
+# HTML - короткое кеширование
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Редиректы для SPA
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  # Условие для не-файлов
+  conditions = {Not = "/_redirects"}
+
+# Глобальная оптимизация
+[build.processing]
+  skip_processing = false
+[build.processing.css]
+  bundle = true
+  minify = true
+[build.processing.js]
+  bundle = true
+  minify = true
+[build.processing.html]
+  pretty_urls = true
+[build.processing.images]
+  compress = true
