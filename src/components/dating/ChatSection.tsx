@@ -318,91 +318,84 @@ const ChatSection = ({
               </div>
             ))}
           </div>
-          </div>
         </TabsContent>
 
-        <TabsContent
-          value="profiles"
-          className="flex-1 min-h-0 h-full"
-        >
-          <div 
+        <TabsContent value="profiles" className="flex-1 min-h-0 h-full">
+          <div
             className="h-full overflow-y-auto p-2 md:p-6"
-            style={{ 
-              height: 'calc(100vh - 240px)', 
-              minHeight: '400px',
-              maxHeight: 'calc(100vh - 200px)'
+            style={{
+              height: "calc(100vh - 240px)",
+              minHeight: "400px",
+              maxHeight: "calc(100vh - 200px)",
             }}
           >
-          {/* Кнопка создания анкеты */}
-          <div className="mb-4">
-            <Button
-              onClick={onCreateProfile}
-              className="w-full bg-white/10 backdrop-blur-md border border-white/20 text-white font-medium rounded-full transition-all duration-300 hover:bg-white/20 hover:scale-105 shadow-lg hover:shadow-xl"
-            >
-              <Icon name="Plus" size={16} className="mr-2" />
-              Добавить анкету
-            </Button>
-          </div>
+            {/* Кнопка создания анкеты */}
+            <div className="mb-4">
+              <Button
+                onClick={onCreateProfile}
+                className="w-full bg-white/10 backdrop-blur-md border border-white/20 text-white font-medium rounded-full transition-all duration-300 hover:bg-white/20 hover:scale-105 shadow-lg hover:shadow-xl"
+              >
+                <Icon name="Plus" size={16} className="mr-2" />
+                Добавить анкету
+              </Button>
+            </div>
 
-          {/* Фильтр по полу */}
-          <div className="flex gap-2 mb-4 bg-white/90 p-2 rounded-lg shadow-sm">
-            <button
-              onClick={() => onGenderFilterChange("all")}
-              className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                genderFilter === "all"
-                  ? "bg-pink-500 text-white"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              Все
-            </button>
-            <button
-              onClick={() => onGenderFilterChange("male")}
-              className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                genderFilter === "male"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              Мужчины
-            </button>
-            <button
-              onClick={() => onGenderFilterChange("female")}
-              className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                genderFilter === "female"
-                  ? "bg-pink-500 text-white"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              Женщины
-            </button>
-          </div>
+            {/* Фильтр по полу */}
+            <div className="flex gap-2 mb-4 bg-white/90 p-2 rounded-lg shadow-sm">
+              <button
+                onClick={() => onGenderFilterChange("all")}
+                className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  genderFilter === "all"
+                    ? "bg-pink-500 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                Все
+              </button>
+              <button
+                onClick={() => onGenderFilterChange("male")}
+                className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  genderFilter === "male"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                Мужчины
+              </button>
+              <button
+                onClick={() => onGenderFilterChange("female")}
+                className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  genderFilter === "female"
+                    ? "bg-pink-500 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                Женщины
+              </button>
+            </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
-            {profiles.map((profile) => (
-              <ProfileCard
-                key={profile.id}
-                profile={profile}
-                onLike={onLike}
-                onViewProfile={onViewProfile}
-                currentUserId={currentUserId}
-              />
-            ))}
-          </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
+              {profiles.map((profile) => (
+                <ProfileCard
+                  key={profile.id}
+                  profile={profile}
+                  onLike={onLike}
+                  onViewProfile={onViewProfile}
+                  currentUserId={currentUserId}
+                />
+              ))}
+            </div>
           </div>
         </TabsContent>
 
         {selectedChat && (
-          <TabsContent
-            value="private"
-            className="flex-1 min-h-0 h-full"
-          >
-            <div 
+          <TabsContent value="private" className="flex-1 min-h-0 h-full">
+            <div
               className="h-full overflow-y-auto px-2 md:px-6 pb-4 space-y-3 md:space-y-4"
-              style={{ 
-                height: 'calc(100vh - 240px)', 
-                minHeight: '400px',
-                maxHeight: 'calc(100vh - 200px)'
+              style={{
+                height: "calc(100vh - 240px)",
+                minHeight: "400px",
+                maxHeight: "calc(100vh - 200px)",
               }}
             >
               {privateMessages.map((msg) => (
