@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import RadioPlayer from "@/components/RadioPlayer";
+import AutoMessageGenerator from "@/components/chat/AutoMessageGenerator";
 
 interface Message {
   id: string;
@@ -259,6 +260,12 @@ const OnlineChat = () => {
           </div>
         </div>
       </div>
+
+      <AutoMessageGenerator
+        onMessageGenerated={(message) =>
+          setMessages((prev) => [...prev, message])
+        }
+      />
     </div>
   );
 };
