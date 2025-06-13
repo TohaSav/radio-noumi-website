@@ -133,7 +133,7 @@ const RadioPlayer = ({
   };
 
   return (
-    <>
+    <div>
       {/* Анимированные музыкальные волны */}
       <MusicWaves isPlaying={isPlaying} audioData={audioData} />
 
@@ -357,7 +357,7 @@ const RadioPlayer = ({
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 };
 
