@@ -3,12 +3,24 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import Reels from "./pages/Reels";
-import NotFound from "./pages/NotFound";
-import DatingChat from "./pages/DatingChat";
+import { Suspense, lazy } from "react";
+import LoadingScreen from "@/components/LoadingScreen";
 
-const queryClient = new QueryClient();
+// Lazy loading страниц для ускорения первой загрузки
+const Index = lazy(() => import("./pages/Index"));
+const Reels = lazy(() => import("./pages/Reels"));
+const DatingChat = lazy(() => import("./pages/DatingChat"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // Кеширование на 5 минут для экономии трафика
+      staleTime: 5 * 60 * 1000,
+      retry: 1, // Меньше попыток для медленного интернета
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -16,13 +28,14 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/reels" element={<Reels />} />
-          <Route path="/dating" element={<DatingChat />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={<LoadingScreen />}>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/reels" element={<Reels />} />
+            <Route path="/dating" element={<DatingChat />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
