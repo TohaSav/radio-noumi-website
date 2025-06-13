@@ -151,8 +151,8 @@ const OnlineChat = () => {
           </div>
         </div>
 
-        {/* Radio Player */}
-        <div className="bg-black/20 backdrop-blur-sm border-b border-white/10 p-4">
+        {/* Background Radio Player */}
+        <div className="hidden">
           <RadioPlayer />
         </div>
 
