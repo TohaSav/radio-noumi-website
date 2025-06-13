@@ -9,16 +9,8 @@ interface RadioStats {
 export const useRadioStats = (): RadioStats => {
   // Функция для получения начального количества слушателей в зависимости от времени суток
   const getInitialListenerCount = (): number => {
-    const currentHour = new Date().getHours();
-    const isEvening = currentHour >= 18 || currentHour <= 2;
-
-    if (isEvening) {
-      // Вечернее время: от 15,130,589 до 49,789,245
-      return Math.floor(Math.random() * (49789245 - 15130589 + 1)) + 15130589;
-    } else {
-      // Утро/день: от 2,984,173 до 9,780,258
-      return Math.floor(Math.random() * (9780258 - 2984173 + 1)) + 2984173;
-    }
+    // Случайное начальное значение в полном диапазоне
+    return Math.floor(Math.random() * (79785211 - 2150000 + 1)) + 2150000;
   };
 
   // Функция для загрузки данных из localStorage
@@ -54,31 +46,32 @@ export const useRadioStats = (): RadioStats => {
     // Обновление счетчика слушателей каждые 3 секунды для реалистичности
     const listenersInterval = setInterval(() => {
       setStats((prev) => {
-        const currentHour = new Date().getHours();
-        const isEvening = currentHour >= 18 || currentHour <= 2;
+        // Постоянный диапазон независимо от времени
+        const minListeners = 2150000;
+        const maxListeners = 79785211;
 
-        // Определяем диапазон для текущего времени суток
-        const minListeners = isEvening ? 15130589 : 2984173;
-        const maxListeners = isEvening ? 49789245 : 9780258;
+        // Более реалистичные колебания: 55% рост, 45% падение
+        const shouldGrow = Math.random() > 0.45;
 
-        // Случайные колебания: 60% шанс роста, 40% шанс падения
-        const shouldGrow = Math.random() > 0.4;
+        // Размер изменения зависит от текущего значения (больше слушателей = больше колебания)
+        const currentListeners = prev.listeners;
+        const percentOfMax = currentListeners / maxListeners;
 
-        // Размер изменения зависит от времени суток и текущего значения
-        const currentRange = maxListeners - minListeners;
-        const baseChange = Math.floor(currentRange * 0.01); // 1% от диапазона
-        const randomChange =
-          Math.floor(Math.random() * baseChange) + Math.floor(baseChange * 0.1);
+        // Базовое изменение: от 0.05% до 0.3% от текущего значения
+        const baseChangePercent = 0.0005 + percentOfMax * 0.0025;
+        const baseChange = Math.floor(currentListeners * baseChangePercent);
+
+        // Добавляем случайность к изменению
+        const randomMultiplier = 0.5 + Math.random();
+        const change = Math.floor(baseChange * randomMultiplier);
 
         // Применяем рост или падение
-        const change = shouldGrow
-          ? randomChange
-          : -Math.floor(randomChange * 0.7);
+        const finalChange = shouldGrow ? change : -Math.floor(change * 0.8);
 
-        // Ограничиваем значение в пределах диапазона для текущего времени
+        // Ограничиваем значение в пределах диапазона
         const newListeners = Math.max(
           minListeners,
-          Math.min(maxListeners, prev.listeners + change),
+          Math.min(maxListeners, currentListeners + finalChange),
         );
 
         const newStats = {
