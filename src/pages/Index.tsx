@@ -28,7 +28,7 @@ const Index = () => {
         <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-20">
           <Link
             to="/dating"
-            className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white font-medium rounded-full transition-all duration-300 hover:bg-white/20 hover:scale-105 shadow-lg hover:shadow-xl"
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 backdrop-blur-md border border-white/20 text-white font-medium rounded-full transition-all duration-300 hover:from-pink-600 hover:via-rose-600 hover:to-red-600 hover:scale-105 shadow-lg hover:shadow-xl"
           >
             <Icon name="Heart" size={16} />
             <span className="text-sm font-semibold">Знакомства</span>
