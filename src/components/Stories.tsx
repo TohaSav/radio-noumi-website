@@ -35,9 +35,7 @@ const Stories = () => {
 
   // Сохраняем истории в localStorage при изменении
   useEffect(() => {
-    if (stories.length > 0) {
-      saveStoriesToStorage(stories);
-    }
+    saveStoriesToStorage(stories);
   }, [stories]);
 
   const handleAddStory = () => {
