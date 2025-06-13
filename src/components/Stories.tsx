@@ -87,22 +87,24 @@ const Stories = () => {
 
   return (
     <>
-      <div className="w-full px-4 py-4">
-        <div className="flex items-center gap-4 overflow-x-auto scrollbar-hide">
+      <div className="w-full px-4 py-4 bg-black">
+        <div className="flex items-start gap-4 overflow-x-auto scrollbar-hide pb-2">
           {/* Кнопка добавления истории (только для админа) */}
           {isAdmin && (
             <button
               onClick={handleAddStory}
               className="flex-shrink-0 flex flex-col items-center gap-2 group"
             >
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center relative">
-                <Icon name="Plus" size={24} className="text-white" />
-                <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
-                  <Icon name="Plus" size={12} className="text-white" />
+              <div className="relative">
+                <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center border-2 border-gray-700">
+                  <Icon name="Plus" size={24} className="text-white" />
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center border-2 border-black">
+                  <Icon name="Plus" size={14} className="text-white" />
                 </div>
               </div>
-              <span className="text-xs text-white/70 group-hover:text-white transition-colors">
-                Добавить
+              <span className="text-xs text-white max-w-[64px] truncate">
+                Ваша история
               </span>
             </button>
           )}
@@ -117,29 +119,32 @@ const Stories = () => {
                 onClick={() => openStory(index)}
                 className="group relative"
               >
-                <div className="w-16 h-16 rounded-full p-0.5 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">
-                  <div className="w-full h-full rounded-full border-2 border-gray-900 overflow-hidden">
-                    {story.type === "video" ? (
-                      <video
-                        src={story.image}
-                        className="w-full h-full object-cover"
-                        muted
-                        playsInline
-                      />
-                    ) : (
-                      <img
-                        src={story.image}
-                        alt={story.author}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                      />
-                    )}
+                {/* Градиентное кольцо для непросмотренных */}
+                <div className="w-20 h-20 rounded-full p-0.5 bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600 animate-pulse">
+                  <div className="w-full h-full rounded-full bg-black p-0.5">
+                    <div className="w-full h-full rounded-full overflow-hidden">
+                      {story.type === "video" ? (
+                        <video
+                          src={story.image}
+                          className="w-full h-full object-cover"
+                          muted
+                          playsInline
+                        />
+                      ) : (
+                        <img
+                          src={story.image}
+                          alt={story.author}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
 
                 {/* Индикатор видео */}
                 {story.type === "video" && (
-                  <div className="absolute bottom-1 right-1 w-4 h-4 bg-black/50 rounded-full flex items-center justify-center">
-                    <Icon name="Play" size={8} className="text-white" />
+                  <div className="absolute bottom-2 right-2 w-5 h-5 bg-black/70 rounded-full flex items-center justify-center">
+                    <Icon name="Play" size={10} className="text-white" />
                   </div>
                 )}
 
@@ -147,7 +152,7 @@ const Stories = () => {
                 {selectedEmojis[story.id]?.map((emoji, emojiIndex) => (
                   <div
                     key={emojiIndex}
-                    className="absolute animate-bounce text-lg"
+                    className="absolute animate-bounce text-lg pointer-events-none"
                     style={{
                       top: `${20 + emojiIndex * 10}%`,
                       left: `${50 + (emojiIndex % 2 === 0 ? 10 : -10)}%`,
@@ -160,34 +165,17 @@ const Stories = () => {
                 ))}
               </button>
 
-              {/* Счетчик реакций */}
-              {story.reactions && Object.keys(story.reactions).length > 0 && (
-                <div className="flex gap-1 text-xs">
-                  {Object.entries(story.reactions)
-                    .slice(0, 3)
-                    .map(([emoji, count]) => (
-                      <span
-                        key={emoji}
-                        className="bg-black/20 px-1 rounded text-white/70"
-                      >
-                        {emoji}
-                        {count}
-                      </span>
-                    ))}
-                </div>
-              )}
-
               {/* Кнопка удаления (только для админа) */}
               {isAdmin && (
                 <button
                   onClick={(e) => handleDeleteStory(story.id, e)}
-                  className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
+                  className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors z-10"
                 >
-                  <Icon name="X" size={12} className="text-white" />
+                  <Icon name="X" size={14} className="text-white" />
                 </button>
               )}
 
-              <span className="text-xs text-white/70 hover:text-white transition-colors max-w-[60px] truncate">
+              <span className="text-xs text-white max-w-[64px] truncate">
                 {story.author}
               </span>
             </div>
