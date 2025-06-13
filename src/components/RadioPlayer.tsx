@@ -270,17 +270,8 @@ const RadioPlayer = ({
                 </span>
               </button>
 
-              {/* Кнопка поделиться */}
-              <button
-                onClick={handleShare}
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors flex items-center justify-center"
-              >
-                <Icon
-                  name="Share2"
-                  size={16}
-                  className="text-gray-600 sm:w-5 sm:h-5"
-                />
-              </button>
+              {/* Кнопка поделиться удалена */}
+            </div>
 
               {/* Громкость */}
               <div className="relative">
