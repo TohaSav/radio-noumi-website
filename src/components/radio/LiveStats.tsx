@@ -6,42 +6,45 @@ interface LiveStatsProps {
 }
 
 const LiveStats = ({ isPlaying }: LiveStatsProps) => {
-  const [listeners, setListeners] = useState(2150580);
-  const [likes, setLikes] = useState(67580);
-  const [dislikes, setDislikes] = useState(115);
+  const [listeners, setListeners] = useState(3158952);
 
-  // Живой счетчик слушателей
+  // Живой счетчик слушателей с реалистичными колебаниями
   useEffect(() => {
-    const interval = setInterval(() => {
-      setListeners((prev) => {
-        const change = Math.floor(Math.random() * 20) - 10; // -10 до +10
-        const newValue = prev + change;
-        return Math.max(2000000, newValue); // минимум 2M
-      });
-    }, 5000);
+    if (!isPlaying) return;
+
+    const interval = setInterval(
+      () => {
+        setListeners((prev) => {
+          // Время дня влияет на количество слушателей
+          const hour = new Date().getHours();
+          const isPeakTime = hour >= 18 && hour <= 23; // Вечернее время
+
+          // Базовые границы
+          const minListeners = 3158952;
+          const maxListeners = 49872312;
+
+          // Случайное изменение (-5000 до +15000)
+          const baseChange = Math.floor(Math.random() * 20000) - 5000;
+
+          // Бонус в пиковое время
+          const peakBonus = isPeakTime ? Math.floor(Math.random() * 50000) : 0;
+
+          const newValue = prev + baseChange + peakBonus;
+
+          // Ограничиваем значения
+          return Math.max(minListeners, Math.min(maxListeners, newValue));
+        });
+      },
+      Math.random() * 8000 + 2000,
+    ); // От 2 до 10 секунд
 
     return () => clearInterval(interval);
-  }, []);
-
-  // Счетчик лайков - +3 каждые 3 минуты
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setLikes((prev) => prev + 3);
-    }, 180000); // 3 минуты
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Счетчик дизлайков - +2 каждые 10 часов
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDislikes((prev) => prev + 2);
-    }, 36000000); // 10 часов
-
-    return () => clearInterval(interval);
-  }, []);
+  }, [isPlaying]);
 
   const formatNumber = (num: number) => {
+    if (num >= 1000000) {
+      return `${(num / 1000000).toFixed(1)}M`;
+    }
     return new Intl.NumberFormat("ru-RU").format(num);
   };
 
@@ -50,25 +53,13 @@ const LiveStats = ({ isPlaying }: LiveStatsProps) => {
       {/* Слушатели */}
       <div className="flex items-center space-x-2 text-white">
         <div
-          className={`w-2 h-2 rounded-full ${isPlaying ? "bg-green-500 animate-pulse" : "bg-gray-400"}`}
+          className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+            isPlaying ? "bg-green-500 animate-pulse" : "bg-gray-400"
+          }`}
         />
         <span className="text-lg font-medium">
           {formatNumber(listeners)} слушателей
         </span>
-      </div>
-
-      {/* Лайки и дизлайки */}
-      <div className="flex items-center space-x-6">
-        <div className="flex items-center space-x-2">
-          <Icon name="ThumbsUp" size={20} className="text-green-600" />
-          <span className="text-white font-medium">{formatNumber(likes)}</span>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Icon name="ThumbsDown" size={20} className="text-red-500" />
-          <span className="text-white font-medium">
-            {formatNumber(dislikes)}
-          </span>
-        </div>
       </div>
     </div>
   );
