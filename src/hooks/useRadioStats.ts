@@ -7,6 +7,20 @@ interface RadioStats {
 }
 
 export const useRadioStats = (): RadioStats => {
+  // Функция для получения начального количества слушателей в зависимости от времени суток
+  const getInitialListenerCount = (): number => {
+    const currentHour = new Date().getHours();
+    const isEvening = currentHour >= 18 || currentHour <= 2;
+
+    if (isEvening) {
+      // Вечернее время: от 15,130,589 до 49,789,245
+      return Math.floor(Math.random() * (49789245 - 15130589 + 1)) + 15130589;
+    } else {
+      // Утро/день: от 2,984,173 до 9,780,258
+      return Math.floor(Math.random() * (9780258 - 2984173 + 1)) + 2984173;
+    }
+  };
+
   // Функция для загрузки данных из localStorage
   const loadStatsFromStorage = (): RadioStats => {
     try {
@@ -19,7 +33,7 @@ export const useRadioStats = (): RadioStats => {
     }
     // Возвращаем начальные значения если нет сохраненных данных
     return {
-      listeners: 2987250,
+      listeners: getInitialListenerCount(),
       likes: 58000,
       dislikes: 10,
     };
@@ -41,23 +55,31 @@ export const useRadioStats = (): RadioStats => {
     const listenersInterval = setInterval(() => {
       setStats((prev) => {
         const currentHour = new Date().getHours();
-        // Больше активности вечером/ночью (18-02)
-        const isPeakTime = currentHour >= 18 || currentHour <= 2;
+        const isEvening = currentHour >= 18 || currentHour <= 2;
 
-        // Случайные колебания: 70% шанс роста, 30% шанс падения
-        const shouldGrow = Math.random() > 0.3;
+        // Определяем диапазон для текущего времени суток
+        const minListeners = isEvening ? 15130589 : 2984173;
+        const maxListeners = isEvening ? 49789245 : 9780258;
 
-        // Размер изменения зависит от времени суток
-        const baseChange = isPeakTime ? 150 : 80;
-        const randomChange = Math.floor(Math.random() * baseChange) + 10;
+        // Случайные колебания: 60% шанс роста, 40% шанс падения
+        const shouldGrow = Math.random() > 0.4;
+
+        // Размер изменения зависит от времени суток и текущего значения
+        const currentRange = maxListeners - minListeners;
+        const baseChange = Math.floor(currentRange * 0.01); // 1% от диапазона
+        const randomChange =
+          Math.floor(Math.random() * baseChange) + Math.floor(baseChange * 0.1);
 
         // Применяем рост или падение
         const change = shouldGrow
           ? randomChange
-          : -Math.floor(randomChange * 0.6);
+          : -Math.floor(randomChange * 0.7);
 
-        // Минимум 2,987,250 слушателей
-        const newListeners = Math.max(2987250, prev.listeners + change);
+        // Ограничиваем значение в пределах диапазона для текущего времени
+        const newListeners = Math.max(
+          minListeners,
+          Math.min(maxListeners, prev.listeners + change),
+        );
 
         const newStats = {
           ...prev,
