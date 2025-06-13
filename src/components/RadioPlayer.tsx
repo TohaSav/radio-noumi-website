@@ -185,11 +185,8 @@ const RadioPlayer = ({
               />
             </button>
 
-            {/* Центральная часть - время и название */}
+            {/* Центральная часть - название */}
             <div className="flex-1 min-w-0 px-2 sm:px-3">
-              <div className="text-gray-500 text-xs sm:text-sm font-mono">
-                {currentTime}
-              </div>
               <div className="text-gray-800 text-sm sm:text-base font-medium truncate">
                 Открой глаза
               </div>
