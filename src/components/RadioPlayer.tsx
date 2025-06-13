@@ -63,28 +63,6 @@ const RadioPlayer = () => {
         preload="none"
       />
 
-      <div className="mb-6">
-        <div className="w-32 h-32 mx-auto bg-white/20 rounded-full flex items-center justify-center mb-4 relative overflow-hidden">
-          {/* Пульсирующий фон */}
-          <div
-            className={`absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-opacity duration-200 ${
-              isPlaying ? "animate-pulse opacity-30" : "opacity-0"
-            }`}
-            style={{
-              animationDuration:
-                musicType === "club"
-                  ? "0.8s"
-                  : musicType === "bass"
-                    ? "1.2s"
-                    : "2s",
-            }}
-          />
-          <Icon name="Radio" size={48} className="text-white relative z-10" />
-        </div>
-        <h2 className="text-xl font-semibold text-white mb-2">Сейчас играет</h2>
-        <p className="text-white/80">Популярная музыка 24/7</p>
-      </div>
-
       <AudioVisualizer
         audioData={audioData}
         isPlaying={isPlaying}
