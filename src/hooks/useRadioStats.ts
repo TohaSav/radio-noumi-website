@@ -1,59 +1,64 @@
 import { useState, useEffect } from "react";
 
-interface RadioStats {
-  listeners: number;
-  isOnline: boolean;
-}
+// Функция для получения уральского времени
+const getUralTime = () => {
+  const now = new Date();
+  const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+  const uralTime = new Date(utc + 5 * 3600000); // UTC+5
+  return uralTime;
+};
 
-const STORAGE_KEY = "radio_listeners_count";
-const MIN_LISTENERS = 2_978_218;
-const MAX_LISTENERS = 87_964_233;
+// Функция для расчета специального счетчика
+const getSpecialViewsCount = () => {
+  const uralTime = getUralTime();
+  const hours = uralTime.getHours();
+  const minutes = uralTime.getMinutes();
 
-export const useRadioStats = (): RadioStats => {
-  const [stats, setStats] = useState<RadioStats>({
-    listeners: MIN_LISTENERS,
-    isOnline: true,
-  });
+  // Проверяем, находимся ли в диапазоне 19:00 - 23:50
+  if (hours >= 19 && hours <= 23) {
+    if (hours === 23 && minutes > 50) {
+      return null; // После 23:50 используем обычный счетчик
+    }
+
+    // Рассчитываем прогресс от 19:00 до 23:50 (290 минут)
+    const startMinutes = 19 * 60; // 19:00 в минутах
+    const endMinutes = 23 * 60 + 50; // 23:50 в минутах
+    const currentMinutes = hours * 60 + minutes;
+
+    const progress =
+      (currentMinutes - startMinutes) / (endMinutes - startMinutes);
+    const startValue = 4581269;
+    const endValue = 24569120;
+
+    return Math.floor(startValue + (endValue - startValue) * progress);
+  }
+
+  return null; // Используем обычный счетчик
+};
+
+export const useRadioStats = () => {
+  const [listeners, setListeners] = useState(2985718);
 
   useEffect(() => {
-    // Загружаем сохранённое значение или устанавливаем начальное
-    const savedListeners = localStorage.getItem(STORAGE_KEY);
-    const initialListeners = savedListeners
-      ? Math.max(parseInt(savedListeners), MIN_LISTENERS)
-      : MIN_LISTENERS;
+    const updateListeners = () => {
+      const specialCount = getSpecialViewsCount();
 
-    setStats((prev) => ({
-      ...prev,
-      listeners: Math.min(initialListeners, MAX_LISTENERS),
-    }));
-
-    // Медленное увеличение слушателей каждые 10-30 секунд
-    const interval = setInterval(
-      () => {
-        setStats((prev) => {
-          if (prev.listeners >= MAX_LISTENERS) return prev;
-
-          // Случайное приращение от 1 до 15 слушателей
-          const increment = Math.floor(Math.random() * 15) + 1;
-          const newListeners = Math.min(
-            prev.listeners + increment,
-            MAX_LISTENERS,
-          );
-
-          // Сохраняем в localStorage
-          localStorage.setItem(STORAGE_KEY, newListeners.toString());
-
-          return {
-            ...prev,
-            listeners: newListeners,
-          };
+      if (specialCount !== null) {
+        setListeners(specialCount);
+      } else {
+        // Обычная логика счетчика (с 00:00 до 19:00)
+        setListeners((prev) => {
+          const variation = Math.floor(Math.random() * 201) - 100;
+          return Math.max(2800000, prev + variation);
         });
-      },
-      Math.random() * 20000 + 10000,
-    ); // 10-30 секунд
+      }
+    };
+
+    updateListeners();
+    const interval = setInterval(updateListeners, 3000);
 
     return () => clearInterval(interval);
   }, []);
 
-  return stats;
+  return { listeners };
 };

@@ -82,9 +82,7 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
               {/* Слушатели */}
               <div className="hidden md:flex items-center gap-2 text-white/80">
                 <Icon name="Users" size={16} />
-                <span className="text-sm">
-                  {stats.listeners.toLocaleString()}
-                </span>
+                <span>{getViewsCount()}</span>
               </div>
 
               {/* Громкость */}
