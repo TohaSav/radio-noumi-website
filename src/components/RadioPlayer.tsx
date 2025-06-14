@@ -69,7 +69,6 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
               <div className="text-white font-semibold truncate text-lg">
                 {currentTrack}
               </div>
-              <div className="text-white/70 text-sm truncate">{subtitle}</div>
             </div>
 
             {/* Управление громкостью и статистика */}
