@@ -139,7 +139,7 @@ const Donation = () => {
                     htmlFor="auto-support"
                     className="text-white font-medium"
                   >
-                    Помощь раз в месяц
+                    Поддержка навсегда
                   </Label>
                   <p className="text-white/70 text-sm">
                     Выбранная вами сумма будет автоматически списываться со
