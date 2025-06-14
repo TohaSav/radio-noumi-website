@@ -1,5 +1,8 @@
 import RadioPlayer from "@/components/RadioPlayer";
 import AdBanner from "@/components/AdBanner";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import Icon from "@/components/ui/icon";
 
 const Index = () => {
   return (
@@ -23,6 +26,7 @@ const Index = () => {
             </p>
           </div>
 
+          <SupportButton />
           <AdBanner />
         </div>
       </div>
@@ -30,6 +34,20 @@ const Index = () => {
       {/* Фиксированный плеер внизу */}
       <RadioPlayer streamUrl="https://myradio24.org/61673" />
     </div>
+  );
+};
+
+const SupportButton = () => {
+  const navigate = useNavigate();
+
+  return (
+    <Button
+      onClick={() => navigate("/donate")}
+      className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-8 rounded-full shadow-2xl hover:shadow-pink-500/25 transition-all duration-300 transform hover:scale-105"
+    >
+      <Icon name="Heart" className="mr-2" size={20} />
+      Поддержать радио
+    </Button>
   );
 };
 
