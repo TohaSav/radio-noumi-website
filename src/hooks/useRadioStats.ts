@@ -60,5 +60,5 @@ export const useRadioStats = () => {
     return () => clearInterval(interval);
   }, []);
 
-  return { listeners };
+  return { listeners, getSpecialViewsCount };
 };
