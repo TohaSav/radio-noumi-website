@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Eye, MousePointer, Users } from "lucide-react";
+import { useRadioStats } from "@/hooks/useRadioStats";
 
 interface AdBannerProps {
   imageUrl?: string;
@@ -15,32 +16,49 @@ const AdBanner: React.FC<AdBannerProps> = ({
   const [views, setViews] = useState(0);
   const [clicks, setClicks] = useState(0);
   const [uniqueViews, setUniqueViews] = useState(0);
+  const { listeners } = useRadioStats();
 
-  // Симуляция загрузки статистики
   useEffect(() => {
-    const savedViews = localStorage.getItem("ad-views") || "0";
     const savedClicks = localStorage.getItem("ad-clicks") || "0";
     const savedUniqueViews = localStorage.getItem("ad-unique-views") || "0";
 
-    setViews(parseInt(savedViews));
     setClicks(parseInt(savedClicks));
     setUniqueViews(parseInt(savedUniqueViews));
 
-    // Увеличиваем просмотры при загрузке
-    const newViews = parseInt(savedViews) + 1;
-    setViews(newViews);
-    localStorage.setItem("ad-views", newViews.toString());
+    // Автоматический рост кликов каждые 2-5 секунд
+    const clickInterval = setInterval(
+      () => {
+        setClicks((prev) => {
+          const newClicks = prev + Math.floor(Math.random() * 3) + 1;
+          localStorage.setItem("ad-clicks", newClicks.toString());
+          return newClicks;
+        });
+      },
+      Math.random() * 3000 + 2000,
+    );
 
-    // Уникальные просмотры (простая логика по дате)
-    const today = new Date().toDateString();
-    const lastUniqueView = localStorage.getItem("ad-last-unique");
-    if (lastUniqueView !== today) {
-      const newUniqueViews = parseInt(savedUniqueViews) + 1;
-      setUniqueViews(newUniqueViews);
-      localStorage.setItem("ad-unique-views", newUniqueViews.toString());
-      localStorage.setItem("ad-last-unique", today);
-    }
+    // Рост уникальных просмотров по 25 каждые 5 минут
+    const uniqueInterval = setInterval(
+      () => {
+        setUniqueViews((prev) => {
+          const newUniqueViews = prev + 25;
+          localStorage.setItem("ad-unique-views", newUniqueViews.toString());
+          return newUniqueViews;
+        });
+      },
+      5 * 60 * 1000,
+    );
+
+    return () => {
+      clearInterval(clickInterval);
+      clearInterval(uniqueInterval);
+    };
   }, []);
+
+  // Синхронизируем просмотры с количеством слушателей радио
+  useEffect(() => {
+    setViews(listeners);
+  }, [listeners]);
 
   const handleClick = () => {
     const newClicks = clicks + 1;
@@ -88,7 +106,7 @@ const AdBanner: React.FC<AdBannerProps> = ({
       <div className="flex items-center justify-center gap-6 mt-3 text-white/60 text-xs">
         <div className="flex items-center gap-1">
           <Eye size={14} />
-          <span>{views}</span>
+          <span>{listeners}</span>
         </div>
         <div className="flex items-center gap-1">
           <MousePointer size={14} />
