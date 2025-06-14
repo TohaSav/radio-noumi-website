@@ -1,5 +1,5 @@
-import { Message } from "@/types/dating";
 import Icon from "@/components/ui/icon";
+import { Message } from "@/types/dating";
 
 interface MessageListProps {
   messages: Message[];
@@ -9,45 +9,45 @@ interface MessageListProps {
   userNameColor?: string;
 }
 
-const MessageList = ({
+export default function MessageList({
   messages,
   onUserClick,
-  backgroundColor = "bg-white/80",
+  backgroundColor = "bg-gray-50",
   userIconColor = "bg-pink-500",
-  userNameColor = "text-pink-600",
-}: MessageListProps) => {
+  userNameColor = "text-pink-700",
+}: MessageListProps) {
   return (
-    <div className="space-y-3 md:space-y-4">
-      {messages.map((msg) => (
-        <div
-          key={msg.id}
-          className={`${backgroundColor} p-3 md:p-4 rounded-lg shadow-sm`}
-        >
-          <div className="flex items-center gap-2 md:gap-3 mb-2">
+    <div className="space-y-3">
+      {messages.map((message) => (
+        <div key={message.id} className={`p-3 ${backgroundColor} rounded-lg`}>
+          <div className="flex items-start gap-3">
             <div
-              className={`w-6 h-6 md:w-8 md:h-8 ${userIconColor} rounded-full flex items-center justify-center`}
+              className={`w-8 h-8 ${userIconColor} rounded-full flex items-center justify-center flex-shrink-0`}
             >
-              <Icon
-                name="User"
-                size={12}
-                className="md:w-3.5 md:h-3.5 text-white"
-              />
+              <Icon name="User" size={12} className="text-white" />
             </div>
-            <button
-              onClick={() => onUserClick(msg.userName)}
-              className={`font-semibold ${userNameColor} hover:underline text-sm md:text-base`}
-            >
-              {msg.userName}
-            </button>
-            <span className="text-xs text-gray-500">
-              {msg.timestamp.toLocaleTimeString()}
-            </span>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <button
+                  onClick={() => onUserClick(message.userName)}
+                  className={`font-semibold text-sm ${userNameColor} hover:underline`}
+                >
+                  {message.userName}
+                </button>
+                <span className="text-xs text-gray-500">
+                  {message.timestamp.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>
+              </div>
+              <p className="text-sm text-gray-800 break-words">
+                {message.text}
+              </p>
+            </div>
           </div>
-          <p className="text-gray-800 text-sm md:text-base">{msg.text}</p>
         </div>
       ))}
     </div>
   );
-};
-
-export default MessageList;
+}

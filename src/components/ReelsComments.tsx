@@ -1,7 +1,14 @@
 import { useState } from "react";
-import { Comment, Reel } from "@/pages/Reels";
-import { useAuth } from "@/hooks/useAuth";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Icon from "@/components/ui/icon";
+import { Reel } from "@/pages/Reels";
 
 interface ReelsCommentsProps {
   reel: Reel;
@@ -10,99 +17,60 @@ interface ReelsCommentsProps {
   onAddComment: (reelId: string, comment: string) => void;
 }
 
-const ReelsComments = ({
+export default function ReelsComments({
   reel,
   isOpen,
   onClose,
   onAddComment,
-}: ReelsCommentsProps) => {
-  const { user } = useAuth();
+}: ReelsCommentsProps) {
   const [newComment, setNewComment] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newComment.trim() && user) {
-      onAddComment(reel.id, newComment.trim());
+  const handleSubmit = () => {
+    if (newComment.trim()) {
+      onAddComment(reel.id, newComment);
       setNewComment("");
     }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="absolute inset-0 bg-black/80 flex items-end justify-center">
-      <div className="w-full max-w-md bg-gray-900 rounded-t-2xl p-4 max-h-[70vh] flex flex-col">
-        {/* Заголовок */}
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-white font-semibold">
-            Комментарии ({reel.commentsList.length})
-          </h3>
-          <button
-            onClick={onClose}
-            className="text-white/70 hover:text-white transition-colors"
-          >
-            <Icon name="X" size={20} />
-          </button>
-        </div>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle>Комментарии</DialogTitle>
+        </DialogHeader>
 
-        {/* Список комментариев */}
-        <div className="flex-1 overflow-y-auto mb-4 space-y-3">
-          {reel.commentsList.length === 0 ? (
-            <p className="text-white/60 text-center py-8">
-              Пока нет комментариев. Будь первым!
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <img
+              src={reel.avatar}
+              alt={reel.username}
+              className="w-10 h-10 rounded-full"
+            />
+            <div>
+              <h3 className="font-semibold">{reel.username}</h3>
+              <p className="text-sm text-gray-600">{reel.description}</p>
+            </div>
+          </div>
+
+          <div className="space-y-3 max-h-64 overflow-y-auto">
+            <p className="text-sm text-gray-500 text-center">
+              Комментариев пока нет
             </p>
-          ) : (
-            reel.commentsList.map((comment) => (
-              <div key={comment.id} className="flex gap-3">
-                <img
-                  src={comment.avatar}
-                  alt={comment.username}
-                  className="w-8 h-8 rounded-full flex-shrink-0"
-                />
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-white font-medium text-sm">
-                      {comment.username}
-                    </span>
-                    <span className="text-white/50 text-xs">
-                      {Math.floor(
-                        (Date.now() - comment.timestamp.getTime()) /
-                          (1000 * 60),
-                      )}{" "}
-                      мин
-                    </span>
-                  </div>
-                  <p className="text-white/90 text-sm leading-relaxed">
-                    {comment.text}
-                  </p>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
+          </div>
 
-        {/* Форма добавления комментария */}
-        {user && (
-          <form onSubmit={handleSubmit} className="flex gap-2">
-            <input
-              type="text"
+          <div className="flex gap-2">
+            <Input
+              placeholder="Добавить комментарий..."
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
-              placeholder="Добавить комментарий..."
-              className="flex-1 bg-gray-800 text-white px-3 py-2 rounded-full text-sm placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onKeyPress={(e) => e.key === "Enter" && handleSubmit()}
             />
-            <button
-              type="submit"
-              disabled={!newComment.trim()}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:text-white/50 text-white rounded-full transition-colors text-sm font-medium"
-            >
+            <Button onClick={handleSubmit} size="sm">
               <Icon name="Send" size={16} />
-            </button>
-          </form>
-        )}
-      </div>
-    </div>
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
-};
-
-export default ReelsComments;
+}

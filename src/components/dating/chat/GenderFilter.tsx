@@ -1,35 +1,42 @@
+import { Button } from "@/components/ui/button";
+import Icon from "@/components/ui/icon";
+
 interface GenderFilterProps {
   selectedFilter: "all" | "male" | "female";
   onFilterChange: (filter: "all" | "male" | "female") => void;
 }
 
-const GenderFilter = ({
+export default function GenderFilter({
   selectedFilter,
   onFilterChange,
-}: GenderFilterProps) => {
-  const filters = [
-    { value: "all" as const, label: "Все", color: "bg-pink-500" },
-    { value: "male" as const, label: "Мужчины", color: "bg-blue-500" },
-    { value: "female" as const, label: "Женщины", color: "bg-pink-500" },
-  ];
-
+}: GenderFilterProps) {
   return (
-    <div className="flex gap-2 mb-4 bg-white/90 p-2 rounded-lg shadow-sm">
-      {filters.map((filter) => (
-        <button
-          key={filter.value}
-          onClick={() => onFilterChange(filter.value)}
-          className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-            selectedFilter === filter.value
-              ? `${filter.color} text-white`
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-          }`}
-        >
-          {filter.label}
-        </button>
-      ))}
+    <div className="flex gap-2 mb-4">
+      <Button
+        variant={selectedFilter === "all" ? "default" : "outline"}
+        size="sm"
+        onClick={() => onFilterChange("all")}
+        className="flex-1"
+      >
+        <Icon name="Users" size={16} className="mr-1" />
+        Все
+      </Button>
+      <Button
+        variant={selectedFilter === "male" ? "default" : "outline"}
+        size="sm"
+        onClick={() => onFilterChange("male")}
+        className="flex-1"
+      >
+        <Icon name="User" size={16} className="mr-1" />М
+      </Button>
+      <Button
+        variant={selectedFilter === "female" ? "default" : "outline"}
+        size="sm"
+        onClick={() => onFilterChange("female")}
+        className="flex-1"
+      >
+        <Icon name="Heart" size={16} className="mr-1" />Ж
+      </Button>
     </div>
   );
-};
-
-export default GenderFilter;
+}

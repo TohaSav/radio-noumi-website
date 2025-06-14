@@ -1,6 +1,12 @@
+export interface User {
+  id: string;
+  login: string;
+  email: string;
+}
+
 export interface Profile {
   id: string;
-  photo: string;
+  userId: string;
   name: string;
   age: number;
   city: string;
@@ -8,27 +14,22 @@ export interface Profile {
   weight: string;
   lookingFor: string;
   about: string;
-  userId: string;
+  photo: string;
   gender: "male" | "female";
 }
 
-export interface User {
+export interface Message {
   id: string;
-  login: string;
-  email: string;
+  text: string;
+  userName: string;
+  timestamp: Date;
+  chatType: "general" | "private";
+  userId?: string;
 }
 
 export interface Like {
   id: string;
   fromUserId: string;
   toProfileId: string;
-}
-
-export interface Message {
-  id: string;
-  text: string;
-  userId: string;
-  userName: string;
-  chatType: string;
   timestamp: Date;
 }
