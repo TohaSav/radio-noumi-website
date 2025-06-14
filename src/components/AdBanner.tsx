@@ -58,10 +58,15 @@ const AdBanner: React.FC<AdBannerProps> = ({
     "Место для вашей рекламы заказать рекламу можете написав нам на WhatsApp +79049808275";
 
   return (
-    <div className="w-full max-w-full mx-auto">
+    <div className="w-full max-w-[640px] mx-auto">
       {/* Баннер */}
       <div
-        className="w-full h-[200px] bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-2 border-dashed border-white/30 rounded-lg overflow-hidden cursor-pointer hover:border-white/50 transition-colors"
+        className="w-full max-w-[640px] h-[200px] bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-2 border-dashed border-white/30 rounded-lg overflow-hidden cursor-pointer hover:border-white/50 transition-colors mx-auto"
+        style={{
+          aspectRatio: "640/200",
+          maxWidth: "100vw",
+          maxHeight: "calc(100vw * 200/640)",
+        }}
         onClick={handleClick}
       >
         {imageUrl ? (
