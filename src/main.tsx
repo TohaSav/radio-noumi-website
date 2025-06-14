@@ -19,4 +19,8 @@ preloadLink.as = "style";
 preloadLink.href = "/src/index.css";
 document.head.appendChild(preloadLink);
 
-createRoot(document.getElementById("root")!).render(<App />);
+createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+);
