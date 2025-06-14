@@ -41,13 +41,76 @@ const SupportButton = () => {
   const navigate = useNavigate();
 
   return (
-    <Button
-      onClick={() => navigate("/donate")}
-      className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-8 rounded-full shadow-2xl hover:shadow-pink-500/25 transition-all duration-300 transform hover:scale-105"
-    >
-      <Icon name="Heart" className="mr-2" size={20} />
-      Поддержать радио
-    </Button>
+    <div className="relative inline-block">
+      <Button
+        onClick={() => navigate("/donate")}
+        className="relative bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-8 rounded-full shadow-2xl hover:shadow-pink-500/25 transition-all duration-300 transform hover:scale-105 overflow-hidden"
+      >
+        {/* Падающие монеты */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="coin coin-1">💰</div>
+          <div className="coin coin-2">🪙</div>
+          <div className="coin coin-3">💰</div>
+          <div className="coin coin-4">🪙</div>
+          <div className="coin coin-5">💰</div>
+        </div>
+
+        <Icon name="Heart" className="mr-2 relative z-10" size={20} />
+        <span className="relative z-10">Поддержать радио</span>
+      </Button>
+
+      <style jsx>{`
+        .coin {
+          position: absolute;
+          font-size: 12px;
+          opacity: 0.7;
+          pointer-events: none;
+          animation: coinFall 3s linear infinite;
+        }
+
+        .coin-1 {
+          left: 10%;
+          animation-delay: 0s;
+        }
+        .coin-2 {
+          left: 30%;
+          animation-delay: 0.6s;
+        }
+        .coin-3 {
+          left: 50%;
+          animation-delay: 1.2s;
+        }
+        .coin-4 {
+          left: 70%;
+          animation-delay: 1.8s;
+        }
+        .coin-5 {
+          left: 90%;
+          animation-delay: 2.4s;
+        }
+
+        @keyframes coinFall {
+          0% {
+            top: -20px;
+            opacity: 0;
+            transform: rotate(0deg) scale(0.5);
+          }
+          10% {
+            opacity: 0.7;
+            transform: rotate(30deg) scale(1);
+          }
+          90% {
+            opacity: 0.7;
+            transform: rotate(330deg) scale(1);
+          }
+          100% {
+            top: 60px;
+            opacity: 0;
+            transform: rotate(360deg) scale(0.5);
+          }
+        }
+      `}</style>
+    </div>
   );
 };
 
