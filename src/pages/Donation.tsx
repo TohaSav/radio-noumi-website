@@ -115,7 +115,7 @@ const Donation = () => {
 
               {/* Быстрые суммы */}
               <div className="grid grid-cols-4 gap-2">
-                {["50", "100", "200", "500"].map((sum) => (
+                {["50", "100", "200", "500", "1000"].map((sum) => (
                   <Button
                     key={sum}
                     variant="outline"
