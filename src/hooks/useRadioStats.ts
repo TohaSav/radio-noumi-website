@@ -2,28 +2,23 @@ import { useState, useEffect } from "react";
 
 interface RadioStats {
   listeners: number;
-  currentTrack: string;
   isOnline: boolean;
 }
 
 export const useRadioStats = (): RadioStats => {
   const [stats, setStats] = useState<RadioStats>({
-    listeners: 2978218,
-    currentTrack: "Hirschmilch Psytrance",
+    listeners: 1247,
     isOnline: true,
   });
 
   useEffect(() => {
-    // Реалистичное увеличение слушателей
-    const interval = setInterval(
-      () => {
-        setStats((prev) => ({
-          ...prev,
-          listeners: prev.listeners + Math.floor(Math.random() * 12) + 1,
-        }));
-      },
-      5000 + Math.random() * 10000,
-    ); // Случайный интервал 5-15 сек
+    // Симуляция изменения количества слушателей
+    const interval = setInterval(() => {
+      setStats((prev) => ({
+        ...prev,
+        listeners: Math.floor(Math.random() * 2000) + 800,
+      }));
+    }, 30000);
 
     return () => clearInterval(interval);
   }, []);

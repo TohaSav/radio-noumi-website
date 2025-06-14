@@ -108,7 +108,7 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .slider::-webkit-slider-thumb {
           appearance: none;
           width: 12px;
