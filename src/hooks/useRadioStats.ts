@@ -8,22 +8,24 @@ interface RadioStats {
 
 export const useRadioStats = (): RadioStats => {
   const [stats, setStats] = useState<RadioStats>({
-    listeners: 0,
-    currentTrack: "Загрузка...",
-    isOnline: false,
+    listeners: 2978218,
+    currentTrack: "Hirschmilch Psytrance",
+    isOnline: true,
   });
 
   useEffect(() => {
-    // Имитация загрузки статистики
-    const timer = setTimeout(() => {
-      setStats({
-        listeners: Math.floor(Math.random() * 100) + 50,
-        currentTrack: "Сейчас играет музыка",
-        isOnline: true,
-      });
-    }, 1000);
+    // Реалистичное увеличение слушателей
+    const interval = setInterval(
+      () => {
+        setStats((prev) => ({
+          ...prev,
+          listeners: prev.listeners + Math.floor(Math.random() * 12) + 1,
+        }));
+      },
+      5000 + Math.random() * 10000,
+    ); // Случайный интервал 5-15 сек
 
-    return () => clearTimeout(timer);
+    return () => clearInterval(interval);
   }, []);
 
   return stats;

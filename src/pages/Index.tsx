@@ -1,77 +1,37 @@
-import { useEffect, lazy, Suspense } from "react";
-import { Link } from "react-router-dom";
-import Icon from "@/components/ui/icon";
-import { useRadioStats } from "@/hooks/useRadioStats";
 import RadioPlayer from "@/components/RadioPlayer";
-import AnimatedTitle from "@/components/AnimatedTitle";
-
-// Lazy loading тяжелых компонентов
-const TopChart = lazy(() => import("@/components/TopChart"));
-const NewReleases = lazy(() => import("@/components/NewReleases"));
-const Stories = lazy(() => import("@/components/Stories"));
-const ReelsButton = lazy(() => import("@/components/ReelsButton"));
-
-// Облегченный компонент загрузки
-const ComponentLoader = () => (
-  <div className="flex justify-center py-4">
-    <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-  </div>
-);
 
 const Index = () => {
-  const stats = useRadioStats();
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 relative">
-      {/* Упрощенный фон для ускорения рендера */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
-
-      <div className="container mx-auto px-4 py-8 space-y-8 relative z-10 pb-24">
-        <Suspense fallback={<ComponentLoader />}>
-          <ReelsButton />
-        </Suspense>
-
-        {/* Кнопка знакомств */}
-        <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-20">
-          <Link
-            to="/dating"
-            className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white font-medium rounded-full transition-all duration-200 hover:bg-white/20 mb-3"
-          >
-            <Icon name="Heart" size={16} />
-            <span className="text-sm font-semibold">Знакомства</span>
-          </Link>
-          <Link
-            to="/chat"
-            className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white font-medium rounded-full transition-all duration-200 hover:bg-white/20"
-          >
-            <Icon name="MessageCircle" size={16} />
-            <span className="text-sm font-semibold">Онлайн Чат</span>
-          </Link>
-        </div>
-
-        {/* Stories с отложенной загрузкой */}
-        <Suspense fallback={<ComponentLoader />}>
-          <Stories />
-        </Suspense>
-
-        {/* AnimatedTitle */}
-        <div className="flex justify-center items-center py-8">
-          <AnimatedTitle />
-        </div>
-
-        <div className="flex items-center justify-center gap-4">
-          <RadioPlayer streamUrl="https://myradio24.org/61673" />
-        </div>
-
-        {/* Отложенная загрузка остальных компонентов */}
-        <Suspense fallback={<ComponentLoader />}>
-          <TopChart />
-        </Suspense>
-
-        <Suspense fallback={<ComponentLoader />}>
-          <NewReleases />
-        </Suspense>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 relative overflow-hidden">
+      {/* Декоративные элементы фона */}
+      <div className="absolute inset-0">
+        <div className="absolute top-10 left-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-500/5 rounded-full blur-3xl animate-pulse delay-500"></div>
       </div>
+
+      {/* Основной контент */}
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 pb-32">
+        <div className="text-center space-y-8 max-w-2xl mx-auto">
+          <div className="space-y-4">
+            <h1 className="text-6xl md:text-8xl font-bold text-white tracking-tight">
+              Radio
+            </h1>
+            <p className="text-xl md:text-2xl text-white/80 font-light">
+              Слушайте музыку в прямом эфире
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <p className="text-white/60 text-sm">
+              Качественный звук • Без рекламы • 24/7
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Фиксированный плеер внизу */}
+      <RadioPlayer streamUrl="https://myradio24.org/61673" />
     </div>
   );
 };
