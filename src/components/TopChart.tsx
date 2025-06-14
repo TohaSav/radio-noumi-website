@@ -1,113 +1,47 @@
-import { useState, useRef } from "react";
-import Icon from "@/components/ui/icon";
-import { useAuth } from "@/hooks/useAuth";
-
-interface Song {
-  id: number;
-  title: string;
-  audioFile: File;
-  audioUrl: string;
-  cover: string;
-  likes: number;
-  dislikes: number;
-  userReaction: "like" | "dislike" | null;
-}
-
 const TopChart = () => {
-  const { isAdmin } = useAuth();
-  const [songs, setSongs] = useState<Song[]>([]);
-  const [currentlyPlaying, setCurrentlyPlaying] = useState<number | null>(null);
-  const audioRefs = useRef<{ [key: number]: HTMLAudioElement }>({});
+  const tracks = [
+    {
+      id: 1,
+      title: "Популярный трек 1",
+      artist: "Исполнитель 1",
+      plays: "1.2M",
+    },
+    {
+      id: 2,
+      title: "Популярный трек 2",
+      artist: "Исполнитель 2",
+      plays: "980K",
+    },
+    {
+      id: 3,
+      title: "Популярный трек 3",
+      artist: "Исполнитель 3",
+      plays: "850K",
+    },
+  ];
 
-  // Форма добавления
-  const [songTitle, setSongTitle] = useState("");
-  const [audioFile, setAudioFile] = useState<File | null>(null);
-  const [coverFile, setCoverFile] = useState<File | null>(null);
-  const [coverPreview, setCoverPreview] = useState<string>("");
-
-  const handleCoverUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setCoverFile(file);
-      const reader = new FileReader();
-      reader.onload = () => setCoverPreview(reader.result as string);
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleAudioUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file && file.type.startsWith("audio/")) {
-      setAudioFile(file);
-    }
-  };
-
-  const handleAddSong = () => {
-    if (!songTitle.trim() || !audioFile || !coverFile) return;
-
-    const audioUrl = URL.createObjectURL(audioFile);
-    const newSong: Song = {
-      id: Date.now(),
-      title: songTitle.trim(),
-      audioFile,
-      audioUrl,
-      cover: coverPreview,
-      likes: 0,
-      dislikes: 0,
-      userReaction: null,
-    };
-
-    setSongs((prev) => [newSong, ...prev]);
-
-    // Очищаем форму
-    setSongTitle("");
-    setAudioFile(null);
-    setCoverFile(null);
-    setCoverPreview("");
-  };
-
-  const togglePlay = (songId: number) => {
-    const audio = audioRefs.current[songId];
-    if (!audio) return;
-
-    if (currentlyPlaying === songId) {
-      audio.pause();
-      setCurrentlyPlaying(null);
-    } else {
-      Object.values(audioRefs.current).forEach((a) => a.pause());
-      audio.play();
-      setCurrentlyPlaying(songId);
-    }
-
-    audio.onended = () => setCurrentlyPlaying(null);
-  };
-
-  const handleReaction = (songId: number, reaction: "like" | "dislike") => {
-    setSongs((prev) =>
-      prev.map((song) => {
-        if (song.id !== songId) return song;
-
-        const newSong = { ...song };
-
-        // Убираем предыдущую реакцию
-        if (song.userReaction === "like") newSong.likes--;
-        if (song.userReaction === "dislike") newSong.dislikes--;
-
-        // Добавляем новую реакцию (или убираем, если та же)
-        if (song.userReaction === reaction) {
-          newSong.userReaction = null;
-        } else {
-          newSong.userReaction = reaction;
-          if (reaction === "like") newSong.likes++;
-          if (reaction === "dislike") newSong.dislikes++;
-        }
-
-        return newSong;
-      }),
-    );
-  };
-
-  return <div>{/* Блок удален */}</div>;
+  return (
+    <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6">
+      <h2 className="text-2xl font-bold text-white mb-4">🔥 Топ чарт</h2>
+      <div className="space-y-3">
+        {tracks.map((track, index) => (
+          <div
+            key={track.id}
+            className="flex items-center gap-4 p-3 bg-white/5 rounded-lg"
+          >
+            <span className="text-white font-bold text-lg w-6">
+              #{index + 1}
+            </span>
+            <div className="flex-1">
+              <h3 className="text-white font-medium">{track.title}</h3>
+              <p className="text-white/70 text-sm">{track.artist}</p>
+            </div>
+            <span className="text-white/60 text-sm">{track.plays}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default TopChart;
