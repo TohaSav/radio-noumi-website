@@ -1,4 +1,5 @@
 import RadioPlayer from "@/components/RadioPlayer";
+import AdBanner from "@/components/AdBanner";
 
 const Index = () => {
   return (
@@ -22,11 +23,7 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="space-y-2">
-            <p className="text-white/60 text-sm">
-              Качественный звук • Без рекламы • 24/7
-            </p>
-          </div>
+          <AdBanner />
         </div>
       </div>
 
