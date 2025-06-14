@@ -14,8 +14,8 @@ const Index = () => {
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 pb-32">
         <div className="text-center space-y-8 max-w-2xl mx-auto">
           <div className="space-y-4">
-            <h1 className="text-6xl md:text-8xl font-bold text-white tracking-tight">
-              Radio
+            <h1 className="text-6xl md:text-8xl font-bold tracking-tight bg-gradient-to-r from-pink-500 via-purple-500 via-blue-500 to-cyan-500 bg-clip-text text-transparent animate-pulse bg-[length:200%_200%] animate-[gradient_3s_ease-in-out_infinite]">
+              Noumi
             </h1>
             <p className="text-xl md:text-2xl text-white/80 font-light">
               Слушайте музыку в прямом эфире
