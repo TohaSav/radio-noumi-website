@@ -13,6 +13,8 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
   const [subtitle, setSubtitle] = useState("Naturalize & Second Sun - 3am");
   const audioRef = useRef<HTMLAudioElement>(null);
   const stats = useRadioStats();
+  const { getSpecialViewsCount } = useRadioStats();
+  const specialCount = getSpecialViewsCount();
 
   useEffect(() => {
     if (audioRef.current) {
@@ -82,7 +84,7 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
               {/* Слушатели */}
               <div className="hidden md:flex items-center gap-2 text-white/80">
                 <Icon name="Users" size={16} />
-                <span>{getSpecialViewsCount()}</span>
+                <span>{stats.listeners}</span>
               </div>
 
               {/* Громкость */}
