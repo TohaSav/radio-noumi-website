@@ -22,30 +22,17 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    // Максимальное сжатие для медленного интернета
     minify: "esbuild",
-    target: "es2015", // Поддержка старых браузеров
+    target: "es2015",
     cssMinify: true,
-    // Агрессивное разделение кода
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ["react", "react-dom"],
           router: ["react-router-dom"],
-          ui: ["@radix-ui/react-dialog", "@radix-ui/react-toast"],
-          utils: ["clsx", "tailwind-merge"],
-          icons: ["lucide-react"],
         },
-        // Оптимизация имен файлов для кеширования
-        chunkFileNames: "assets/[name]-[hash].js",
-        entryFileNames: "assets/[name]-[hash].js",
-        assetFileNames: "assets/[name]-[hash].[ext]",
       },
     },
-    // Уменьшение лимита для предупреждений
-    chunkSizeWarningLimit: 500,
-    // Включение сжатия
-    reportCompressedSize: false, // Ускоряет сборку
   },
   // Предварительная загрузка критичных модулей
   optimizeDeps: {
