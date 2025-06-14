@@ -9,7 +9,7 @@ interface RadioPlayerProps {
 const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(70);
-  const [currentTrack, setCurrentTrack] = useState("Hirschmilch Psytrance");
+  const [currentTrack, setCurrentTrack] = useState("");
   const [subtitle, setSubtitle] = useState("Naturalize & Second Sun - 3am");
   const audioRef = useRef<HTMLAudioElement>(null);
   const stats = useRadioStats();
