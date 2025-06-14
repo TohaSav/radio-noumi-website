@@ -139,11 +139,10 @@ const Donation = () => {
                     htmlFor="auto-support"
                     className="text-white font-medium"
                   >
-                    Автоматическая поддержка
+                    Помощь раз в месяц
                   </Label>
-                  <p className="text-sm text-white/70">
-                    1₽ каждые 5 минут с сообщением "Radio Noumi поддержим радио
-                    вместе"
+                  <p className="text-white/70 text-sm">
+                    500 рублей с сообщением "Radio Noumi поддержим радио вместе"
                   </p>
                 </div>
               </div>
