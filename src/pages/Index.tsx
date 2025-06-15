@@ -27,6 +27,7 @@ const Index = () => {
           </div>
 
           <SupportButton />
+          <ChatButton />
           <AdBanner />
         </div>
       </div>
@@ -111,6 +112,20 @@ const SupportButton = () => {
         }
       `}</style>
     </div>
+  );
+};
+
+const ChatButton = () => {
+  const navigate = useNavigate();
+
+  return (
+    <Button
+      onClick={() => navigate("/online-chat")}
+      className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold py-3 px-8 rounded-full shadow-2xl hover:shadow-cyan-500/25 transition-all duration-300 transform hover:scale-105"
+    >
+      <Icon name="MessageCircle" className="mr-2" size={20} />
+      Онлайн чат
+    </Button>
   );
 };
 

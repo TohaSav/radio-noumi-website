@@ -269,16 +269,36 @@ const AutoMessageGenerator = ({
   };
 
   useEffect(() => {
+    const loadStoredData = () => {
+      const storedMessages = localStorage.getItem("used-messages");
+      const storedNames = localStorage.getItem("used-names");
+      const storedPhotos = localStorage.getItem("used-photos");
+
+      if (storedMessages) setUsedMessages(new Set(JSON.parse(storedMessages)));
+      if (storedNames) setUsedNames(new Set(JSON.parse(storedNames)));
+      if (storedPhotos) setUsedPhotos(new Set(JSON.parse(storedPhotos)));
+    };
+
+    loadStoredData();
+
     const interval = setInterval(
       () => {
         const message = generateMessage();
         onMessageGenerated(message);
+
+        // Сохраняем использованные данные
+        localStorage.setItem(
+          "used-messages",
+          JSON.stringify([...usedMessages]),
+        );
+        localStorage.setItem("used-names", JSON.stringify([...usedNames]));
+        localStorage.setItem("used-photos", JSON.stringify([...usedPhotos]));
       },
       3000 + Math.random() * 7000,
     );
 
     return () => clearInterval(interval);
-  }, [onMessageGenerated]);
+  }, [onMessageGenerated, usedMessages, usedNames, usedPhotos]);
 
   return null;
 };

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import RadioPlayer from "@/components/RadioPlayer";
 import AutoMessageGenerator from "@/components/chat/AutoMessageGenerator";
+import { useRadioStats } from "@/hooks/useRadioStats";
 
 interface Message {
   id: string;
@@ -18,29 +19,37 @@ interface Message {
 }
 
 const OnlineChat = () => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      text: "Привет всем! 🎵",
-      user: "Диджей Макс",
-      timestamp: new Date(Date.now() - 300000),
-      type: "text",
-    },
-    {
-      id: "2",
-      text: "Кто слушает радио? 🎧",
-      user: "Анна_2024",
-      timestamp: new Date(Date.now() - 180000),
-      type: "text",
-    },
-    {
-      id: "3",
-      text: "🔥🔥🔥",
-      user: "МузыкаЖизнь",
-      timestamp: new Date(Date.now() - 60000),
-      type: "emoji",
-    },
-  ]);
+  const { listeners } = useRadioStats();
+  const onlineCount =
+    Math.floor(listeners / 50000) + Math.floor(Math.random() * 20) + 15;
+  const [messages, setMessages] = useState<Message[]>(() => {
+    const saved = localStorage.getItem("chat-messages");
+    return saved
+      ? JSON.parse(saved)
+      : [
+          {
+            id: "1",
+            text: "Привет всем! 🎵",
+            user: "Диджей Макс",
+            timestamp: new Date(Date.now() - 300000),
+            type: "text",
+          },
+          {
+            id: "2",
+            text: "Кто слушает радио? 🎧",
+            user: "Анна_2024",
+            timestamp: new Date(Date.now() - 180000),
+            type: "text",
+          },
+          {
+            id: "3",
+            text: "🔥🔥🔥",
+            user: "МузыкаЖизнь",
+            timestamp: new Date(Date.now() - 60000),
+            type: "emoji",
+          },
+        ];
+  });
 
   const [newMessage, setNewMessage] = useState("");
   const [userName] = useState(
@@ -71,6 +80,7 @@ const OnlineChat = () => {
 
   useEffect(() => {
     scrollToBottom();
+    localStorage.setItem("chat-messages", JSON.stringify(messages));
   }, [messages]);
 
   const sendMessage = () => {
@@ -147,7 +157,7 @@ const OnlineChat = () => {
             </div>
             <div className="flex items-center gap-2 text-white/70 text-sm">
               <Icon name="Users" size={16} />
-              <span>онлайн: {Math.floor(Math.random() * 50) + 20}</span>
+              <span>онлайн: {onlineCount}</span>
             </div>
           </div>
         </div>
@@ -214,8 +224,8 @@ const OnlineChat = () => {
         )}
 
         {/* Input Area */}
-        <div className="bg-black/30 backdrop-blur-sm border-t border-white/20 p-4">
-          <div className="flex items-center gap-2">
+        <div className="bg-black/30 backdrop-blur-sm border-t border-white/20 p-3 sm:p-4 pb-20 sm:pb-24">
+          <div className="flex items-center gap-2 max-w-4xl mx-auto">
             <Button
               onClick={() => setShowEmojiPicker(!showEmojiPicker)}
               variant="ghost"
@@ -266,6 +276,11 @@ const OnlineChat = () => {
           setMessages((prev) => [...prev, message])
         }
       />
+
+      {/* Background Radio Player */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none">
+        <RadioPlayer streamUrl="https://myradio24.org/61673" />
+      </div>
     </div>
   );
 };
