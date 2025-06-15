@@ -16,7 +16,15 @@ const AdBanner: React.FC<AdBannerProps> = ({
   const [views, setViews] = useState(0);
   const [clicks, setClicks] = useState(0);
   const [uniqueViews, setUniqueViews] = useState(0);
+  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
   const { listeners } = useRadioStats();
+
+  // Массив баннеров
+  const banners = [
+    "https://cdn.poehali.dev/files/33f524f4-ccfa-4987-a539-c7b0736e31b3.png",
+    "https://cdn.poehali.dev/files/a58ab521-5eed-4cf3-850a-df83e88e9382.png",
+    "https://cdn.poehali.dev/files/a48fd9c3-3e70-42e0-907b-f89f14ed22e9.png",
+  ];
 
   useEffect(() => {
     const savedClicks = localStorage.getItem("ad-clicks") || "0";
@@ -55,6 +63,15 @@ const AdBanner: React.FC<AdBannerProps> = ({
     };
   }, []);
 
+  // Автоматическая смена баннеров каждые 5 секунд
+  useEffect(() => {
+    const bannerInterval = setInterval(() => {
+      setCurrentBannerIndex((prev) => (prev + 1) % banners.length);
+    }, 5000);
+
+    return () => clearInterval(bannerInterval);
+  }, [banners.length]);
+
   // Синхронизируем просмотры с количеством слушателей радио
   useEffect(() => {
     setViews(listeners);
@@ -88,9 +105,9 @@ const AdBanner: React.FC<AdBannerProps> = ({
         onClick={handleClick}
       >
         <img
-          src="https://cdn.poehali.dev/files/33f524f4-ccfa-4987-a539-c7b0736e31b3.png"
+          src={banners[currentBannerIndex]}
           alt="Реклама на радио NOUM - WhatsApp +7 904 980-82-75"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transition-opacity duration-500 ease-in-out"
         />
       </div>
 
