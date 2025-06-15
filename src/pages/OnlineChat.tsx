@@ -20,8 +20,10 @@ interface Message {
 
 const OnlineChat = () => {
   const { listeners } = useRadioStats();
-  const onlineCount =
-    Math.floor(listeners / 50000) + Math.floor(Math.random() * 20) + 15;
+  const onlineCount = Math.max(
+    15,
+    Math.floor(listeners / 50000) + Math.floor(Math.random() * 20) + 15,
+  );
   const [messages, setMessages] = useState<Message[]>(() => {
     const saved = localStorage.getItem("chat-messages");
     return saved
