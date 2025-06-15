@@ -87,19 +87,11 @@ const AdBanner: React.FC<AdBannerProps> = ({
         }}
         onClick={handleClick}
       >
-        {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt={altText}
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center p-4">
-            <p className="text-white/70 text-center text-sm leading-relaxed">
-              {placeholderText}
-            </p>
-          </div>
-        )}
+        <img
+          src="https://cdn.poehali.dev/files/33f524f4-ccfa-4987-a539-c7b0736e31b3.png"
+          alt="Реклама на радио NOUM - WhatsApp +7 904 980-82-75"
+          className="w-full h-full object-cover"
+        />
       </div>
 
       {/* Статистика */}
