@@ -162,11 +162,6 @@ const OnlineChat = () => {
           </div>
         </div>
 
-        {/* Background Radio Player */}
-        <div className="hidden">
-          <RadioPlayer />
-        </div>
-
         {/* Chat Messages */}
         <div className="flex-1 overflow-hidden">
           <ScrollArea className="h-full p-4">
@@ -277,8 +272,8 @@ const OnlineChat = () => {
         }
       />
 
-      {/* Background Radio Player */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none">
+      {/* Radio Player */}
+      <div className="fixed bottom-0 left-0 right-0 z-50">
         <RadioPlayer streamUrl="https://myradio24.org/61673" />
       </div>
     </div>
