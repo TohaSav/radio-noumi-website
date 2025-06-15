@@ -27,3 +27,12 @@ export const useRadioStats = (): RadioStats => {
 
   return stats;
 };
+
+export const getSpecialViewsCount = (listeners: number): string => {
+  if (listeners >= 1000000) {
+    return `${(listeners / 1000000).toFixed(1)}M`;
+  } else if (listeners >= 1000) {
+    return `${(listeners / 1000).toFixed(0)}K`;
+  }
+  return listeners.toString();
+};

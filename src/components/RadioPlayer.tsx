@@ -13,8 +13,6 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
   const [subtitle, setSubtitle] = useState("Naturalize & Second Sun - 3am");
   const audioRef = useRef<HTMLAudioElement>(null);
   const stats = useRadioStats();
-  const { getSpecialViewsCount } = useRadioStats();
-  const specialCount = getSpecialViewsCount();
 
   useEffect(() => {
     if (audioRef.current) {
