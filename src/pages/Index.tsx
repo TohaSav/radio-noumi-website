@@ -21,8 +21,9 @@ const Index = () => {
             <h1 className="text-6xl md:text-8xl font-bold tracking-tight bg-gradient-to-r from-pink-500 via-purple-500 via-blue-500 to-cyan-500 bg-clip-text text-transparent animate-pulse bg-[length:200%_200%] animate-[gradient_3s_ease-in-out_infinite]">
               Noumi
             </h1>
-            <p className="text-xl md:text-2xl text-white/80 font-light">
-              Слушайте музыку в прямом эфире
+            <p className="text-xl md:text-2xl font-light bg-gradient-to-r from-pink-400 via-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
+              На Radio Noumi для вас играет музыка Поп, Jazz, Казахская,
+              Китайская, Английская, Русская Народная
             </p>
           </div>
 
