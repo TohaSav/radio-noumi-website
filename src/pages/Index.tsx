@@ -31,10 +31,6 @@ const Index = () => {
           <SupportButton />
           <ChatButton />
 
-          <div>
-            <AdBanner />
-          </div>
-
           {/* Монетизация */}
           <div className="space-y-6 mt-8">
             <AdBanner />
