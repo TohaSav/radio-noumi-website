@@ -6,20 +6,57 @@ interface RadioStats {
   isOnline: boolean;
 }
 
+// Ключи для localStorage
+const STORAGE_KEYS = {
+  LISTENERS: "radio_listeners_count",
+  LAST_UPDATE: "radio_last_update",
+};
+
+// Загрузить сохранённые данные из localStorage
+const loadStoredStats = () => {
+  const storedListeners = localStorage.getItem(STORAGE_KEYS.LISTENERS);
+  const storedLastUpdate = localStorage.getItem(STORAGE_KEYS.LAST_UPDATE);
+
+  if (storedListeners && storedLastUpdate) {
+    const listeners = parseInt(storedListeners);
+    const lastUpdate = parseInt(storedLastUpdate);
+    const now = Date.now();
+
+    // Если прошло меньше 2 минут, используем сохранённое значение
+    if (now - lastUpdate < 2 * 60 * 1000) {
+      return listeners;
+    }
+  }
+
+  return null;
+};
+
+// Сохранить данные в localStorage
+const saveStatsToStorage = (listeners: number) => {
+  localStorage.setItem(STORAGE_KEYS.LISTENERS, listeners.toString());
+  localStorage.setItem(STORAGE_KEYS.LAST_UPDATE, Date.now().toString());
+};
+
 export const useRadioStats = (): RadioStats => {
-  const [stats, setStats] = useState<RadioStats>({
-    listeners: getListenersForCurrentTime(),
-    currentTrack: "Сейчас играет...",
-    isOnline: true,
+  const [stats, setStats] = useState<RadioStats>(() => {
+    const storedListeners = loadStoredStats();
+    return {
+      listeners: storedListeners || getListenersForCurrentTime(),
+      currentTrack: "Сейчас играет...",
+      isOnline: true,
+    };
   });
 
   useEffect(() => {
     // Обновление каждые 15-45 секунд для реалистичности
     const updateStats = () => {
+      const newListeners = getListenersForCurrentTime();
       setStats((prev) => ({
         ...prev,
-        listeners: getListenersForCurrentTime(),
+        listeners: newListeners,
       }));
+      // Сохраняем в localStorage при каждом обновлении
+      saveStatsToStorage(newListeners);
     };
 
     const getRandomInterval = () => Math.random() * 30000 + 15000; // 15-45 сек
