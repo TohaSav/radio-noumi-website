@@ -81,17 +81,17 @@ export const MonetizationPanel = () => {
       </div>
 
       <Card className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-lg border-purple-500/30">
-        <CardContent className="p-4 sm:p-6">
-          <div className="flex flex-col items-center justify-center text-center space-y-4 sm:space-y-6">
-            <h3 className="text-lg sm:text-xl font-semibold text-white mb-2 sm:mb-4">
+        <CardContent className="p-3">
+          <div className="flex flex-col items-center justify-center text-center space-y-2">
+            <h3 className="text-base font-semibold text-white mb-1">
               Общий доход сегодня
             </h3>
             <Button
               onClick={() => setShowPremium(true)}
-              size="lg"
-              className="w-full sm:w-auto px-8 py-4 text-lg font-semibold bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-200"
+              size="sm"
+              className="px-4 py-2 text-sm font-semibold bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-200"
             >
-              <Icon name="Crown" className="mr-2" size={20} />
+              <Icon name="Crown" className="mr-1" size={16} />
               Premium
             </Button>
           </div>
