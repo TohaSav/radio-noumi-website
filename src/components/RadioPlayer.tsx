@@ -82,7 +82,7 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
             {/* Нижняя строка: информация о треке */}
             <div className="text-center">
               <div className="text-white font-semibold truncate text-lg">
-                {currentTrack || "Naturalize & Second Sun - 3am"}
+                {currentTrack || ""}
               </div>
             </div>
 
@@ -122,7 +122,7 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
             {/* Информация о треке */}
             <div className="flex-1 min-w-0 text-center lg:text-left">
               <div className="text-white font-semibold truncate text-lg lg:text-xl">
-                {currentTrack || "Naturalize & Second Sun - 3am"}
+                {currentTrack || ""}
               </div>
             </div>
 
