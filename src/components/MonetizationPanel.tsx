@@ -80,16 +80,6 @@ export const MonetizationPanel = () => {
         </Card>
       </div>
 
-      <Card className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-lg border-purple-500/30 flex items-center justify-center min-h-[120px]">
-        <CardContent className="p-3 flex items-center justify-center">
-          <div className="flex flex-col items-center justify-center text-center space-y-2">
-            <h3 className="text-base font-semibold text-white mb-1">
-              Общий доход сегодня
-            </h3>
-          </div>
-        </CardContent>
-      </Card>
-
       <PremiumModal open={showPremium} onOpenChange={setShowPremium} />
     </>
   );
