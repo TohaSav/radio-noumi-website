@@ -27,6 +27,11 @@ export const MonetizationPanel = () => {
 
   const totalEarnings = earnings.ads + earnings.premium + earnings.donations;
 
+  // Показываем блоки монетизации только в режиме разработки
+  if (!import.meta.env.DEV) {
+    return null;
+  }
+
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
