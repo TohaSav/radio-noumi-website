@@ -13,10 +13,10 @@ const AdBanner: React.FC<AdBannerProps> = ({
   altText = "Реклама",
   clickUrl,
 }) => {
-  const [views, setViews] = useState(0);
-  const [clicks, setClicks] = useState(0);
-  const [uniqueViews, setUniqueViews] = useState(0);
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+  const [bannerMetrics, setBannerMetrics] = useState<{
+    [key: string]: { views: number; clicks: number; uniqueClicks: number };
+  }>({});
   const { listeners } = useRadioStats();
 
   // Массив баннеров
@@ -27,31 +27,72 @@ const AdBanner: React.FC<AdBannerProps> = ({
   ];
 
   useEffect(() => {
-    const savedClicks = localStorage.getItem("ad-clicks") || "0";
-    const savedUniqueViews = localStorage.getItem("ad-unique-views") || "0";
+    // Загружаем метрики для каждого баннера
+    const savedMetrics = localStorage.getItem("banner-metrics");
+    if (savedMetrics) {
+      setBannerMetrics(JSON.parse(savedMetrics));
+    } else {
+      // Инициализируем метрики для каждого баннера
+      const initialMetrics = banners.reduce(
+        (acc, banner, index) => {
+          acc[index] = {
+            views: 0,
+            clicks: Math.floor(Math.random() * 2000) + 500,
+            uniqueClicks: Math.floor(Math.random() * 100) + 50,
+          };
+          return acc;
+        },
+        {} as {
+          [key: string]: {
+            views: number;
+            clicks: number;
+            uniqueClicks: number;
+          };
+        },
+      );
+      setBannerMetrics(initialMetrics);
+      localStorage.setItem("banner-metrics", JSON.stringify(initialMetrics));
+    }
 
-    setClicks(parseInt(savedClicks));
-    setUniqueViews(parseInt(savedUniqueViews));
-
-    // Автоматический рост кликов каждые 2-5 секунд
+    // Автоматический рост кликов для текущего баннера
     const clickInterval = setInterval(
       () => {
-        setClicks((prev) => {
-          const newClicks = prev + Math.floor(Math.random() * 3) + 1;
-          localStorage.setItem("ad-clicks", newClicks.toString());
-          return newClicks;
+        setBannerMetrics((prev) => {
+          const updated = { ...prev };
+          const currentKey = currentBannerIndex.toString();
+          if (updated[currentKey]) {
+            updated[currentKey] = {
+              ...updated[currentKey],
+              clicks:
+                updated[currentKey].clicks + Math.floor(Math.random() * 3) + 1,
+            };
+            localStorage.setItem("banner-metrics", JSON.stringify(updated));
+          }
+          return updated;
         });
       },
       Math.random() * 3000 + 2000,
     );
 
-    // Рост уникальных просмотров по 25 каждые 5 минут
+    // Рост уникальных кликов каждые 5 минут
     const uniqueInterval = setInterval(
       () => {
-        setUniqueViews((prev) => {
-          const newUniqueViews = prev + 25;
-          localStorage.setItem("ad-unique-views", newUniqueViews.toString());
-          return newUniqueViews;
+        setBannerMetrics((prev) => {
+          const updated = { ...prev };
+          banners.forEach((_, index) => {
+            const key = index.toString();
+            if (updated[key]) {
+              updated[key] = {
+                ...updated[key],
+                uniqueClicks:
+                  updated[key].uniqueClicks +
+                  Math.floor(Math.random() * 10) +
+                  5,
+              };
+            }
+          });
+          localStorage.setItem("banner-metrics", JSON.stringify(updated));
+          return updated;
         });
       },
       5 * 60 * 1000,
@@ -61,32 +102,58 @@ const AdBanner: React.FC<AdBannerProps> = ({
       clearInterval(clickInterval);
       clearInterval(uniqueInterval);
     };
-  }, []);
+  }, [currentBannerIndex, banners.length]);
 
-  // Автоматическая смена баннеров каждые 5 секунд
+  // Автоматическая смена баннеров каждые 60 секунд
   useEffect(() => {
     const bannerInterval = setInterval(() => {
       setCurrentBannerIndex((prev) => (prev + 1) % banners.length);
-    }, 5000);
+    }, 60000); // 60 секунд
 
     return () => clearInterval(bannerInterval);
   }, [banners.length]);
 
-  // Синхронизируем просмотры с количеством слушателей радио
+  // Обновляем просмотры для текущего баннера
   useEffect(() => {
-    setViews(listeners);
-  }, [listeners]);
+    setBannerMetrics((prev) => {
+      const updated = { ...prev };
+      const currentKey = currentBannerIndex.toString();
+      if (updated[currentKey]) {
+        updated[currentKey] = {
+          ...updated[currentKey],
+          views: listeners,
+        };
+        localStorage.setItem("banner-metrics", JSON.stringify(updated));
+      }
+      return updated;
+    });
+  }, [listeners, currentBannerIndex]);
 
   const handleClick = () => {
-    const newClicks = clicks + 1;
-    setClicks(newClicks);
-    localStorage.setItem("ad-clicks", newClicks.toString());
+    setBannerMetrics((prev) => {
+      const updated = { ...prev };
+      const currentKey = currentBannerIndex.toString();
+      if (updated[currentKey]) {
+        updated[currentKey] = {
+          ...updated[currentKey],
+          clicks: updated[currentKey].clicks + 1,
+        };
+        localStorage.setItem("banner-metrics", JSON.stringify(updated));
+      }
+      return updated;
+    });
 
     if (clickUrl) {
       window.open(clickUrl, "_blank");
     } else {
       window.open("https://wa.me/79049808275", "_blank");
     }
+  };
+
+  const currentMetrics = bannerMetrics[currentBannerIndex.toString()] || {
+    views: 0,
+    clicks: 0,
+    uniqueClicks: 0,
   };
 
   const placeholderText =
@@ -115,15 +182,15 @@ const AdBanner: React.FC<AdBannerProps> = ({
       <div className="flex items-center justify-center gap-4 sm:gap-6 mt-3 text-white/60 text-sm sm:text-xs">
         <div className="flex items-center gap-1.5 sm:gap-1 min-w-[44px] justify-center">
           <Eye size={16} className="sm:w-3.5 sm:h-3.5" />
-          <span className="font-medium">{listeners}</span>
+          <span className="font-medium">{currentMetrics.views}</span>
         </div>
         <div className="flex items-center gap-1.5 sm:gap-1 min-w-[44px] justify-center">
           <MousePointer size={16} className="sm:w-3.5 sm:h-3.5" />
-          <span className="font-medium">{clicks}</span>
+          <span className="font-medium">{currentMetrics.clicks}</span>
         </div>
         <div className="flex items-center gap-1.5 sm:gap-1 min-w-[44px] justify-center">
           <Users size={16} className="sm:w-3.5 sm:h-3.5" />
-          <span className="font-medium">{uniqueViews}</span>
+          <span className="font-medium">{currentMetrics.uniqueClicks}</span>
         </div>
       </div>
     </div>
