@@ -1,5 +1,6 @@
 import RadioPlayer from "@/components/RadioPlayer";
 import AdBanner from "@/components/AdBanner";
+import { MonetizationPanel } from "@/components/MonetizationPanel";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
@@ -29,7 +30,18 @@ const Index = () => {
 
           <SupportButton />
           <ChatButton />
-          <AdBanner />
+
+          <div>
+            <AdBanner />
+          </div>
+
+          {/* Монетизация */}
+          <div className="space-y-6 mt-8">
+            <AdBanner />
+            <div className="max-w-md mx-auto">
+              <MonetizationPanel />
+            </div>
+          </div>
         </div>
       </div>
 

@@ -104,14 +104,27 @@ const AdBanner: React.FC<AdBannerProps> = ({
     };
   }, [currentBannerIndex, banners.length]);
 
-  // Автоматическая смена баннеров каждые 60 секунд
+  // Ротация баннеров каждые 15 секунд
   useEffect(() => {
-    const bannerInterval = setInterval(() => {
+    const interval = setInterval(() => {
       setCurrentBannerIndex((prev) => (prev + 1) % banners.length);
-    }, 60000); // 60 секунд
 
-    return () => clearInterval(bannerInterval);
-  }, [banners.length]);
+      // Увеличиваем просмотры
+      setBannerMetrics((prev) => {
+        const updated = {
+          ...prev,
+          [currentBannerIndex]: {
+            ...prev[currentBannerIndex],
+            views: (prev[currentBannerIndex]?.views || 0) + 1,
+          },
+        };
+        localStorage.setItem("banner-metrics", JSON.stringify(updated));
+        return updated;
+      });
+    }, 15000);
+
+    return () => clearInterval(interval);
+  }, [currentBannerIndex, banners.length]);
 
   // Обновляем просмотры для текущего баннера
   useEffect(() => {
@@ -129,69 +142,75 @@ const AdBanner: React.FC<AdBannerProps> = ({
     });
   }, [listeners, currentBannerIndex]);
 
-  const handleClick = () => {
+  const handleBannerClick = () => {
+    const bannerId = currentBannerIndex.toString();
+
+    // Увеличиваем клики
     setBannerMetrics((prev) => {
-      const updated = { ...prev };
-      const currentKey = currentBannerIndex.toString();
-      if (updated[currentKey]) {
-        updated[currentKey] = {
-          ...updated[currentKey],
-          clicks: updated[currentKey].clicks + 1,
-        };
-        localStorage.setItem("banner-metrics", JSON.stringify(updated));
-      }
+      const updated = {
+        ...prev,
+        [bannerId]: {
+          ...prev[bannerId],
+          clicks: (prev[bannerId]?.clicks || 0) + 1,
+          uniqueClicks: (prev[bannerId]?.uniqueClicks || 0) + 1,
+        },
+      };
+      localStorage.setItem("banner-metrics", JSON.stringify(updated));
       return updated;
     });
 
     if (clickUrl) {
       window.open(clickUrl, "_blank");
-    } else {
-      window.open("https://wa.me/79049808275", "_blank");
     }
   };
 
-  const currentMetrics = bannerMetrics[currentBannerIndex.toString()] || {
+  const currentBanner = imageUrl || banners[currentBannerIndex];
+  const currentMetrics = bannerMetrics[currentBannerIndex] || {
     views: 0,
     clicks: 0,
     uniqueClicks: 0,
   };
 
-  const placeholderText =
-    "Место для вашей рекламы заказать рекламу можете написав нам на WhatsApp +79049808275";
+  // Расчет дохода от рекламы (условный)
+  const adRevenue = Math.floor(
+    currentMetrics.views * 0.1 + currentMetrics.clicks * 2.5,
+  );
 
   return (
-    <div className="w-full max-w-[640px] mx-auto px-4 sm:px-0">
+    <div className="w-full max-w-md mx-auto space-y-3">
       {/* Баннер */}
       <div
-        className="w-full h-[160px] sm:h-[180px] md:h-[200px] bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-2 border-dashed border-white/30 rounded-lg overflow-hidden cursor-pointer hover:border-white/50 transition-colors active:scale-95 touch-manipulation"
-        style={{
-          aspectRatio: "640/200",
-          maxWidth: "100%",
-          maxHeight: "calc(100vw * 200/640)",
-        }}
-        onClick={handleClick}
+        className="relative overflow-hidden rounded-xl shadow-2xl cursor-pointer group"
+        onClick={handleBannerClick}
       >
         <img
-          src={banners[currentBannerIndex]}
-          alt="Реклама на радио NOUM - WhatsApp +7 904 980-82-75"
-          className="w-full h-full object-cover transition-opacity duration-500 ease-in-out"
+          src={currentBanner}
+          alt={altText}
+          className="w-full h-32 object-cover transition-transform duration-300 group-hover:scale-105"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
+          Реклама
+        </div>
       </div>
 
-      {/* Статистика */}
-      <div className="flex items-center justify-center gap-4 sm:gap-6 mt-3 text-white/60 text-sm sm:text-xs">
-        <div className="flex items-center gap-1.5 sm:gap-1 min-w-[44px] justify-center">
-          <Eye size={16} className="sm:w-3.5 sm:h-3.5" />
-          <span className="font-medium">{currentMetrics.views}</span>
+      {/* Метрики рекламы */}
+      <div className="flex justify-between items-center text-xs text-white/60 bg-white/5 rounded-lg p-2">
+        <div className="flex items-center space-x-3">
+          <div className="flex items-center">
+            <Eye size={12} className="mr-1" />
+            {currentMetrics.views}
+          </div>
+          <div className="flex items-center">
+            <MousePointer size={12} className="mr-1" />
+            {currentMetrics.clicks}
+          </div>
+          <div className="flex items-center">
+            <Users size={12} className="mr-1" />
+            {listeners}
+          </div>
         </div>
-        <div className="flex items-center gap-1.5 sm:gap-1 min-w-[44px] justify-center">
-          <MousePointer size={16} className="sm:w-3.5 sm:h-3.5" />
-          <span className="font-medium">{currentMetrics.clicks}</span>
-        </div>
-        <div className="flex items-center gap-1.5 sm:gap-1 min-w-[44px] justify-center">
-          <Users size={16} className="sm:w-3.5 sm:h-3.5" />
-          <span className="font-medium">{currentMetrics.uniqueClicks}</span>
-        </div>
+        <div className="text-green-400 font-medium">+{adRevenue}₽</div>
       </div>
     </div>
   );
