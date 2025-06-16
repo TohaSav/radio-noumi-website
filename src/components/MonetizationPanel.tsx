@@ -95,7 +95,7 @@ export const MonetizationPanel = () => {
         <Button
           onClick={() => setShowPremium(true)}
           size="sm"
-          className="px-2 py-4 text-sm font-semibold bg-gradient-to-b from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-200 flex-col gap-1 writing-mode-vertical-rl"
+          className="px-2 py-4 text-sm font-semibold hover:bg-gray-100 shadow-lg hover:shadow-xl transition-all duration-200 flex-col gap-1 writing-mode-vertical-rl"
         >
           <Icon name="Crown" size={16} />
           <span className="transform -rotate-90 whitespace-nowrap">
