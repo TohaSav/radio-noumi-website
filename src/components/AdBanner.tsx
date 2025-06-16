@@ -93,13 +93,13 @@ const AdBanner: React.FC<AdBannerProps> = ({
     "Место для вашей рекламы заказать рекламу можете написав нам на WhatsApp +79049808275";
 
   return (
-    <div className="w-full max-w-[640px] mx-auto">
+    <div className="w-full max-w-[640px] mx-auto px-4 sm:px-0">
       {/* Баннер */}
       <div
-        className="w-full max-w-[640px] h-[200px] bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-2 border-dashed border-white/30 rounded-lg overflow-hidden cursor-pointer hover:border-white/50 transition-colors mx-auto"
+        className="w-full h-[160px] sm:h-[180px] md:h-[200px] bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-2 border-dashed border-white/30 rounded-lg overflow-hidden cursor-pointer hover:border-white/50 transition-colors active:scale-95 touch-manipulation"
         style={{
           aspectRatio: "640/200",
-          maxWidth: "100vw",
+          maxWidth: "100%",
           maxHeight: "calc(100vw * 200/640)",
         }}
         onClick={handleClick}
@@ -112,18 +112,18 @@ const AdBanner: React.FC<AdBannerProps> = ({
       </div>
 
       {/* Статистика */}
-      <div className="flex items-center justify-center gap-6 mt-3 text-white/60 text-xs">
-        <div className="flex items-center gap-1">
-          <Eye size={14} />
-          <span>{listeners}</span>
+      <div className="flex items-center justify-center gap-4 sm:gap-6 mt-3 text-white/60 text-sm sm:text-xs">
+        <div className="flex items-center gap-1.5 sm:gap-1 min-w-[44px] justify-center">
+          <Eye size={16} className="sm:w-3.5 sm:h-3.5" />
+          <span className="font-medium">{listeners}</span>
         </div>
-        <div className="flex items-center gap-1">
-          <MousePointer size={14} />
-          <span>{clicks}</span>
+        <div className="flex items-center gap-1.5 sm:gap-1 min-w-[44px] justify-center">
+          <MousePointer size={16} className="sm:w-3.5 sm:h-3.5" />
+          <span className="font-medium">{clicks}</span>
         </div>
-        <div className="flex items-center gap-1">
-          <Users size={14} />
-          <span>{uniqueViews}</span>
+        <div className="flex items-center gap-1.5 sm:gap-1 min-w-[44px] justify-center">
+          <Users size={16} className="sm:w-3.5 sm:h-3.5" />
+          <span className="font-medium">{uniqueViews}</span>
         </div>
       </div>
     </div>
