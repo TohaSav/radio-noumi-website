@@ -90,20 +90,6 @@ export const MonetizationPanel = () => {
         </CardContent>
       </Card>
 
-      {/* Кнопка Premium справа по центру экрана */}
-      <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50">
-        <Button
-          onClick={() => setShowPremium(true)}
-          size="sm"
-          className="px-2 py-4 text-sm font-semibold hover:bg-gray-100 shadow-lg hover:shadow-xl transition-all duration-200 flex-col gap-1 writing-mode-vertical-rl"
-        >
-          <Icon name="Crown" size={16} />
-          <span className="transform -rotate-90 whitespace-nowrap">
-            Premium
-          </span>
-        </Button>
-      </div>
-
       <PremiumModal open={showPremium} onOpenChange={setShowPremium} />
     </>
   );

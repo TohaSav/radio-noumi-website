@@ -4,6 +4,8 @@ import { MonetizationPanel } from "@/components/MonetizationPanel";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
+import { useState } from "react";
+import { PremiumModal } from "@/components/PremiumModal";
 
 const Index = () => {
   return (
@@ -30,6 +32,7 @@ const Index = () => {
 
           <SupportButton />
           <ChatButton />
+          <PremiumButton />
 
           {/* Монетизация */}
           <div className="space-y-6 mt-8">
@@ -135,6 +138,24 @@ const ChatButton = () => {
       <Icon name="MessageCircle" className="mr-2" size={20} />
       Онлайн чат
     </Button>
+  );
+};
+
+const PremiumButton = () => {
+  const [showPremium, setShowPremium] = useState(false);
+
+  return (
+    <>
+      <Button
+        onClick={() => setShowPremium(true)}
+        className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-semibold py-3 px-8 rounded-full shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-105"
+      >
+        <Icon name="Crown" className="mr-2" size={20} />
+        Premium
+      </Button>
+
+      <PremiumModal open={showPremium} onOpenChange={setShowPremium} />
+    </>
   );
 };
 
