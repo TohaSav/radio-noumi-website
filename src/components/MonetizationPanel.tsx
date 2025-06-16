@@ -86,17 +86,21 @@ export const MonetizationPanel = () => {
             <h3 className="text-base font-semibold text-white mb-1">
               Общий доход сегодня
             </h3>
-            <Button
-              onClick={() => setShowPremium(true)}
-              size="sm"
-              className="px-4 py-2 text-sm font-semibold bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-200"
-            >
-              <Icon name="Crown" className="mr-1" size={16} />
-              Premium
-            </Button>
           </div>
         </CardContent>
       </Card>
+
+      {/* Кнопка Premium справа по центру экрана */}
+      <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50">
+        <Button
+          onClick={() => setShowPremium(true)}
+          size="sm"
+          className="px-4 py-2 text-sm font-semibold bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-200"
+        >
+          <Icon name="Crown" className="mr-1" size={16} />
+          Premium
+        </Button>
+      </div>
 
       <PremiumModal open={showPremium} onOpenChange={setShowPremium} />
     </>
