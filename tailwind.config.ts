@@ -6,7 +6,7 @@ export default {
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}"
+    "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
@@ -77,6 +77,11 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        shimmer: {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
         "gradient-shift": {
           "0%": { "background-position": "0% 50%" },
           "50%": { "background-position": "100% 50%" },
@@ -127,6 +132,7 @@ export default {
         },
       },
       animation: {
+        shimmer: "shimmer 3s ease-in-out infinite",
         "gradient-shift": "gradient-shift 3s ease infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
