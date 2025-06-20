@@ -6,11 +6,10 @@ const AdBanner = () => {
   const [views, setViews] = useState(0);
 
   useEffect(() => {
-    // Получаем начальное количество просмотров
-    const currentViews = parseInt(
-      localStorage.getItem("adBannerViews") || "4971",
-    );
-    setViews(currentViews);
+    // Получаем сохранённое количество просмотров или начинаем с 4971
+    const savedViews = localStorage.getItem("adBannerViews");
+    const initialViews = savedViews ? parseInt(savedViews) : 4971;
+    setViews(initialViews);
 
     // Быстрое автоматическое обновление счётчика каждые 1-3 секунды
     const interval = setInterval(
@@ -18,6 +17,7 @@ const AdBanner = () => {
         setViews((prevViews) => {
           const increment = Math.floor(Math.random() * 15) + 5; // Приращение от 5 до 19
           const newViews = prevViews + increment;
+          // Сохраняем новое значение в localStorage
           localStorage.setItem("adBannerViews", newViews.toString());
           return newViews;
         });
