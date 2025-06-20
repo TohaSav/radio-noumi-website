@@ -151,10 +151,10 @@ const RadioBackgroundButton = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-20">
+    <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50">
       <Button
         onClick={() => navigate("/radio-background")}
-        className="bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-full shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105 rotate-90 origin-center"
+        className="bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-full shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105"
       >
         <Icon name="Radio" className="mr-2" size={20} />
         Фон радио
