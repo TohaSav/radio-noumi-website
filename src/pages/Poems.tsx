@@ -28,7 +28,8 @@ const Poems = () => {
     e.preventDefault();
     if (!formData.title.trim() || !formData.text.trim()) return;
 
-    const { isAdmin } = useAuth();
+    // Проверяем админ-права перед добавлением
+    if (!isAdmin) return;
 
     const newPoem: Poem = {
       id: Date.now().toString(),
