@@ -10,7 +10,7 @@ const Hero = () => {
           <div className="relative">
             <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight">
               <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 bg-clip-text text-transparent animate-pulse">
-                RADIO
+                Noumi
               </span>
             </h1>
 
