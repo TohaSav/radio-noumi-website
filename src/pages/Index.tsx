@@ -19,9 +19,6 @@ const Index = () => {
 
       {/* Основной контент */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 pb-32">
-        {/* Кнопка "Фон радио" справа */}
-        <RadioBackgroundButton />
-
         <div className="text-center space-y-8 max-w-2xl mx-auto">
           <div className="space-y-4">
             <h1 className="text-6xl md:text-8xl font-bold tracking-tight bg-gradient-to-r from-pink-500 via-purple-500 via-blue-500 to-cyan-500 bg-clip-text text-transparent animate-pulse bg-[length:200%_200%] animate-[gradient_3s_ease-in-out_infinite]">
@@ -35,14 +32,6 @@ const Index = () => {
 
           <SupportButton />
           <PremiumButton />
-
-          <Button
-            onClick={() => window.open("/radio-background", "_blank")}
-            className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-semibold py-3 px-8 rounded-full shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-105"
-          >
-            <Icon name="Radio" className="mr-2" size={20} />
-            Фон радио
-          </Button>
 
           {/* Монетизация */}
           <div className="space-y-6 mt-8">
@@ -152,22 +141,6 @@ const PremiumButton = () => {
 
       <PremiumModal open={showPremium} onOpenChange={setShowPremium} />
     </>
-  );
-};
-
-const RadioBackgroundButton = () => {
-  const navigate = useNavigate();
-
-  return (
-    <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50">
-      <Button
-        onClick={() => navigate("/radio-background")}
-        className="bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-full shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105"
-      >
-        <Icon name="Radio" className="mr-2" size={20} />
-        Фон радио
-      </Button>
-    </div>
   );
 };
 
