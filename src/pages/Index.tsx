@@ -1,6 +1,7 @@
 import RadioPlayer from "@/components/RadioPlayer";
 import Hero from "@/components/Hero";
 import WaveVisualizer from "@/components/WaveVisualizer";
+import AutoMessageGenerator from "@/components/AutoMessageGenerator";
 
 const Index = () => {
   return (
@@ -14,6 +15,10 @@ const Index = () => {
 
       <div className="relative z-10">
         <Hero />
+
+        <div className="container mx-auto px-4 py-8">
+          <AutoMessageGenerator />
+        </div>
 
         <WaveVisualizer />
       </div>
