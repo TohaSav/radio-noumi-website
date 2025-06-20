@@ -22,6 +22,7 @@ const App = () => (
         <Sonner />
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/poems" element={<Poems />} />
         </Routes>
       </Router>
     </TooltipProvider>

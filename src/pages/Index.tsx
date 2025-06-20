@@ -1,6 +1,7 @@
 import RadioPlayer from "@/components/RadioPlayer";
 import Hero from "@/components/Hero";
 import WaveVisualizer from "@/components/WaveVisualizer";
+import AddPoemButton from "@/components/AddPoemButton";
 
 const Index = () => {
   return (
@@ -19,6 +20,7 @@ const Index = () => {
       </div>
 
       <RadioPlayer streamUrl="https://myradio24.org/61673" />
+      <AddPoemButton />
     </div>
   );
 };
