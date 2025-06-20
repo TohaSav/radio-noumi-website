@@ -29,9 +29,9 @@ const AdBanner = () => {
   }, []);
 
   return (
-    <div className="fixed left-4 top-1/2 transform -translate-y-1/2 w-[270px] h-[350px] bg-gradient-to-b from-yellow-400/20 via-orange-500/20 to-red-500/20 backdrop-blur-sm border border-yellow-400/30 rounded-xl p-4 flex flex-col items-center justify-between relative overflow-hidden z-50 hidden lg:flex">
+    <div className="w-[450px] h-[130px] bg-gradient-to-r from-yellow-400/20 via-orange-500/20 to-red-500/20 backdrop-blur-sm border border-yellow-400/30 rounded-xl p-4 flex items-center justify-between relative overflow-hidden mx-auto">
       {/* Анимированный фон */}
-      <div className="absolute inset-0 bg-gradient-to-b from-yellow-500/5 to-orange-500/5 animate-pulse"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/5 to-orange-500/5 animate-pulse"></div>
 
       {/* Метка "РЕКЛАМА" */}
       <div className="absolute top-2 right-2 bg-black text-white text-xs font-bold px-2 py-1 rounded z-10">
@@ -44,34 +44,34 @@ const AdBanner = () => {
         <span>{views.toLocaleString()}</span>
       </div>
 
-      {/* Верхняя часть с иконкой */}
-      <div className="flex flex-col items-center text-center space-y-3 relative z-10 mt-8">
-        <div className="bg-yellow-400/30 rounded-full p-4 animate-pulse">
-          <Icon name="Radio" className="text-yellow-400" size={32} />
+      {/* Левая часть с иконкой и текстом */}
+      <div className="flex items-center space-x-4 relative z-10 mt-4">
+        <div className="bg-yellow-400/30 rounded-full p-3 animate-pulse">
+          <Icon name="Radio" className="text-yellow-400" size={24} />
         </div>
-        <div className="space-y-2">
-          <h3 className="text-base font-bold text-yellow-300 uppercase tracking-wide">
+        <div>
+          <h3 className="text-sm font-bold text-yellow-300 uppercase tracking-wide">
             🎵 Ваша реклама здесь!
           </h3>
-          <p className="text-sm text-yellow-200/80">На популярном радио</p>
+          <p className="text-xs text-yellow-200/80">На популярном радио</p>
         </div>
       </div>
 
-      {/* Средняя часть со статистикой */}
-      <div className="flex flex-col items-center text-center space-y-3 relative z-10">
-        <div className="bg-yellow-500/10 rounded-lg p-3 border border-yellow-400/20">
-          <div className="text-sm text-yellow-200/70 mb-1">Охват:</div>
-          <div className="text-lg font-bold text-yellow-200">
+      {/* Центральная часть со статистикой */}
+      <div className="flex items-center text-center relative z-10">
+        <div className="bg-yellow-500/10 rounded-lg p-2 border border-yellow-400/20">
+          <div className="text-xs text-yellow-200/70">Охват:</div>
+          <div className="text-sm font-bold text-yellow-200">
             {views.toLocaleString()}+
           </div>
           <div className="text-xs text-yellow-200/60">слушателей</div>
         </div>
       </div>
 
-      {/* Нижняя часть с кнопкой */}
-      <div className="relative z-10 w-full">
+      {/* Правая часть с кнопкой */}
+      <div className="relative z-10">
         <Button
-          className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-semibold rounded-lg px-4 py-3 text-sm transition-all duration-300 transform hover:scale-105 shadow-lg"
+          className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-semibold rounded-lg px-3 py-2 text-xs transition-all duration-300 transform hover:scale-105 shadow-lg"
           onClick={() =>
             window.open(
               "https://wa.me/79049808275?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%20Radio%20Noumi%20%D1%8F%20%D1%85%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7%D0%B0%D1%82%D1%8C%20%D1%83%20%D0%B2%D0%B0%D1%81%20%D0%B1%D0%B0%D0%BD%D0%BD%D0%B5%D1%80.%20%D0%A1%D0%BA%D0%B0%D0%B6%D0%B8%D1%82%D0%B5%20%D0%BF%D0%BE%D0%B6%D0%B0%D0%BB%D1%83%D0%B9%D1%81%D1%82%D0%B0%20%D1%86%D0%B5%D0%BD%D1%83%20%D0%B8%20%D1%81%D1%80%D0%BE%D0%BA%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B5%D0%BD%D0%B8%D1%8F",
@@ -79,14 +79,13 @@ const AdBanner = () => {
             )
           }
         >
-          <Icon name="MessageCircle" className="mr-2" size={16} />
-          Связаться в WhatsApp
+          <Icon name="MessageCircle" className="mr-1" size={14} />
+          WhatsApp
         </Button>
       </div>
 
       {/* Декоративные элементы */}
-      <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-yellow-400/10 to-transparent"></div>
-      <div className="absolute top-0 right-0 w-1 h-full bg-gradient-to-b from-yellow-400/30 to-orange-500/30 rounded-l"></div>
+      <div className="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-t from-yellow-400/10 to-transparent"></div>
     </div>
   );
 };
