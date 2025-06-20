@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import Icon from "@/components/ui/icon";
-import { useRadioStats } from "@/hooks/useRadioStats";
+import { Button } from "@/components/ui/button";
 
 interface RadioPlayerProps {
   streamUrl: string;
@@ -9,10 +9,8 @@ interface RadioPlayerProps {
 const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(70);
-  const [currentTrack, setCurrentTrack] = useState("");
-  const [subtitle, setSubtitle] = useState("Naturalize & Second Sun - 3am");
+  const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const stats = useRadioStats();
 
   useEffect(() => {
     if (audioRef.current) {
@@ -20,14 +18,22 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
     }
   }, [volume]);
 
-  const togglePlay = () => {
+  const togglePlay = async () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
+        setIsPlaying(false);
       } else {
-        audioRef.current.play().catch(console.error);
+        setIsLoading(true);
+        try {
+          await audioRef.current.play();
+          setIsPlaying(true);
+        } catch (error) {
+          console.error("Ошибка воспроизведения:", error);
+        } finally {
+          setIsLoading(false);
+        }
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
@@ -41,121 +47,147 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
       <audio
         ref={audioRef}
         src={streamUrl}
-        preload="none"
-        onLoadStart={() => console.log("Loading started")}
-        onCanPlay={() => console.log("Can play")}
-        onError={(e) => console.error("Audio error:", e)}
+        preload="metadata"
+        onLoadStart={() => setIsLoading(true)}
+        onCanPlay={() => setIsLoading(false)}
+        onError={() => setIsLoading(false)}
       />
 
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-slate-800/95 backdrop-blur-lg border-t border-white/10">
-        <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 py-2 sm:py-3">
-          {/* Мобильная версия */}
-          <div className="flex md:hidden flex-col gap-3">
-            {/* Верхняя строка: кнопка воспроизведения + индикатор LIVE + слушатели */}
-            <div className="flex items-center justify-between">
-              <button
-                onClick={togglePlay}
-                className="w-14 h-14 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors shadow-lg"
-              >
-                <Icon
-                  name={isPlaying ? "Pause" : "Play"}
-                  size={24}
-                  className="text-slate-800 ml-0.5"
-                />
-              </button>
+      <div className="fixed bottom-0 left-0 right-0 z-50">
+        {/* Красивый градиентный фон */}
+        <div className="bg-gradient-to-r from-slate-900/95 via-purple-900/95 to-indigo-900/95 backdrop-blur-xl border-t border-white/20">
+          <div className="max-w-7xl mx-auto px-4 py-4">
+            {/* Мобильная версия */}
+            <div className="flex md:hidden flex-col gap-4">
+              <div className="flex items-center justify-between">
+                {/* Кнопка воспроизведения */}
+                <Button
+                  onClick={togglePlay}
+                  disabled={isLoading}
+                  className="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 rounded-full shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 hover:scale-110"
+                >
+                  {isLoading ? (
+                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <Icon
+                      name={isPlaying ? "Pause" : "Play"}
+                      size={28}
+                      className="text-white ml-0.5"
+                    />
+                  )}
+                </Button>
 
+                {/* LIVE индикатор и статистика */}
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-500 to-pink-500 rounded-full shadow-lg">
+                    <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
+                    <span className="text-white text-sm font-bold">LIVE</span>
+                  </div>
+
+                  <div className="flex items-center gap-2 text-white/90">
+                    <Icon name="Users" size={18} />
+                    <span className="text-sm font-semibold">1,247</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Информация о треке */}
+              <div className="text-center">
+                <div className="text-white font-bold text-lg mb-1">
+                  🎵 Сейчас играет: Naturalize & Second Sun - 3am
+                </div>
+                <div className="text-white/70 text-sm">
+                  Популярная музыка со всего мира
+                </div>
+              </div>
+
+              {/* Управление громкостью */}
               <div className="flex items-center gap-3">
-                {/* Индикатор LIVE */}
-                <div className="flex items-center gap-2 px-3 py-2 bg-red-500 rounded-full">
-                  <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                  <span className="text-white text-sm font-semibold">LIVE</span>
+                <Icon name="Volume2" size={20} className="text-white/80" />
+                <div className="flex-1 relative">
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={volume}
+                    onChange={handleVolumeChange}
+                    className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer slider"
+                  />
+                  <div
+                    className="absolute top-0 left-0 h-2 bg-gradient-to-r from-pink-500 to-purple-500 rounded-lg pointer-events-none"
+                    style={{ width: `${volume}%` }}
+                  />
                 </div>
-
-                {/* Слушатели */}
-                <div className="flex items-center gap-2 text-white/80">
-                  <Icon name="Users" size={18} />
-                  <span className="text-sm">{stats.listeners}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Нижняя строка: информация о треке */}
-            <div className="text-center">
-              <div className="text-white font-semibold truncate text-lg">
-                {currentTrack || ""}
-              </div>
-            </div>
-
-            {/* Громкость на всю ширину */}
-            <div className="flex items-center gap-3">
-              <Icon name="Volume2" size={20} className="text-white/80" />
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={volume}
-                onChange={handleVolumeChange}
-                className="flex-1 h-2 bg-white/20 rounded-lg appearance-none cursor-pointer slider"
-              />
-              <span className="text-white/80 text-sm w-12 text-right">
-                {volume}%
-              </span>
-            </div>
-          </div>
-
-          {/* Планшетная и десктопная версия */}
-          <div className="hidden md:flex items-center justify-between gap-4">
-            {/* Кнопка воспроизведения */}
-            <div className="flex items-center gap-4">
-              <button
-                onClick={togglePlay}
-                className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors shadow-lg"
-              >
-                <Icon
-                  name={isPlaying ? "Pause" : "Play"}
-                  size={20}
-                  className="text-slate-800 ml-0.5 lg:text-2xl"
-                />
-              </button>
-            </div>
-
-            {/* Информация о треке */}
-            <div className="flex-1 min-w-0 text-center lg:text-left">
-              <div className="text-white font-semibold truncate text-lg lg:text-xl">
-                {currentTrack || ""}
-              </div>
-            </div>
-
-            {/* Управление громкостью и статистика */}
-            <div className="flex items-center gap-4 lg:gap-6">
-              {/* Индикатор LIVE */}
-              <div className="flex items-center gap-2 px-3 py-1 lg:px-4 lg:py-2 bg-red-500 rounded-full">
-                <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                <span className="text-white text-xs lg:text-sm font-semibold">
-                  LIVE
-                </span>
-              </div>
-
-              {/* Слушатели */}
-              <div className="flex items-center gap-2 text-white/80">
-                <Icon name="Users" size={16} className="lg:w-5 lg:h-5" />
-                <span className="lg:text-lg">{stats.listeners}</span>
-              </div>
-
-              {/* Громкость */}
-              <div className="hidden lg:flex items-center gap-3">
-                <Icon name="Volume2" size={18} className="text-white/80" />
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={volume}
-                  onChange={handleVolumeChange}
-                  className="w-24 h-2 bg-white/20 rounded-lg appearance-none cursor-pointer slider"
-                />
-                <span className="text-white/80 text-sm w-10 text-right">
+                <span className="text-white/80 text-sm font-semibold w-12 text-right">
                   {volume}%
                 </span>
+              </div>
+            </div>
+
+            {/* Десктопная версия */}
+            <div className="hidden md:flex items-center justify-between gap-6">
+              {/* Левая часть - управление */}
+              <div className="flex items-center gap-4">
+                <Button
+                  onClick={togglePlay}
+                  disabled={isLoading}
+                  className="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 rounded-full shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 hover:scale-110"
+                >
+                  {isLoading ? (
+                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <Icon
+                      name={isPlaying ? "Pause" : "Play"}
+                      size={24}
+                      className="text-white ml-0.5"
+                    />
+                  )}
+                </Button>
+
+                {/* Управление громкостью */}
+                <div className="flex items-center gap-3">
+                  <Icon name="Volume2" size={20} className="text-white/80" />
+                  <div className="relative w-32">
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={volume}
+                      onChange={handleVolumeChange}
+                      className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer slider"
+                    />
+                    <div
+                      className="absolute top-0 left-0 h-2 bg-gradient-to-r from-pink-500 to-purple-500 rounded-lg pointer-events-none"
+                      style={{ width: `${volume}%` }}
+                    />
+                  </div>
+                  <span className="text-white/80 text-sm font-semibold w-12">
+                    {volume}%
+                  </span>
+                </div>
+              </div>
+
+              {/* Центральная часть - информация о треке */}
+              <div className="flex-1 text-center">
+                <div className="text-white font-bold text-xl mb-1">
+                  🎵 Сейчас играет: Naturalize & Second Sun - 3am
+                </div>
+                <div className="text-white/70">
+                  Популярная музыка со всего мира • Radio Noumi
+                </div>
+              </div>
+
+              {/* Правая часть - статистика */}
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-500 to-pink-500 rounded-full shadow-lg">
+                  <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
+                  <span className="text-white text-sm font-bold">LIVE</span>
+                </div>
+
+                <div className="flex items-center gap-2 text-white/90">
+                  <Icon name="Users" size={20} />
+                  <span className="font-semibold">1,247</span>
+                </div>
               </div>
             </div>
           </div>
@@ -165,19 +197,21 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
       <style>{`
         .slider::-webkit-slider-thumb {
           appearance: none;
-          width: 16px;
-          height: 16px;
+          width: 20px;
+          height: 20px;
           background: white;
           border-radius: 50%;
           cursor: pointer;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
         .slider::-moz-range-thumb {
-          width: 16px;
-          height: 16px;
+          width: 20px;
+          height: 20px;
           background: white;
           border-radius: 50%;
           border: none;
           cursor: pointer;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
       `}</style>
     </>
