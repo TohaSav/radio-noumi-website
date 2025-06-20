@@ -50,19 +50,6 @@ const generateBaseListeners = (uralTime: Date): number => {
   return Math.floor(range.min + normalizedRandom * (range.max - range.min));
 };
 
-// Функция для получения диапазона слушателей по времени
-const getListenerRange = (hour: number) => {
-  if (hour >= 9 && hour < 15) {
-    return { min: 3150129, max: 12458760 };
-  } else if (hour >= 15 && hour < 21) {
-    return { min: 4789236, max: 78960456 };
-  } else if (hour >= 21 || hour < 3) {
-    return { min: 7963509, max: 96350521 };
-  } else {
-    return { min: 5698750, max: 9321456 };
-  }
-};
-
 const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(50);
