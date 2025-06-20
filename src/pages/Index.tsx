@@ -14,7 +14,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
       {/* Фиксированный левый рекламный баннер */}
-      <div className="fixed left-4 top-1/2 transform -translate-y-1/2 z-50 hidden lg:block">
+      <div className="fixed left-4 top-1/2 transform -translate-y-1/2 z-50 hidden xl:block">
         <AdBanner />
       </div>
 
