@@ -152,53 +152,57 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
   };
 
   return (
-    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 max-w-xl">
-      <div className="bg-black/80 backdrop-blur-md rounded-2xl px-6 py-4 shadow-2xl border border-white/10">
-        <div className="flex items-center space-x-4">
+    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl px-4 sm:px-0">
+      <div className="bg-black/80 backdrop-blur-md rounded-xl sm:rounded-2xl px-3 sm:px-4 md:px-6 py-3 sm:py-4 shadow-2xl border border-white/10">
+        <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4">
           {/* Play/Pause Button */}
           <button
             onClick={togglePlay}
             disabled={isLoading}
-            className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full hover:scale-105 transition-transform duration-200 disabled:opacity-50 flex-shrink-0"
+            className="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full hover:scale-105 transition-transform duration-200 disabled:opacity-50 flex-shrink-0"
           >
             {isLoading ? (
               <Icon
                 name="Loader2"
-                size={20}
-                className="text-white animate-spin"
+                size={16}
+                className="text-white animate-spin sm:w-[18px] sm:h-[18px] md:w-5 md:h-5"
               />
             ) : (
               <Icon
                 name={isPlaying ? "Pause" : "Play"}
-                size={20}
-                className="text-white ml-0.5"
+                size={16}
+                className="text-white ml-0.5 sm:w-[18px] sm:h-[18px] md:w-5 md:h-5"
               />
             )}
           </button>
 
           {/* Now Playing */}
           <div className="text-white min-w-0 flex-1">
-            <div className="text-base font-medium flex items-center space-x-2">
+            <div className="text-sm sm:text-base font-medium flex items-center space-x-1 sm:space-x-2">
               <span className="truncate">Радио Noumi</span>
-              <span className="text-sm text-green-400 px-2 py-0.5 rounded-full bg-green-400/10 whitespace-nowrap">
+              <span className="text-xs sm:text-sm text-green-400 px-1.5 sm:px-2 py-0.5 rounded-full bg-green-400/10 whitespace-nowrap">
                 {formatListeners(listeners)} слушателей
               </span>
             </div>
-            <div className="text-sm text-gray-400 truncate">
+            <div className="text-xs sm:text-sm text-gray-400 truncate">
               {isPlaying ? "В эфире..." : "Нажмите для воспроизведения"}
             </div>
           </div>
 
           {/* Volume Control */}
-          <div className="flex items-center space-x-2 flex-shrink-0">
-            <Icon name="Volume2" size={20} className="text-gray-400" />
+          <div className="hidden sm:flex items-center space-x-2 flex-shrink-0">
+            <Icon
+              name="Volume2"
+              size={18}
+              className="text-gray-400 md:w-5 md:h-5"
+            />
             <input
               type="range"
               min="0"
               max="100"
               value={volume}
               onChange={(e) => handleVolumeChange(Number(e.target.value))}
-              className="w-20 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer slider"
+              className="w-16 sm:w-18 md:w-20 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer slider"
             />
           </div>
         </div>
