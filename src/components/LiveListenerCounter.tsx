@@ -1,7 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const LiveListenerCounter = () => {
-  const [listeners, setListeners] = useState(3150084);
+  const [listeners] = useState(() => {
+    const { min, max } = getTimeBasedRange();
+    return min + Math.floor(Math.random() * (max - min));
+  });
 
   const formatNumber = (num: number): string => {
     if (num >= 1000000) {
@@ -30,48 +33,8 @@ const LiveListenerCounter = () => {
     }
   };
 
-  useEffect(() => {
-    const updateListeners = () => {
-      const { min, max } = getTimeBasedRange();
-      const currentRange = max - min;
-
-      // Случайное изменение в пределах ±0.2% от текущего значения
-      const changePercent = (Math.random() - 0.5) * 0.004;
-      const change = Math.floor(listeners * changePercent);
-
-      let newValue = listeners + change;
-
-      // Держим значение в пределах диапазона времени
-      newValue = Math.max(min, Math.min(max, newValue));
-
-      setListeners(newValue);
-    };
-
-    // Обновляем каждые 2-4 секунды для реалистичности
-    const interval = setInterval(
-      () => {
-        updateListeners();
-      },
-      Math.random() * 2000 + 2000,
-    );
-
-    // Проверяем смену временного диапазона каждую минуту
-    const timeCheckInterval = setInterval(() => {
-      const { min, max } = getTimeBasedRange();
-      if (listeners < min || listeners > max) {
-        const targetValue = min + Math.floor(Math.random() * (max - min));
-        setListeners(targetValue);
-      }
-    }, 60000);
-
-    return () => {
-      clearInterval(interval);
-      clearInterval(timeCheckInterval);
-    };
-  }, [listeners]);
-
   return (
-    <span className="text-xl font-semibold transition-all duration-500 ease-in-out">
+    <span className="text-xl font-semibold">
       {formatNumber(listeners)} слушателей
     </span>
   );
