@@ -12,9 +12,17 @@ const AdBanner = () => {
           <div className="text-sm sm:text-base font-semibold mb-1">
             🎵 Реклама
           </div>
-          <div className="text-xs sm:text-sm opacity-90">
+          <div className="text-xs sm:text-sm opacity-90 mb-2">
             Ваша реклама здесь
           </div>
+          <a
+            href="https://wa.me/79049808275?text=Здравствуйте!%20Я%20хотел%20бы%20заказать%20рекламу%20на%20вашем%20Radio%20Noumi.%20Расскажите,%20пожалуйста,%20о%20стоимости%20и%20сроках%20размещения."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1 rounded-full transition-colors"
+          >
+            📱 WhatsApp
+          </a>
         </div>
 
         {/* Decorative Elements */}
