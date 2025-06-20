@@ -10,7 +10,9 @@ const AdBanner = () => {
           <Icon name="Radio" className="text-yellow-400" size={20} />
         </div>
         <div className="space-y-1">
-          <h3 className="text-sm sm:text-base font-bold text-white">Реклама</h3>
+          <h3 className="text-sm sm:text-base font-bold text-yellow-300 uppercase tracking-wide">
+            Реклама
+          </h3>
           <p className="text-xs text-yellow-200/80 hidden sm:block">
             Ваша реклама здесь!
           </p>
