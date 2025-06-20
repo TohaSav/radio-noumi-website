@@ -3,6 +3,7 @@ import RadioPlayer from "@/components/RadioPlayer";
 import Hero from "@/components/Hero";
 import WaveVisualizer from "@/components/WaveVisualizer";
 import BackgroundWaves from "@/components/BackgroundWaves";
+import AdBanner from "@/components/AdBanner";
 
 const Index = () => {
   const [isRadioPlaying, setIsRadioPlaying] = useState(false);
@@ -12,6 +13,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+      {/* Рекламный баннер слева */}
+      <AdBanner />
+
       {/* Animated background particles */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -left-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
@@ -22,7 +26,7 @@ const Index = () => {
       {/* Background waves controlled by radio */}
       <BackgroundWaves isActive={isRadioPlaying} audioData={audioData} />
 
-      <div className="relative z-10">
+      <div className="relative z-10 lg:ml-[290px]">
         <Hero />
         <WaveVisualizer />
       </div>
