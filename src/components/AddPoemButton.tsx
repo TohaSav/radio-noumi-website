@@ -15,9 +15,9 @@ const AddPoemButton = () => {
       onClick={handleClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="fixed right-6 top-1/2 -translate-y-1/2 z-50 bg-transparent text-gray-700 hover:text-purple-600 transition-colors duration-300 underline decoration-purple-600/50 hover:decoration-purple-600 underline-offset-4 text-sm font-medium cursor-pointer"
+      className="fixed right-6 top-1/2 -translate-y-1/2 z-50 bg-transparent text-white hover:text-purple-200 transition-colors duration-300 underline decoration-white/50 hover:decoration-white underline-offset-4 text-sm font-medium cursor-pointer -rotate-90"
     >
-      ДОБАВИТЬ
+      Наши стихи
     </button>
   );
 };
