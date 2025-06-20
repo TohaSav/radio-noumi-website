@@ -5,11 +5,100 @@ interface RadioPlayerProps {
   streamUrl: string;
 }
 
+// Функция для получения уральского времени
+const getUralTime = () => {
+  const now = new Date();
+  const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+  const uralTime = new Date(utc + 5 * 3600000); // UTC+5
+  return uralTime;
+};
+
+// Функция для форматирования числа в сокращенный вид
+const formatListeners = (num: number): string => {
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(2) + "M";
+  } else if (num >= 1000) {
+    return (num / 1000).toFixed(1) + "K";
+  }
+  return num.toString();
+};
+
+// Функция для получения диапазона слушателей по времени
+const getListenerRange = (hour: number) => {
+  if (hour >= 9 && hour < 15) {
+    return { min: 3150129, max: 12458760 };
+  } else if (hour >= 15 && hour < 21) {
+    return { min: 4789236, max: 78960456 };
+  } else if (hour >= 21 || hour < 3) {
+    return { min: 7963509, max: 96350521 };
+  } else {
+    return { min: 5698750, max: 9321456 };
+  }
+};
+
 const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(50);
   const [isLoading, setIsLoading] = useState(false);
+  const [listeners, setListeners] = useState(3150084);
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  // Инициализация счетчика слушателей
+  useEffect(() => {
+    const savedListeners = localStorage.getItem("radioListeners");
+    const savedTime = localStorage.getItem("radioLastUpdate");
+
+    if (savedListeners && savedTime) {
+      const lastUpdate = new Date(savedTime);
+      const now = getUralTime();
+      const timeDiff = (now.getTime() - lastUpdate.getTime()) / 1000 / 60; // в минутах
+
+      if (timeDiff < 60) {
+        // Если прошло меньше часа, используем сохраненное значение
+        setListeners(parseInt(savedListeners));
+        return;
+      }
+    }
+
+    // Генерируем новое значение на основе времени
+    const uralTime = getUralTime();
+    const hour = uralTime.getHours();
+    const range = getListenerRange(hour);
+    const randomListeners =
+      Math.floor(Math.random() * (range.max - range.min + 1)) + range.min;
+
+    setListeners(randomListeners);
+    localStorage.setItem("radioListeners", randomListeners.toString());
+    localStorage.setItem("radioLastUpdate", new Date().toISOString());
+  }, []);
+
+  // Обновление счетчика каждые 2-5 минут на небольшое значение
+  useEffect(() => {
+    const interval = setInterval(
+      () => {
+        const uralTime = getUralTime();
+        const hour = uralTime.getHours();
+        const range = getListenerRange(hour);
+
+        setListeners((current) => {
+          // Небольшое изменение в пределах ±50-200 слушателей
+          const change = Math.floor(Math.random() * 401) - 200;
+          let newValue = current + change;
+
+          // Ограничиваем значение диапазоном для текущего времени
+          newValue = Math.max(range.min, Math.min(range.max, newValue));
+
+          localStorage.setItem("radioListeners", newValue.toString());
+          localStorage.setItem("radioLastUpdate", new Date().toISOString());
+
+          return newValue;
+        });
+      },
+      Math.random() * 180000 + 120000,
+    ); // 2-5 минут
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -89,7 +178,12 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
 
           {/* Now Playing */}
           <div className="text-white min-w-0">
-            <div className="text-sm font-medium">Радио Noumi</div>
+            <div className="text-sm font-medium flex items-center space-x-2">
+              <span>Радио Noumi</span>
+              <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full border border-green-500/30">
+                {formatListeners(listeners)} слушателей
+              </span>
+            </div>
             <div className="text-xs text-gray-400 truncate">
               {isPlaying ? "В эфире..." : "Нажмите для воспроизведения"}
             </div>
