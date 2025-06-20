@@ -19,24 +19,6 @@ const Hero = () => {
         <p className="text-xl md:text-2xl text-purple-200 max-w-2xl mx-auto leading-relaxed">
           Музыка из глубин космоса прямо в ваши наушники
         </p>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-          <Button
-            size="lg"
-            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 px-8 py-3 text-lg font-semibold shadow-2xl"
-          >
-            <Icon name="Play" size={20} className="mr-2" />
-            Начать слушать
-          </Button>
-
-          <Button
-            size="lg"
-            variant="outline"
-            className="bg-white/10 border-white/20 text-white hover:bg-white/20 px-8 py-3 text-lg font-semibold backdrop-blur-sm"
-          >
-            <Icon name="Headphones" size={20} className="mr-2" />О проекте
-          </Button>
-        </div>
       </div>
 
       {/* Floating Elements */}
