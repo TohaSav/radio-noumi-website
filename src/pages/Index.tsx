@@ -30,9 +30,7 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <PremiumButton />
-          </div>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center"></div>
 
           {/* Монетизация */}
           <div className="space-y-6 mt-8">
