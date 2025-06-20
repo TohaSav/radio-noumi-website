@@ -58,15 +58,7 @@ const AdBanner = () => {
       </div>
 
       {/* Центральная часть со статистикой */}
-      <div className="flex items-center text-center relative z-10">
-        <div className="bg-yellow-500/10 rounded-lg p-2 border border-yellow-400/20">
-          <div className="text-xs text-yellow-200/70">Охват:</div>
-          <div className="text-sm font-bold text-yellow-200">
-            {views.toLocaleString()}+
-          </div>
-          <div className="text-xs text-yellow-200/60">слушателей</div>
-        </div>
-      </div>
+      <div className="flex items-center text-center relative z-10"></div>
 
       {/* Правая часть с кнопкой */}
       <div className="relative z-10">
