@@ -196,19 +196,17 @@ const AdBanner: React.FC<AdBannerProps> = ({
 
       {/* Метрики рекламы */}
       <div className="flex justify-between items-center text-xs text-white/60 bg-white/5 rounded-lg p-2">
-        <div className="flex items-center space-x-3">
-          <div className="flex items-center">
-            <Eye size={12} className="mr-1" />
-            {currentMetrics.views}
-          </div>
-          <div className="flex items-center">
-            <MousePointer size={12} className="mr-1" />
-            {currentMetrics.clicks}
-          </div>
-          <div className="flex items-center">
-            <Users size={12} className="mr-1" />
-            {listeners}
-          </div>
+        <div className="flex items-center">
+          <Eye size={12} className="mr-1" />
+          {currentMetrics.views}
+        </div>
+        <div className="flex items-center">
+          <MousePointer size={12} className="mr-1" />
+          {currentMetrics.clicks}
+        </div>
+        <div className="flex items-center">
+          <Users size={12} className="mr-1" />
+          {listeners}
         </div>
       </div>
     </div>
