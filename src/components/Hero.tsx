@@ -11,7 +11,7 @@ const Hero = () => {
       {/* Hero Content */}
       <div className="max-w-4xl mx-auto space-y-8">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
-          <span className="bg-gradient-to-r from-purple-400 via-pink-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent animate-pulse bg-[length:400%_400%] animate-[shimmer_3s_ease-in-out_infinite]">
+          <span className="bg-gradient-to-r from-pink-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent font-bold animate-pulse">
             Noumi
           </span>
         </h1>
