@@ -172,7 +172,7 @@ const WaveVisualizer = ({ audioElement }: WaveVisualizerProps) => {
   }, [audioData]);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 w-full h-32 bg-black/20 backdrop-blur-sm overflow-hidden z-10">
+    <div className="fixed bottom-0 left-0 right-0 w-full h-20 sm:h-24 md:h-28 lg:h-32 bg-black/20 backdrop-blur-sm overflow-hidden z-10">
       <canvas
         ref={canvasRef}
         className="w-full h-full"
