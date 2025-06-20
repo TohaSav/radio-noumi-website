@@ -39,14 +39,6 @@ const Hero = () => {
 
         {/* Кнопки действий */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8"></div>
-
-        {/* Статистика в реальном времени */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 max-w-2xl mx-auto">
-          <StatCard icon="Users" value="1,247" label="Слушателей" />
-          <StatCard icon="Music" value="24/7" label="В эфире" />
-          <StatCard icon="Globe" value="15+" label="Стран" />
-          <StatCard icon="Heart" value="∞" label="Любви" />
-        </div>
       </div>
     </section>
   );
