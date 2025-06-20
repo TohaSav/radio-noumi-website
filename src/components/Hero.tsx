@@ -13,9 +13,6 @@ const Hero = () => {
                 RADIO
               </span>
             </h1>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light text-white/90 tracking-widest mt-2">
-              NOUMI
-            </h2>
 
             {/* Floating music notes */}
             <div className="absolute -top-8 left-1/4 text-4xl animate-bounce delay-300 opacity-40">
