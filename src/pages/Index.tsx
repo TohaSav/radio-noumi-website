@@ -1,4 +1,6 @@
 import RadioPlayer from "@/components/RadioPlayer";
+import AdBanner from "@/components/AdBanner";
+import MonetizationPanel from "@/components/MonetizationPanel";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
@@ -31,7 +33,16 @@ const Index = () => {
             <CharityButton />
           </div>
 
-          {/* Удалённые блоки монетизации и рекламы */}
+          {/* Блок монетизации */}
+          <div className="space-y-6 w-full max-w-4xl mx-auto">
+            <AdBanner />
+            <MonetizationPanel />
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <PremiumButton />
+              <PromoButton />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -128,6 +139,24 @@ const CharityButton = () => {
     >
       <Icon name="Heart" className="mr-2" size={20} />
       Фонд радио
+    </Button>
+  );
+};
+
+const PremiumButton = () => {
+  return (
+    <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-3 px-8 rounded-full shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-105">
+      <Icon name="Crown" className="mr-2" size={20} />
+      👑 Premium подписка
+    </Button>
+  );
+};
+
+const PromoButton = () => {
+  return (
+    <Button className="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white font-bold py-3 px-8 rounded-full shadow-2xl hover:shadow-green-500/25 transition-all duration-300 transform hover:scale-105">
+      <Icon name="Gift" className="mr-2" size={20} />
+      🎁 Промо-код
     </Button>
   );
 };
