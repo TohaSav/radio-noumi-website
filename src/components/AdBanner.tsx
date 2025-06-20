@@ -210,7 +210,6 @@ const AdBanner: React.FC<AdBannerProps> = ({
             {listeners}
           </div>
         </div>
-        <div className="text-green-400 font-medium">+{adRevenue}₽</div>
       </div>
     </div>
   );
