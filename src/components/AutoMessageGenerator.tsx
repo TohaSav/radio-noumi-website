@@ -11,10 +11,19 @@ interface ReviewMessage {
   timestamp: Date;
 }
 
-const AutoMessageGenerator = () => {
+const AutoMessageGenerator = ({
+  isConstructorMode = false,
+}: {
+  isConstructorMode?: boolean;
+}) => {
   const [isActive, setIsActive] = useState(false);
   const [sentMessages, setSentMessages] = useState<ReviewMessage[]>([]);
   const [nextMessageTime, setNextMessageTime] = useState<Date | null>(null);
+
+  // Скрыть компонент для обычных пользователей
+  if (!isConstructorMode) {
+    return null;
+  }
 
   // Генерация уникальных номеров телефонов
   const generateUniquePhoneNumber = (usedNumbers: string[]): string => {
