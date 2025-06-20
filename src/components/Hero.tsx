@@ -7,18 +7,6 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center text-center px-4">
-      {/* Navigation */}
-      <div className="absolute top-6 left-6 z-20">
-        <Button
-          onClick={() => navigate("/poems")}
-          variant="outline"
-          className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 transition-all duration-300"
-        >
-          <Icon name="BookOpen" size={16} className="mr-2" />
-          Стихи
-        </Button>
-      </div>
-
       {/* Hero Content */}
       <div className="max-w-4xl mx-auto space-y-8">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
