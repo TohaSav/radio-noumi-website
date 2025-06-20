@@ -8,25 +8,35 @@ const AdBanner = () => {
   useEffect(() => {
     // Получаем начальное количество просмотров
     const currentViews = parseInt(
-      localStorage.getItem("adBannerViews") || "1247",
+      localStorage.getItem("adBannerViews") || "4971",
     );
     setViews(currentViews);
 
-    // Автоматическое обновление счётчика каждые 3-7 секунд
+    // Быстрое автоматическое обновление счётчика каждые 1-3 секунды
     const interval = setInterval(
       () => {
         setViews((prevViews) => {
-          const increment = Math.floor(Math.random() * 5) + 1;
+          const increment = Math.floor(Math.random() * 15) + 5; // Приращение от 5 до 19
           const newViews = prevViews + increment;
           localStorage.setItem("adBannerViews", newViews.toString());
           return newViews;
         });
       },
-      Math.random() * 4000 + 3000,
-    ); // 3-7 секунд
+      Math.random() * 2000 + 1000,
+    ); // 1-3 секунды
 
     return () => clearInterval(interval);
   }, []);
+
+  // Функция для сокращения чисел
+  const formatViews = (count: number): string => {
+    if (count >= 1000000) {
+      return (count / 1000000).toFixed(1) + "M";
+    } else if (count >= 1000) {
+      return (count / 1000).toFixed(1) + "K";
+    }
+    return count.toString();
+  };
 
   return (
     <div className="w-[450px] h-[130px] bg-gradient-to-r from-yellow-400/20 via-orange-500/20 to-red-500/20 backdrop-blur-sm border border-yellow-400/30 rounded-xl p-4 flex items-center justify-between relative overflow-hidden mx-auto">
@@ -41,7 +51,7 @@ const AdBanner = () => {
       {/* Счётчик просмотров */}
       <div className="absolute top-2 left-2 bg-yellow-500/20 text-yellow-200 text-xs font-semibold px-2 py-1 rounded flex items-center space-x-1 z-10">
         <Icon name="Eye" size={12} />
-        <span>{views.toLocaleString()}</span>
+        <span>{formatViews(views)}</span>
       </div>
 
       {/* Левая часть с иконкой и текстом */}
