@@ -21,7 +21,7 @@ const AddPoemButton = () => {
         <div className="p-1.5 bg-white/10 rounded-lg group-hover:bg-white/20 transition-colors duration-300">
           <Icon name="BookOpen" size={18} className="text-white" />
         </div>
-        <span className="text-xs font-semibold tracking-wide whitespace-nowrap">
+        <span className="text-xs font-semibold tracking-wide whitespace-nowrap transform rotate-90">
           ДОБАВИТЬ
         </span>
       </div>
