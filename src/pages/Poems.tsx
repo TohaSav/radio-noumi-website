@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +24,27 @@ const Poems = () => {
     text: "",
   });
 
+  // Загружаем стихи из localStorage при запуске
+  useEffect(() => {
+    const savedPoems = localStorage.getItem("poems");
+    if (savedPoems) {
+      const parsedPoems = JSON.parse(savedPoems);
+      setPoems(
+        parsedPoems.map((poem: any) => ({
+          ...poem,
+          createdAt: new Date(poem.createdAt),
+        })),
+      );
+    }
+  }, []);
+
+  // Сохраняем стихи в localStorage при изменении
+  useEffect(() => {
+    if (poems.length > 0) {
+      localStorage.setItem("poems", JSON.stringify(poems));
+    }
+  }, [poems]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.title.trim() || !formData.text.trim()) return;
@@ -39,12 +60,16 @@ const Poems = () => {
       createdAt: new Date(),
     };
 
-    setPoems([newPoem, ...poems]);
+    const updatedPoems = [newPoem, ...poems];
+    setPoems(updatedPoems);
+    localStorage.setItem("poems", JSON.stringify(updatedPoems));
     setFormData({ title: "", author: "", text: "" });
   };
 
   const handleDelete = (id: string) => {
-    setPoems(poems.filter((poem) => poem.id !== id));
+    const updatedPoems = poems.filter((poem) => poem.id !== id);
+    setPoems(updatedPoems);
+    localStorage.setItem("poems", JSON.stringify(updatedPoems));
   };
 
   return (
