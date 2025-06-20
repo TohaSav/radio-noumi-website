@@ -1,11 +1,7 @@
 import RadioPlayer from "@/components/RadioPlayer";
-import AdBanner from "@/components/AdBanner";
-import { MonetizationPanel } from "@/components/MonetizationPanel";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
-import { useState } from "react";
-import { PremiumModal } from "@/components/PremiumModal";
 
 const Index = () => {
   return (
@@ -32,19 +28,10 @@ const Index = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <SupportButton />
-            <PremiumButton />
             <CharityButton />
           </div>
 
-          {/* Блок монетизации */}
-          <div className="mt-8">
-            <MonetizationPanel />
-          </div>
-
-          {/* Рекламный баннер */}
-          <div className="mt-6">
-            <AdBanner />
-          </div>
+          {/* Удалённые блоки монетизации и рекламы */}
         </div>
       </div>
 
@@ -128,24 +115,6 @@ const SupportButton = () => {
         }
       `}</style>
     </div>
-  );
-};
-
-const PremiumButton = () => {
-  const [showPremium, setShowPremium] = useState(false);
-
-  return (
-    <>
-      <Button
-        onClick={() => setShowPremium(true)}
-        className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-semibold py-3 px-8 rounded-full shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-105"
-      >
-        <Icon name="Crown" className="mr-2" size={20} />
-        Premium
-      </Button>
-
-      <PremiumModal open={showPremium} onOpenChange={setShowPremium} />
-    </>
   );
 };
 
