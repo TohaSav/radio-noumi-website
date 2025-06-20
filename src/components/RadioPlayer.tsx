@@ -3,6 +3,7 @@ import Icon from "@/components/ui/icon";
 
 interface RadioPlayerProps {
   streamUrl: string;
+  onPlayingChange?: (isPlaying: boolean) => void;
 }
 
 // Функция для получения уральского времени
@@ -50,7 +51,8 @@ const generateBaseListeners = (uralTime: Date): number => {
   return Math.floor(range.min + normalizedRandom * (range.max - range.min));
 };
 
-const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
+const RadioPlayer = (props: RadioPlayerProps) => {
+  const { streamUrl, onPlayingChange } = props;
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(50);
   const [isLoading, setIsLoading] = useState(false);
@@ -169,15 +171,18 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
       if (isPlaying) {
         audio.pause();
         setIsPlaying(false);
+        onPlayingChange?.(false);
       } else {
         setIsLoading(true);
         await audio.play();
         setIsPlaying(true);
+        onPlayingChange?.(true);
       }
     } catch (error) {
       console.error("Ошибка воспроизведения:", error);
       setIsLoading(false);
       setIsPlaying(false);
+      onPlayingChange?.(false);
     }
   };
 
