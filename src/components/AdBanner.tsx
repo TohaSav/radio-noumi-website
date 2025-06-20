@@ -3,7 +3,12 @@ import Icon from "@/components/ui/icon";
 
 const AdBanner = () => {
   return (
-    <div className="w-full max-w-[450px] h-[130px] mx-auto bg-gradient-to-r from-yellow-400/20 to-orange-500/20 backdrop-blur-sm border border-yellow-400/30 rounded-xl p-3 sm:p-4 flex items-center justify-between">
+    <div className="w-full max-w-[450px] h-[130px] mx-auto bg-gradient-to-r from-yellow-400/20 to-orange-500/20 backdrop-blur-sm border border-yellow-400/30 rounded-xl p-3 sm:p-4 flex items-center justify-between relative">
+      {/* Метка "РЕКЛАМА" */}
+      <div className="absolute top-2 right-2 bg-black text-white text-[10px] font-bold px-2 py-1 rounded">
+        РЕКЛАМА
+      </div>
+
       {/* Левая часть с иконкой */}
       <div className="flex items-center space-x-2 sm:space-x-3">
         <div className="bg-yellow-400/20 rounded-full p-2">
