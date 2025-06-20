@@ -29,7 +29,15 @@ const AdBanner = () => {
         <p className="text-xs sm:text-sm text-yellow-100 font-medium">
           🎵 Разместите рекламу
         </p>
-        <Button className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-full px-3 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm transition-all duration-300 transform hover:scale-105">
+        <Button
+          className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-full px-3 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm transition-all duration-300 transform hover:scale-105"
+          onClick={() =>
+            window.open(
+              "https://wa.me/79049808275?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%20Radio%20Noumi%20%D1%8F%20%D1%85%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7%D0%B0%D1%82%D1%8C%20%D1%83%20%D0%B2%D0%B0%D1%81%20%D0%B1%D0%B0%D0%BD%D0%BD%D0%B5%D1%80.%20%D0%A1%D0%BA%D0%B0%D0%B6%D0%B8%D1%82%D0%B5%20%D0%BF%D0%BE%D0%B6%D0%B0%D0%BB%D1%83%D0%B9%D1%81%D1%82%D0%B0%20%D1%86%D0%B5%D0%BD%D1%83%20%D0%B8%20%D1%81%D1%80%D0%BE%D0%BA%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B5%D0%BD%D0%B8%D1%8F",
+              "_blank",
+            )
+          }
+        >
           <Icon name="Mail" className="mr-1" size={14} />
           Связаться
         </Button>
