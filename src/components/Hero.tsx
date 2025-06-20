@@ -70,13 +70,74 @@ const StatCard = ({
   label: string;
 }) => {
   return (
-    <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 text-center hover:bg-white/20 transition-all duration-300 hover:scale-105">
-      <Icon
-        name={icon as any}
-        className="w-6 h-6 mx-auto mb-2 text-purple-300"
+    <div className="group relative bg-gradient-to-br from-white/20 via-purple-500/20 to-pink-500/20 backdrop-blur-md rounded-2xl p-6 text-center hover:from-white/30 hover:via-purple-500/30 hover:to-pink-500/30 transition-all duration-500 hover:scale-110 hover:-translate-y-2 cursor-pointer overflow-hidden">
+      {/* Анимированный фон */}
+      <div className="absolute inset-0 bg-gradient-to-r from-purple-500/30 to-pink-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-pulse" />
+
+      {/* Музыкальные волны вокруг иконки */}
+      <div className="relative mb-4">
+        <div className="absolute -inset-4 flex items-center justify-center">
+          {[...Array(3)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-12 h-12 border-2 border-purple-400/30 rounded-full animate-ping"
+              style={{
+                animationDelay: `${i * 0.5}s`,
+                animationDuration: "2s",
+              }}
+            />
+          ))}
+        </div>
+        <Icon
+          name={icon as any}
+          className="relative z-10 w-8 h-8 mx-auto text-white group-hover:text-purple-300 transition-colors duration-300 drop-shadow-lg animate-pulse"
+        />
+      </div>
+
+      {/* Значение с пульсацией */}
+      <div className="relative">
+        <div className="text-3xl font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300 animate-pulse">
+          {value}
+        </div>
+        <div className="text-sm text-white/80 group-hover:text-white transition-colors duration-300 font-medium tracking-wide">
+          {label}
+        </div>
+      </div>
+
+      {/* Звуковые волны по краям */}
+      <div className="absolute left-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+        {[...Array(3)].map((_, i) => (
+          <div
+            key={i}
+            className="w-0.5 bg-gradient-to-t from-purple-500 to-pink-500 rounded-full mb-1 animate-pulse"
+            style={{
+              height: `${Math.random() * 12 + 4}px`,
+              animationDelay: `${i * 0.2}s`,
+              animationDuration: "1.2s",
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="absolute right-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+        {[...Array(3)].map((_, i) => (
+          <div
+            key={i}
+            className="w-0.5 bg-gradient-to-t from-pink-500 to-purple-500 rounded-full mb-1 animate-pulse"
+            style={{
+              height: `${Math.random() * 12 + 4}px`,
+              animationDelay: `${i * 0.3}s`,
+              animationDuration: "1.4s",
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Блеск при наведении */}
+      <div
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform -skew-x-12 group-hover:translate-x-full"
+        style={{ animationDelay: "0.3s" }}
       />
-      <div className="text-2xl font-bold text-white">{value}</div>
-      <div className="text-sm text-white/70">{label}</div>
     </div>
   );
 };
