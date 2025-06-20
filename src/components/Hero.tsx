@@ -54,15 +54,6 @@ const Hero = () => {
   );
 };
 
-const PremiumButton = () => {
-  return (
-    <Button className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white font-semibold py-4 px-8 rounded-full shadow-2xl hover:shadow-yellow-500/50 transition-all duration-300 transform hover:scale-105">
-      <Icon name="Crown" className="mr-2 animate-pulse" size={20} />
-      👑 Premium подписка
-    </Button>
-  );
-};
-
 const StatCard = ({
   icon,
   value,
