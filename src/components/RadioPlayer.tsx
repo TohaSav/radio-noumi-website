@@ -168,14 +168,7 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
               </div>
 
               {/* Центральная часть - информация о треке */}
-              <div className="flex-1 text-center">
-                <div className="text-white font-bold text-xl mb-1">
-                  🎵 Сейчас играет: Naturalize & Second Sun - 3am
-                </div>
-                <div className="text-white/70">
-                  Популярная музыка со всего мира • Radio Noumi
-                </div>
-              </div>
+              <div className="flex-1"></div>
 
               {/* Правая часть - статистика */}
               <div className="flex items-center gap-4">
