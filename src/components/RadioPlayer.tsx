@@ -10,13 +10,80 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(70);
   const [isLoading, setIsLoading] = useState(false);
+  const [listeners, setListeners] = useState(3150084);
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  const formatNumber = (num: number): string => {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1) + "M";
+    }
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1) + "K";
+    }
+    return num.toString();
+  };
+
+  const getTimeBasedRange = () => {
+    const now = new Date();
+    // Уральское время (UTC+5)
+    const uralTime = new Date(now.getTime() + 5 * 60 * 60 * 1000);
+    const hour = uralTime.getHours();
+
+    if (hour >= 9 && hour < 15) {
+      return { min: 3150129, max: 12458760 };
+    } else if (hour >= 15 && hour < 21) {
+      return { min: 4789236, max: 78960456 };
+    } else if (hour >= 21 || hour < 3) {
+      return { min: 7963509, max: 96350521 };
+    } else {
+      return { min: 5698750, max: 9321456 };
+    }
+  };
 
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume / 100;
     }
   }, [volume]);
+
+  useEffect(() => {
+    const updateListeners = () => {
+      const { min, max } = getTimeBasedRange();
+
+      // Случайное изменение в пределах ±0.2% от текущего значения
+      const changePercent = (Math.random() - 0.5) * 0.004;
+      const change = Math.floor(listeners * changePercent);
+
+      let newValue = listeners + change;
+
+      // Держим значение в пределах диапазона времени
+      newValue = Math.max(min, Math.min(max, newValue));
+
+      setListeners(newValue);
+    };
+
+    // Обновляем каждые 2-4 секунды
+    const interval = setInterval(
+      () => {
+        updateListeners();
+      },
+      Math.random() * 2000 + 2000,
+    );
+
+    // Проверяем смену временного диапазона каждую минуту
+    const timeCheckInterval = setInterval(() => {
+      const { min, max } = getTimeBasedRange();
+      if (listeners < min || listeners > max) {
+        const targetValue = min + Math.floor(Math.random() * (max - min));
+        setListeners(targetValue);
+      }
+    }, 60000);
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(timeCheckInterval);
+    };
+  }, [listeners]);
 
   const togglePlay = async () => {
     if (audioRef.current) {
@@ -168,7 +235,9 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
                 </div>
                 <div className="flex items-center gap-2 text-white/80">
                   <Icon name="Users" size={18} />
-                  <span className="font-medium">1,247</span>
+                  <span className="font-medium transition-all duration-500 ease-in-out">
+                    {formatNumber(listeners)}
+                  </span>
                 </div>
               </div>
             </div>
