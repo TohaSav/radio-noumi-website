@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Icon from "@/components/ui/icon";
+import AdBanner from "@/components/AdBanner";
 
 const Hero = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -12,10 +13,15 @@ const Hero = () => {
           <h1 className="text-6xl font-bold text-white mb-4 tracking-tight">
             Радио <span className="text-purple-400">Noumi</span>
           </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
             Твоя музыка, твое настроение. Слушай любимые треки 24/7 в прямом
             эфире
           </p>
+
+          {/* Рекламный баннер */}
+          <div className="mb-8">
+            <AdBanner />
+          </div>
         </div>
 
         {/* Stats */}

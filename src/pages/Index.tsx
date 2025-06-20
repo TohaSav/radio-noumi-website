@@ -1,7 +1,6 @@
 import RadioPlayer from "@/components/RadioPlayer";
 import Hero from "@/components/Hero";
 import WaveVisualizer from "@/components/WaveVisualizer";
-import AdBanner from "@/components/AdBanner";
 
 const Index = () => {
   return (
@@ -15,11 +14,6 @@ const Index = () => {
 
       <div className="relative z-10">
         <Hero />
-
-        {/* Рекламный баннер */}
-        <div className="px-4 py-6">
-          <AdBanner />
-        </div>
 
         <WaveVisualizer />
       </div>
