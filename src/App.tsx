@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Donation from "./pages/Donation";
+import RadioBackground from "./pages/RadioBackground";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,6 +25,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/donate" element={<Donation />} />
+          <Route path="/radio-background" element={<RadioBackground />} />
         </Routes>
       </Router>
     </TooltipProvider>
