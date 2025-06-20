@@ -4,6 +4,12 @@ import Icon from "@/components/ui/icon";
 interface RadioPlayerProps {
   streamUrl: string;
   onPlayingChange?: (isPlaying: boolean) => void;
+  onAudioData?: (data: {
+    bass: number;
+    mid: number;
+    treble: number;
+    overall: number;
+  }) => void;
 }
 
 // Функция для получения уральского времени
@@ -58,6 +64,10 @@ const RadioPlayer = (props: RadioPlayerProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [listeners, setListeners] = useState(3150084);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
+  const animationFrameRef = useRef<number>();
 
   // Инициализация счетчика слушателей
   useEffect(() => {
@@ -152,16 +162,84 @@ const RadioPlayer = (props: RadioPlayerProps) => {
       setIsPlaying(false);
     };
 
+    const handlePlay = () => {
+      if (!audioContextRef.current) {
+        try {
+          audioContextRef.current = new (window.AudioContext ||
+            (window as any).webkitAudioContext)();
+          analyserRef.current = audioContextRef.current.createAnalyser();
+          analyserRef.current.fftSize = 256;
+
+          if (!sourceRef.current) {
+            sourceRef.current =
+              audioContextRef.current.createMediaElementSource(audio);
+            sourceRef.current.connect(analyserRef.current);
+            analyserRef.current.connect(audioContextRef.current.destination);
+          }
+
+          startAudioAnalysis();
+        } catch (error) {
+          console.error("Audio context error:", error);
+        }
+      } else if (audioContextRef.current.state === "suspended") {
+        audioContextRef.current.resume();
+        startAudioAnalysis();
+      }
+    };
+
+    const handlePause = () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+
+    const startAudioAnalysis = () => {
+      if (!analyserRef.current || !props.onAudioData) return;
+
+      const bufferLength = analyserRef.current.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+
+      const analyze = () => {
+        if (!analyserRef.current || !isPlaying) return;
+
+        analyserRef.current.getByteFrequencyData(dataArray);
+
+        // Анализируем разные частотные диапазоны
+        const bass =
+          dataArray.slice(0, 32).reduce((a, b) => a + b, 0) / 32 / 255;
+        const mid =
+          dataArray.slice(32, 96).reduce((a, b) => a + b, 0) / 64 / 255;
+        const treble =
+          dataArray.slice(96, 128).reduce((a, b) => a + b, 0) / 32 / 255;
+        const overall =
+          dataArray.reduce((a, b) => a + b, 0) / bufferLength / 255;
+
+        props.onAudioData?.({ bass, mid, treble, overall });
+
+        animationFrameRef.current = requestAnimationFrame(analyze);
+      };
+
+      analyze();
+    };
+
     audio.addEventListener("canplay", handleCanPlay);
     audio.addEventListener("waiting", handleWaiting);
     audio.addEventListener("error", handleError);
+    audio.addEventListener("play", handlePlay);
+    audio.addEventListener("pause", handlePause);
 
     return () => {
       audio.removeEventListener("canplay", handleCanPlay);
       audio.removeEventListener("waiting", handleWaiting);
       audio.removeEventListener("error", handleError);
+      audio.removeEventListener("play", handlePlay);
+      audio.removeEventListener("pause", handlePause);
+
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
     };
-  }, [volume]);
+  }, [volume, isPlaying, props.onAudioData]);
 
   const togglePlay = async () => {
     const audio = audioRef.current;

@@ -6,6 +6,9 @@ import BackgroundWaves from "@/components/BackgroundWaves";
 
 const Index = () => {
   const [isRadioPlaying, setIsRadioPlaying] = useState(false);
+  const [audioData, setAudioData] = useState<
+    { bass: number; mid: number; treble: number; overall: number } | undefined
+  >();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
@@ -17,7 +20,7 @@ const Index = () => {
       </div>
 
       {/* Background waves controlled by radio */}
-      <BackgroundWaves isActive={isRadioPlaying} />
+      <BackgroundWaves isActive={isRadioPlaying} audioData={audioData} />
 
       <div className="relative z-10">
         <Hero />
@@ -27,6 +30,7 @@ const Index = () => {
       <RadioPlayer
         streamUrl="https://myradio24.org/61673"
         onPlayingChange={setIsRadioPlaying}
+        onAudioData={setAudioData}
       />
     </div>
   );
