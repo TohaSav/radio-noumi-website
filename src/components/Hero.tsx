@@ -55,45 +55,6 @@ const Hero = () => {
   );
 };
 
-const SupportButton = () => {
-  const [clicked, setClicked] = useState(false);
-
-  const handleClick = () => {
-    setClicked(true);
-    setTimeout(() => setClicked(false), 2000);
-  };
-
-  return (
-    <Button
-      onClick={handleClick}
-      className="relative group bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-4 px-8 rounded-full shadow-2xl hover:shadow-pink-500/50 transition-all duration-300 transform hover:scale-105 overflow-hidden"
-    >
-      {clicked && (
-        <div className="absolute inset-0 pointer-events-none">
-          {[...Array(8)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-2 h-2 bg-yellow-300 rounded-full animate-ping"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${i * 0.1}s`,
-              }}
-            />
-          ))}
-        </div>
-      )}
-
-      <Icon
-        name="Heart"
-        className="mr-2 relative z-10 group-hover:animate-pulse"
-        size={20}
-      />
-      <span className="relative z-10">💝 Поддержать радио</span>
-    </Button>
-  );
-};
-
 const PremiumButton = () => {
   return (
     <Button className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white font-semibold py-4 px-8 rounded-full shadow-2xl hover:shadow-yellow-500/50 transition-all duration-300 transform hover:scale-105">
