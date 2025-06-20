@@ -15,7 +15,7 @@ const AddPoemButton = () => {
       onClick={handleClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="fixed right-4 top-1/2 -translate-y-1/2 z-50 bg-transparent text-white hover:text-purple-200 transition-colors duration-300 underline decoration-white/50 hover:decoration-white underline-offset-4 text-sm font-medium cursor-pointer -rotate-90 origin-center"
+      className="fixed right-4 top-1/2 -translate-y-1/2 z-50 bg-gradient-to-r from-purple-600 via-pink-500 to-indigo-600 text-white hover:from-purple-700 hover:via-pink-600 hover:to-indigo-700 transition-all duration-300 px-4 py-2 rounded-lg shadow-lg hover:shadow-xl backdrop-blur-sm border border-white/20 text-sm font-medium cursor-pointer -rotate-90 origin-center"
     >
       Наши стихи
     </button>
