@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Donation from "./pages/Donation";
 import RadioBackground from "./pages/RadioBackground";
+import CharityFund from "./pages/CharityFund";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/donate" element={<Donation />} />
           <Route path="/radio-background" element={<RadioBackground />} />
+          <Route path="/charity" element={<CharityFund />} />
         </Routes>
       </Router>
     </TooltipProvider>

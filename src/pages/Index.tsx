@@ -31,7 +31,10 @@ const Index = () => {
           </div>
 
           <SupportButton />
-          <PremiumButton />
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <PremiumButton />
+            <CharityButton />
+          </div>
 
           {/* Монетизация */}
           <div className="space-y-6 mt-8">
@@ -141,6 +144,20 @@ const PremiumButton = () => {
 
       <PremiumModal open={showPremium} onOpenChange={setShowPremium} />
     </>
+  );
+};
+
+const CharityButton = () => {
+  const navigate = useNavigate();
+
+  return (
+    <Button
+      onClick={() => navigate("/charity")}
+      className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-semibold py-3 px-8 rounded-full shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-105"
+    >
+      <Icon name="Heart" className="mr-2" size={20} />
+      Фонд радио
+    </Button>
   );
 };
 
