@@ -180,7 +180,7 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
           <div className="text-white min-w-0">
             <div className="text-sm font-medium flex items-center space-x-2">
               <span>Радио Noumi</span>
-              <span className="text-xs text-green-400 px-2 py-0.5 rounded-full border border-green-500/30">
+              <span className="text-xs text-green-400 px-2 py-0.5 rounded-full">
                 {formatListeners(listeners)} слушателей
               </span>
             </div>
