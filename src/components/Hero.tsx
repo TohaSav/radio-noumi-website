@@ -37,7 +37,7 @@ const Hero = () => {
 
           <div className="flex items-center gap-2 text-white/90">
             <Icon name="Users" size={24} />
-            <span className="text-xl font-semibold">1,247 слушателей</span>
+            <LiveListenerCounter />
           </div>
         </div>
 
