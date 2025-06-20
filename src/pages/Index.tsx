@@ -32,13 +32,7 @@ const Index = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center"></div>
 
-          {/* Монетизация */}
-          <div className="space-y-6 mt-8">
-            <AdBanner />
-            <div className="max-w-md mx-auto">
-              <MonetizationPanel />
-            </div>
-          </div>
+          {/* Блок монетизации удален */}
         </div>
       </div>
 
