@@ -17,7 +17,7 @@ const Hero = () => {
         </h1>
 
         <p className="text-xl md:text-2xl text-purple-200 max-w-2xl mx-auto leading-relaxed">
-          Музыка из глубин космоса прямо в ваши наушники
+          Музыка, что вдохновляет жить
         </p>
 
         {/* Рекламный баннер */}
