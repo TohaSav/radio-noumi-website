@@ -1,76 +1,77 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const WaveVisualizer = () => {
-  const [bars, setBars] = useState<number[]>([]);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const generateBars = () => {
-      const newBars = Array.from(
-        { length: 50 },
-        () => Math.random() * 100 + 20,
-      );
-      setBars(newBars);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // Set canvas size
+    const resizeCanvas = () => {
+      canvas.width = canvas.offsetWidth * window.devicePixelRatio;
+      canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
     };
 
-    generateBars();
-    const interval = setInterval(generateBars, 150);
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
 
-    return () => clearInterval(interval);
+    // Animation variables
+    let animationId: number;
+    const bars = 64;
+    const barWidth = canvas.offsetWidth / bars;
+    let time = 0;
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
+
+      for (let i = 0; i < bars; i++) {
+        const height = Math.sin(time + i * 0.3) * 50 + Math.random() * 30 + 20;
+        const x = i * barWidth;
+        const y = canvas.offsetHeight - height;
+
+        // Create gradient
+        const gradient = ctx.createLinearGradient(0, y, 0, canvas.offsetHeight);
+        gradient.addColorStop(
+          0,
+          `rgba(168, 85, 247, ${0.8 + Math.sin(time + i) * 0.2})`,
+        );
+        gradient.addColorStop(
+          1,
+          `rgba(236, 72, 153, ${0.4 + Math.sin(time + i) * 0.2})`,
+        );
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(x, y, barWidth - 2, height);
+      }
+
+      time += 0.1;
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      window.removeEventListener("resize", resizeCanvas);
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
   }, []);
 
   return (
-    <section className="py-20 px-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Сейчас в эфире
-          </h3>
-          <p className="text-xl text-white/80">
-            🎵 Naturalize & Second Sun - 3am
-          </p>
-        </div>
-
-        {/* Wave visualizer */}
-        <div className="flex items-end justify-center gap-1 h-32 mb-12">
-          {bars.map((height, index) => (
-            <div
-              key={index}
-              className="bg-gradient-to-t from-purple-600 via-pink-500 to-indigo-400 rounded-full transition-all duration-150 ease-out"
-              style={{
-                height: `${height}px`,
-                width: "4px",
-                animationDelay: `${index * 0.05}s`,
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Radio info cards */}
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 text-center hover:bg-white/10 transition-all">
-            <div className="text-3xl mb-3">🌍</div>
-            <h4 className="text-white font-semibold text-lg mb-2">
-              Мировая музыка
-            </h4>
-            <p className="text-white/70">Лучшие треки со всего мира</p>
-          </div>
-
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 text-center hover:bg-white/10 transition-all">
-            <div className="text-3xl mb-3">📻</div>
-            <h4 className="text-white font-semibold text-lg mb-2">24/7 эфир</h4>
-            <p className="text-white/70">Музыка без перерывов</p>
-          </div>
-
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 text-center hover:bg-white/10 transition-all">
-            <div className="text-3xl mb-3">🎧</div>
-            <h4 className="text-white font-semibold text-lg mb-2">
-              HD качество
-            </h4>
-            <p className="text-white/70">Кристально чистый звук</p>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div className="relative w-full h-32 bg-black/20 backdrop-blur-sm rounded-lg overflow-hidden mb-8">
+      <canvas
+        ref={canvasRef}
+        className="w-full h-full"
+        style={{ width: "100%", height: "100%" }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"></div>
+    </div>
   );
 };
 
