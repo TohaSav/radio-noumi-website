@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
+import AdBanner from "@/components/AdBanner";
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -19,6 +20,11 @@ const Hero = () => {
         <p className="text-xl md:text-2xl text-purple-200 max-w-2xl mx-auto leading-relaxed">
           Музыка из глубин космоса прямо в ваши наушники
         </p>
+
+        {/* Рекламный баннер */}
+        <div className="pt-6">
+          <AdBanner />
+        </div>
       </div>
 
       {/* Floating Elements */}
