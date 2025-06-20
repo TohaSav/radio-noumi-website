@@ -233,12 +233,6 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
                   <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
                   <span className="text-white text-sm font-bold">LIVE</span>
                 </div>
-                <div className="flex items-center gap-2 text-white/80">
-                  <Icon name="Users" size={18} />
-                  <span className="font-medium transition-all duration-500 ease-in-out">
-                    {formatNumber(listeners)}
-                  </span>
-                </div>
               </div>
             </div>
           </div>
