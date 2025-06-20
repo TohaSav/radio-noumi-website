@@ -6,14 +6,26 @@ const AdBanner = () => {
   const [views, setViews] = useState(0);
 
   useEffect(() => {
-    // Получаем текущее количество просмотров
+    // Получаем начальное количество просмотров
     const currentViews = parseInt(
       localStorage.getItem("adBannerViews") || "1247",
     );
-    // Увеличиваем на случайное число от 1 до 5
-    const newViews = currentViews + Math.floor(Math.random() * 5) + 1;
-    setViews(newViews);
-    localStorage.setItem("adBannerViews", newViews.toString());
+    setViews(currentViews);
+
+    // Автоматическое обновление счётчика каждые 3-7 секунд
+    const interval = setInterval(
+      () => {
+        setViews((prevViews) => {
+          const increment = Math.floor(Math.random() * 5) + 1;
+          const newViews = prevViews + increment;
+          localStorage.setItem("adBannerViews", newViews.toString());
+          return newViews;
+        });
+      },
+      Math.random() * 4000 + 3000,
+    ); // 3-7 секунд
+
+    return () => clearInterval(interval);
   }, []);
   return (
     <div className="w-full max-w-[450px] h-[130px] mx-auto bg-gradient-to-r from-yellow-400/20 to-orange-500/20 backdrop-blur-sm border border-yellow-400/30 rounded-xl p-3 sm:p-4 flex items-center justify-between relative">
