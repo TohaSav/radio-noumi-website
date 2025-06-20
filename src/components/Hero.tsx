@@ -39,7 +39,13 @@ const Hero = () => {
 
         {/* Кнопки действий */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-          <PremiumButton />
+          <Button
+            size="lg"
+            className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-medium px-8 py-3 rounded-full transition-all duration-300 hover:scale-105"
+          >
+            <Icon name="Play" className="w-5 h-5 mr-2" />
+            Слушать сейчас
+          </Button>
         </div>
 
         {/* Статистика в реальном времени */}
