@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/useAuth";
+import { usePoems } from "@/hooks/usePoems";
 import Icon from "@/components/ui/icon";
 
 interface Poem {
@@ -17,33 +18,12 @@ interface Poem {
 const Poems = () => {
   const navigate = useNavigate();
   const { isAdmin } = useAuth();
-  const [poems, setPoems] = useState<Poem[]>([]);
+  const { poems, addPoem, deletePoem } = usePoems();
   const [formData, setFormData] = useState({
     title: "",
     author: "",
     text: "",
   });
-
-  // Загружаем стихи из localStorage при запуске
-  useEffect(() => {
-    const savedPoems = localStorage.getItem("poems");
-    if (savedPoems) {
-      const parsedPoems = JSON.parse(savedPoems);
-      setPoems(
-        parsedPoems.map((poem: any) => ({
-          ...poem,
-          createdAt: new Date(poem.createdAt),
-        })),
-      );
-    }
-  }, []);
-
-  // Сохраняем стихи в localStorage при изменении
-  useEffect(() => {
-    if (poems.length > 0) {
-      localStorage.setItem("poems", JSON.stringify(poems));
-    }
-  }, [poems]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,24 +32,17 @@ const Poems = () => {
     // Проверяем админ-права перед добавлением
     if (!isAdmin) return;
 
-    const newPoem: Poem = {
-      id: Date.now().toString(),
+    addPoem({
       title: formData.title.trim(),
       author: formData.author.trim() || "Аноним",
       text: formData.text.trim(),
-      createdAt: new Date(),
-    };
+    });
 
-    const updatedPoems = [newPoem, ...poems];
-    setPoems(updatedPoems);
-    localStorage.setItem("poems", JSON.stringify(updatedPoems));
     setFormData({ title: "", author: "", text: "" });
   };
 
   const handleDelete = (id: string) => {
-    const updatedPoems = poems.filter((poem) => poem.id !== id);
-    setPoems(updatedPoems);
-    localStorage.setItem("poems", JSON.stringify(updatedPoems));
+    deletePoem(id);
   };
 
   return (
