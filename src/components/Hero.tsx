@@ -39,7 +39,6 @@ const Hero = () => {
 
         {/* Кнопки действий */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-          <SupportButton />
           <PremiumButton />
         </div>
 
