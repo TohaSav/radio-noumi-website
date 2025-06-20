@@ -3,7 +3,6 @@ import RadioPlayer from "@/components/RadioPlayer";
 import Hero from "@/components/Hero";
 import WaveVisualizer from "@/components/WaveVisualizer";
 import BackgroundWaves from "@/components/BackgroundWaves";
-import AdBanner from "@/components/AdBanner";
 
 const Index = () => {
   const [isRadioPlaying, setIsRadioPlaying] = useState(false);
@@ -25,11 +24,6 @@ const Index = () => {
 
       <div className="relative z-10">
         <Hero />
-
-        {/* Рекламный баннер в центре страницы */}
-        <div className="py-8 flex justify-center">
-          <AdBanner />
-        </div>
 
         <WaveVisualizer />
       </div>
