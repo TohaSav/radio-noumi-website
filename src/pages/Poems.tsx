@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/useAuth";
 import Icon from "@/components/ui/icon";
+import RadioPlayer from "@/components/RadioPlayer";
 
 interface Poem {
   id: string;
@@ -49,6 +50,11 @@ const Poems = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      {/* Background Radio Player */}
+      <div className="fixed bottom-4 right-4 z-50">
+        <RadioPlayer streamUrl="https://streams.radio-zp.com:8000/rock" />
+      </div>
+
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
