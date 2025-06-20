@@ -124,20 +124,22 @@ const Poems = () => {
           )}
 
           {/* Poems List */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-            <h2 className="text-2xl font-semibold text-white mb-6">
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-3 sm:p-4 md:p-6 border border-white/20">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-white mb-4 md:mb-6">
               📚 Сохранённые стихи ({poems.length})
             </h2>
 
-            <div className="space-y-4 max-h-96 overflow-y-auto">
+            <div className="space-y-3 md:space-y-4 max-h-64 sm:max-h-80 md:max-h-96 overflow-y-auto">
               {poems.length === 0 ? (
-                <div className="text-center py-8 text-white/60">
+                <div className="text-center py-6 sm:py-8 text-white/60">
                   <Icon
                     name="BookOpen"
-                    size={48}
-                    className="mx-auto mb-4 opacity-50"
+                    size={32}
+                    className="sm:w-10 sm:h-10 md:w-12 md:h-12 mx-auto mb-3 md:mb-4 opacity-50"
                   />
-                  <p>Пока нет добавленных стихов</p>
+                  <p className="text-sm sm:text-base">
+                    Пока нет добавленных стихов
+                  </p>
                 </div>
               ) : (
                 poems.map((poem) => (
