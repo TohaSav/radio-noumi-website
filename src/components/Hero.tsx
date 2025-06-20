@@ -18,21 +18,6 @@ const Hero = () => {
           </p>
         </div>
 
-        {/* Main Play Button */}
-        <div className="mb-12">
-          <button
-            onClick={() => setIsPlaying(!isPlaying)}
-            className="group relative inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 hover:scale-105"
-          >
-            <Icon
-              name={isPlaying ? "Pause" : "Play"}
-              size={32}
-              className="text-white ml-1"
-            />
-            <div className="absolute inset-0 rounded-full bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </button>
-        </div>
-
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
           <div className="text-center">
