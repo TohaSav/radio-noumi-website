@@ -36,6 +36,14 @@ const Index = () => {
           <SupportButton />
           <PremiumButton />
 
+          <Button
+            onClick={() => window.open("/radio-background", "_blank")}
+            className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-semibold py-3 px-8 rounded-full shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-105"
+          >
+            <Icon name="Radio" className="mr-2" size={20} />
+            Фон радио
+          </Button>
+
           {/* Монетизация */}
           <div className="space-y-6 mt-8">
             <AdBanner />
