@@ -15,16 +15,9 @@ const AddPoemButton = () => {
       onClick={handleClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="fixed right-6 top-1/2 -translate-y-1/2 z-50 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 hover:from-purple-500 hover:via-indigo-500 hover:to-purple-600 text-white px-4 py-3 rounded-2xl shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-purple-500/30 backdrop-blur-sm border border-white/20 group"
+      className="fixed right-6 top-1/2 -translate-y-1/2 z-50 bg-transparent text-gray-700 hover:text-purple-600 transition-colors duration-300 underline decoration-purple-600/50 hover:decoration-purple-600 underline-offset-4 text-sm font-medium cursor-pointer"
     >
-      <div className="flex flex-col items-center gap-2">
-        <div className="p-1.5 bg-white/10 rounded-lg group-hover:bg-white/20 transition-colors duration-300">
-          <Icon name="BookOpen" size={18} className="text-white" />
-        </div>
-        <span className="text-xs font-semibold tracking-wide whitespace-nowrap transform rotate-90">
-          ДОБАВИТЬ
-        </span>
-      </div>
+      ДОБАВИТЬ
     </button>
   );
 };
