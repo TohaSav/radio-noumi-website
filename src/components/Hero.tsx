@@ -38,15 +38,7 @@ const Hero = () => {
         </div>
 
         {/* Кнопки действий */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-          <Button
-            size="lg"
-            className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-medium px-8 py-3 rounded-full transition-all duration-300 hover:scale-105"
-          >
-            <Icon name="Play" className="w-5 h-5 mr-2" />
-            Слушать сейчас
-          </Button>
-        </div>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8"></div>
 
         {/* Статистика в реальном времени */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 max-w-2xl mx-auto">
