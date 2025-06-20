@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Donation from "./pages/Donation";
-import OnlineChat from "./pages/OnlineChat";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,7 +24,6 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/donate" element={<Donation />} />
-          <Route path="/online-chat" element={<OnlineChat />} />
         </Routes>
       </Router>
     </TooltipProvider>
