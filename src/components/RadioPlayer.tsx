@@ -224,10 +224,6 @@ const RadioPlayer = ({ streamUrl }: RadioPlayerProps) => {
             <div className="text-xs sm:text-sm text-gray-400 truncate">
               {isPlaying ? (
                 <div>
-                  {/*INFOS - Информация о радио */}
-                  <b data-myinfo="song"></b>
-                  <br />
-                  {/*END INFOS*/}
                   <span className="text-green-400">В эфире...</span>
                 </div>
               ) : (
