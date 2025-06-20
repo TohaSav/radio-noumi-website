@@ -51,7 +51,7 @@ const AdBanner = () => {
         </div>
         <div>
           <h3 className="text-sm font-bold text-yellow-300 uppercase tracking-wide">
-            🎵 Ваша реклама здесь!
+            Реклама
           </h3>
           <p className="text-xs text-yellow-200/80">На популярном радио</p>
         </div>
