@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
+import LiveListenerCounter from "@/components/LiveListenerCounter";
 
 const Hero = () => {
   return (
