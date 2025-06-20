@@ -69,8 +69,8 @@ const Poems = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Admin-only Form Section */}
-          {isAdmin && (
+          {/* Development-only Form Section - Hidden in production */}
+          {process.env.NODE_ENV === "development" && (
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
               <h2 className="text-2xl font-semibold text-white mb-6">
                 ✨ Добавить стих
