@@ -1,21 +1,6 @@
 import { useState } from "react";
 
 const LiveListenerCounter = () => {
-  const [listeners] = useState(() => {
-    const { min, max } = getTimeBasedRange();
-    return min + Math.floor(Math.random() * (max - min));
-  });
-
-  const formatNumber = (num: number): string => {
-    if (num >= 1000000) {
-      return (num / 1000000).toFixed(1) + "M";
-    }
-    if (num >= 1000) {
-      return (num / 1000).toFixed(1) + "K";
-    }
-    return num.toString();
-  };
-
   const getTimeBasedRange = () => {
     const now = new Date();
     // Уральское время (UTC+5)
@@ -31,6 +16,21 @@ const LiveListenerCounter = () => {
     } else {
       return { min: 5698750, max: 9321456 };
     }
+  };
+
+  const [listeners] = useState(() => {
+    const { min, max } = getTimeBasedRange();
+    return min + Math.floor(Math.random() * (max - min));
+  });
+
+  const formatNumber = (num: number): string => {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1) + "M";
+    }
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1) + "K";
+    }
+    return num.toString();
   };
 
   return (
