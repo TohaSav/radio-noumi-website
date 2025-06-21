@@ -24,10 +24,22 @@ const EditTrackModal = ({
   onSave,
 }: EditTrackModalProps) => {
   const [formData, setFormData] = useState({
-    title: track?.title || "",
-    artist: "Noumi Music",
-    cover: track?.cover || "",
-    audioFile: track?.audioFile || "",
+    title: "",
+    artist: "",
+    cover: "",
+    audioFile: "",
+  });
+
+  // Обновляем форму при изменении трека
+  useState(() => {
+    if (track) {
+      setFormData({
+        title: track.title || "",
+        artist: track.artist || "",
+        cover: track.cover || "",
+        audioFile: track.audioFile || "",
+      });
+    }
   });
 
   const handleFileChange = (
@@ -35,8 +47,14 @@ const EditTrackModal = ({
     file: File | null,
   ) => {
     if (file) {
-      const url = URL.createObjectURL(file);
-      setFormData((prev) => ({ ...prev, [field]: url }));
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setFormData((prev) => ({
+          ...prev,
+          [field]: event.target?.result as string,
+        }));
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -46,6 +64,7 @@ const EditTrackModal = ({
     const updatedTrack: Track = {
       ...track,
       title: formData.title,
+      artist: formData.artist,
       cover: formData.cover,
       audioFile: formData.audioFile,
     };

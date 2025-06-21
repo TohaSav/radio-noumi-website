@@ -23,9 +23,19 @@ export const tracksApi = {
       const data = await response.json();
       const cloudTracks = data.record?.tracks || [];
 
-      // Если облачных треков нет, возвращаем пустой массив
-      // чтобы TopChart мог загрузить демо-треки
-      return cloudTracks;
+      // Получаем локальные треки
+      const saved = localStorage.getItem("noumi-tracks");
+      const localTracks = saved ? JSON.parse(saved) : [];
+
+      // Объединяем облачные и локальные треки, исключая дубликаты
+      const allTracks = [...cloudTracks];
+      localTracks.forEach((localTrack: Track) => {
+        if (!allTracks.find((track) => track.id === localTrack.id)) {
+          allTracks.push(localTrack);
+        }
+      });
+
+      return allTracks;
     } catch (error) {
       console.warn(
         "Failed to load tracks from cloud, using localStorage:",

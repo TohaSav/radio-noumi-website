@@ -19,16 +19,26 @@ const TopChart = () => {
   useEffect(() => {
     const loadTracks = async () => {
       try {
-        // Сначала пытаемся загрузить облачные треки
-        const cloudTracks = await tracksApi.getTracks();
+        // Загружаем все треки (облачные + локальные)
+        const allTracks = await tracksApi.getTracks();
 
-        if (cloudTracks.length > 0) {
-          // Если есть облачные треки, используем их
-          setTracks(cloudTracks);
-        } else {
-          // Если облачных треков нет, загружаем демо-треки
+        // Если нет ни облачных, ни локальных треков, загружаем демо-треки
+        if (allTracks.length === 0) {
           const demoTracks = getDemoTracks();
           setTracks(demoTracks);
+        } else {
+          // Добавляем демо-треки к существующим
+          const demoTracks = getDemoTracks();
+
+          // Объединяем пользовательские треки и демо, исключая дубликаты
+          const combinedTracks = [...allTracks];
+          demoTracks.forEach((demoTrack) => {
+            if (!combinedTracks.find((track) => track.id === demoTrack.id)) {
+              combinedTracks.push(demoTrack);
+            }
+          });
+
+          setTracks(combinedTracks);
         }
       } catch (error) {
         console.error("Error loading tracks:", error);
