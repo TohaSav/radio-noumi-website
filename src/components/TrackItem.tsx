@@ -36,7 +36,13 @@ const TrackItem = ({
     }
   };
 
-  const formatLikes = (likes: number) => {
+  const formatLikes = (count: number | undefined): string => {
+    // Проверяем на undefined/null и устанавливаем значение по умолчанию
+    const likes = count ?? 0;
+
+    if (likes >= 1000000) {
+      return (likes / 1000000).toFixed(1) + "M";
+    }
     if (likes >= 1000) {
       return (likes / 1000).toFixed(1) + "K";
     }
