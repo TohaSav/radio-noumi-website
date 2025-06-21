@@ -30,7 +30,7 @@ const MediaUpload = ({ onFileSelect }: MediaUploadProps) => {
         variant="ghost"
         size="sm"
         onClick={() => imageInputRef.current?.click()}
-        className="h-12 px-3 text-gray-600 hover:text-purple-600 hover:bg-purple-50"
+        className="h-12 px-3 text-white hover:text-purple-600 hover:bg-purple-50"
         title="Загрузить фото"
       >
         <Icon name="Image" size={20} />
@@ -40,7 +40,7 @@ const MediaUpload = ({ onFileSelect }: MediaUploadProps) => {
         variant="ghost"
         size="sm"
         onClick={() => videoInputRef.current?.click()}
-        className="h-12 px-3 text-gray-600 hover:text-purple-600 hover:bg-purple-50"
+        className="h-12 px-3 text-white hover:text-purple-600 hover:bg-purple-50"
         title="Загрузить видео"
       >
         <Icon name="Video" size={20} />
