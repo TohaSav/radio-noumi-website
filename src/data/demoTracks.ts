@@ -4,6 +4,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "1",
     title: "Midnight Dreams",
+    artist: "Luna Echo",
     cover:
       "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
     plays: "1.2M",
@@ -12,6 +13,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "2",
     title: "Electric Pulse",
+    artist: "Neon Rider",
     cover:
       "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
     plays: "890K",
@@ -20,6 +22,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "3",
     title: "Ocean Waves",
+    artist: "Deep Blue",
     cover:
       "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
     plays: "654K",
@@ -28,6 +31,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "4",
     title: "Neon Nights",
+    artist: "Cyber Dreams",
     cover:
       "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
     plays: "543K",
@@ -36,6 +40,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "5",
     title: "Digital Rain",
+    artist: "Matrix Sound",
     cover:
       "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
     plays: "432K",
@@ -44,6 +49,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "6",
     title: "Cosmic Journey",
+    artist: "Stellar Voyage",
     cover:
       "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
     plays: "398K",
@@ -52,6 +58,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "7",
     title: "Velvet Thunder",
+    artist: "Storm Rider",
     cover:
       "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
     plays: "321K",
@@ -60,6 +67,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "8",
     title: "Aurora Beats",
+    artist: "Northern Lights",
     cover:
       "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
     plays: "287K",
@@ -68,6 +76,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "9",
     title: "Crystal Echoes",
+    artist: "Prism Wave",
     cover:
       "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
     plays: "245K",
@@ -76,6 +85,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "10",
     title: "Quantum Flow",
+    artist: "Particle Sync",
     cover:
       "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
     plays: "198K",
@@ -84,6 +94,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "11",
     title: "Starlight Symphony",
+    artist: "Cosmic Orchestra",
     cover:
       "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
     plays: "176K",
@@ -92,6 +103,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "12",
     title: "Urban Legends",
+    artist: "City Myths",
     cover:
       "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
     plays: "154K",
@@ -100,6 +112,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "13",
     title: "Mystic Vibes",
+    artist: "Ethereal Sounds",
     cover:
       "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
     plays: "132K",
@@ -108,6 +121,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "14",
     title: "Solar Flare",
+    artist: "Astro Beats",
     cover:
       "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
     plays: "118K",
@@ -116,6 +130,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "15",
     title: "Rhythm Revolution",
+    artist: "Beat Rebels",
     cover:
       "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
     plays: "101K",
@@ -124,6 +139,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "16",
     title: "Dancing Shadows",
+    artist: "Phantom Groove",
     cover:
       "https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?w=200&h=200&fit=crop",
     plays: "95K",
@@ -132,6 +148,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "17",
     title: "Future Bass",
+    artist: "Tomorrow's Sound",
     cover:
       "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop",
     plays: "89K",
@@ -140,6 +157,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "18",
     title: "Synthwave Dreams",
+    artist: "Retro Vision",
     cover:
       "https://images.unsplash.com/photo-1486312338219-ce68e2c6b7c0?w=200&h=200&fit=crop",
     plays: "83K",
@@ -148,6 +166,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "19",
     title: "Lost in Translation",
+    artist: "Language Barrier",
     cover:
       "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&h=200&fit=crop",
     plays: "77K",
@@ -156,6 +175,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "20",
     title: "Neon Genesis",
+    artist: "Genesis Wave",
     cover:
       "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
     plays: "71K",
@@ -164,6 +184,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "21",
     title: "Blue Moon Rising",
+    artist: "Lunar Tides",
     cover:
       "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
     plays: "68K",
@@ -172,6 +193,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "22",
     title: "Electric Dreams",
+    artist: "Voltage Visions",
     cover:
       "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
     plays: "65K",
@@ -180,6 +202,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "23",
     title: "Pulse of Tomorrow",
+    artist: "Future Rhythm",
     cover:
       "https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?w=200&h=200&fit=crop",
     plays: "62K",
@@ -188,6 +211,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "24",
     title: "Galactic Voyage",
+    artist: "Space Travelers",
     cover:
       "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop",
     plays: "59K",
@@ -196,6 +220,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "25",
     title: "Cyber Romance",
+    artist: "Digital Hearts",
     cover:
       "https://images.unsplash.com/photo-1486312338219-ce68e2c6b7c0?w=200&h=200&fit=crop",
     plays: "56K",
@@ -204,6 +229,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "26",
     title: "Tokyo Lights",
+    artist: "Neon Tokyo",
     cover:
       "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&h=200&fit=crop",
     plays: "53K",
@@ -212,6 +238,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "27",
     title: "Neon Streets",
+    artist: "Urban Glow",
     cover:
       "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
     plays: "50K",
@@ -220,6 +247,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "28",
     title: "Digital Horizon",
+    artist: "Pixel Pioneers",
     cover:
       "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
     plays: "48K",
@@ -228,6 +256,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "29",
     title: "Retro Wave",
+    artist: "Nostalgia Drive",
     cover:
       "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
     plays: "45K",
@@ -236,6 +265,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "30",
     title: "Starbound Journey",
+    artist: "Galactic Express",
     cover:
       "https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?w=200&h=200&fit=crop",
     plays: "43K",
@@ -244,6 +274,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "31",
     title: "Virtual Reality",
+    artist: "Meta Sounds",
     cover:
       "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop",
     plays: "41K",
@@ -252,6 +283,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "32",
     title: "Phoenix Rising",
+    artist: "Flame Collective",
     cover:
       "https://images.unsplash.com/photo-1486312338219-ce68e2c6b7c0?w=200&h=200&fit=crop",
     plays: "39K",
@@ -260,6 +292,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "33",
     title: "Cosmic Drift",
+    artist: "Void Wanderers",
     cover:
       "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&h=200&fit=crop",
     plays: "37K",
@@ -268,6 +301,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "34",
     title: "Echo Chamber",
+    artist: "Reverb Factory",
     cover:
       "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
     plays: "35K",
@@ -276,6 +310,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "35",
     title: "Digital Paradise",
+    artist: "Eden Protocol",
     cover:
       "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
     plays: "33K",
@@ -284,6 +319,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "36",
     title: "Neon Pulse",
+    artist: "Frequency Lab",
     cover:
       "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
     plays: "31K",
@@ -292,6 +328,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "37",
     title: "Time Machine",
+    artist: "Temporal Shift",
     cover:
       "https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?w=200&h=200&fit=crop",
     plays: "29K",
@@ -300,6 +337,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "38",
     title: "Plasma Storm",
+    artist: "Ion Surge",
     cover:
       "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop",
     plays: "27K",
@@ -308,6 +346,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "39",
     title: "Binary Code",
+    artist: "Logic Gates",
     cover:
       "https://images.unsplash.com/photo-1486312338219-ce68e2c6b7c0?w=200&h=200&fit=crop",
     plays: "25K",
@@ -316,6 +355,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "40",
     title: "Hologram Dreams",
+    artist: "Projection Arts",
     cover:
       "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&h=200&fit=crop",
     plays: "24K",
@@ -324,6 +364,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "41",
     title: "Matrix Loading",
+    artist: "Code Warriors",
     cover:
       "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
     plays: "23K",
@@ -332,6 +373,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "42",
     title: "Cyber City",
+    artist: "Digital Metropolis",
     cover:
       "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
     plays: "22K",
@@ -340,6 +382,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "43",
     title: "Quantum Leap",
+    artist: "Physics Defied",
     cover:
       "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
     plays: "21K",
@@ -348,6 +391,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "44",
     title: "Digital Love",
+    artist: "Binary Romance",
     cover:
       "https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?w=200&h=200&fit=crop",
     plays: "20K",
@@ -356,6 +400,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "45",
     title: "Neon Glow",
+    artist: "Luminous Path",
     cover:
       "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop",
     plays: "19K",
@@ -364,6 +409,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "46",
     title: "Space Odyssey",
+    artist: "Interstellar Crew",
     cover:
       "https://images.unsplash.com/photo-1486312338219-ce68e2c6b7c0?w=200&h=200&fit=crop",
     plays: "18K",
@@ -372,6 +418,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "47",
     title: "Electric Nights",
+    artist: "Voltage Club",
     cover:
       "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&h=200&fit=crop",
     plays: "17K",
@@ -380,6 +427,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "48",
     title: "Future Shock",
+    artist: "Tomorrow's Fear",
     cover:
       "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
     plays: "16K",
@@ -388,6 +436,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "49",
     title: "Digital Rain",
+    artist: "Data Storm",
     cover:
       "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
     plays: "15K",
@@ -396,6 +445,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "50",
     title: "Neon Dreams",
+    artist: "Electric Sleep",
     cover:
       "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
     plays: "14K",
@@ -404,6 +454,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "51",
     title: "Stellar Winds",
+    artist: "Solar Breeze",
     cover:
       "https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?w=200&h=200&fit=crop",
     plays: "13.5K",
@@ -412,6 +463,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "52",
     title: "Cyber Punk",
+    artist: "Tech Rebels",
     cover:
       "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop",
     plays: "13K",
@@ -420,6 +472,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "53",
     title: "Digital Waves",
+    artist: "Pixel Surf",
     cover:
       "https://images.unsplash.com/photo-1486312338219-ce68e2c6b7c0?w=200&h=200&fit=crop",
     plays: "12.5K",
@@ -428,6 +481,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "54",
     title: "Neon Fever",
+    artist: "Bright Sickness",
     cover:
       "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&h=200&fit=crop",
     plays: "12K",
@@ -436,6 +490,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "55",
     title: "Space Echo",
+    artist: "Void Reverb",
     cover:
       "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
     plays: "11.5K",
@@ -444,6 +499,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "56",
     title: "Digital Storm",
+    artist: "Byte Tempest",
     cover:
       "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
     plays: "11K",
@@ -452,6 +508,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "57",
     title: "Cyber Dreams",
+    artist: "Neural Sleep",
     cover:
       "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
     plays: "10.5K",
@@ -460,6 +517,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "58",
     title: "Neon Highway",
+    artist: "Light Speed",
     cover:
       "https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?w=200&h=200&fit=crop",
     plays: "10K",
@@ -468,6 +526,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "59",
     title: "Digital Future",
+    artist: "Next Gen",
     cover:
       "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop",
     plays: "9.8K",
@@ -476,6 +535,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "60",
     title: "Cosmic Beat",
+    artist: "Universe Rhythm",
     cover:
       "https://images.unsplash.com/photo-1486312338219-ce68e2c6b7c0?w=200&h=200&fit=crop",
     plays: "9.5K",
@@ -484,6 +544,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "61",
     title: "Electric Symphony",
+    artist: "Orchestra Digital",
     cover:
       "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&h=200&fit=crop",
     plays: "9.2K",
@@ -492,6 +553,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "62",
     title: "Neon Paradise",
+    artist: "Eden Lights",
     cover:
       "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
     plays: "9K",
@@ -500,6 +562,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "63",
     title: "Digital Mind",
+    artist: "Neural Network",
     cover:
       "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
     plays: "8.7K",
@@ -508,6 +571,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "64",
     title: "Cyber Space",
+    artist: "Virtual Realm",
     cover:
       "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
     plays: "8.5K",
@@ -516,6 +580,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "65",
     title: "Neon Flash",
+    artist: "Strobe Effect",
     cover:
       "https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?w=200&h=200&fit=crop",
     plays: "8.2K",
@@ -524,6 +589,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "66",
     title: "Digital Phoenix",
+    artist: "Rebirth Code",
     cover:
       "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop",
     plays: "8K",
@@ -532,6 +598,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "67",
     title: "Cosmic Dance",
+    artist: "Stellar Groove",
     cover:
       "https://images.unsplash.com/photo-1486312338219-ce68e2c6b7c0?w=200&h=200&fit=crop",
     plays: "7.8K",
@@ -540,6 +607,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "68",
     title: "Electric Pulse 2.0",
+    artist: "Voltage Remix",
     cover:
       "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&h=200&fit=crop",
     plays: "7.5K",
@@ -548,6 +616,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "69",
     title: "Neon Matrix",
+    artist: "Grid System",
     cover:
       "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
     plays: "7.3K",
@@ -556,6 +625,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "70",
     title: "Digital Sunrise",
+    artist: "Dawn Protocol",
     cover:
       "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
     plays: "7K",
@@ -564,6 +634,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "71",
     title: "Cyber Lightning",
+    artist: "Electric Storm",
     cover:
       "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
     plays: "6.8K",
@@ -572,6 +643,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "72",
     title: "Neon Spectrum",
+    artist: "Color Theory",
     cover:
       "https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?w=200&h=200&fit=crop",
     plays: "6.5K",
@@ -580,6 +652,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "73",
     title: "Digital Horizon 2.0",
+    artist: "Pixel Advance",
     cover:
       "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop",
     plays: "6.3K",
@@ -588,6 +661,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "74",
     title: "Cosmic Energy",
+    artist: "Universal Force",
     cover:
       "https://images.unsplash.com/photo-1486312338219-ce68e2c6b7c0?w=200&h=200&fit=crop",
     plays: "6K",
@@ -596,6 +670,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "75",
     title: "Electric Ocean",
+    artist: "Tidal Current",
     cover:
       "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&h=200&fit=crop",
     plays: "5.8K",
@@ -604,6 +679,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "76",
     title: "Neon Infinity",
+    artist: "Endless Glow",
     cover:
       "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
     plays: "5.5K",
@@ -612,6 +688,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "77",
     title: "Digital Galaxy",
+    artist: "Pixel Cosmos",
     cover:
       "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
     plays: "5.3K",
@@ -620,6 +697,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "78",
     title: "Cyber Rhythm",
+    artist: "Tech Beat",
     cover:
       "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
     plays: "5K",
@@ -628,6 +706,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "79",
     title: "Neon Storm",
+    artist: "Light Tempest",
     cover:
       "https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?w=200&h=200&fit=crop",
     plays: "4.8K",
@@ -636,6 +715,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "80",
     title: "Digital Evolution",
+    artist: "Code Darwin",
     cover:
       "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop",
     plays: "4.5K",
@@ -644,6 +724,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "81",
     title: "Cosmic Vibration",
+    artist: "Frequency Space",
     cover:
       "https://images.unsplash.com/photo-1486312338219-ce68e2c6b7c0?w=200&h=200&fit=crop",
     plays: "4.3K",
@@ -652,6 +733,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "82",
     title: "Electric Melody",
+    artist: "Current Tune",
     cover:
       "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&h=200&fit=crop",
     plays: "4K",
@@ -660,6 +742,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "83",
     title: "Neon Revolution",
+    artist: "Bright Uprising",
     cover:
       "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
     plays: "3.8K",
@@ -668,6 +751,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "84",
     title: "Digital Harmony",
+    artist: "Bit Symphony",
     cover:
       "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
     plays: "3.5K",
@@ -676,6 +760,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "85",
     title: "Cyber Flow",
+    artist: "Data Stream",
     cover:
       "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
     plays: "3.3K",
@@ -684,6 +769,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "86",
     title: "Neon Fusion",
+    artist: "Light Merge",
     cover:
       "https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?w=200&h=200&fit=crop",
     plays: "3K",
@@ -692,6 +778,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "87",
     title: "Digital Wonder",
+    artist: "Pixel Magic",
     cover:
       "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop",
     plays: "2.8K",
@@ -700,6 +787,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "88",
     title: "Cosmic Rhythm",
+    artist: "Universal Beat",
     cover:
       "https://images.unsplash.com/photo-1486312338219-ce68e2c6b7c0?w=200&h=200&fit=crop",
     plays: "2.5K",
@@ -708,6 +796,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "89",
     title: "Electric Spirit",
+    artist: "Voltage Soul",
     cover:
       "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&h=200&fit=crop",
     plays: "2.3K",
@@ -716,6 +805,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "90",
     title: "Neon Legacy",
+    artist: "Bright Heritage",
     cover:
       "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
     plays: "2K",
@@ -724,6 +814,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "91",
     title: "Digital Odyssey",
+    artist: "Cyber Journey",
     cover:
       "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
     plays: "1.8K",
@@ -732,6 +823,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "92",
     title: "Cyber Vision",
+    artist: "Future Sight",
     cover:
       "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
     plays: "1.5K",
@@ -740,6 +832,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "93",
     title: "Neon Prophecy",
+    artist: "Light Oracle",
     cover:
       "https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?w=200&h=200&fit=crop",
     plays: "1.3K",
@@ -748,6 +841,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "94",
     title: "Digital Destiny",
+    artist: "Code Fate",
     cover:
       "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop",
     plays: "1K",
@@ -756,6 +850,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "95",
     title: "Cosmic Genesis",
+    artist: "Universe Birth",
     cover:
       "https://images.unsplash.com/photo-1486312338219-ce68e2c6b7c0?w=200&h=200&fit=crop",
     plays: "950",
@@ -764,6 +859,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "96",
     title: "Electric Eternity",
+    artist: "Infinite Current",
     cover:
       "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&h=200&fit=crop",
     plays: "800",
@@ -772,6 +868,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "97",
     title: "Neon Ascension",
+    artist: "Rising Light",
     cover:
       "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
     plays: "650",
@@ -780,6 +877,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "98",
     title: "Digital Transcendence",
+    artist: "Beyond Code",
     cover:
       "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
     plays: "500",
@@ -788,6 +886,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "99",
     title: "Cyber Enlightenment",
+    artist: "Neural Wisdom",
     cover:
       "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
     plays: "350",
@@ -796,6 +895,7 @@ export const getDemoTracks = (): Track[] => [
   {
     id: "100",
     title: "Neon Finale",
+    artist: "End Credits",
     cover:
       "https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?w=200&h=200&fit=crop",
     plays: "200",
