@@ -106,7 +106,15 @@ const TopChart = () => {
     const updatedTracks = tracks.map((track) =>
       track.id === updatedTrack.id ? updatedTrack : track,
     );
+
+    // Мгновенно обновляем состояние
+    setTracks(updatedTracks);
+
+    // Сохраняем в API/localStorage
     saveTracks(updatedTracks);
+
+    // Закрываем модал
+    setEditingTrack(null);
   };
 
   return (

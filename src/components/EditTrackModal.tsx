@@ -69,8 +69,8 @@ const EditTrackModal = ({
       audioFile: formData.audioFile,
     };
 
+    // Сохраняем трек и закрываем модал
     onSave(updatedTrack);
-    onClose();
   };
 
   if (!track) return null;

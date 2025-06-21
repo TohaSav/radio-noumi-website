@@ -49,6 +49,13 @@ export const tracksApi = {
   // Сохранить треки
   async saveTracks(tracks: Track[]): Promise<void> {
     try {
+      // Сначала сохраняем локально для мгновенного обновления
+      localStorage.setItem("noumi-tracks", JSON.stringify(tracks));
+
+      // Уведомляем о изменениях сразу
+      window.dispatchEvent(new CustomEvent("tracksUpdated"));
+
+      // Затем пытаемся сохранить в облако
       const response = await fetch(`${API_BASE}/673d2e8fad19ca34f8c7f123`, {
         method: "PUT",
         headers: {
@@ -59,22 +66,15 @@ export const tracksApi = {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to save tracks");
+        console.warn("Failed to save to cloud, but local save completed");
       }
-
-      // Также сохраняем локально как резерв
-      localStorage.setItem("noumi-tracks", JSON.stringify(tracks));
-
-      // Уведомляем о изменениях
-      window.dispatchEvent(new CustomEvent("tracksUpdated"));
     } catch (error) {
       console.warn(
         "Failed to save tracks to cloud, using localStorage:",
         error,
       );
+      // Локальное сохранение уже выполнено выше
       localStorage.setItem("noumi-tracks", JSON.stringify(tracks));
-
-      // Уведомляем о изменениях даже при ошибке
       window.dispatchEvent(new CustomEvent("tracksUpdated"));
     }
   },
