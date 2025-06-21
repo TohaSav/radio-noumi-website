@@ -5,6 +5,7 @@ import Icon from "@/components/ui/icon";
 import ChatMessages from "@/components/chat/ChatMessages";
 import ChatInput from "@/components/chat/ChatInput";
 import OnlineUsers from "@/components/chat/OnlineUsers";
+import RadioPlayer from "@/components/RadioPlayer";
 
 interface ChatMessage {
   id: string;
@@ -94,6 +95,10 @@ const OnlineChat = () => {
               <Icon name="ArrowLeft" size={20} />
             </Link>
             <h1 className="text-xl font-bold text-white">Онлайн чат</h1>
+            {/* Скрытое радио */}
+            <div className="hidden">
+              <RadioPlayer streamUrl="https://stream.radiorecord.ru:8102/rr_320" />
+            </div>
           </div>
 
           <div className="hidden md:flex items-center gap-4">
