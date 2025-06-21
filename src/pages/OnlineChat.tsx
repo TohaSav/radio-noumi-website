@@ -35,6 +35,22 @@ const OnlineChat = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const radioStats = useRadioStats();
 
+  // Проверка сохраненных данных пользователя при загрузке
+  useEffect(() => {
+    const savedUserData = localStorage.getItem("chatUserData");
+    if (savedUserData) {
+      try {
+        const userData = JSON.parse(savedUserData);
+        setUserName(userData.name);
+        setUserAvatar(userData.avatar);
+        setIsLoggedIn(true);
+      } catch (error) {
+        console.error("Ошибка загрузки данных пользователя:", error);
+        localStorage.removeItem("chatUserData");
+      }
+    }
+  }, []);
+
   // Инициализация с демо данными
   useEffect(() => {
     const demoMessages: ChatMessage[] = [

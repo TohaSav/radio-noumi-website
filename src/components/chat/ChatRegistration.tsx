@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,6 +18,20 @@ const ChatRegistration = ({
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  // Проверка сохраненных данных при загрузке
+  useEffect(() => {
+    const savedUserData = localStorage.getItem("chatUserData");
+    if (savedUserData) {
+      try {
+        const userData = JSON.parse(savedUserData);
+        onRegister({ name: userData.name, avatar: userData.avatar });
+      } catch (error) {
+        console.error("Ошибка загрузки данных пользователя:", error);
+        localStorage.removeItem("chatUserData");
+      }
+    }
+  }, [onRegister]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -48,29 +62,26 @@ const ChatRegistration = ({
       return;
     }
 
-    if (name.trim().length < 2) {
-      setError("Имя должно содержать минимум 2 символа");
-      setIsLoading(false);
-      return;
-    }
-
     if (existingUsers.includes(name.trim())) {
-      setError("Это имя уже занято");
+      setError("Пользователь с таким именем уже существует");
       setIsLoading(false);
       return;
     }
 
-    const userData = {
-      name: name.trim(),
-      avatar:
-        avatar ||
-        `https://images.unsplash.com/photo-${1500000000000 + Math.floor(Math.random() * 100000000)}?w=150&h=150&fit=crop&crop=face`,
-    };
-
+    // Симуляция загрузки
     setTimeout(() => {
+      const finalAvatar =
+        avatar ||
+        `https://images.unsplash.com/photo-${Math.floor(Math.random() * 100) + 1500000000000}?w=150&h=150&fit=crop&crop=face`;
+
+      const userData = { name: name.trim(), avatar: finalAvatar };
+
+      // Сохраняем данные пользователя в localStorage
+      localStorage.setItem("chatUserData", JSON.stringify(userData));
+
       onRegister(userData);
       setIsLoading(false);
-    }, 500);
+    }, 1000);
   };
 
   return (
