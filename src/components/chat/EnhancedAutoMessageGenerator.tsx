@@ -24,7 +24,7 @@ const EnhancedAutoMessageGenerator = ({
     Map<string, number>
   >(new Map());
 
-  // Расширенные шаблоны сообщений
+  // Расширенные шаблоны сообщений для большей живости
   const messageTemplates = {
     greetings: [
       "Всем привет! 👋",
@@ -47,6 +47,9 @@ const EnhancedAutoMessageGenerator = ({
       "Привет из солнечного города! 🌞",
       "Доброго времени суток! ⏰",
       "Всем большой привет! 👋🏻",
+      "Вечер в хату! 🏠",
+      "Как жизнь молодая? 😎",
+      "Всем мир! ✌️",
     ],
     music: [
       "Отличная музыка сегодня 🎵",
@@ -285,9 +288,65 @@ const EnhancedAutoMessageGenerator = ({
   };
 
   const generateUniqueMessage = () => {
-    if (!activeUsers.length) return null;
+    // Создаем случайного пользователя с аватаркой, если список пуст
+    const getRandomUser = () => {
+      const names = [
+        "Алексей",
+        "Мария",
+        "Дмитрий",
+        "Анна",
+        "Михаил",
+        "Елена",
+        "Сергей",
+        "Ольга",
+        "Андрей",
+        "Татьяна",
+        "Владимир",
+        "Наталья",
+        "Максим",
+        "Екатерина",
+        "Александр",
+        "Юлия",
+        "Антон",
+        "Светлана",
+        "Николай",
+        "Ирина",
+        "Денис",
+        "Галина",
+        "Роман",
+        "Валентина",
+        "Павел",
+        "Людмила",
+        "Игорь",
+        "Марина",
+        "Виктор",
+        "Надежда",
+        "Олег",
+        "Любовь",
+      ];
 
-    const user = activeUsers[Math.floor(Math.random() * activeUsers.length)];
+      const avatars = [
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+        "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
+        "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face",
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face",
+      ];
+
+      return {
+        id: `auto_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        name: names[Math.floor(Math.random() * names.length)],
+        avatar: avatars[Math.floor(Math.random() * avatars.length)],
+      };
+    };
+
+    const user =
+      activeUsers.length > 0
+        ? activeUsers[Math.floor(Math.random() * activeUsers.length)]
+        : getRandomUser();
+
     const messageType = Math.random();
     const timestamp = Date.now();
 
@@ -427,8 +486,8 @@ const EnhancedAutoMessageGenerator = ({
           });
         }
       },
-      1000 + Math.random() * 4000,
-    ); // Увеличена частота: 1-5 секунд между сообщениями
+      800 + Math.random() * 2000, // Ускорил генерацию: 0.8-2.8 секунд
+    );
 
     return () => clearInterval(messageInterval);
   }, [activeUsers]);
