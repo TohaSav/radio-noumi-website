@@ -8,18 +8,6 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center text-center px-4">
-      {/* Top Menu Button */}
-      <div className="absolute top-8 left-8 z-10">
-        <Button
-          onClick={() => navigate("/top-chart")}
-          variant="outline"
-          className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-all duration-300"
-        >
-          <Icon name="TrendingUp" size={16} className="mr-2" />
-          Топ чарт
-        </Button>
-      </div>
-
       {/* Hero Content */}
       <div className="max-w-4xl mx-auto space-y-8">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
