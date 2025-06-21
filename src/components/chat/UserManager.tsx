@@ -78,6 +78,14 @@ const UserManager = ({ targetUserCount, onUsersUpdate }: UserManagerProps) => {
       userName = `Пользователь${Date.now()}`;
     }
 
+    // Проверяем уникальность среди всех зарегистрированных пользователей
+    const isUnique = (name: string) =>
+      !existingUsers.map((u) => u.name).includes(name);
+
+    if (!isUnique(userName)) {
+      userName = `${userName}_${Math.floor(Math.random() * 1000)}`;
+    }
+
     return {
       id: `user_${Date.now()}_${Math.random()}`,
       name: userName,

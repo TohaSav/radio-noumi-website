@@ -5,6 +5,7 @@ import Icon from "@/components/ui/icon";
 import ChatMessages from "@/components/chat/ChatMessages";
 import ChatInput from "@/components/chat/ChatInput";
 import OnlineUsers from "@/components/chat/OnlineUsers";
+import ChatRegistration from "@/components/chat/ChatRegistration";
 import HiddenRadio from "@/components/HiddenRadio";
 import UserManager from "@/components/chat/UserManager";
 import EnhancedAutoMessageGenerator from "@/components/chat/EnhancedAutoMessageGenerator";
@@ -24,7 +25,9 @@ const OnlineChat = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [messageInput, setMessageInput] = useState("");
   const [userName, setUserName] = useState("");
+  const [userAvatar, setUserAvatar] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [registeredUsers, setRegisteredUsers] = useState<string[]>([]);
   const [showUserPanel, setShowUserPanel] = useState(false);
   const [activeUsers, setActiveUsers] = useState<
     Array<{ id: string; name: string; avatar: string }>
@@ -79,7 +82,7 @@ const OnlineChat = () => {
       userName: userName,
       message: messageInput.trim(),
       timestamp: new Date(),
-      avatar: `https://images.unsplash.com/photo-${1500000000000 + Math.floor(Math.random() * 100000000)}?w=150&h=150&fit=crop&crop=face`,
+      avatar: userAvatar,
       type: "text",
     };
 
@@ -117,7 +120,7 @@ const OnlineChat = () => {
       userName: userName,
       message: "",
       timestamp: new Date(),
-      avatar: `https://images.unsplash.com/photo-${1500000000000 + Math.floor(Math.random() * 100000000)}?w=150&h=150&fit=crop&crop=face`,
+      avatar: userAvatar,
       type: type,
       mediaUrl: mediaUrl,
     };
@@ -128,6 +131,13 @@ const OnlineChat = () => {
   const handleLogin = (name: string) => {
     setUserName(name);
     setIsLoggedIn(true);
+  };
+
+  const handleRegister = (userData: { name: string; avatar: string }) => {
+    setUserName(userData.name);
+    setUserAvatar(userData.avatar);
+    setIsLoggedIn(true);
+    setRegisteredUsers((prev) => [...prev, userData.name]);
   };
 
   // Загружаем сохраненные сообщения
@@ -161,6 +171,15 @@ const OnlineChat = () => {
       localStorage.setItem("chat-messages", JSON.stringify(messages));
     }
   }, [messages]);
+
+  if (!isLoggedIn) {
+    return (
+      <ChatRegistration
+        onRegister={handleRegister}
+        existingUsers={registeredUsers}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex flex-col">
