@@ -51,6 +51,53 @@ const OnlineChat = () => {
     }
   }, []);
 
+  // Инициализация пользователей и сообщений
+  useEffect(() => {
+    const loadInitialData = () => {
+      // Загружаем сохраненных пользователей
+      const saved = localStorage.getItem("chat-users");
+      let existingUsers = [];
+      if (saved) {
+        existingUsers = JSON.parse(saved).map((u: any) => ({
+          ...u,
+          joinedAt: new Date(u.joinedAt),
+          lastActivity: new Date(u.lastActivity),
+        }));
+      }
+
+      // Если пользователь залогинен, добавляем его в активные пользователи
+      if (isLoggedIn && userName && userAvatar) {
+        const currentUser = {
+          id: `current_user_${Date.now()}`,
+          name: userName,
+          avatar: userAvatar,
+        };
+
+        // Проверяем, есть ли уже этот пользователь в списке
+        const userExists = existingUsers.some((u: any) => u.name === userName);
+        if (!userExists) {
+          const updatedUsers = [
+            ...existingUsers,
+            {
+              ...currentUser,
+              joinedAt: new Date(),
+              lastActivity: new Date(),
+              isActive: true,
+            },
+          ];
+          localStorage.setItem("chat-users", JSON.stringify(updatedUsers));
+          setActiveUsers(updatedUsers);
+        } else {
+          setActiveUsers(existingUsers);
+        }
+      } else {
+        setActiveUsers(existingUsers);
+      }
+    };
+
+    loadInitialData();
+  }, [isLoggedIn, userName, userAvatar]);
+
   // Инициализация с демо данными
   useEffect(() => {
     const demoMessages: ChatMessage[] = [
@@ -127,10 +174,23 @@ const OnlineChat = () => {
     setMessages((prev) => [...prev, newMessage]);
   };
 
-  const handleUsersUpdate = (
-    users: Array<{ id: string; name: string; avatar: string }>,
-  ) => {
-    setActiveUsers(users);
+  const handleUsersUpdate = (updatedUsers: any[]) => {
+    // Убеждаемся, что текущий пользователь всегда в списке
+    if (isLoggedIn && userName) {
+      const currentUserExists = updatedUsers.some((u) => u.name === userName);
+      if (!currentUserExists) {
+        const currentUser = {
+          id: `current_user_${Date.now()}`,
+          name: userName,
+          avatar: userAvatar,
+          joinedAt: new Date(),
+          lastActivity: new Date(),
+          isActive: true,
+        };
+        updatedUsers.unshift(currentUser);
+      }
+    }
+    setActiveUsers(updatedUsers);
   };
 
   const handleMediaSend = (file: File, type: "image" | "video") => {
@@ -161,6 +221,32 @@ const OnlineChat = () => {
     setUserName(userData.name);
     setUserAvatar(userData.avatar);
     setIsLoggedIn(true);
+
+    // Сохраняем данные пользователя
+    localStorage.setItem("chatUserData", JSON.stringify(userData));
+
+    // Добавляем пользователя в список активных
+    const newUser = {
+      id: `current_user_${Date.now()}`,
+      name: userData.name,
+      avatar: userData.avatar,
+      joinedAt: new Date(),
+      lastActivity: new Date(),
+      isActive: true,
+    };
+
+    // Обновляем список пользователей в localStorage
+    const existing = localStorage.getItem("chat-users");
+    let users = existing ? JSON.parse(existing) : [];
+
+    // Проверяем, нет ли уже такого пользователя
+    const userExists = users.some((u: any) => u.name === userData.name);
+    if (!userExists) {
+      users.push(newUser);
+      localStorage.setItem("chat-users", JSON.stringify(users));
+      setActiveUsers(users);
+    }
+
     setRegisteredUsers((prev) => [...prev, userData.name]);
   };
 
@@ -209,42 +295,34 @@ const OnlineChat = () => {
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex flex-col">
       {/* Header */}
       <header className="bg-white/10 backdrop-blur-sm border-b border-white/20 p-4 flex-shrink-0">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link
-              to="/"
-              className="text-white hover:text-purple-200 transition-colors"
-            >
-              <Icon name="ArrowLeft" size={20} />
-            </Link>
-            <div>
-              <h1 className="text-white text-xl font-bold">Онлайн чат</h1>
-              <p className="text-purple-200 text-sm">
-                {radioStats.listeners} в сети
-              </p>
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-4">
+              <OnlineUsers count={activeUsers.length} />
+              <div className="text-white/60 text-sm">
+                📻 {radioStats.listeners} слушателей
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowUserPanel(!showUserPanel)}
+                className="text-white hover:bg-white/10"
+              >
+                <Icon name="Users" size={16} />
+              </Button>
+              <Link to="/">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-white hover:bg-white/10"
+                >
+                  <Icon name="Home" size={16} />
+                </Button>
+              </Link>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <span className="text-purple-200 text-sm">Участники</span>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShowUserPanel(!showUserPanel)}
-              className="text-white hover:bg-white/10"
-            >
-              <Icon name="Users" size={16} className="mr-2" />
-              Участники
-            </Button>
-          </div>
-
-          <Button
-            className="md:hidden text-white hover:bg-white/10"
-            variant="ghost"
-            size="sm"
-            onClick={() => setShowUserPanel(!showUserPanel)}
-          >
-            <Icon name="Menu" size={16} />
-          </Button>
         </div>
       </header>
 

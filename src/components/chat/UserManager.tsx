@@ -122,18 +122,23 @@ const UserManager = ({ targetUserCount, onUsersUpdate }: UserManagerProps) => {
         let updatedUsers = [...currentUsers];
         const currentCount = updatedUsers.length;
 
-        if (currentCount < targetUserCount) {
+        // Устанавливаем минимальное количество пользователей
+        const minUsers = Math.max(targetUserCount, 45);
+
+        if (currentCount < minUsers) {
           // Добавляем пользователей
-          const usersToAdd = targetUserCount - currentCount;
+          const usersToAdd = minUsers - currentCount;
           for (let i = 0; i < usersToAdd; i++) {
             const newUser = generateUniqueUser(updatedUsers);
             updatedUsers.push(newUser);
           }
-        } else if (currentCount > targetUserCount) {
-          // Удаляем старых пользователей
+        } else if (currentCount > minUsers && currentCount > targetUserCount) {
+          // Удаляем только если превышен лимит
           updatedUsers = updatedUsers
             .sort((a, b) => a.lastActivity.getTime() - b.lastActivity.getTime())
-            .slice(currentCount - targetUserCount);
+            .slice(
+              Math.max(0, currentCount - Math.max(minUsers, targetUserCount)),
+            );
         }
 
         saveUsers(updatedUsers);
