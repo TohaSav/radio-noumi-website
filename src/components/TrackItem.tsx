@@ -36,13 +36,16 @@ const TrackItem = ({
         />
         {track.audioFile && (
           <button
-            onClick={() => onPlayPause(track)}
-            className="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+            onClick={(e) => {
+              e.stopPropagation();
+              onPlayPause(track);
+            }}
+            className="absolute inset-0 bg-green-500 rounded-full w-12 h-12 flex items-center justify-center hover:bg-green-600 transition-colors shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
           >
             <Icon
               name={currentlyPlaying === track.id ? "Pause" : "Play"}
-              size={24}
-              className="text-white"
+              size={20}
+              className="text-white ml-0.5"
             />
           </button>
         )}
