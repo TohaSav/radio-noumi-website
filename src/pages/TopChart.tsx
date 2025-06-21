@@ -28,29 +28,28 @@ const TopChart = () => {
     null,
   );
 
-  // Load tracks from cloud storage on component mount
   useEffect(() => {
     const loadTracks = async () => {
       try {
+        // В dev режиме всегда показываем демо-треки
+        if (import.meta.env.DEV) {
+          const demoTracks = getDemoTracks();
+          setTracks(demoTracks);
+          return;
+        }
+
+        // В продакшене пытаемся загрузить из облака
         const cloudTracks = await tracksApi.getTracks();
         if (cloudTracks.length > 0) {
           setTracks(cloudTracks);
         } else {
-          // Если облачных треков нет, загружаем демо-треки
           const demoTracks = getDemoTracks();
           setTracks(demoTracks);
-          localStorage.setItem("noumi-tracks", JSON.stringify(demoTracks));
         }
       } catch (error) {
         console.error("Error loading tracks:", error);
-        // Fallback к демо-трекам вместо пустого localStorage
-        const savedTracks = localStorage.getItem("noumi-tracks");
-        if (savedTracks) {
-          setTracks(JSON.parse(savedTracks));
-        } else {
-          const demoTracks = getDemoTracks();
-          setTracks(demoTracks);
-        }
+        const demoTracks = getDemoTracks();
+        setTracks(demoTracks);
       }
     };
 
