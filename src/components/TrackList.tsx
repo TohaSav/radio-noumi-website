@@ -16,7 +16,7 @@ const TrackList = ({
 }: TrackListProps) => {
   if (tracks.length === 0) {
     return (
-      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6">
+      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-3 sm:p-4 md:p-6">
         <p className="text-white/70 text-center py-8">
           Треки пока не добавлены
         </p>
@@ -25,8 +25,8 @@ const TrackList = ({
   }
 
   return (
-    <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6">
-      <div className="space-y-4">
+    <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-3 sm:p-4 md:p-6">
+      <div className="space-y-2 sm:space-y-3 md:space-y-4">
         {tracks.map((track, index) => (
           <TrackItem
             key={track.id}

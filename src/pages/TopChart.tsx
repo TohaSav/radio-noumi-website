@@ -110,8 +110,8 @@ const TopChart = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 p-8">
-      <div className="mb-8">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 p-4 sm:p-6 md:p-8">
+      <div className="mb-6 sm:mb-8">
         <Button
           onClick={() => navigate("/")}
           variant="outline"
@@ -125,7 +125,7 @@ const TopChart = () => {
       {import.meta.env.DEV && <AddTrackForm onAddTrack={handleAddTrack} />}
 
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-white mb-8 text-center">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6 sm:mb-8 text-center">
           🔥 Топ чарт
         </h1>
 
