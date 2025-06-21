@@ -33,19 +33,73 @@ const TopChart = () => {
     const loadTracks = async () => {
       try {
         const cloudTracks = await tracksApi.getTracks();
-        setTracks(cloudTracks);
+        if (cloudTracks.length > 0) {
+          setTracks(cloudTracks);
+        } else {
+          // Если облачных треков нет, загружаем демо-треки
+          const demoTracks = getDemoTracks();
+          setTracks(demoTracks);
+          localStorage.setItem("noumi-tracks", JSON.stringify(demoTracks));
+        }
       } catch (error) {
         console.error("Error loading tracks:", error);
-        // Fallback to localStorage
+        // Fallback к демо-трекам вместо пустого localStorage
         const savedTracks = localStorage.getItem("noumi-tracks");
         if (savedTracks) {
           setTracks(JSON.parse(savedTracks));
+        } else {
+          const demoTracks = getDemoTracks();
+          setTracks(demoTracks);
         }
       }
     };
 
     loadTracks();
   }, []);
+
+  // Демо-треки для продакшена
+  const getDemoTracks = (): Track[] => [
+    {
+      id: "1",
+      title: "Midnight Dreams",
+      cover:
+        "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
+      plays: "1.2M",
+      addedAt: Date.now() - 86400000,
+    },
+    {
+      id: "2",
+      title: "Electric Pulse",
+      cover:
+        "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
+      plays: "890K",
+      addedAt: Date.now() - 172800000,
+    },
+    {
+      id: "3",
+      title: "Ocean Waves",
+      cover:
+        "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
+      plays: "654K",
+      addedAt: Date.now() - 259200000,
+    },
+    {
+      id: "4",
+      title: "Neon Nights",
+      cover:
+        "https://images.unsplash.com/photo-1556816723-1ce827b9cfbb?w=200&h=200&fit=crop",
+      plays: "445K",
+      addedAt: Date.now() - 345600000,
+    },
+    {
+      id: "5",
+      title: "Crystal Clear",
+      cover:
+        "https://images.unsplash.com/photo-1530841344095-9ce8b0e5a5a3?w=200&h=200&fit=crop",
+      plays: "321K",
+      addedAt: Date.now() - 432000000,
+    },
+  ];
 
   // Save tracks to cloud storage
   const saveTracks = async (updatedTracks: Track[]) => {

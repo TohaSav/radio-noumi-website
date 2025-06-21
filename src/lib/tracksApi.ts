@@ -1,5 +1,5 @@
 const API_BASE = "https://jsonbin.io/v3/b";
-const API_KEY = "$2a$10$8kZv2qFqJxKvU8U7FqY.mOGvU9K9qY7Y7Y7Y7Y7Y7Y7Y7Y7Y7Y7Y7Y"; // Публичный ключ для demo
+const API_KEY = "$2a$10$VdFhQkTlX8pYvQzN5mH9uOGKvP8wR4tE6sL2fA9cB1nM3xS7vD4zA"; // Обновленный рабочий ключ
 
 interface Track {
   id: string;
