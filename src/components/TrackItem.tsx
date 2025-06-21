@@ -22,23 +22,22 @@ const TrackItem = ({
     "likedTracks",
     [],
   );
-  const [currentLikes, setCurrentLikes] = useState(track.likes);
+  const [currentLikes, setCurrentLikes] = useState(track.likes || 0);
   const isLiked = likedTracks.includes(track.id);
 
   const toggleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (isLiked) {
       setLikedTracks(likedTracks.filter((id) => id !== track.id));
-      setCurrentLikes((prev) => prev - 1);
+      setCurrentLikes((prev) => Math.max(0, (prev || 0) - 1));
     } else {
       setLikedTracks([...likedTracks, track.id]);
-      setCurrentLikes((prev) => prev + 1);
+      setCurrentLikes((prev) => (prev || 0) + 1);
     }
   };
 
   const formatLikes = (count: number | undefined): string => {
-    // Проверяем на undefined/null и устанавливаем значение по умолчанию
-    const likes = count ?? 0;
+    const likes = Number(count) || 0;
 
     if (likes >= 1000000) {
       return (likes / 1000000).toFixed(1) + "M";
