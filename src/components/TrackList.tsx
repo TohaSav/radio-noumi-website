@@ -5,12 +5,14 @@ interface TrackListProps {
   tracks: Track[];
   currentlyPlaying: string | null;
   onPlayPause: (track: Track) => void;
+  onEdit: (track: Track) => void;
 }
 
 const TrackList = ({
   tracks,
   currentlyPlaying,
   onPlayPause,
+  onEdit,
 }: TrackListProps) => {
   if (tracks.length === 0) {
     return (
@@ -32,6 +34,7 @@ const TrackList = ({
             index={index}
             currentlyPlaying={currentlyPlaying}
             onPlayPause={onPlayPause}
+            onEdit={onEdit}
           />
         ))}
       </div>

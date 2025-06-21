@@ -6,6 +6,7 @@ interface TrackItemProps {
   index: number;
   currentlyPlaying: string | null;
   onPlayPause: (track: Track) => void;
+  onEdit: (track: Track) => void;
 }
 
 const TrackItem = ({
@@ -13,9 +14,13 @@ const TrackItem = ({
   index,
   currentlyPlaying,
   onPlayPause,
+  onEdit,
 }: TrackItemProps) => {
   return (
-    <div className="flex items-center gap-4 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors">
+    <div
+      className="flex items-center gap-4 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+      onClick={() => onEdit(track)}
+    >
       <span className="text-white font-bold text-xl w-8">#{index + 1}</span>
       <div className="relative group">
         <img

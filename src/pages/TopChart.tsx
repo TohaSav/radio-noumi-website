@@ -8,10 +8,12 @@ import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import { getDemoTracks } from "@/data/demoTracks";
 import TrackList from "@/components/TrackList";
 import AddTrackForm from "@/components/AddTrackForm";
+import EditTrackModal from "@/components/EditTrackModal";
 
 const TopChart = () => {
   const navigate = useNavigate();
   const [tracks, setTracks] = useState<Track[]>([]);
+  const [editingTrack, setEditingTrack] = useState<Track | null>(null);
   const { currentlyPlaying, handlePlayPause } = useAudioPlayer();
 
   useEffect(() => {
@@ -66,6 +68,17 @@ const TopChart = () => {
     saveTracks(updatedTracks);
   };
 
+  const handleEditTrack = (track: Track) => {
+    setEditingTrack(track);
+  };
+
+  const handleSaveTrack = (updatedTrack: Track) => {
+    const updatedTracks = tracks.map((track) =>
+      track.id === updatedTrack.id ? updatedTrack : track,
+    );
+    saveTracks(updatedTracks);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 p-8">
       <div className="mb-8">
@@ -90,8 +103,16 @@ const TopChart = () => {
           tracks={tracks}
           currentlyPlaying={currentlyPlaying}
           onPlayPause={handlePlayPause}
+          onEdit={handleEditTrack}
         />
       </div>
+
+      <EditTrackModal
+        isOpen={!!editingTrack}
+        onClose={() => setEditingTrack(null)}
+        track={editingTrack}
+        onSave={handleSaveTrack}
+      />
     </div>
   );
 };
