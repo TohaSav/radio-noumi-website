@@ -9,18 +9,10 @@ import {
 export const useChatMessages = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
 
-  // Загрузка сообщений при инициализации
   useEffect(() => {
-    const savedMessages = loadFromLocalStorage<ChatMessage[]>("chat-messages");
-    if (savedMessages) {
-      const parsed = savedMessages.map((msg) => ({
-        ...msg,
-        timestamp: new Date(msg.timestamp),
-      }));
-      setMessages(parsed);
-    } else {
-      setMessages(getDemoMessages());
-    }
+    // Очищаем все существующие сообщения - чат начинается пустым
+    localStorage.removeItem("chat-messages");
+    setMessages([]);
   }, []);
 
   // Сохранение сообщений

@@ -288,44 +288,24 @@ const EnhancedAutoMessageGenerator = ({
   };
 
   const generateUniqueMessage = () => {
-    // Создаем случайного пользователя с аватаркой, если список пуст
-    const getRandomUser = () => {
-      const names = [
-        "Алексей",
-        "Мария",
-        "Дмитрий",
-        "Анна",
-        "Михаил",
-        "Елена",
-        "Сергей",
-        "Ольга",
-        "Андрей",
-        "Татьяна",
-        "Владимир",
-        "Наталья",
-        "Максим",
-        "Екатерина",
-        "Александр",
-        "Юлия",
-        "Антон",
-        "Светлана",
-        "Николай",
-        "Ирина",
-        "Денис",
-        "Галина",
-        "Роман",
-        "Валентина",
-        "Павел",
-        "Людмила",
-        "Игорь",
-        "Марина",
-        "Виктор",
-        "Надежда",
-        "Олег",
-        "Любовь",
+    // Создаем только виртуальных ботов, исключаем реальных пользователей
+    const getBotUser = () => {
+      const botNames = [
+        "МузыкБот",
+        "ФотоБот",
+        "КиноБот",
+        "СпортБот",
+        "КулинарБот",
+        "ПутешественникБот",
+        "ИгровойБот",
+        "КнижныйБот",
+        "ТехноБот",
+        "АртБот",
+        "НовостнойБот",
+        "ПогодныйБот",
       ];
 
-      const avatars = [
+      const botAvatars = [
         "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
         "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
         "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
@@ -336,16 +316,14 @@ const EnhancedAutoMessageGenerator = ({
       ];
 
       return {
-        id: `auto_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-        name: names[Math.floor(Math.random() * names.length)],
-        avatar: avatars[Math.floor(Math.random() * avatars.length)],
+        id: `bot_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        name: botNames[Math.floor(Math.random() * botNames.length)],
+        avatar: botAvatars[Math.floor(Math.random() * botAvatars.length)],
       };
     };
 
-    const user =
-      activeUsers.length > 0
-        ? activeUsers[Math.floor(Math.random() * activeUsers.length)]
-        : getRandomUser();
+    // ВСЕГДА используем только ботов, игнорируем реальных пользователей
+    const user = getBotUser();
 
     const messageType = Math.random();
     const timestamp = Date.now();

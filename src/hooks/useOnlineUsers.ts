@@ -66,10 +66,21 @@ export const useOnlineUsers = (
     }
   };
 
+  const getBotUsers = () => {
+    // Создаем список только ботов для автогенерации
+    return activeUsers.filter(
+      (user) =>
+        user.name.includes("Бот") ||
+        user.id.startsWith("bot_") ||
+        user.id.startsWith("auto_"),
+    );
+  };
+
   return {
     activeUsers,
     updateUsers,
     addUser,
     setActiveUsers,
+    getBotUsers,
   };
 };
