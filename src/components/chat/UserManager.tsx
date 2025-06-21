@@ -58,6 +58,49 @@ const UserManager = ({ targetUserCount, onUsersUpdate }: UserManagerProps) => {
     "Карина",
     "Матвей",
     "Диана",
+    "Игорь",
+    "Вероника",
+    "Олег",
+    "Алиса",
+    "Артур",
+    "Ангелина",
+    "Константин",
+    "Владислава",
+    "Глеб",
+    "Елизавета",
+    "Евгений",
+    "Арина",
+    "Степан",
+    "Варвара",
+    "Богдан",
+    "Василиса",
+  ];
+
+  const nicknameSuffixes = [
+    "_pro",
+    "_gamer",
+    "_star",
+    "_music",
+    "_cool",
+    "_best",
+    "_top",
+    "_nice",
+    "_fire",
+    "_rock",
+    "_soul",
+    "_vibe",
+    "_wave",
+    "_flow",
+    "_beat",
+    "_king",
+    "_queen",
+    "_master",
+    "_super",
+    "_mega",
+    "_ultra",
+    "_prime",
+    "_elite",
+    "_gold",
   ];
 
   const generateUniqueUser = (existingUsers: User[]): User => {
@@ -68,28 +111,36 @@ const UserManager = ({ targetUserCount, onUsersUpdate }: UserManagerProps) => {
     do {
       const baseName =
         russianNames[Math.floor(Math.random() * russianNames.length)];
-      const suffix =
-        Math.random() > 0.7 ? `_${Math.floor(Math.random() * 99) + 1}` : "";
-      userName = baseName + suffix;
+
+      // 40% шанс добавить суффикс, 30% - число, 30% - оставить как есть
+      const rand = Math.random();
+      if (rand < 0.4) {
+        const suffix =
+          nicknameSuffixes[Math.floor(Math.random() * nicknameSuffixes.length)];
+        userName = baseName + suffix;
+      } else if (rand < 0.7) {
+        const num = Math.floor(Math.random() * 999) + 1;
+        userName = baseName + num;
+      } else {
+        userName = baseName;
+      }
+
       attempts++;
-    } while (usedNames.has(userName) && attempts < 100);
+    } while (usedNames.has(userName) && attempts < 200);
 
-    if (attempts >= 100) {
-      userName = `Пользователь${Date.now()}`;
+    // Если не удалось создать уникальное имя, добавляем timestamp
+    if (attempts >= 200 || usedNames.has(userName)) {
+      userName = `${userName}_${Date.now().toString().slice(-4)}`;
     }
 
-    // Проверяем уникальность среди всех зарегистрированных пользователей
-    const isUnique = (name: string) =>
-      !existingUsers.map((u) => u.name).includes(name);
-
-    if (!isUnique(userName)) {
-      userName = `${userName}_${Math.floor(Math.random() * 1000)}`;
-    }
+    // Генерируем уникальный аватар с timestamp
+    const avatarId = 1500000000000 + Math.floor(Math.random() * 200000000);
+    const avatarTimestamp = Date.now();
 
     return {
-      id: `user_${Date.now()}_${Math.random()}`,
+      id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       name: userName,
-      avatar: `https://images.unsplash.com/photo-${1500000000000 + Math.floor(Math.random() * 100000000)}?w=150&h=150&fit=crop&crop=face`,
+      avatar: `https://images.unsplash.com/photo-${avatarId}?w=150&h=150&fit=crop&crop=face&t=${avatarTimestamp}`,
       joinedAt: new Date(),
       lastActivity: new Date(),
       isActive: true,
@@ -97,49 +148,55 @@ const UserManager = ({ targetUserCount, onUsersUpdate }: UserManagerProps) => {
   };
 
   const loadUsers = () => {
-    const stored = localStorage.getItem("chat-users");
+    const stored = localStorage.getItem("live-chat-users");
     if (stored) {
-      const parsedUsers = JSON.parse(stored).map((u: any) => ({
-        ...u,
-        joinedAt: new Date(u.joinedAt),
-        lastActivity: new Date(u.lastActivity),
-      }));
-      setUsers(parsedUsers);
-      return parsedUsers;
+      try {
+        const parsedUsers = JSON.parse(stored).map((u: any) => ({
+          ...u,
+          joinedAt: new Date(u.joinedAt),
+          lastActivity: new Date(u.lastActivity),
+        }));
+        return parsedUsers;
+      } catch (error) {
+        console.error("Ошибка загрузки пользователей:", error);
+        return [];
+      }
     }
     return [];
   };
 
   const saveUsers = (usersToSave: User[]) => {
-    localStorage.setItem("chat-users", JSON.stringify(usersToSave));
+    localStorage.setItem("live-chat-users", JSON.stringify(usersToSave));
   };
 
+  // Инициализация пользователей
   useEffect(() => {
     const savedUsers = loadUsers();
 
-    const adjustUserCount = () => {
+    const initializeUsers = () => {
       setUsers((currentUsers) => {
-        let updatedUsers = [...currentUsers];
+        let updatedUsers =
+          savedUsers.length > 0 ? savedUsers : [...currentUsers];
+
+        // Минимальное количество пользователей всегда 50+
+        const minUsers = Math.max(targetUserCount, 52);
         const currentCount = updatedUsers.length;
 
-        // Устанавливаем минимальное количество пользователей
-        const minUsers = Math.max(targetUserCount, 45);
-
         if (currentCount < minUsers) {
-          // Добавляем пользователей
+          // Добавляем недостающих пользователей
           const usersToAdd = minUsers - currentCount;
           for (let i = 0; i < usersToAdd; i++) {
             const newUser = generateUniqueUser(updatedUsers);
             updatedUsers.push(newUser);
           }
-        } else if (currentCount > minUsers && currentCount > targetUserCount) {
-          // Удаляем только если превышен лимит
-          updatedUsers = updatedUsers
-            .sort((a, b) => a.lastActivity.getTime() - b.lastActivity.getTime())
-            .slice(
-              Math.max(0, currentCount - Math.max(minUsers, targetUserCount)),
-            );
         }
+
+        // Обновляем активность всех пользователей
+        updatedUsers = updatedUsers.map((user) => ({
+          ...user,
+          isActive: true,
+          lastActivity: new Date(Date.now() - Math.random() * 600000), // Активность в последние 10 минут
+        }));
 
         saveUsers(updatedUsers);
         onUsersUpdate(updatedUsers);
@@ -147,27 +204,87 @@ const UserManager = ({ targetUserCount, onUsersUpdate }: UserManagerProps) => {
       });
     };
 
-    adjustUserCount();
+    initializeUsers();
   }, [targetUserCount]);
 
-  // Обновляем активность пользователей
+  // Динамическое добавление новых пользователей
   useEffect(() => {
-    const interval = setInterval(() => {
-      setUsers((currentUsers) => {
-        const updatedUsers = currentUsers.map((user) => ({
-          ...user,
-          lastActivity: Math.random() > 0.8 ? new Date() : user.lastActivity,
-          isActive: Date.now() - user.lastActivity.getTime() < 300000, // 5 минут
-        }));
+    const addNewUsersInterval = setInterval(
+      () => {
+        setUsers((currentUsers) => {
+          // Шанс 70% добавить нового пользователя каждые 30-60 секунд
+          if (Math.random() < 0.7) {
+            const newUser = generateUniqueUser(currentUsers);
+            const updatedUsers = [...currentUsers, newUser];
 
-        saveUsers(updatedUsers);
-        onUsersUpdate(updatedUsers);
-        return updatedUsers;
-      });
-    }, 30000); // Каждые 30 секунд
+            // Ограничиваем максимальное количество пользователей
+            const maxUsers = Math.max(targetUserCount + 20, 80);
+            const finalUsers = updatedUsers.slice(0, maxUsers);
 
-    return () => clearInterval(interval);
-  }, []);
+            saveUsers(finalUsers);
+            onUsersUpdate(finalUsers);
+            return finalUsers;
+          }
+          return currentUsers;
+        });
+      },
+      30000 + Math.random() * 30000,
+    ); // 30-60 секунд
+
+    return () => clearInterval(addNewUsersInterval);
+  }, [targetUserCount]);
+
+  // Обновление активности пользователей
+  useEffect(() => {
+    const activityInterval = setInterval(
+      () => {
+        setUsers((currentUsers) => {
+          const updatedUsers = currentUsers.map((user) => {
+            // 90% пользователей остаются активными
+            const staysActive = Math.random() < 0.9;
+
+            return {
+              ...user,
+              lastActivity: staysActive ? new Date() : user.lastActivity,
+              isActive:
+                staysActive ||
+                Date.now() - user.lastActivity.getTime() < 900000, // 15 минут
+            };
+          });
+
+          // Убеждаемся что минимум пользователей всегда активен
+          const activeCount = updatedUsers.filter((u) => u.isActive).length;
+          const minActive = Math.max(targetUserCount - 5, 45);
+
+          if (activeCount < minActive) {
+            // Активируем случайных неактивных пользователей
+            const inactiveUsers = updatedUsers.filter((u) => !u.isActive);
+            const toActivate = Math.min(
+              inactiveUsers.length,
+              minActive - activeCount,
+            );
+
+            for (let i = 0; i < toActivate; i++) {
+              const userIndex = updatedUsers.findIndex(
+                (u) => u.id === inactiveUsers[i].id,
+              );
+              if (userIndex !== -1) {
+                updatedUsers[userIndex].isActive = true;
+                updatedUsers[userIndex].lastActivity = new Date();
+              }
+            }
+          }
+
+          saveUsers(updatedUsers);
+          onUsersUpdate(updatedUsers);
+          return updatedUsers;
+        });
+      },
+      20000 + Math.random() * 10000,
+    ); // 20-30 секунд
+
+    return () => clearInterval(activityInterval);
+  }, [targetUserCount]);
 
   return null;
 };

@@ -1,4 +1,5 @@
 import Icon from "@/components/ui/icon";
+import { useState, useEffect } from "react";
 
 interface OnlineUsersProps {
   count: number;
@@ -7,6 +8,16 @@ interface OnlineUsersProps {
 }
 
 const OnlineUsers = ({ count, users = [], showList }: OnlineUsersProps) => {
+  // Динамически изменяющийся счетчик
+  const [displayCount, setDisplayCount] = useState(count);
+
+  useEffect(() => {
+    // Небольшие вариации в отображаемом количестве для живости
+    const variation = Math.floor(Math.random() * 3) - 1; // -1, 0, или +1
+    const newCount = Math.max(count + variation, count);
+    setDisplayCount(newCount);
+  }, [count]);
+
   const demoUsers = [
     {
       name: "Алекс",
@@ -39,7 +50,7 @@ const OnlineUsers = ({ count, users = [], showList }: OnlineUsersProps) => {
     return (
       <div className="flex items-center gap-2 text-white">
         <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-        <span className="text-sm font-medium">{count} в сети</span>
+        <span className="text-sm font-medium">{displayCount} в сети</span>
       </div>
     );
   }
@@ -49,13 +60,11 @@ const OnlineUsers = ({ count, users = [], showList }: OnlineUsersProps) => {
       <div className="p-4">
         <div className="flex items-center gap-2 text-white mb-4">
           <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-          <span className="text-sm font-medium">
-            {users.length > 0 ? users.length : count} в сети
-          </span>
+          <span className="text-sm font-medium">{displayCount} в сети</span>
         </div>
 
         <div className="space-y-3">
-          {users.slice(0, 8).map((user) => (
+          {users.slice(0, 12).map((user) => (
             <div
               key={user.id}
               className="flex items-center gap-3 hover:bg-white/5 rounded-lg p-2 transition-colors cursor-pointer"
@@ -74,10 +83,10 @@ const OnlineUsers = ({ count, users = [], showList }: OnlineUsersProps) => {
             </div>
           ))}
 
-          {count > 8 && (
+          {displayCount > 12 && (
             <div className="text-center py-4">
               <span className="text-gray-400 text-xs">
-                и ещё {count - 8} участников...
+                и ещё {displayCount - 12} участников...
               </span>
             </div>
           )}
