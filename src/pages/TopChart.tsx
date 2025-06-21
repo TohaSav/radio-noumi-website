@@ -19,12 +19,12 @@ const TopChart = () => {
   useEffect(() => {
     const loadTracks = async () => {
       try {
-        // Всегда загружаем демо-треки (100 штук)
+        // Сначала загружаем демо-треки (100 штук)
         const demoTracks = getDemoTracks();
         setTracks(demoTracks);
 
-        // В фоновом режиме пытаемся загрузить облачные треки
-        if (!import.meta.env.DEV) {
+        // Только в DEV режиме пытаемся загрузить облачные треки
+        if (import.meta.env.DEV) {
           try {
             const cloudTracks = await tracksApi.getTracks();
             if (cloudTracks.length > 0) {
