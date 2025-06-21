@@ -49,7 +49,9 @@ const OnlineUsers = ({ count, users = [], showList }: OnlineUsersProps) => {
       <div className="p-4">
         <div className="flex items-center gap-2 text-white mb-4">
           <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-          <span className="text-sm font-medium">{count} в сети</span>
+          <span className="text-sm font-medium">
+            {users.length > 0 ? users.length : count} в сети
+          </span>
         </div>
 
         <div className="space-y-3">

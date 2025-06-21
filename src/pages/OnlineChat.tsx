@@ -64,6 +64,14 @@ const OnlineChat = () => {
       },
     ];
     setMessages(demoMessages);
+
+    // Инициализируем активных пользователей на основе демо сообщений
+    const initialUsers = demoMessages.map((msg, index) => ({
+      id: `demo_${index}`,
+      name: msg.userName,
+      avatar: msg.avatar,
+    }));
+    setActiveUsers(initialUsers);
   }, []);
 
   const scrollToBottom = () => {
@@ -238,7 +246,11 @@ const OnlineChat = () => {
         {/* Users Panel - Desktop */}
         {showUserPanel && (
           <div className="hidden md:block w-80 bg-white/5 backdrop-blur-sm border-l border-white/20">
-            <OnlineUsers count={47} showList />
+            <OnlineUsers
+              count={activeUsers.length}
+              users={activeUsers}
+              showList={showUserPanel}
+            />
           </div>
         )}
       </div>
@@ -258,7 +270,11 @@ const OnlineChat = () => {
                 <Icon name="X" size={16} />
               </Button>
             </div>
-            <OnlineUsers count={47} showList />
+            <OnlineUsers
+              count={activeUsers.length}
+              users={activeUsers}
+              showList={showUserPanel}
+            />
           </div>
           <div className="flex-1" onClick={() => setShowUserPanel(false)} />
         </div>
