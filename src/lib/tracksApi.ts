@@ -21,7 +21,11 @@ export const tracksApi = {
       }
 
       const data = await response.json();
-      return data.record?.tracks || [];
+      const cloudTracks = data.record?.tracks || [];
+
+      // Если облачных треков нет, возвращаем пустой массив
+      // чтобы TopChart мог загрузить демо-треки
+      return cloudTracks;
     } catch (error) {
       console.warn(
         "Failed to load tracks from cloud, using localStorage:",
