@@ -103,16 +103,18 @@ const TopChart = () => {
           tracks={tracks}
           currentlyPlaying={currentlyPlaying}
           onPlayPause={handlePlayPause}
-          onEdit={handleEditTrack}
+          onEdit={import.meta.env.DEV ? handleEditTrack : undefined}
         />
       </div>
 
-      <EditTrackModal
-        isOpen={!!editingTrack}
-        onClose={() => setEditingTrack(null)}
-        track={editingTrack}
-        onSave={handleSaveTrack}
-      />
+      {import.meta.env.DEV && (
+        <EditTrackModal
+          isOpen={!!editingTrack}
+          onClose={() => setEditingTrack(null)}
+          track={editingTrack}
+          onSave={handleSaveTrack}
+        />
+      )}
     </div>
   );
 };

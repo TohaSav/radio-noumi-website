@@ -18,8 +18,10 @@ const TrackItem = ({
 }: TrackItemProps) => {
   return (
     <div
-      className="flex items-center gap-4 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
-      onClick={() => onEdit(track)}
+      className={`flex items-center gap-4 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors ${
+        onEdit ? "cursor-pointer" : ""
+      }`}
+      onClick={onEdit ? () => onEdit(track) : undefined}
     >
       <span className="text-white font-bold text-xl w-8">#{index + 1}</span>
       <div className="relative group">

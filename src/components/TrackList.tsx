@@ -5,7 +5,7 @@ interface TrackListProps {
   tracks: Track[];
   currentlyPlaying: string | null;
   onPlayPause: (track: Track) => void;
-  onEdit: (track: Track) => void;
+  onEdit?: (track: Track) => void;
 }
 
 const TrackList = ({
