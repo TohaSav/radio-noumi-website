@@ -1,5 +1,7 @@
+import { useState } from "react";
 import Icon from "@/components/ui/icon";
 import { Track } from "@/types/track";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 interface TrackItemProps {
   track: Track;
@@ -16,6 +18,31 @@ const TrackItem = ({
   onPlayPause,
   onEdit,
 }: TrackItemProps) => {
+  const [likedTracks, setLikedTracks] = useLocalStorage<string[]>(
+    "likedTracks",
+    [],
+  );
+  const [currentLikes, setCurrentLikes] = useState(track.likes);
+  const isLiked = likedTracks.includes(track.id);
+
+  const toggleLike = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isLiked) {
+      setLikedTracks(likedTracks.filter((id) => id !== track.id));
+      setCurrentLikes((prev) => prev - 1);
+    } else {
+      setLikedTracks([...likedTracks, track.id]);
+      setCurrentLikes((prev) => prev + 1);
+    }
+  };
+
+  const formatLikes = (likes: number) => {
+    if (likes >= 1000) {
+      return (likes / 1000).toFixed(1) + "K";
+    }
+    return likes.toString();
+  };
+
   return (
     <div
       className={`flex items-center gap-4 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors ${
@@ -54,7 +81,20 @@ const TrackItem = ({
         <h3 className="text-white font-medium text-lg">{track.title}</h3>
         <p className="text-white/70 text-sm">Noumi Music</p>
       </div>
-      <span className="text-white/60 text-sm">{track.plays}</span>
+      <div className="flex items-center gap-3">
+        <button
+          onClick={toggleLike}
+          className="flex items-center gap-1 text-white/70 hover:text-red-400 transition-colors"
+        >
+          <Icon
+            name={isLiked ? "Heart" : "Heart"}
+            size={16}
+            className={isLiked ? "fill-red-500 text-red-500" : "text-white/70"}
+          />
+          <span className="text-xs">{formatLikes(currentLikes)}</span>
+        </button>
+        <span className="text-white/60 text-sm">{track.plays}</span>
+      </div>
     </div>
   );
 };

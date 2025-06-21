@@ -4,5 +4,7 @@ export interface Track {
   cover: string;
   plays: string;
   addedAt: number;
+  likes: number;
+  isLiked?: boolean;
   audioFile?: string;
 }

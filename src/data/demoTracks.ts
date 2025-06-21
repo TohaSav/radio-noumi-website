@@ -9,6 +9,7 @@ export const getDemoTracks = (): Track[] => {
       cover:
         "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
       plays: "1.2M",
+      likes: Math.floor(Math.random() * 50000 + 10000),
       addedAt: Date.now() - 86400000,
     },
     {
@@ -18,6 +19,7 @@ export const getDemoTracks = (): Track[] => {
       cover:
         "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
       plays: "890K",
+      likes: Math.floor(Math.random() * 50000 + 10000),
       addedAt: Date.now() - 172800000,
     },
     {
@@ -27,6 +29,7 @@ export const getDemoTracks = (): Track[] => {
       cover:
         "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
       plays: "654K",
+      likes: Math.floor(Math.random() * 50000 + 10000),
       addedAt: Date.now() - 259200000,
     },
     {
@@ -36,6 +39,7 @@ export const getDemoTracks = (): Track[] => {
       cover:
         "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
       plays: "543K",
+      likes: Math.floor(Math.random() * 50000 + 10000),
       addedAt: Date.now() - 345600000,
     },
     {
@@ -45,6 +49,7 @@ export const getDemoTracks = (): Track[] => {
       cover:
         "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
       plays: "432K",
+      likes: Math.floor(Math.random() * 50000 + 10000),
       addedAt: Date.now() - 432000000,
     },
   ];
@@ -259,6 +264,7 @@ export const getDemoTracks = (): Track[] => {
     artist: artists[i % artists.length],
     cover: covers[i % covers.length],
     plays: `${Math.floor(Math.random() * 200 + 50)}K`,
+    likes: Math.floor(Math.random() * 50000 + 10000),
     addedAt: Date.now() - (518400000 + (i + 1) * 86400000),
   }));
 
