@@ -85,16 +85,26 @@ const TopChart = () => {
             </div>
             <div>
               <Label htmlFor="cover" className="text-white">
-                Обложка (URL)
+                Обложка
               </Label>
               <Input
                 id="cover"
-                value={newTrack.cover}
-                onChange={(e) =>
-                  setNewTrack({ ...newTrack, cover: e.target.value })
-                }
-                placeholder="https://example.com/cover.jpg"
-                className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                      setNewTrack({
+                        ...newTrack,
+                        cover: event.target?.result as string,
+                      });
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }}
+                className="bg-white/10 border-white/20 text-white file:bg-purple-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-lg file:mr-4 file:cursor-pointer hover:file:bg-purple-700"
               />
             </div>
             <Button type="submit" className="bg-purple-600 hover:bg-purple-700">
