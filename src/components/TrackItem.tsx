@@ -40,13 +40,15 @@ const TrackItem = ({
               e.stopPropagation();
               onPlayPause(track);
             }}
-            className="absolute inset-0 bg-green-500 rounded-full w-12 h-12 flex items-center justify-center hover:bg-green-600 transition-colors shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
+            className="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-black/70"
           >
-            <Icon
-              name={currentlyPlaying === track.id ? "Pause" : "Play"}
-              size={20}
-              className="text-white ml-0.5"
-            />
+            <div className="bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-200">
+              <Icon
+                name={currentlyPlaying === track.id ? "Pause" : "Play"}
+                size={16}
+                className="text-black ml-0.5"
+              />
+            </div>
           </button>
         )}
       </div>
