@@ -74,10 +74,95 @@ const UserManager = ({ targetUserCount, onUsersUpdate }: UserManagerProps) => {
     "Варвара",
     "Богдан",
     "Василиса",
+    "Лев",
+    "Ева",
+    "Фёдор",
+    "Ксения",
+    "Марк",
+    "Стефания",
+    "Руслан",
+    "Маргарита",
+    "Ярослав",
+    "Злата",
+    "Тихон",
+    "Мелания",
+    "Захар",
+    "Камилла",
+    "Савелий",
+    "Эмилия",
+    "Лука",
+    "Амелия",
+    "Демид",
+    "Амина",
+    "Мирон",
+    "Агата",
+    "Леонид",
+    "Агния",
+    "Арсений",
+    "Алёна",
+    "Семён",
+    "Яна",
+    "Макар",
+    "Есения",
+    "Вячеслав",
+    "Лилия",
+    "Родион",
+    "Майя",
+    "Тимофей",
+    "Нина",
+    "Георгий",
+    "Лада",
+    "Прохор",
+    "Жанна",
+    "Герман",
+    "Зоя",
+    "Виталий",
+    "Регина",
+    "Борис",
+    "Инна",
+    "Григорий",
+    "Лариса",
+    "Остап",
+    "Римма",
+    "Давид",
+    "Нелли",
+    "Назар",
+    "Элина",
+    "Ефим",
+    "Жасмин",
   ];
 
   const nicknameSuffixes = [
-    "_pro",
+    "_pro", "_gamer", "_star", "_music", "_cool", "_best", "_top", "_nice", "_fire", "_rock",
+    "_soul", "_vibe", "_wave", "_flow", "_beat", "_king", "_queen", "_master", "_super", "_mega",
+    "_ultra", "_prime", "_elite", "_gold", "_legend", "_boss", "_hero", "_ninja", "_wizard", "_ace",
+    "_official", "_real", "_true", "_original", "_unique", "_special", "_exclusive", "_rare", "_epic", "_cosmic",
+    "_digital", "_tech", "_modern", "_future", "_style", "_fresh", "_new", "_young", "_smart", "_creative"
+  ];
+
+  // Более частое добавление новых пользователей
+  useEffect(() => {
+    const addNewUsersInterval = setInterval(
+      () => {
+        setUsers((currentUsers) => {
+          // Увеличен шанс добавления нового пользователя до 85%
+          if (Math.random() < 0.85) {
+            const newUser = generateUniqueUser(currentUsers);
+            const updatedUsers = [...currentUsers, newUser];
+
+            // Увеличено максимальное количество пользователей
+            const maxUsers = Math.max(targetUserCount + 35, 120);
+            const finalUsers = updatedUsers.slice(0, maxUsers);
+
+            saveUsers(finalUsers);
+            onUsersUpdate(finalUsers);
+            return finalUsers;
+          }
+          return currentUsers;
+        });
+      },
+      15000 + Math.random() * 20000,
+    ); // Увеличена частота: 15-35 секунд
     "_gamer",
     "_star",
     "_music",

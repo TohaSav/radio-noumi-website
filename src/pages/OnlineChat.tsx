@@ -98,13 +98,53 @@ const OnlineChat = () => {
         } else {
           setActiveUsers(existingUsers);
         }
-      } else {
-        setActiveUsers(existingUsers);
       }
     };
 
     loadInitialData();
   }, [isLoggedIn, userName, userAvatar]);
+
+  // Более активная генерация приветственных сообщений от новых пользователей
+  useEffect(() => {
+    if (activeUsers.length > 0) {
+      const welcomeInterval = setInterval(
+        () => {
+          // 60% шанс что кто-то поприветствует или отправит сообщение
+          if (Math.random() < 0.6) {
+            const randomUser =
+              activeUsers[Math.floor(Math.random() * activeUsers.length)];
+            const welcomeMessages = [
+              "Привет всем! 👋",
+              "Добро пожаловать в чат!",
+              "Хорошего дня всем! ☀️",
+              "Как дела у всех?",
+              "Отличное настроение сегодня! 😊",
+              "Всем привет из Москвы! 🏙️",
+              "Рад быть здесь! ✨",
+              "Давно не заходил в чат 😄",
+            ];
+
+            const newMessage: ChatMessage = {
+              id: `welcome_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+              userName: randomUser.name,
+              message:
+                welcomeMessages[
+                  Math.floor(Math.random() * welcomeMessages.length)
+                ],
+              timestamp: new Date(),
+              avatar: randomUser.avatar,
+              type: "text",
+            };
+
+            setMessages((prev) => [...prev.slice(-49), newMessage]);
+          }
+        },
+        8000 + Math.random() * 12000,
+      ); // каждые 8-20 секунд
+
+      return () => clearInterval(welcomeInterval);
+    }
+  }, [activeUsers]);
 
   // Инициализация с демо данными
   useEffect(() => {

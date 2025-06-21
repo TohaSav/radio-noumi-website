@@ -12,10 +12,29 @@ const OnlineUsers = ({ count, users = [], showList }: OnlineUsersProps) => {
   const [displayCount, setDisplayCount] = useState(count);
 
   useEffect(() => {
-    // Небольшие вариации в отображаемом количестве для живости
-    const variation = Math.floor(Math.random() * 3) - 1; // -1, 0, или +1
-    const newCount = Math.max(count + variation, count);
+    // Более реалистичные вариации в отображаемом количестве
+    const baseVariation = Math.floor(Math.random() * 8) - 3; // от -3 до +4
+    const timeVariation = Math.sin(Date.now() / 60000) * 5; // плавные колебания
+    const newCount = Math.max(
+      count + baseVariation + Math.floor(timeVariation),
+      count - 2,
+    );
     setDisplayCount(newCount);
+
+    // Обновляем счетчик каждые 10-15 секунд для живости
+    const interval = setInterval(
+      () => {
+        const variation = Math.floor(Math.random() * 6) - 2; // -2 до +3
+        const dynamicCount = Math.max(
+          count + variation,
+          Math.floor(count * 0.9),
+        );
+        setDisplayCount(dynamicCount);
+      },
+      10000 + Math.random() * 5000,
+    );
+
+    return () => clearInterval(interval);
   }, [count]);
 
   const demoUsers = [
