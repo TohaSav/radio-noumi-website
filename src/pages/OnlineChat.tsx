@@ -13,6 +13,8 @@ interface ChatMessage {
   message: string;
   timestamp: Date;
   avatar: string;
+  type?: "text" | "image" | "video";
+  mediaUrl?: string;
 }
 
 const OnlineChat = () => {
@@ -71,10 +73,30 @@ const OnlineChat = () => {
       message: messageInput.trim(),
       timestamp: new Date(),
       avatar: `https://images.unsplash.com/photo-${1500000000000 + Math.floor(Math.random() * 100000000)}?w=150&h=150&fit=crop&crop=face`,
+      type: "text",
     };
 
     setMessages((prev) => [...prev, newMessage]);
     setMessageInput("");
+  };
+
+  const handleMediaSend = (file: File, type: "image" | "video") => {
+    if (!isLoggedIn) return;
+
+    // Создаем URL для предпросмотра файла
+    const mediaUrl = URL.createObjectURL(file);
+
+    const newMessage: ChatMessage = {
+      id: Date.now().toString(),
+      userName: userName,
+      message: "",
+      timestamp: new Date(),
+      avatar: `https://images.unsplash.com/photo-${1500000000000 + Math.floor(Math.random() * 100000000)}?w=150&h=150&fit=crop&crop=face`,
+      type: type,
+      mediaUrl: mediaUrl,
+    };
+
+    setMessages((prev) => [...prev, newMessage]);
   };
 
   const handleLogin = (name: string) => {
@@ -168,6 +190,7 @@ const OnlineChat = () => {
         value={messageInput}
         onChange={setMessageInput}
         onSend={handleSendMessage}
+        onMediaSend={handleMediaSend}
         isLoggedIn={isLoggedIn}
         onLogin={handleLogin}
         userName={userName}

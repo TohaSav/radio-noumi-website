@@ -1,4 +1,5 @@
 import { RefObject } from "react";
+import Icon from "@/components/ui/icon";
 
 interface ChatMessage {
   id: string;
@@ -6,6 +7,8 @@ interface ChatMessage {
   message: string;
   timestamp: Date;
   avatar: string;
+  type?: "text" | "image" | "video";
+  mediaUrl?: string;
 }
 
 interface ChatMessagesProps {
@@ -24,6 +27,49 @@ const ChatMessages = ({
       hour: "2-digit",
       minute: "2-digit",
     });
+  };
+
+  const renderMessageContent = (message: ChatMessage, isOwn: boolean) => {
+    switch (message.type) {
+      case "image":
+        return (
+          <div className="max-w-xs">
+            <img
+              src={message.mediaUrl}
+              alt="Изображение"
+              className="rounded-lg max-w-full h-auto"
+              loading="lazy"
+            />
+            {message.message && (
+              <p className="text-sm md:text-base break-words mt-2">
+                {message.message}
+              </p>
+            )}
+          </div>
+        );
+      case "video":
+        return (
+          <div className="max-w-xs">
+            <video
+              src={message.mediaUrl}
+              controls
+              className="rounded-lg max-w-full h-auto"
+              preload="metadata"
+            >
+              Ваш браузер не поддерживает видео
+            </video>
+            {message.message && (
+              <p className="text-sm md:text-base break-words mt-2">
+                {message.message}
+              </p>
+            )}
+          </div>
+        );
+      default:
+        return (
+          <p className="text-sm md:text-base break-words">{message.message}</p>
+        );
+    }
   };
 
   return (
@@ -61,9 +107,7 @@ const ChatMessages = ({
                       : "bg-white/10 backdrop-blur-sm text-white"
                   }`}
                 >
-                  <p className="text-sm md:text-base break-words">
-                    {message.message}
-                  </p>
+                  {renderMessageContent(message, isOwn)}
                   <div
                     className={`text-xs mt-1 ${
                       isOwn ? "text-purple-200" : "text-gray-300"

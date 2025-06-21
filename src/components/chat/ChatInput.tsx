@@ -2,11 +2,14 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Icon from "@/components/ui/icon";
+import EmojiPicker from "./EmojiPicker";
+import MediaUpload from "./MediaUpload";
 
 interface ChatInputProps {
   value: string;
   onChange: (value: string) => void;
   onSend: () => void;
+  onMediaSend: (file: File, type: "image" | "video") => void;
   isLoggedIn: boolean;
   onLogin: (name: string) => void;
   userName: string;
@@ -16,12 +19,14 @@ const ChatInput = ({
   value,
   onChange,
   onSend,
+  onMediaSend,
   isLoggedIn,
   onLogin,
   userName,
 }: ChatInputProps) => {
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [nameInput, setNameInput] = useState("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const handleInputFocus = () => {
     if (!isLoggedIn) {
@@ -35,6 +40,15 @@ const ChatInput = ({
       setShowLoginForm(false);
       setNameInput("");
     }
+  };
+
+  const handleEmojiSelect = (emoji: string) => {
+    onChange(value + emoji);
+    setShowEmojiPicker(false);
+  };
+
+  const handleMediaSelect = (file: File, type: "image" | "video") => {
+    onMediaSend(file, type);
   };
 
   if (showLoginForm) {
@@ -80,7 +94,19 @@ const ChatInput = ({
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-200/50 p-4 z-40">
       <div className="max-w-4xl mx-auto">
-        <div className="flex gap-3 items-center">
+        <div className="flex gap-2 items-center relative">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+            className="h-12 px-3 text-gray-600 hover:text-purple-600 hover:bg-purple-50"
+            title="Эмодзи"
+          >
+            <Icon name="Smile" size={20} />
+          </Button>
+
+          <MediaUpload onFileSelect={handleMediaSelect} />
+
           <Input
             type="text"
             value={value}
@@ -94,6 +120,7 @@ const ChatInput = ({
             className="flex-1 h-12"
             onKeyPress={(e) => e.key === "Enter" && onSend()}
           />
+
           <Button
             onClick={onSend}
             disabled={!value.trim() || !isLoggedIn}
@@ -102,6 +129,13 @@ const ChatInput = ({
           >
             <Icon name="Send" size={16} />
           </Button>
+
+          {showEmojiPicker && (
+            <EmojiPicker
+              onEmojiSelect={handleEmojiSelect}
+              onClose={() => setShowEmojiPicker(false)}
+            />
+          )}
         </div>
 
         {isLoggedIn && (
