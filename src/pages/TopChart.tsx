@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
+import { tracksApi } from "@/lib/tracksApi";
 
 interface Track {
   id: string;
@@ -27,18 +28,36 @@ const TopChart = () => {
     null,
   );
 
-  // Load tracks from localStorage on component mount
+  // Load tracks from cloud storage on component mount
   useEffect(() => {
-    const savedTracks = localStorage.getItem("noumi-tracks");
-    if (savedTracks) {
-      setTracks(JSON.parse(savedTracks));
-    }
+    const loadTracks = async () => {
+      try {
+        const cloudTracks = await tracksApi.getTracks();
+        setTracks(cloudTracks);
+      } catch (error) {
+        console.error("Error loading tracks:", error);
+        // Fallback to localStorage
+        const savedTracks = localStorage.getItem("noumi-tracks");
+        if (savedTracks) {
+          setTracks(JSON.parse(savedTracks));
+        }
+      }
+    };
+
+    loadTracks();
   }, []);
 
-  // Save tracks to localStorage
-  const saveTracks = (updatedTracks: Track[]) => {
-    localStorage.setItem("noumi-tracks", JSON.stringify(updatedTracks));
-    setTracks(updatedTracks);
+  // Save tracks to cloud storage
+  const saveTracks = async (updatedTracks: Track[]) => {
+    try {
+      await tracksApi.saveTracks(updatedTracks);
+      setTracks(updatedTracks);
+    } catch (error) {
+      console.error("Error saving tracks:", error);
+      // Fallback to localStorage
+      localStorage.setItem("noumi-tracks", JSON.stringify(updatedTracks));
+      setTracks(updatedTracks);
+    }
   };
 
   // Add new track
