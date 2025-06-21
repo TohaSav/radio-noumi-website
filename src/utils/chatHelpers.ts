@@ -84,6 +84,32 @@ export const createUser = (name: string, avatar?: string): OnlineUser => {
   };
 };
 
+export const getDemoMessages = (): ChatMessage[] => {
+  const demoUsers = [
+    { name: "Алексей", avatar: getRandomAvatar() },
+    { name: "Мария", avatar: getRandomAvatar() },
+    { name: "Дмитрий", avatar: getRandomAvatar() },
+  ];
+
+  return [
+    createMessage(
+      demoUsers[0].name,
+      demoUsers[0].avatar,
+      "Привет всем! Как дела?",
+    ),
+    createMessage(
+      demoUsers[1].name,
+      demoUsers[1].avatar,
+      "Отлично! А у вас как?",
+    ),
+    createMessage(
+      demoUsers[2].name,
+      demoUsers[2].avatar,
+      "Всё хорошо, спасибо!",
+    ),
+  ];
+};
+
 export const saveToLocalStorage = <T>(key: string, data: T): void => {
   try {
     localStorage.setItem(key, JSON.stringify(data));
