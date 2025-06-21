@@ -139,7 +139,7 @@ const ChatInput = ({
         </div>
 
         {isLoggedIn && (
-          <div className="text-xs text-gray-600 mt-2 text-center">
+          <div className="text-xs text-white mt-2 text-center">
             Вы вошли как <span className="font-medium">{userName}</span>
           </div>
         )}
