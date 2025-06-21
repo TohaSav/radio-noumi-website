@@ -11,6 +11,8 @@ const VoiceRecorder = ({ onVoiceSend }: VoiceRecorderProps) => {
   const [recordingTime, setRecordingTime] = useState(0);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [permissionError, setPermissionError] = useState<string | null>(null);
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -25,9 +27,35 @@ const VoiceRecorder = ({ onVoiceSend }: VoiceRecorderProps) => {
     };
   }, []);
 
+  const checkMicrophonePermission = async () => {
+    try {
+      const result = await navigator.permissions.query({
+        name: "microphone" as PermissionName,
+      });
+      setHasPermission(result.state === "granted");
+      return result.state === "granted";
+    } catch (error) {
+      // Fallback если permissions API не поддерживается
+      return null;
+    }
+  };
+
   const startRecording = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      setPermissionError(null);
+
+      // Проверяем разрешения перед запросом
+      const hasPermissionCheck = await checkMicrophonePermission();
+
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          sampleRate: 44100,
+        },
+      });
+
+      setHasPermission(true);
       mediaRecorderRef.current = new MediaRecorder(stream);
       chunksRef.current = [];
 
@@ -50,8 +78,25 @@ const VoiceRecorder = ({ onVoiceSend }: VoiceRecorderProps) => {
       intervalRef.current = setInterval(() => {
         setRecordingTime((prev) => prev + 1);
       }, 1000);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Ошибка доступа к микрофону:", error);
+      setHasPermission(false);
+
+      if (error.name === "NotAllowedError") {
+        setPermissionError(
+          "Доступ к микрофону запрещен. Разрешите использование микрофона в настройках браузера.",
+        );
+      } else if (error.name === "NotFoundError") {
+        setPermissionError(
+          "Микрофон не найден. Проверьте подключение микрофона.",
+        );
+      } else if (error.name === "NotSupportedError") {
+        setPermissionError("Запись аудио не поддерживается в вашем браузере.");
+      } else {
+        setPermissionError(
+          "Не удалось получить доступ к микрофону. Попробуйте еще раз.",
+        );
+      }
     }
   };
 
@@ -153,6 +198,35 @@ const VoiceRecorder = ({ onVoiceSend }: VoiceRecorderProps) => {
           className="h-8 px-2 text-white hover:bg-white/20"
         >
           <Icon name="Square" size={14} />
+        </Button>
+      </div>
+    );
+  }
+
+  // Показываем ошибку разрешений
+  if (permissionError) {
+    return (
+      <div className="flex items-center gap-2 bg-red-500/20 rounded-lg p-3 max-w-sm">
+        <Icon
+          name="AlertCircle"
+          size={16}
+          className="text-red-400 flex-shrink-0"
+        />
+        <div className="text-xs text-red-200">
+          <div className="font-medium mb-1">Запись видео и аудио запрещена</div>
+          <div className="text-red-300">
+            Ваша организация запретила использовать камеру, микрофон и удаленный
+            рабочий стол на этой странице. Чтобы начать запись, обратитесь к
+            системному администратору.
+          </div>
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setPermissionError(null)}
+          className="h-8 px-2 text-red-400 hover:bg-red-400/20 flex-shrink-0"
+        >
+          Понятно
         </Button>
       </div>
     );
