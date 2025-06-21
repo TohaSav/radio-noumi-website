@@ -5,7 +5,7 @@ import Icon from "@/components/ui/icon";
 import ChatMessages from "@/components/chat/ChatMessages";
 import ChatInput from "@/components/chat/ChatInput";
 import OnlineUsers from "@/components/chat/OnlineUsers";
-import RadioPlayer from "@/components/RadioPlayer";
+import HiddenRadio from "@/components/HiddenRadio";
 
 interface ChatMessage {
   id: string;
@@ -101,7 +101,6 @@ const OnlineChat = () => {
           </div>
           <div className="flex items-center gap-4">
             <span className="text-purple-200 text-sm">Участники</span>
-            <RadioPlayer autoPlay={true} />
             <Button
               variant="ghost"
               size="sm"
@@ -173,6 +172,7 @@ const OnlineChat = () => {
         onLogin={handleLogin}
         userName={userName}
       />
+      <HiddenRadio streamUrl="https://radio.noumi.fm/stream" />
     </div>
   );
 };
