@@ -63,6 +63,7 @@ const RadioPlayer = (props: RadioPlayerProps) => {
   const [volume, setVolume] = useState(50);
   const [isLoading, setIsLoading] = useState(false);
   const [listeners, setListeners] = useState(3150084);
+  const [showVolumeSlider, setShowVolumeSlider] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
@@ -316,20 +317,53 @@ const RadioPlayer = (props: RadioPlayerProps) => {
           </div>
 
           {/* Volume Control */}
-          <div className="hidden sm:flex items-center space-x-2 flex-shrink-0">
-            <Icon
-              name="Volume2"
-              size={18}
-              className="text-gray-400 md:w-5 md:h-5"
-            />
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={volume}
-              onChange={(e) => handleVolumeChange(Number(e.target.value))}
-              className="w-16 sm:w-18 md:w-20 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer slider"
-            />
+          <div className="flex items-center space-x-2 flex-shrink-0">
+            {/* Desktop Volume */}
+            <div className="hidden sm:flex items-center space-x-2">
+              <Icon
+                name="Volume2"
+                size={18}
+                className="text-gray-400 md:w-5 md:h-5"
+              />
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={volume}
+                onChange={(e) => handleVolumeChange(Number(e.target.value))}
+                className="w-16 sm:w-18 md:w-20 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer slider"
+              />
+            </div>
+
+            {/* Mobile Volume Button */}
+            <div className="sm:hidden relative">
+              <button
+                onClick={() => setShowVolumeSlider(!showVolumeSlider)}
+                className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-white/10 transition-colors"
+              >
+                <Icon name="Volume2" size={16} className="text-gray-400" />
+              </button>
+
+              {/* Mobile Volume Slider */}
+              {showVolumeSlider && (
+                <div className="absolute bottom-full right-0 mb-2 bg-black/90 backdrop-blur-md rounded-lg p-3 border border-white/10 shadow-lg">
+                  <div className="flex flex-col items-center space-y-2">
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={volume}
+                      onChange={(e) =>
+                        handleVolumeChange(Number(e.target.value))
+                      }
+                      className="w-20 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer slider transform rotate-180"
+                      style={{ writingMode: "bt-lr" }}
+                    />
+                    <span className="text-xs text-gray-300">{volume}%</span>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
