@@ -64,12 +64,18 @@ export const tracksApi = {
 
       // Также сохраняем локально как резерв
       localStorage.setItem("noumi-tracks", JSON.stringify(tracks));
+
+      // Уведомляем о изменениях
+      window.dispatchEvent(new CustomEvent("tracksUpdated"));
     } catch (error) {
       console.warn(
         "Failed to save tracks to cloud, using localStorage:",
         error,
       );
       localStorage.setItem("noumi-tracks", JSON.stringify(tracks));
+
+      // Уведомляем о изменениях даже при ошибке
+      window.dispatchEvent(new CustomEvent("tracksUpdated"));
     }
   },
 };

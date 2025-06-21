@@ -49,17 +49,38 @@ const TopChart = () => {
     };
 
     loadTracks();
+
+    // Слушаем изменения localStorage
+    const handleStorageChange = () => {
+      loadTracks();
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    // Также слушаем кастомное событие для обновлений в том же окне
+    window.addEventListener("tracksUpdated", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("tracksUpdated", handleStorageChange);
+    };
   }, []);
 
   const saveTracks = async (updatedTracks: Track[]) => {
     try {
       await tracksApi.saveTracks(updatedTracks);
       setTracks(updatedTracks);
+
+      // Уведомляем о изменениях
+      window.dispatchEvent(new CustomEvent("tracksUpdated"));
     } catch (error) {
       console.error("Error saving tracks:", error);
       // Fallback to localStorage
       localStorage.setItem("noumi-tracks", JSON.stringify(updatedTracks));
       setTracks(updatedTracks);
+
+      // Уведомляем о изменениях
+      window.dispatchEvent(new CustomEvent("tracksUpdated"));
     }
   };
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -31,7 +31,7 @@ const EditTrackModal = ({
   });
 
   // Обновляем форму при изменении трека
-  useState(() => {
+  useEffect(() => {
     if (track) {
       setFormData({
         title: track.title || "",
@@ -40,7 +40,7 @@ const EditTrackModal = ({
         audioFile: track.audioFile || "",
       });
     }
-  });
+  }, [track]);
 
   const handleFileChange = (
     field: "cover" | "audioFile",
