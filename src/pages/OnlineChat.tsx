@@ -6,6 +6,9 @@ import ChatMessages from "@/components/chat/ChatMessages";
 import ChatInput from "@/components/chat/ChatInput";
 import OnlineUsers from "@/components/chat/OnlineUsers";
 import HiddenRadio from "@/components/HiddenRadio";
+import UserManager from "@/components/chat/UserManager";
+import EnhancedAutoMessageGenerator from "@/components/chat/EnhancedAutoMessageGenerator";
+import { useRadioStats } from "@/hooks/useRadioStats";
 
 interface ChatMessage {
   id: string;
@@ -23,7 +26,11 @@ const OnlineChat = () => {
   const [userName, setUserName] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showUserPanel, setShowUserPanel] = useState(false);
+  const [activeUsers, setActiveUsers] = useState<
+    Array<{ id: string; name: string; avatar: string }>
+  >([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const radioStats = useRadioStats();
 
   // Инициализация с демо данными
   useEffect(() => {
@@ -80,6 +87,25 @@ const OnlineChat = () => {
     setMessageInput("");
   };
 
+  const handleAutoMessage = (autoMessage: any) => {
+    const newMessage: ChatMessage = {
+      id: autoMessage.id,
+      userName: autoMessage.userName,
+      message: autoMessage.message,
+      timestamp: autoMessage.timestamp,
+      avatar: autoMessage.avatar,
+      type: autoMessage.type,
+      mediaUrl: autoMessage.mediaUrl,
+    };
+    setMessages((prev) => [...prev, newMessage]);
+  };
+
+  const handleUsersUpdate = (
+    users: Array<{ id: string; name: string; avatar: string }>,
+  ) => {
+    setActiveUsers(users);
+  };
+
   const handleMediaSend = (file: File, type: "image" | "video") => {
     if (!isLoggedIn) return;
 
@@ -104,6 +130,38 @@ const OnlineChat = () => {
     setIsLoggedIn(true);
   };
 
+  // Загружаем сохраненные сообщения
+  useEffect(() => {
+    const savedMessages = localStorage.getItem("chat-messages");
+    if (savedMessages) {
+      const parsed = JSON.parse(savedMessages).map((msg: any) => ({
+        ...msg,
+        timestamp: new Date(msg.timestamp),
+      }));
+      setMessages(parsed);
+    } else {
+      // Только если нет сохраненных сообщений, добавляем демо
+      const demoMessages: ChatMessage[] = [
+        {
+          id: "1",
+          userName: "Алекс",
+          message: "Привет всем! Как дела?",
+          timestamp: new Date(Date.now() - 300000),
+          avatar:
+            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+        },
+      ];
+      setMessages(demoMessages);
+    }
+  }, []);
+
+  // Сохраняем сообщения
+  useEffect(() => {
+    if (messages.length > 0) {
+      localStorage.setItem("chat-messages", JSON.stringify(messages));
+    }
+  }, [messages]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex flex-col">
       {/* Header */}
@@ -118,7 +176,9 @@ const OnlineChat = () => {
             </Link>
             <div>
               <h1 className="text-white text-xl font-bold">Онлайн чат</h1>
-              <p className="text-purple-200 text-sm">47 в сети</p>
+              <p className="text-purple-200 text-sm">
+                {radioStats.listeners} в сети
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-4">

@@ -2,10 +2,11 @@ import Icon from "@/components/ui/icon";
 
 interface OnlineUsersProps {
   count: number;
+  users?: Array<{ id: string; name: string; avatar: string }>;
   showList?: boolean;
 }
 
-const OnlineUsers = ({ count, showList }: OnlineUsersProps) => {
+const OnlineUsers = ({ count, users = [], showList }: OnlineUsersProps) => {
   const demoUsers = [
     {
       name: "Алекс",
@@ -52,9 +53,9 @@ const OnlineUsers = ({ count, showList }: OnlineUsersProps) => {
         </div>
 
         <div className="space-y-3">
-          {demoUsers.map((user, index) => (
+          {users.slice(0, 8).map((user) => (
             <div
-              key={index}
+              key={user.id}
               className="flex items-center gap-3 hover:bg-white/5 rounded-lg p-2 transition-colors cursor-pointer"
             >
               <div className="relative">
@@ -71,11 +72,13 @@ const OnlineUsers = ({ count, showList }: OnlineUsersProps) => {
             </div>
           ))}
 
-          <div className="text-center py-4">
-            <span className="text-gray-400 text-xs">
-              и ещё {count - demoUsers.length} участников...
-            </span>
-          </div>
+          {count > 8 && (
+            <div className="text-center py-4">
+              <span className="text-gray-400 text-xs">
+                и ещё {count - 8} участников...
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </div>
