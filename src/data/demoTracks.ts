@@ -92,9 +92,8 @@ export const getDemoTracks = (): Track[] => [
     addedAt: Date.now() - 864000000,
   },
   // Создаем остальные 90 треков программно
-  ...Array.from({ length: 90 }, (_, i) => ({
-    id: (i + 11).toString(),
-    title: [
+  ...Array.from({ length: 90 }, (_, i) => {
+    const titles = [
       "Solar Flare",
       "Gravity Wave",
       "Quantum Leap",
@@ -190,8 +189,14 @@ export const getDemoTracks = (): Track[] => [
       "Encryption",
       "Password",
       "Security",
-    ][i % 90],
-    artist: [
+      "Synthwave",
+      "Retrowave",
+      "Vaporwave",
+      "Darksynth",
+      "Cyberpunk",
+    ];
+
+    const artists = [
       "Space Explorers",
       "Cosmic Travelers",
       "Star Navigators",
@@ -287,13 +292,23 @@ export const getDemoTracks = (): Track[] => [
       "Techno Producers",
       "House Masters",
       "Trance Makers",
-    ][i % 90],
-    cover: [
+    ];
+
+    const covers = [
       "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
       "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
       "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
-    ][i % 3],
-    plays: `${Math.floor(Math.random() * 200 + 50)}K`,
-    addedAt: Date.now() - (864000000 + (i + 1) * 86400000),
-  })),
+      "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&h=200&fit=crop",
+      "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop",
+    ];
+
+    return {
+      id: (i + 11).toString(),
+      title: titles[i % titles.length],
+      artist: artists[i % artists.length],
+      cover: covers[i % covers.length],
+      plays: `${Math.floor(Math.random() * 200 + 50)}K`,
+      addedAt: Date.now() - (864000000 + (i + 1) * 86400000),
+    };
+  }),
 ];
