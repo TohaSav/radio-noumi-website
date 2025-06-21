@@ -4,53 +4,103 @@ export const getDemoTracks = (): Track[] => {
   const baseTracks: Track[] = [
     {
       id: "1",
-      title: "Midnight Dreams",
-      artist: "Luna Echo",
+      title: "Cosmic Journey",
+      artist: "Stellar Voyager",
       cover:
-        "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
-      plays: "1.2M",
+        "https://images.unsplash.com/photo-1446776877081-d282a0f896e2?w=400&h=400&fit=crop",
+      plays: "2.1M",
       likes: Math.floor(Math.random() * 50000 + 10000),
       addedAt: Date.now() - 86400000,
     },
     {
       id: "2",
-      title: "Electric Pulse",
-      artist: "Neon Rider",
+      title: "Nebula Dreams",
+      artist: "Galactic Echo",
       cover:
-        "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
-      plays: "890K",
+        "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?w=400&h=400&fit=crop",
+      plays: "1.8M",
       likes: Math.floor(Math.random() * 50000 + 10000),
       addedAt: Date.now() - 172800000,
     },
     {
       id: "3",
-      title: "Ocean Waves",
-      artist: "Deep Blue",
+      title: "Starlight Symphony",
+      artist: "Cosmic Orchestra",
       cover:
-        "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
-      plays: "654K",
+        "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=400&h=400&fit=crop",
+      plays: "1.5M",
       likes: Math.floor(Math.random() * 50000 + 10000),
       addedAt: Date.now() - 259200000,
     },
     {
       id: "4",
-      title: "Neon Nights",
-      artist: "Cyber Dreams",
+      title: "Quantum Pulse",
+      artist: "Atom Smasher",
       cover:
-        "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
-      plays: "543K",
+        "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=400&h=400&fit=crop",
+      plays: "1.2M",
       likes: Math.floor(Math.random() * 50000 + 10000),
       addedAt: Date.now() - 345600000,
     },
     {
       id: "5",
-      title: "Digital Rain",
-      artist: "Matrix Sound",
+      title: "Solar Winds",
+      artist: "Space Drifter",
       cover:
-        "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
-      plays: "432K",
+        "https://images.unsplash.com/photo-1614728263952-84ea256f9679?w=400&h=400&fit=crop",
+      plays: "980K",
       likes: Math.floor(Math.random() * 50000 + 10000),
       addedAt: Date.now() - 432000000,
+    },
+    {
+      id: "6",
+      title: "Martian Sunrise",
+      artist: "Red Planet Collective",
+      cover:
+        "https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=400&h=400&fit=crop",
+      plays: "876K",
+      likes: Math.floor(Math.random() * 50000 + 10000),
+      addedAt: Date.now() - 518400000,
+    },
+    {
+      id: "7",
+      title: "Galactic Highway",
+      artist: "Interstellar Riders",
+      cover:
+        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop",
+      plays: "743K",
+      likes: Math.floor(Math.random() * 50000 + 10000),
+      addedAt: Date.now() - 604800000,
+    },
+    {
+      id: "8",
+      title: "Asteroid Dance",
+      artist: "Meteor Storm",
+      cover:
+        "https://images.unsplash.com/photo-1543722530-d2c3201371e7?w=400&h=400&fit=crop",
+      plays: "689K",
+      likes: Math.floor(Math.random() * 50000 + 10000),
+      addedAt: Date.now() - 691200000,
+    },
+    {
+      id: "9",
+      title: "Lunar Eclipse",
+      artist: "Moon Shadow",
+      cover:
+        "https://images.unsplash.com/photo-1532693322450-2cb5c511067d?w=400&h=400&fit=crop",
+      plays: "612K",
+      likes: Math.floor(Math.random() * 50000 + 10000),
+      addedAt: Date.now() - 777600000,
+    },
+    {
+      id: "10",
+      title: "Black Hole Gravity",
+      artist: "Event Horizon",
+      cover:
+        "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=400&h=400&fit=crop",
+      plays: "558K",
+      likes: Math.floor(Math.random() * 50000 + 10000),
+      addedAt: Date.now() - 864000000,
     },
   ];
 
