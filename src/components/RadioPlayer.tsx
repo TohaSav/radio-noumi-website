@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import Icon from "@/components/ui/icon";
+import CountriesModal from "@/components/radio/CountriesModal";
 
 interface RadioPlayerProps {
   streamUrl: string;
@@ -272,6 +273,8 @@ const RadioPlayer = (props: RadioPlayerProps) => {
     }
   };
 
+  const [showCountries, setShowCountries] = useState(false);
+
   return (
     <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl px-4 sm:px-0">
       <div className="bg-black/80 backdrop-blur-md rounded-xl sm:rounded-2xl px-3 sm:px-4 md:px-6 py-3 sm:py-4 shadow-2xl border border-white/10">
@@ -304,6 +307,12 @@ const RadioPlayer = (props: RadioPlayerProps) => {
               <span className="text-xs sm:text-sm text-green-400 px-1.5 sm:px-2 py-0.5 rounded-full bg-green-400/10 whitespace-nowrap">
                 {formatListeners(listeners)} слушателей
               </span>
+              <button
+                onClick={() => setShowCountries(true)}
+                className="text-purple-300 hover:text-purple-200 transition-colors text-xs px-1 py-0.5 rounded bg-white/10 hover:bg-white/20"
+              >
+                Страны
+              </button>
             </div>
             <div className="text-xs sm:text-sm text-gray-400 truncate">
               {isPlaying ? (
@@ -374,6 +383,7 @@ const RadioPlayer = (props: RadioPlayerProps) => {
         preload="none"
         crossOrigin="anonymous"
       />
+      <CountriesModal open={showCountries} onOpenChange={setShowCountries} />
     </div>
   );
 };
