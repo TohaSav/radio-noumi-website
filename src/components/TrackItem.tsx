@@ -34,23 +34,21 @@ const TrackItem = ({
               "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=64&h=64&fit=crop";
           }}
         />
-        {track.audioFile && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onPlayPause(track);
-            }}
-            className="absolute inset-0 bg-black/30 rounded-lg flex items-center justify-center transition-all duration-300 hover:bg-black/50"
-          >
-            <div className="bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-200">
-              <Icon
-                name={currentlyPlaying === track.id ? "Pause" : "Play"}
-                size={18}
-                className="text-black ml-0.5"
-              />
-            </div>
-          </button>
-        )}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onPlayPause(track);
+          }}
+          className="absolute inset-0 bg-black/20 rounded-lg flex items-center justify-center transition-all duration-300 hover:bg-black/40"
+        >
+          <div className="bg-green-500 rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-200 hover:bg-green-400">
+            <Icon
+              name={currentlyPlaying === track.id ? "Pause" : "Play"}
+              size={20}
+              className="text-white ml-0.5"
+            />
+          </div>
+        </button>
       </div>
       <div className="flex-1">
         <h3 className="text-white font-medium text-lg">{track.title}</h3>
