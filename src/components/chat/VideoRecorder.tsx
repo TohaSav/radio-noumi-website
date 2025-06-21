@@ -234,35 +234,35 @@ const VideoRecorder = ({ onVideoSend }: VideoRecorderProps) => {
     );
   }
 
-  // Если идет запись - показываем превью с камеры
+  // Если идет запись - показываем компактный режим с кнопкой остановки
   if (isRecording) {
     return (
-      <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
-        <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 max-w-sm mx-4">
-          <div className="relative mb-4">
-            <video
-              ref={previewVideoRef}
-              className="w-64 h-64 rounded-xl object-cover"
-              muted
-              autoPlay
-            />
-            <div className="absolute top-3 left-3 bg-red-500/90 text-white px-2 py-1 rounded-lg text-sm font-medium flex items-center gap-1">
-              <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-              {formatTime(recordingTime)}
-            </div>
-          </div>
-          <div className="flex justify-center gap-3">
-            <Button
-              variant="ghost"
-              size="lg"
-              onClick={stopRecording}
-              className="h-12 px-6 text-white hover:bg-white/20 bg-red-500/20"
-            >
-              <Icon name="Square" size={20} className="mr-2" />
-              Остановить
-            </Button>
+      <div className="flex items-center gap-2 bg-red-500/20 rounded-lg p-2">
+        <div className="relative">
+          <video
+            ref={previewVideoRef}
+            className="w-12 h-12 rounded-lg object-cover"
+            muted
+            autoPlay
+          />
+          <div className="absolute -top-1 -right-1 bg-red-500 text-white px-1 py-0.5 rounded text-xs font-medium flex items-center gap-1">
+            <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+            {formatTime(recordingTime)}
           </div>
         </div>
+        <div className="flex items-center gap-1 text-white text-sm">
+          <Icon name="Video" size={14} />
+          <span>Запись...</span>
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={stopRecording}
+          className="h-8 px-2 text-red-400 hover:bg-red-400/20"
+          title="Остановить запись"
+        >
+          <Icon name="Square" size={14} />
+        </Button>
       </div>
     );
   }
