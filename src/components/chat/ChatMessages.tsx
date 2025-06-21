@@ -2,6 +2,7 @@ import { RefObject, useState } from "react";
 import Icon from "@/components/ui/icon";
 import MessageActions from "./MessageActions";
 import EmojiReactions from "./EmojiReactions";
+import VoiceMessage from "./VoiceMessage";
 
 interface ChatMessage {
   id: string;
@@ -9,8 +10,9 @@ interface ChatMessage {
   message: string;
   timestamp: Date;
   avatar: string;
-  type?: "text" | "image" | "video";
+  type?: "text" | "image" | "video" | "voice";
   mediaUrl?: string;
+  voiceDuration?: number;
   replyTo?: {
     id: string;
     userName: string;
@@ -52,6 +54,13 @@ const ChatMessages = ({
 
   const renderMessageContent = (message: ChatMessage, isOwn: boolean) => {
     switch (message.type) {
+      case "voice":
+        return (
+          <VoiceMessage
+            audioUrl={message.mediaUrl!}
+            duration={message.voiceDuration || 0}
+          />
+        );
       case "image":
         return (
           <div className="max-w-xs">

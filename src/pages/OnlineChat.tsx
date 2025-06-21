@@ -17,8 +17,9 @@ interface ChatMessage {
   message: string;
   timestamp: Date;
   avatar: string;
-  type?: "text" | "image" | "video";
+  type?: "text" | "image" | "video" | "voice";
   mediaUrl?: string;
+  voiceDuration?: number;
   replyTo?: {
     id: string;
     userName: string;
@@ -211,20 +212,40 @@ const OnlineChat = () => {
   const handleMediaSend = (file: File, type: "image" | "video") => {
     if (!isLoggedIn) return;
 
-    // Создаем URL для предпросмотра файла
     const mediaUrl = URL.createObjectURL(file);
-
     const newMessage: ChatMessage = {
       id: Date.now().toString(),
-      userName: userName,
+      userName,
       message: "",
       timestamp: new Date(),
       avatar: userAvatar,
-      type: type,
-      mediaUrl: mediaUrl,
+      type,
+      mediaUrl,
+      replyTo,
     };
 
     setMessages((prev) => [...prev, newMessage]);
+    setReplyTo(null);
+  };
+
+  const handleVoiceSend = (audioBlob: Blob, duration: number) => {
+    if (!isLoggedIn) return;
+
+    const audioUrl = URL.createObjectURL(audioBlob);
+    const newMessage: ChatMessage = {
+      id: Date.now().toString(),
+      userName,
+      message: "",
+      timestamp: new Date(),
+      avatar: userAvatar,
+      type: "voice",
+      mediaUrl: audioUrl,
+      voiceDuration: duration,
+      replyTo,
+    };
+
+    setMessages((prev) => [...prev, newMessage]);
+    setReplyTo(null);
   };
 
   const handleReply = (message: ChatMessage) => {
@@ -429,6 +450,7 @@ const OnlineChat = () => {
         onChange={setMessageInput}
         onSend={handleSendMessage}
         onMediaSend={handleMediaSend}
+        onVoiceSend={handleVoiceSend}
         isLoggedIn={isLoggedIn}
         onLogin={handleLogin}
         userName={userName}
