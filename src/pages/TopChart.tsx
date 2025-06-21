@@ -107,6 +107,17 @@ const TopChart = () => {
                 className="bg-white/10 border-white/20 text-white file:bg-purple-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-lg file:mr-4 file:cursor-pointer hover:file:bg-purple-700"
               />
             </div>
+            <div>
+              <Label htmlFor="audioFile" className="text-white">
+                Аудио файл
+              </Label>
+              <Input
+                id="audioFile"
+                type="file"
+                accept="audio/*,.mp3,.wav,.m4a,.flac"
+                className="bg-white/10 backdrop-blur-sm border-white/20 text-white file:bg-white/20 file:text-white file:border-0 file:rounded-lg file:px-3 file:py-1 file:mr-3 hover:bg-white/20"
+              />
+            </div>
             <Button type="submit" className="bg-purple-600 hover:bg-purple-700">
               <Icon name="Plus" size={16} className="mr-2" />
               Добавить трек
