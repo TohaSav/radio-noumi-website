@@ -19,18 +19,21 @@ const TopChart = () => {
   useEffect(() => {
     const loadTracks = async () => {
       try {
-        if (import.meta.env.DEV) {
-          const demoTracks = getDemoTracks();
-          setTracks(demoTracks);
-          return;
-        }
+        // Всегда загружаем демо-треки (100 штук)
+        const demoTracks = getDemoTracks();
+        setTracks(demoTracks);
 
-        const cloudTracks = await tracksApi.getTracks();
-        if (cloudTracks.length > 0) {
-          setTracks(cloudTracks);
-        } else {
-          const demoTracks = getDemoTracks();
-          setTracks(demoTracks);
+        // В фоновом режиме пытаемся загрузить облачные треки
+        if (!import.meta.env.DEV) {
+          try {
+            const cloudTracks = await tracksApi.getTracks();
+            if (cloudTracks.length > 0) {
+              setTracks(cloudTracks);
+            }
+          } catch (error) {
+            console.error("Error loading cloud tracks:", error);
+            // Демо-треки уже загружены, ничего не меняем
+          }
         }
       } catch (error) {
         console.error("Error loading tracks:", error);
