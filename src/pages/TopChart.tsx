@@ -98,6 +98,366 @@ const TopChart = () => {
       plays: "321K",
       addedAt: Date.now() - 432000000,
     },
+    {
+      id: "6",
+      title: "Starlight Highway",
+      cover:
+        "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=200&h=200&fit=crop",
+      plays: "287K",
+      addedAt: Date.now() - 518400000,
+    },
+    {
+      id: "7",
+      title: "Digital Rain",
+      cover:
+        "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
+      plays: "245K",
+      addedAt: Date.now() - 604800000,
+    },
+    {
+      id: "8",
+      title: "Cosmic Journey",
+      cover:
+        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=200&h=200&fit=crop",
+      plays: "198K",
+      addedAt: Date.now() - 691200000,
+    },
+    {
+      id: "9",
+      title: "Golden Hour",
+      cover:
+        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&h=200&fit=crop",
+      plays: "176K",
+      addedAt: Date.now() - 777600000,
+    },
+    {
+      id: "10",
+      title: "Velvet Moon",
+      cover:
+        "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop",
+      plays: "154K",
+      addedAt: Date.now() - 864000000,
+    },
+    {
+      id: "11",
+      title: "Phoenix Rising",
+      cover:
+        "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
+      plays: "143K",
+      addedAt: Date.now() - 950400000,
+    },
+    {
+      id: "12",
+      title: "Shadow Dance",
+      cover:
+        "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
+      plays: "132K",
+      addedAt: Date.now() - 1036800000,
+    },
+    {
+      id: "13",
+      title: "Thunder Storm",
+      cover:
+        "https://images.unsplash.com/photo-1556816723-1ce827b9cfbb?w=200&h=200&fit=crop",
+      plays: "121K",
+      addedAt: Date.now() - 1123200000,
+    },
+    {
+      id: "14",
+      title: "Mystic Forest",
+      cover:
+        "https://images.unsplash.com/photo-1530841344095-9ce8b0e5a5a3?w=200&h=200&fit=crop",
+      plays: "118K",
+      addedAt: Date.now() - 1209600000,
+    },
+    {
+      id: "15",
+      title: "Neon Dreams",
+      cover:
+        "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=200&h=200&fit=crop",
+      plays: "109K",
+      addedAt: Date.now() - 1296000000,
+    },
+    {
+      id: "16",
+      title: "Aurora Borealis",
+      cover:
+        "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
+      plays: "98K",
+      addedAt: Date.now() - 1382400000,
+    },
+    {
+      id: "17",
+      title: "City Lights",
+      cover:
+        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=200&h=200&fit=crop",
+      plays: "92K",
+      addedAt: Date.now() - 1468800000,
+    },
+    {
+      id: "18",
+      title: "Summer Breeze",
+      cover:
+        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&h=200&fit=crop",
+      plays: "87K",
+      addedAt: Date.now() - 1555200000,
+    },
+    {
+      id: "19",
+      title: "Midnight Express",
+      cover:
+        "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop",
+      plays: "83K",
+      addedAt: Date.now() - 1641600000,
+    },
+    {
+      id: "20",
+      title: "Electric Dreams",
+      cover:
+        "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
+      plays: "79K",
+      addedAt: Date.now() - 1728000000,
+    },
+    {
+      id: "21",
+      title: "Ocean Drive",
+      cover:
+        "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
+      plays: "76K",
+      addedAt: Date.now() - 1814400000,
+    },
+    {
+      id: "22",
+      title: "Silver Lining",
+      cover:
+        "https://images.unsplash.com/photo-1556816723-1ce827b9cfbb?w=200&h=200&fit=crop",
+      plays: "73K",
+      addedAt: Date.now() - 1900800000,
+    },
+    {
+      id: "23",
+      title: "Diamond Sky",
+      cover:
+        "https://images.unsplash.com/photo-1530841344095-9ce8b0e5a5a3?w=200&h=200&fit=crop",
+      plays: "69K",
+      addedAt: Date.now() - 1987200000,
+    },
+    {
+      id: "24",
+      title: "Purple Haze",
+      cover:
+        "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=200&h=200&fit=crop",
+      plays: "66K",
+      addedAt: Date.now() - 2073600000,
+    },
+    {
+      id: "25",
+      title: "Moonlight Serenade",
+      cover:
+        "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
+      plays: "63K",
+      addedAt: Date.now() - 2160000000,
+    },
+    {
+      id: "26",
+      title: "Stardust Memories",
+      cover:
+        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=200&h=200&fit=crop",
+      plays: "61K",
+      addedAt: Date.now() - 2246400000,
+    },
+    {
+      id: "27",
+      title: "Sunset Boulevard",
+      cover:
+        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&h=200&fit=crop",
+      plays: "58K",
+      addedAt: Date.now() - 2332800000,
+    },
+    {
+      id: "28",
+      title: "Crimson Tide",
+      cover:
+        "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop",
+      plays: "56K",
+      addedAt: Date.now() - 2419200000,
+    },
+    {
+      id: "29",
+      title: "Jade Mountain",
+      cover:
+        "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
+      plays: "54K",
+      addedAt: Date.now() - 2505600000,
+    },
+    {
+      id: "30",
+      title: "Azure Dreams",
+      cover:
+        "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
+      plays: "52K",
+      addedAt: Date.now() - 2592000000,
+    },
+    {
+      id: "31",
+      title: "Copper Canyon",
+      cover:
+        "https://images.unsplash.com/photo-1556816723-1ce827b9cfbb?w=200&h=200&fit=crop",
+      plays: "49K",
+      addedAt: Date.now() - 2678400000,
+    },
+    {
+      id: "32",
+      title: "Violet Storm",
+      cover:
+        "https://images.unsplash.com/photo-1530841344095-9ce8b0e5a5a3?w=200&h=200&fit=crop",
+      plays: "47K",
+      addedAt: Date.now() - 2764800000,
+    },
+    {
+      id: "33",
+      title: "Emerald City",
+      cover:
+        "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=200&h=200&fit=crop",
+      plays: "45K",
+      addedAt: Date.now() - 2851200000,
+    },
+    {
+      id: "34",
+      title: "Ruby Sunset",
+      cover:
+        "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
+      plays: "43K",
+      addedAt: Date.now() - 2937600000,
+    },
+    {
+      id: "35",
+      title: "Sapphire Skies",
+      cover:
+        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=200&h=200&fit=crop",
+      plays: "41K",
+      addedAt: Date.now() - 3024000000,
+    },
+    {
+      id: "36",
+      title: "Golden Memories",
+      cover:
+        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&h=200&fit=crop",
+      plays: "39K",
+      addedAt: Date.now() - 3110400000,
+    },
+    {
+      id: "37",
+      title: "Silver Dreams",
+      cover:
+        "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop",
+      plays: "37K",
+      addedAt: Date.now() - 3196800000,
+    },
+    {
+      id: "38",
+      title: "Platinum Rush",
+      cover:
+        "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
+      plays: "35K",
+      addedAt: Date.now() - 3283200000,
+    },
+    {
+      id: "39",
+      title: "Bronze Age",
+      cover:
+        "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
+      plays: "33K",
+      addedAt: Date.now() - 3369600000,
+    },
+    {
+      id: "40",
+      title: "Iron Will",
+      cover:
+        "https://images.unsplash.com/photo-1556816723-1ce827b9cfbb?w=200&h=200&fit=crop",
+      plays: "31K",
+      addedAt: Date.now() - 3456000000,
+    },
+    {
+      id: "41",
+      title: "Steel Heart",
+      cover:
+        "https://images.unsplash.com/photo-1530841344095-9ce8b0e5a5a3?w=200&h=200&fit=crop",
+      plays: "29K",
+      addedAt: Date.now() - 3542400000,
+    },
+    {
+      id: "42",
+      title: "Titanium Soul",
+      cover:
+        "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=200&h=200&fit=crop",
+      plays: "27K",
+      addedAt: Date.now() - 3628800000,
+    },
+    {
+      id: "43",
+      title: "Quantum Leap",
+      cover:
+        "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
+      plays: "25K",
+      addedAt: Date.now() - 3715200000,
+    },
+    {
+      id: "44",
+      title: "Infinity Loop",
+      cover:
+        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=200&h=200&fit=crop",
+      plays: "23K",
+      addedAt: Date.now() - 3801600000,
+    },
+    {
+      id: "45",
+      title: "Parallel Universe",
+      cover:
+        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&h=200&fit=crop",
+      plays: "21K",
+      addedAt: Date.now() - 3888000000,
+    },
+    {
+      id: "46",
+      title: "Time Traveler",
+      cover:
+        "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop",
+      plays: "19K",
+      addedAt: Date.now() - 3974400000,
+    },
+    {
+      id: "47",
+      title: "Dimension X",
+      cover:
+        "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
+      plays: "17K",
+      addedAt: Date.now() - 4060800000,
+    },
+    {
+      id: "48",
+      title: "Galaxy Express",
+      cover:
+        "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
+      plays: "15K",
+      addedAt: Date.now() - 4147200000,
+    },
+    {
+      id: "49",
+      title: "Stellar Wind",
+      cover:
+        "https://images.unsplash.com/photo-1556816723-1ce827b9cfbb?w=200&h=200&fit=crop",
+      plays: "13K",
+      addedAt: Date.now() - 4233600000,
+    },
+    {
+      id: "50",
+      title: "Cosmic Dust",
+      cover:
+        "https://images.unsplash.com/photo-1530841344095-9ce8b0e5a5a3?w=200&h=200&fit=crop",
+      plays: "11K",
+      addedAt: Date.now() - 4320000000,
+    },
   ];
 
   // Save tracks to cloud storage
