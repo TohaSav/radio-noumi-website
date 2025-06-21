@@ -261,17 +261,24 @@ const OnlineChat = () => {
       prev.map((msg) => {
         if (msg.id === messageId) {
           const reactions = { ...msg.reactions };
-          if (!reactions[emoji]) {
-            reactions[emoji] = [];
-          }
 
-          const userIndex = reactions[emoji].indexOf(userName);
-          if (userIndex > -1) {
-            reactions[emoji].splice(userIndex, 1);
-            if (reactions[emoji].length === 0) {
-              delete reactions[emoji];
+          // Убираем пользователя из всех реакций на это сообщение
+          Object.keys(reactions).forEach((existingEmoji) => {
+            const userIndex = reactions[existingEmoji].indexOf(userName);
+            if (userIndex > -1) {
+              reactions[existingEmoji].splice(userIndex, 1);
+              if (reactions[existingEmoji].length === 0) {
+                delete reactions[existingEmoji];
+              }
             }
-          } else {
+          });
+
+          // Добавляем новую реакцию (если пользователь не нажал на ту же самую)
+          const hadThisReaction = msg.reactions?.[emoji]?.includes(userName);
+          if (!hadThisReaction) {
+            if (!reactions[emoji]) {
+              reactions[emoji] = [];
+            }
             reactions[emoji].push(userName);
           }
 
