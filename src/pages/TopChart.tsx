@@ -65,46 +65,45 @@ const TopChart = () => {
       </div>
 
       {/* Admin Form - Hidden from users, visible only in editor */}
-      <div
-        className="mb-8 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
-        style={{ display: "block" }}
-      >
-        <h3 className="text-xl font-bold text-white mb-4">Добавить трек</h3>
-        <form onSubmit={handleAddTrack} className="space-y-4">
-          <div>
-            <Label htmlFor="title" className="text-white">
-              Название трека
-            </Label>
-            <Input
-              id="title"
-              value={newTrack.title}
-              onChange={(e) =>
-                setNewTrack({ ...newTrack, title: e.target.value })
-              }
-              placeholder="Название трека"
-              className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
-            />
-          </div>
-          <div>
-            <Label htmlFor="cover" className="text-white">
-              Обложка (URL)
-            </Label>
-            <Input
-              id="cover"
-              value={newTrack.cover}
-              onChange={(e) =>
-                setNewTrack({ ...newTrack, cover: e.target.value })
-              }
-              placeholder="https://example.com/cover.jpg"
-              className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
-            />
-          </div>
-          <Button type="submit" className="bg-purple-600 hover:bg-purple-700">
-            <Icon name="Plus" size={16} className="mr-2" />
-            Добавить трек
-          </Button>
-        </form>
-      </div>
+      {import.meta.env.DEV && (
+        <div className="mb-8 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6">
+          <h3 className="text-xl font-bold text-white mb-4">Добавить трек</h3>
+          <form onSubmit={handleAddTrack} className="space-y-4">
+            <div>
+              <Label htmlFor="title" className="text-white">
+                Название трека
+              </Label>
+              <Input
+                id="title"
+                value={newTrack.title}
+                onChange={(e) =>
+                  setNewTrack({ ...newTrack, title: e.target.value })
+                }
+                placeholder="Название трека"
+                className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+              />
+            </div>
+            <div>
+              <Label htmlFor="cover" className="text-white">
+                Обложка (URL)
+              </Label>
+              <Input
+                id="cover"
+                value={newTrack.cover}
+                onChange={(e) =>
+                  setNewTrack({ ...newTrack, cover: e.target.value })
+                }
+                placeholder="https://example.com/cover.jpg"
+                className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+              />
+            </div>
+            <Button type="submit" className="bg-purple-600 hover:bg-purple-700">
+              <Icon name="Plus" size={16} className="mr-2" />
+              Добавить трек
+            </Button>
+          </form>
+        </div>
+      )}
 
       {/* Top Chart */}
       <div className="max-w-4xl mx-auto">
