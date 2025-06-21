@@ -3,6 +3,7 @@ import Icon from "@/components/ui/icon";
 import MessageActions from "./MessageActions";
 import EmojiReactions from "./EmojiReactions";
 import VoiceMessage from "./VoiceMessage";
+import VideoMessage from "./VideoMessage";
 
 interface ChatMessage {
   id: string;
@@ -10,9 +11,11 @@ interface ChatMessage {
   message: string;
   timestamp: Date;
   avatar: string;
-  type?: "text" | "image" | "video" | "voice";
+  type?: "text" | "image" | "video" | "voice" | "square-video";
   mediaUrl?: string;
   voiceDuration?: number;
+  videoDuration?: number;
+  videoThumbnail?: string;
   replyTo?: {
     id: string;
     userName: string;
@@ -59,6 +62,14 @@ const ChatMessages = ({
           <VoiceMessage
             audioUrl={message.mediaUrl!}
             duration={message.voiceDuration || 0}
+          />
+        );
+      case "square-video":
+        return (
+          <VideoMessage
+            videoUrl={message.mediaUrl!}
+            duration={message.videoDuration || 0}
+            thumbnail={message.videoThumbnail}
           />
         );
       case "image":

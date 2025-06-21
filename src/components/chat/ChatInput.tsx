@@ -5,6 +5,7 @@ import Icon from "@/components/ui/icon";
 import EmojiPicker from "./EmojiPicker";
 import MediaUpload from "./MediaUpload";
 import VoiceRecorder from "./VoiceRecorder";
+import VideoRecorder from "./VideoRecorder";
 
 interface ChatInputProps {
   value: string;
@@ -12,6 +13,7 @@ interface ChatInputProps {
   onSend: () => void;
   onMediaSend: (file: File, type: "image" | "video") => void;
   onVoiceSend: (audioBlob: Blob, duration: number) => void;
+  onVideoSend: (videoBlob: Blob, duration: number, thumbnail: string) => void;
   isLoggedIn: boolean;
   onLogin: (name: string) => void;
   userName: string;
@@ -29,6 +31,7 @@ const ChatInput = ({
   onSend,
   onMediaSend,
   onVoiceSend,
+  onVideoSend,
   isLoggedIn,
   onLogin,
   userName,
@@ -60,6 +63,14 @@ const ChatInput = ({
 
   const handleMediaSelect = (file: File, type: "image" | "video") => {
     onMediaSend(file, type);
+  };
+
+  const handleVideoSend = (
+    videoBlob: Blob,
+    duration: number,
+    thumbnail: string,
+  ) => {
+    onVideoSend(videoBlob, duration, thumbnail);
   };
 
   if (showLoginForm) {
@@ -140,6 +151,8 @@ const ChatInput = ({
           <MediaUpload onFileSelect={handleMediaSelect} />
 
           <VoiceRecorder onVoiceSend={onVoiceSend} />
+
+          <VideoRecorder onVideoSend={handleVideoSend} />
 
           <Input
             type="text"

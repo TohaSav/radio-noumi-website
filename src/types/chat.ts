@@ -4,9 +4,11 @@ export interface ChatMessage {
   message: string;
   timestamp: Date;
   avatar: string;
-  type?: "text" | "image" | "video" | "voice";
+  type?: "text" | "image" | "video" | "voice" | "square-video";
   mediaUrl?: string;
   voiceDuration?: number;
+  videoDuration?: number;
+  videoThumbnail?: string;
   replyTo?: {
     id: string;
     userName: string;
@@ -29,7 +31,7 @@ export interface UserData {
   avatar: string;
 }
 
-export type MessageType = "text" | "image" | "video" | "voice";
+export type MessageType = "text" | "image" | "video" | "voice" | "square-video";
 
 export interface ChatState {
   messages: ChatMessage[];
