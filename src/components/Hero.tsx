@@ -8,6 +8,18 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center text-center px-4">
+      {/* Navigation Menu */}
+      <div className="absolute top-6 left-6 z-10">
+        <Button
+          onClick={() => navigate("/chat")}
+          variant="outline"
+          className="bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
+        >
+          <Icon name="MessageCircle" size={16} className="mr-2" />
+          Онлайн чат
+        </Button>
+      </div>
+
       {/* Hero Content */}
       <div className="max-w-4xl mx-auto space-y-8">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
