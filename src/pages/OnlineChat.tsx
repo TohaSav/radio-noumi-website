@@ -94,15 +94,14 @@ const OnlineChat = () => {
             >
               <Icon name="ArrowLeft" size={20} />
             </Link>
-            <h1 className="text-xl font-bold text-white">Онлайн чат</h1>
-            {/* Скрытое радио */}
-            <div className="hidden">
-              <RadioPlayer streamUrl="https://stream.radiorecord.ru:8102/rr_320" />
+            <div>
+              <h1 className="text-white text-xl font-bold">Онлайн чат</h1>
+              <p className="text-purple-200 text-sm">47 в сети</p>
             </div>
           </div>
-
-          <div className="hidden md:flex items-center gap-4">
-            <OnlineUsers count={47} />
+          <div className="flex items-center gap-4">
+            <span className="text-purple-200 text-sm">Участники</span>
+            <RadioPlayer autoPlay={true} />
             <Button
               variant="ghost"
               size="sm"
