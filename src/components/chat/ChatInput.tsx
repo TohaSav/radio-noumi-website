@@ -99,7 +99,7 @@ const ChatInput = ({
             variant="ghost"
             size="sm"
             onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-            className="h-12 px-3 text-gray-600 hover:text-purple-600 hover:bg-purple-50"
+            className="h-12 px-3 text-white hover:text-purple-600 hover:bg-purple-50"
             title="Эмодзи"
           >
             <Icon name="Smile" size={20} />
