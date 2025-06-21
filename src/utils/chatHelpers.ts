@@ -110,6 +110,22 @@ export const getDemoMessages = (): ChatMessage[] => {
   ];
 };
 
+export const getWelcomeMessages = (): ChatMessage[] => {
+  const welcomeMessages = [
+    "Добро пожаловать в чат! 👋",
+    "Здесь вы можете общаться с другими пользователями",
+    "Приятного общения! 😊",
+  ];
+
+  return welcomeMessages.map((msg, index) =>
+    createMessage(
+      "Система",
+      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=150&h=150&fit=crop&crop=face",
+      msg,
+    ),
+  );
+};
+
 export const saveToLocalStorage = <T>(key: string, data: T): void => {
   try {
     localStorage.setItem(key, JSON.stringify(data));
