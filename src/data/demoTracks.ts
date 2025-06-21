@@ -439,4 +439,49 @@ export const getDemoTracks = (): Track[] => [
     plays: "1.5M",
     addedAt: Date.now() - 4233600000,
   },
+  {
+    id: "56",
+    title: "Neon Genesis",
+    artist: "Future Wave",
+    cover:
+      "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
+    plays: "1.2M",
+    addedAt: Date.now() - 4320000000,
+  },
+  {
+    id: "57",
+    title: "Cosmic Whisper",
+    artist: "Void Echo",
+    cover:
+      "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=200&h=200&fit=crop",
+    plays: "834K",
+    addedAt: Date.now() - 4406400000,
+  },
+  {
+    id: "58",
+    title: "Silver Cascade",
+    artist: "Liquid Motion",
+    cover:
+      "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=200&h=200&fit=crop",
+    plays: "967K",
+    addedAt: Date.now() - 4492800000,
+  },
+  {
+    id: "59",
+    title: "Diamond Dust",
+    artist: "Crystal Matrix",
+    cover:
+      "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop",
+    plays: "1.4M",
+    addedAt: Date.now() - 4579200000,
+  },
+  {
+    id: "60",
+    title: "Lunar Eclipse",
+    artist: "Shadow Moon",
+    cover:
+      "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop",
+    plays: "1.1M",
+    addedAt: Date.now() - 4665600000,
+  },
 ];
