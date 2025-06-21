@@ -1,5 +1,7 @@
-import { RefObject } from "react";
+import { RefObject, useState } from "react";
 import Icon from "@/components/ui/icon";
+import MessageActions from "./MessageActions";
+import EmojiReactions from "./EmojiReactions";
 
 interface ChatMessage {
   id: string;
@@ -9,24 +11,43 @@ interface ChatMessage {
   avatar: string;
   type?: "text" | "image" | "video";
   mediaUrl?: string;
+  replyTo?: {
+    id: string;
+    userName: string;
+    message: string;
+  };
+  reactions?: { [emoji: string]: string[] };
 }
 
 interface ChatMessagesProps {
   messages: ChatMessage[];
   messagesEndRef: RefObject<HTMLDivElement>;
   currentUser: string;
+  onReply: (message: ChatMessage) => void;
+  onDelete: (messageId: string) => void;
+  onReaction: (messageId: string, emoji: string) => void;
 }
 
 const ChatMessages = ({
   messages,
   messagesEndRef,
   currentUser,
+  onReply,
+  onDelete,
+  onReaction,
 }: ChatMessagesProps) => {
+  const [activeMessageMenu, setActiveMessageMenu] = useState<string | null>(
+    null,
+  );
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString("ru-RU", {
       hour: "2-digit",
       minute: "2-digit",
     });
+  };
+
+  const handleMessageClick = (message: ChatMessage) => {
+    setActiveMessageMenu(activeMessageMenu === message.id ? null : message.id);
   };
 
   const renderMessageContent = (message: ChatMessage, isOwn: boolean) => {
@@ -81,7 +102,7 @@ const ChatMessages = ({
           return (
             <div
               key={message.id}
-              className={`flex gap-3 ${isOwn ? "justify-end" : "justify-start"}`}
+              className={`flex gap-3 ${isOwn ? "justify-end" : "justify-start"} relative`}
             >
               {!isOwn && (
                 <img
@@ -100,21 +121,66 @@ const ChatMessages = ({
                   </div>
                 )}
 
-                <div
-                  className={`rounded-2xl px-4 py-2 md:px-4 md:py-3 ${
-                    isOwn
-                      ? "bg-purple-600 text-white ml-auto"
-                      : "bg-white/10 backdrop-blur-sm text-white"
-                  }`}
-                >
-                  {renderMessageContent(message, isOwn)}
+                <div className="relative">
+                  {message.replyTo && (
+                    <div className="mb-2 p-2 bg-white/5 rounded-lg border-l-2 border-purple-400">
+                      <div className="text-xs text-purple-300 font-medium">
+                        {message.replyTo.userName}
+                      </div>
+                      <div className="text-xs text-gray-300 truncate max-w-48">
+                        {message.replyTo.message}
+                      </div>
+                    </div>
+                  )}
+
                   <div
-                    className={`text-xs mt-1 ${
-                      isOwn ? "text-purple-200" : "text-gray-300"
+                    className={`rounded-2xl px-4 py-2 md:px-4 md:py-3 cursor-pointer hover:shadow-lg transition-all ${
+                      isOwn
+                        ? "bg-purple-600 text-white ml-auto"
+                        : "bg-white/10 backdrop-blur-sm text-white"
                     }`}
+                    onClick={() => handleMessageClick(message)}
                   >
-                    {formatTime(message.timestamp)}
+                    {renderMessageContent(message, isOwn)}
+                    <div
+                      className={`text-xs mt-1 ${
+                        isOwn ? "text-purple-200" : "text-gray-300"
+                      }`}
+                    >
+                      {formatTime(message.timestamp)}
+                    </div>
                   </div>
+
+                  {message.reactions &&
+                    Object.keys(message.reactions).length > 0 && (
+                      <EmojiReactions
+                        reactions={message.reactions}
+                        currentUser={currentUser}
+                        onToggleReaction={(emoji) =>
+                          onReaction(message.id, emoji)
+                        }
+                      />
+                    )}
+
+                  {activeMessageMenu === message.id && (
+                    <MessageActions
+                      message={message}
+                      isOwn={isOwn}
+                      onReply={() => {
+                        onReply(message);
+                        setActiveMessageMenu(null);
+                      }}
+                      onDelete={() => {
+                        onDelete(message.id);
+                        setActiveMessageMenu(null);
+                      }}
+                      onReaction={(emoji) => {
+                        onReaction(message.id, emoji);
+                        setActiveMessageMenu(null);
+                      }}
+                      onClose={() => setActiveMessageMenu(null)}
+                    />
+                  )}
                 </div>
               </div>
 

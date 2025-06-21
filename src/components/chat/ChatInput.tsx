@@ -13,6 +13,12 @@ interface ChatInputProps {
   isLoggedIn: boolean;
   onLogin: (name: string) => void;
   userName: string;
+  replyTo?: {
+    id: string;
+    userName: string;
+    message: string;
+  } | null;
+  onCancelReply?: () => void;
 }
 
 const ChatInput = ({
@@ -23,6 +29,8 @@ const ChatInput = ({
   isLoggedIn,
   onLogin,
   userName,
+  replyTo,
+  onCancelReply,
 }: ChatInputProps) => {
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [nameInput, setNameInput] = useState("");
@@ -94,6 +102,27 @@ const ChatInput = ({
   return (
     <div className="fixed bottom-0 left-0 right-0 backdrop-blur-sm border-t border-purple-200/50 p-4 z-40">
       <div className="max-w-4xl mx-auto">
+        {replyTo && (
+          <div className="mb-3 p-3 bg-white/10 rounded-lg flex items-center justify-between">
+            <div className="flex-1">
+              <div className="text-sm text-purple-300 font-medium">
+                Ответ для {replyTo.userName}
+              </div>
+              <div className="text-xs text-gray-300 truncate max-w-md">
+                {replyTo.message}
+              </div>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onCancelReply}
+              className="text-white hover:bg-white/10"
+            >
+              <Icon name="X" size={16} />
+            </Button>
+          </div>
+        )}
+
         <div className="flex gap-2 items-center relative">
           <Button
             variant="ghost"

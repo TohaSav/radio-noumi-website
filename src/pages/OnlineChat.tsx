@@ -19,6 +19,12 @@ interface ChatMessage {
   avatar: string;
   type?: "text" | "image" | "video";
   mediaUrl?: string;
+  replyTo?: {
+    id: string;
+    userName: string;
+    message: string;
+  };
+  reactions?: { [emoji: string]: string[] };
 }
 
 const OnlineChat = () => {
@@ -32,6 +38,7 @@ const OnlineChat = () => {
   const [activeUsers, setActiveUsers] = useState<
     Array<{ id: string; name: string; avatar: string }>
   >([]);
+  const [replyTo, setReplyTo] = useState<ChatMessage | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const radioStats = useRadioStats();
 
@@ -155,10 +162,18 @@ const OnlineChat = () => {
       timestamp: new Date(),
       avatar: userAvatar,
       type: "text",
+      replyTo: replyTo
+        ? {
+            id: replyTo.id,
+            userName: replyTo.userName,
+            message: replyTo.message,
+          }
+        : undefined,
     };
 
     setMessages((prev) => [...prev, newMessage]);
     setMessageInput("");
+    setReplyTo(null);
   };
 
   const handleAutoMessage = (autoMessage: any) => {
@@ -210,6 +225,40 @@ const OnlineChat = () => {
     };
 
     setMessages((prev) => [...prev, newMessage]);
+  };
+
+  const handleReply = (message: ChatMessage) => {
+    setReplyTo(message);
+  };
+
+  const handleDeleteMessage = (messageId: string) => {
+    setMessages((prev) => prev.filter((msg) => msg.id !== messageId));
+  };
+
+  const handleReaction = (messageId: string, emoji: string) => {
+    setMessages((prev) =>
+      prev.map((msg) => {
+        if (msg.id === messageId) {
+          const reactions = { ...msg.reactions };
+          if (!reactions[emoji]) {
+            reactions[emoji] = [];
+          }
+
+          const userIndex = reactions[emoji].indexOf(userName);
+          if (userIndex > -1) {
+            reactions[emoji].splice(userIndex, 1);
+            if (reactions[emoji].length === 0) {
+              delete reactions[emoji];
+            }
+          } else {
+            reactions[emoji].push(userName);
+          }
+
+          return { ...msg, reactions };
+        }
+        return msg;
+      }),
+    );
   };
 
   const handleLogin = (name: string) => {
@@ -331,6 +380,9 @@ const OnlineChat = () => {
             messages={messages}
             messagesEndRef={messagesEndRef}
             currentUser={userName}
+            onReply={handleReply}
+            onDelete={handleDeleteMessage}
+            onReaction={handleReaction}
           />
         </div>
 
@@ -380,6 +432,8 @@ const OnlineChat = () => {
         isLoggedIn={isLoggedIn}
         onLogin={handleLogin}
         userName={userName}
+        replyTo={replyTo}
+        onCancelReply={() => setReplyTo(null)}
       />
       <HiddenRadio streamUrl="https://radio.noumi.fm/stream" />
     </div>
