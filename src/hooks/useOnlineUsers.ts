@@ -14,7 +14,6 @@ export const useOnlineUsers = (
   const [activeUsers, setActiveUsers] = useState<OnlineUser[]>([]);
   const [botsInitialized, setBotsInitialized] = useState(false);
 
-  // Создание и регистрация ботов как настоящих пользователей
   const initializeBots = () => {
     const botProfiles = [
       {
@@ -48,108 +47,138 @@ export const useOnlineUsers = (
           "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
       },
       {
-        name: "Виктория",
+        name: "Виктор",
+        avatar:
+          "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?w=150&h=150&fit=crop&crop=face",
+      },
+      {
+        name: "Ольга",
         avatar:
           "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face",
       },
       {
-        name: "Александр",
+        name: "Сергей",
         avatar:
           "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face",
       },
+      {
+        name: "Елена",
+        avatar:
+          "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&h=150&fit=crop&crop=face",
+      },
+      {
+        name: "Павел",
+        avatar:
+          "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&h=150&fit=crop&crop=face",
+      },
+      {
+        name: "Настя",
+        avatar:
+          "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=150&h=150&fit=crop&crop=face",
+      },
+      {
+        name: "Кира",
+        avatar:
+          "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
+      },
+      {
+        name: "Роман",
+        avatar:
+          "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=150&h=150&fit=crop&crop=face",
+      },
+      {
+        name: "Алиса",
+        avatar:
+          "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=150&h=150&fit=crop&crop=face",
+      },
     ];
 
-    const saved = loadFromLocalStorage<OnlineUser[]>("chat-users") || [];
-    let existingUsers = saved.map((u) => ({
-      ...u,
-      joinedAt: u.joinedAt ? new Date(u.joinedAt) : new Date(),
-      lastActivity: u.lastActivity ? new Date(u.lastActivity) : new Date(),
-    }));
+    // Сразу добавляем 6-8 активных ботов
+    const initialBotsCount = 6 + Math.floor(Math.random() * 3);
+    const shuffledBots = [...botProfiles].sort(() => Math.random() - 0.5);
 
-    // Регистрируем ботов как настоящих пользователей
-    botProfiles.forEach((bot) => {
-      const exists = existingUsers.some((u) => u.name === bot.name);
-      if (!exists) {
-        const botUser = {
-          id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-          name: bot.name,
-          avatar: bot.avatar,
-          joinedAt: new Date(Date.now() - Math.random() * 86400000), // Случайное время вчера
-          lastActivity: new Date(Date.now() - Math.random() * 3600000), // Активность в последний час
-          isActive: true,
-        };
-        existingUsers.push(botUser);
-      } else {
-        // Обновляем статус активности для существующих ботов
-        existingUsers = existingUsers.map((u) =>
-          u.name === bot.name
-            ? { ...u, isActive: true, lastActivity: new Date() }
-            : u,
-        );
-      }
+    const initialBots = shuffledBots
+      .slice(0, initialBotsCount)
+      .map((bot) => createUser(bot.name, bot.avatar));
+
+    setActiveUsers(initialBots);
+    saveToLocalStorage("activeUsers", initialBots);
+
+    // Планируем добавление остальных ботов через короткие интервалы
+    const remainingBots = shuffledBots.slice(initialBotsCount);
+    remainingBots.forEach((bot, index) => {
+      setTimeout(
+        () => {
+          const newBot = createUser(bot.name, bot.avatar);
+          setActiveUsers((prev) => {
+            const updated = [...prev, newBot];
+            saveToLocalStorage("activeUsers", updated);
+            return updated;
+          });
+        },
+        (index + 1) * (3000 + Math.random() * 7000),
+      ); // Каждые 3-10 секунд
     });
-
-    return existingUsers;
   };
 
-  // Загрузка пользователей при изменении статуса логина
   useEffect(() => {
-    const loadUsers = () => {
-      let allUsers = initializeBots();
+    if (isLoggedIn && !botsInitialized) {
+      // Добавляем пользователя
+      const currentUser = createUser(userName, userAvatar);
+      const saved = loadFromLocalStorage("activeUsers", []);
 
-      if (isLoggedIn && userName && userAvatar) {
-        const userExists = allUsers.some((u) => u.name === userName);
-        if (!userExists) {
-          const newUser = createUser(userName, userAvatar);
-          allUsers = [...allUsers, newUser];
-        }
+      const userExists = saved.some((user) => user.name === userName);
+      if (!userExists) {
+        const updatedUsers = [...saved, currentUser];
+        setActiveUsers(updatedUsers);
+        saveToLocalStorage("activeUsers", updatedUsers);
+      } else {
+        setActiveUsers(saved);
       }
 
-      setActiveUsers(allUsers);
-      saveToLocalStorage("chat-users", allUsers);
+      // Инициализируем ботов только один раз
+      if (saved.length <= 1) {
+        initializeBots();
+      }
       setBotsInitialized(true);
-    };
-
-    loadUsers();
-  }, [isLoggedIn, userName, userAvatar]);
-
-  const updateUsers = (updatedUsers: OnlineUser[]) => {
-    // Убеждаемся, что текущий пользователь в списке
-    if (isLoggedIn && userName) {
-      const currentUserExists = updatedUsers.some((u) => u.name === userName);
-      if (!currentUserExists) {
-        const currentUser = createUser(userName, userAvatar);
-        updatedUsers.unshift(currentUser);
-      }
     }
-    setActiveUsers(updatedUsers);
-    saveToLocalStorage("chat-users", updatedUsers);
-  };
+  }, [isLoggedIn, userName, userAvatar, botsInitialized]);
 
-  const addUser = (userData: { name: string; avatar: string }) => {
-    const existing = loadFromLocalStorage<OnlineUser[]>("chat-users") || [];
-    const userExists = existing.some((u) => u.name === userData.name);
+  // Периодическое добавление новых ботов для поддержания активности
+  useEffect(() => {
+    if (!isLoggedIn) return;
 
-    if (!userExists) {
-      const newUser = createUser(userData.name, userData.avatar);
-      const updated = [...existing, newUser];
-      saveToLocalStorage("chat-users", updated);
-      setActiveUsers(updated);
-    }
-  };
+    const addRandomBots = setInterval(
+      () => {
+        // Если ботов меньше 15, добавляем новых
+        if (activeUsers.length < 15 && Math.random() < 0.7) {
+          const newBotNames = [
+            "Игорь",
+            "Светлана",
+            "Андрей",
+            "Юлия",
+            "Денис",
+            "Марина",
+            "Олег",
+            "Татьяна",
+          ];
+          const randomName =
+            newBotNames[Math.floor(Math.random() * newBotNames.length)];
+          const randomAvatar = `https://images.unsplash.com/photo-${1500000000000 + Math.floor(Math.random() * 100000000)}?w=150&h=150&fit=crop&crop=face`;
 
-  const getBotUsers = () => {
-    // Возвращаем всех пользователей кроме текущего для автогенерации
-    return activeUsers.filter(
-      (user) => user.name !== userName && user.isActive,
-    );
-  };
+          const newBot = createUser(randomName, randomAvatar);
+          setActiveUsers((prev) => {
+            const updated = [...prev, newBot];
+            saveToLocalStorage("activeUsers", updated);
+            return updated;
+          });
+        }
+      },
+      8000 + Math.random() * 12000,
+    ); // Каждые 8-20 секунд
 
-  return {
-    activeUsers,
-    updateUsers,
-    addUser,
-    setActiveUsers,
-    getBotUsers,
-  };
+    return () => clearInterval(addRandomBots);
+  }, [isLoggedIn, activeUsers.length]);
+
+  return { activeUsers, setActiveUsers };
 };

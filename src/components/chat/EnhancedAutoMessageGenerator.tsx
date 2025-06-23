@@ -74,34 +74,9 @@ const EnhancedAutoMessageGenerator = ({
       }
     }
 
-    // 15% видео, 25% фото, 60% текст
-    if (messageType < 0.15) {
-      const videoContent = contentGenerator.current.generateUniqueVideo(bot.id);
-      if (videoContent) {
-        return {
-          id: `msg_${timestamp}_${uniqueId}`,
-          userName: bot.name,
-          message: videoContent.message,
-          timestamp: new Date(),
-          avatar: bot.avatar,
-          type: "video",
-          mediaUrl: videoContent.url,
-        };
-      }
-    } else if (messageType < 0.4) {
-      const imageContent = contentGenerator.current.generateUniqueImage(bot.id);
-      if (imageContent) {
-        return {
-          id: `msg_${timestamp}_${uniqueId}`,
-          userName: bot.name,
-          message: imageContent.message,
-          timestamp: new Date(),
-          avatar: bot.avatar,
-          type: "image",
-          mediaUrl: imageContent.url,
-        };
-      }
-    } else {
+    // Генерация разных типов сообщений с более высокой вероятностью медиа
+    if (messageType < 0.4) {
+      // 40% - обычные текстовые сообщения
       const textContent = contentGenerator.current.generateUniqueText(
         bot.id,
         bot.style,
@@ -116,9 +91,56 @@ const EnhancedAutoMessageGenerator = ({
           type: "text",
         };
       }
+    } else if (messageType < 0.7) {
+      // 30% - изображения
+      const imageContent = contentGenerator.current.generateUniqueImage(bot.id);
+      if (imageContent) {
+        return {
+          id: `msg_${timestamp}_${uniqueId}`,
+          userName: bot.name,
+          message: imageContent.message,
+          timestamp: new Date(),
+          avatar: bot.avatar,
+          type: "image",
+          mediaUrl: imageContent.url,
+        };
+      }
+    } else {
+      // 30% - видео
+      const videoContent = contentGenerator.current.generateUniqueVideo(bot.id);
+      if (videoContent) {
+        return {
+          id: `msg_${timestamp}_${uniqueId}`,
+          userName: bot.name,
+          message: videoContent.message,
+          timestamp: new Date(),
+          avatar: bot.avatar,
+          type: "video",
+          mediaUrl: videoContent.url,
+        };
+      }
     }
 
     return null;
+  };
+
+  // Генерация реакций на сообщения
+  const generateReaction = () => {
+    if (recentMessages.length === 0) return;
+
+    const availableBots = activeBots.filter((bot) => bot.isActive);
+    if (availableBots.length === 0) return;
+
+    const bot = availableBots[Math.floor(Math.random() * availableBots.length)];
+    const recentMessage =
+      recentMessages[
+        Math.floor(Math.random() * Math.min(recentMessages.length, 5))
+      ];
+
+    if (Math.random() < bot.reactionChance) {
+      const emoji = bot.emojis[Math.floor(Math.random() * bot.emojis.length)];
+      onReactionAdded(recentMessage.id, emoji, bot.name);
+    }
   };
 
   // Добавление реакций на сообщения
@@ -138,7 +160,7 @@ const EnhancedAutoMessageGenerator = ({
   };
 
   useEffect(() => {
-    // Генерация сообщений
+    // Очень частая генерация сообщений - каждые 2-8 секунд
     const messageInterval = setInterval(
       () => {
         const message = generateUniqueMessage();
@@ -146,28 +168,37 @@ const EnhancedAutoMessageGenerator = ({
           onMessageGenerated(message);
         }
       },
-      2000 + Math.random() * 4000,
-    ); // 2-6 секунд
+      2000 + Math.random() * 6000,
+    );
 
-    // Добавление реакций
+    // Частые реакции - каждые 3-10 секунд
     const reactionInterval = setInterval(
       () => {
-        addRandomReaction();
+        generateReaction();
       },
       3000 + Math.random() * 7000,
-    ); // 3-10 секунд
+    );
 
-    // Очистка истории периодически
-    const cleanupInterval = setInterval(() => {
-      contentGenerator.current.cleanHistory();
-    }, 300000); // каждые 5 минут
+    // Очень частое появление новых ботов - каждые 5-15 секунд
+    const botRegistrationInterval = setInterval(
+      () => {
+        const inactiveBots = activeBots.filter((bot) => !bot.isActive);
+        if (inactiveBots.length > 0 && Math.random() < 0.8) {
+          const randomBot =
+            inactiveBots[Math.floor(Math.random() * inactiveBots.length)];
+          randomBot.isActive = true;
+          randomBot.lastActivity = Date.now();
+        }
+      },
+      5000 + Math.random() * 10000,
+    );
 
     return () => {
       clearInterval(messageInterval);
       clearInterval(reactionInterval);
-      clearInterval(cleanupInterval);
+      clearInterval(botRegistrationInterval);
     };
-  }, [recentMessages, activeBots]);
+  }, [recentMessages]);
 
   return null;
 };

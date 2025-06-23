@@ -19,6 +19,266 @@ class UniqueContentGenerator {
     "art",
     "sport",
     "travel",
+    "cars",
+    "music",
+    "fashion",
+    "architecture",
+    "books",
+    "coffee",
+    "flowers",
+    "sunset",
+    "ocean",
+    "mountains",
+    "street",
+    "interior",
+    "gadgets",
+    "gaming",
+    "fitness",
+    "cooking",
+    "makeup",
+    "lifestyle",
+    "workspace",
+    "animals",
+  ];
+
+  private videoCategories = [
+    "nature",
+    "city",
+    "food",
+    "travel",
+    "sport",
+    "music",
+    "art",
+    "technology",
+    "lifestyle",
+    "pets",
+    "fitness",
+    "cooking",
+    "gaming",
+    "fashion",
+    "cars",
+  ];
+
+  private textTemplates = {
+    casual: [
+      "кто еще здесь?",
+      "привет всем!",
+      "как дела?",
+      "что нового?",
+      "классная погода сегодня",
+      "кто слушает радио?",
+      "отличная музыка",
+      "согласен полностью",
+      "точно так же думаю",
+      "интересно",
+      "круто!",
+      "прям в точку",
+      "да уж",
+      "конечно",
+      "абсолютно верно",
+      "супер",
+      "отлично сказано",
+      "мне нравится",
+      "хорошая идея",
+      "поддерживаю",
+      "давайте обсудим",
+      "что думаете?",
+      "кто со мной?",
+      "интересная тема",
+      "расскажите больше",
+      "а вы как считаете?",
+      "полезная информация",
+      "спасибо за совет",
+      "буду иметь в виду",
+      "надо попробовать",
+    ],
+    energetic: [
+      "ух ты!",
+      "это же супер!",
+      "обожаю такое!",
+      "как здорово!",
+      "прям мое настроение!",
+      "давайте еще обсудим!",
+      "это потрясающе!",
+      "невероятно круто!",
+      "просто восторг!",
+      "фантастика!",
+      "шикарно!",
+      "вау, впечатляет!",
+      "это же бомба!",
+      "офигенно!",
+      "класс!",
+      "обалденно!",
+      "кайф!",
+      "топчик!",
+      "зацените это!",
+      "мега круто!",
+      "просто огонь!",
+      "улет!",
+      "ребята, это нечто!",
+      "я в восторге!",
+      "какая красота!",
+      "это шедевр!",
+      "браво!",
+      "аплодирую!",
+      "респект!",
+    ],
+    calm: [
+      "интересная точка зрения",
+      "стоит подумать",
+      "разумно",
+      "логично",
+      "имеет смысл",
+      "взвешенное мнение",
+      "справедливо",
+      "обдуманно",
+      "мудро",
+      "практично",
+      "рационально",
+      "последовательно",
+      "грамотно",
+      "основательно",
+      "продуманно",
+      "целесообразно",
+      "разборчиво",
+      "размеренно",
+      "вдумчиво",
+      "осмысленно",
+      "конструктивно",
+      "аналитически",
+      "систематично",
+      "методично",
+      "планомерно",
+    ],
+    funny: [
+      "ха-ха, смешно!",
+      "это прям в точку",
+      "классно сказано",
+      "рассмешил до слез",
+      "юмор на высоте",
+      "ржу не могу!",
+      "умора!",
+      "смеюсь в голос!",
+      "это анекдот!",
+      "прикол!",
+      "ахахах!",
+      "ору!",
+      "жесть какая!",
+      "угарно!",
+      "ржака!",
+      "смешарик!",
+      "комик!",
+      "балагур!",
+      "весельчак!",
+      "шутник!",
+      "а вы хороши!",
+      "остроумно!",
+      "изящно!",
+      "тонко подмечено!",
+      "с юмором у вас все в порядке!",
+      "талант!",
+      "мастерски!",
+    ],
+    formal: [
+      "благодарю за информацию",
+      "принимаю к сведению",
+      "согласен с вами",
+      "поддерживаю данную точку зрения",
+      "весьма познавательно",
+      "ценная информация",
+      "полезные сведения",
+      "конструктивно",
+      "профессионально",
+      "компетентно",
+      "квалифицированно",
+      "грамотно",
+      "добротно",
+      "качественно",
+      "основательно",
+      "детально",
+    ],
+  };
+
+  private imageMessages = {
+    food: [
+      "вкуснота!",
+      "аппетитно выглядит",
+      "слюнки текут",
+      "ням-ням",
+      "готовлю такое же",
+    ],
+    nature: [
+      "красота!",
+      "какой вид!",
+      "обожаю природу",
+      "breathtaking",
+      "умиротворяет",
+    ],
+    city: [
+      "городские джунгли",
+      "люблю такие виды",
+      "архитектура супер",
+      "мегаполис",
+      "урбанистика",
+    ],
+    pets: [
+      "милашка!",
+      "такой хорошенький",
+      "обожаю животных",
+      "лапочка",
+      "хочу такого",
+    ],
+    technology: [
+      "крутая штука",
+      "прогресс не стоит",
+      "технологии будущего",
+      "инновации",
+      "хай-тек",
+    ],
+    art: [
+      "произведение искусства",
+      "талантливо",
+      "креативно",
+      "вдохновляет",
+      "эстетика",
+    ],
+    sport: [
+      "мотивирует",
+      "спорт - это жизнь",
+      "здоровый образ жизни",
+      "сила духа",
+      "достижения",
+    ],
+    travel: [
+      "хочу туда",
+      "путешествия - это жизнь",
+      "следующий пункт",
+      "вдохновляет",
+      "мечта",
+    ],
+  };
+
+  private videoMessages = [
+    "смотрите что снял",
+    "интересное видео получилось",
+    "делюсь роликом",
+    "посмотрите этот момент",
+    "запечатлел красоту",
+    "видео дня",
+    "крутые кадры",
+    "атмосферное видео",
+    "живые эмоции в кадре",
+    "короткий ролик",
+    "динамичное видео",
+    "в движении",
+    "life in motion",
+    "момент жизни",
+    "spontaneous",
+    "реальная жизнь",
+    "без фильтров",
+    "как это было",
+    "behind the scenes",
+    "процесс в действии",
   ];
 
   constructor() {
@@ -46,8 +306,10 @@ class UniqueContentGenerator {
 
   // Генерация уникального текстового сообщения
   generateUniqueText(botId: string, style: string): string | null {
-    const templates = this.getTemplatesByStyle(style);
-    const maxAttempts = 50;
+    const templates =
+      this.textTemplates[style as keyof typeof this.textTemplates] ||
+      this.textTemplates.casual;
+    const maxAttempts = 100;
 
     for (let i = 0; i < maxAttempts; i++) {
       const template = templates[Math.floor(Math.random() * templates.length)];
@@ -70,15 +332,14 @@ class UniqueContentGenerator {
         Math.floor(Math.random() * this.photoCategories.length)
       ];
     const timestamp = Date.now();
-    const uniqueId = Math.random().toString(36).substr(2, 9);
+    const uniqueId = Math.random().toString(36).substr(2, 12);
+    const randomSeed = Math.floor(Math.random() * 10000);
 
-    const imageUrl = this.generateImageUrl(
-      category,
-      timestamp,
-      uniqueId,
-      botId,
-    );
-    const message = this.generateImageMessage(category);
+    const imageUrl = `https://picsum.photos/400/300?random=${uniqueId}&t=${timestamp}&bot=${botId}&seed=${randomSeed}&category=${category}`;
+    const messages =
+      this.imageMessages[category as keyof typeof this.imageMessages] ||
+      this.imageMessages.nature;
+    const message = messages[Math.floor(Math.random() * messages.length)];
     const hash = this.generateHash(imageUrl, "image", botId);
 
     if (this.isUnique(hash)) {
@@ -91,19 +352,17 @@ class UniqueContentGenerator {
 
   // Генерация уникального видео
   generateUniqueVideo(botId: string): { url: string; message: string } | null {
+    const category =
+      this.videoCategories[
+        Math.floor(Math.random() * this.videoCategories.length)
+      ];
     const timestamp = Date.now();
-    const uniqueId = Math.random().toString(36).substr(2, 9);
+    const uniqueId = Math.random().toString(36).substr(2, 12);
+    const randomSeed = Math.floor(Math.random() * 10000);
 
-    const videoUrl = `https://sample-videos.com/zip/10/mp4/SampleVideo_640x360_1mb.mp4?bot=${botId}&t=${timestamp}&id=${uniqueId}&r=${Math.random()}`;
-    const messages = [
-      "смотрите что снял",
-      "интересное видео получилось",
-      "делюсь моментом",
-      "классный ролик",
-      "вот такие дела",
-      "записал для вас",
-    ];
-    const message = messages[Math.floor(Math.random() * messages.length)];
+    const videoUrl = `https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4?bot=${botId}&t=${timestamp}&id=${uniqueId}&seed=${randomSeed}&cat=${category}`;
+    const message =
+      this.videoMessages[Math.floor(Math.random() * this.videoMessages.length)];
     const hash = this.generateHash(videoUrl, "video", botId);
 
     if (this.isUnique(hash)) {
@@ -267,29 +526,10 @@ class UniqueContentGenerator {
 
   // Генерация сообщения для изображения
   private generateImageMessage(category: string): string {
-    const messages: Record<string, string[]> = {
-      food: ["приготовил обед", "вкусная еда", "мой кулинарный шедевр"],
-      nature: ["красивый вид", "на прогулке", "природа восхищает"],
-      city: [
-        "городские пейзажи",
-        "архитектура впечатляет",
-        "прогулка по центру",
-      ],
-      pets: ["мой питомец", "милашка", "лучший друг"],
-      technology: [
-        "новые технологии",
-        "интересное устройство",
-        "прогресс не стоит",
-      ],
-      art: ["произведение искусства", "творчество вдохновляет", "красота"],
-      sport: ["тренировка", "спорт это жизнь", "активный день"],
-      travel: ["путешествие", "новые места", "исследую мир"],
-    };
-
-    const categoryMessages = messages[category] || messages.nature;
-    return categoryMessages[
-      Math.floor(Math.random() * categoryMessages.length)
-    ];
+    const messages =
+      this.imageMessages[category as keyof typeof this.imageMessages] ||
+      this.imageMessages.nature;
+    return messages[Math.floor(Math.random() * messages.length)];
   }
 
   // Получение шаблонов по стилю
@@ -338,45 +578,44 @@ class UniqueContentGenerator {
     return styleTemplates[style] || styleTemplates.casual;
   }
 
-  // Добавление персонализации
+  // Персонализация сообщения
   private addPersonalization(template: string, style: string): string {
-    const personalTouches = [
-      "кстати",
-      "между прочим",
-      "вообще-то",
-      "как всегда",
+    const variations = [
+      template,
+      `${template} 😊`,
+      `${template}!`,
+      `${template} 👍`,
+      `${template} ✨`,
+      `а ${template}`,
+      `${template}, согласны?`,
+      `${template} 💫`,
+      `${template} 🔥`,
+      `реально ${template}`,
     ];
 
-    if (Math.random() < 0.3) {
-      const touch =
-        personalTouches[Math.floor(Math.random() * personalTouches.length)];
-      return `${touch}, ${template}`;
-    }
-
-    return template;
+    return variations[Math.floor(Math.random() * variations.length)];
   }
 
   // Сохранение истории
   private saveHistory(): void {
     try {
-      localStorage.setItem(
-        "unique-bot-content",
-        JSON.stringify([...this.usedContent]),
-      );
+      const historyArray = Array.from(this.usedContent);
+      localStorage.setItem("chatContentHistory", JSON.stringify(historyArray));
     } catch (error) {
-      console.error("Ошибка сохранения истории:", error);
+      console.warn("Не удалось сохранить историю контента:", error);
     }
   }
 
   // Загрузка истории
   private loadHistory(): void {
     try {
-      const stored = localStorage.getItem("unique-bot-content");
-      if (stored) {
-        this.usedContent = new Set(JSON.parse(stored));
+      const saved = localStorage.getItem("chatContentHistory");
+      if (saved) {
+        const historyArray = JSON.parse(saved);
+        this.usedContent = new Set(historyArray);
       }
     } catch (error) {
-      console.error("Ошибка загрузки истории:", error);
+      console.warn("Не удалось загрузить историю контента:", error);
     }
   }
 
