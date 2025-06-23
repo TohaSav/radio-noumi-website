@@ -15,7 +15,8 @@ export const useChatMessages = () => {
       "chat-messages",
       [],
     );
-    setMessages(savedMessages);
+    // Гарантируем, что messages всегда массив
+    setMessages(Array.isArray(savedMessages) ? savedMessages : []);
   }, []);
 
   // Сохранение сообщений

@@ -116,7 +116,7 @@ const ChatMessages = ({
   return (
     <div className="flex-1 overflow-y-auto px-4 md:px-6 py-4 pb-24">
       <div className="max-w-4xl mx-auto space-y-4">
-        {messages.map((message) => {
+        {(messages || []).map((message) => {
           const isOwn = message.userName === currentUser;
 
           return (
