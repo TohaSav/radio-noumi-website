@@ -29,8 +29,8 @@ const ChatSidebar = ({
 
       {/* Mobile Sidebar */}
       <div className="md:hidden fixed inset-0 bg-black/50 z-50 flex">
-        <div className="ml-auto w-80 max-w-[80vw] bg-white/10 backdrop-blur-md h-full">
-          <div className="p-4 border-b border-white/20 flex justify-between items-center">
+        <div className="ml-auto w-full max-w-sm bg-white/10 backdrop-blur-md h-full flex flex-col">
+          <div className="p-4 border-b border-white/20 flex justify-between items-center flex-shrink-0">
             <h3 className="text-white font-medium">Участники</h3>
             <Button
               variant="ghost"
@@ -41,11 +41,13 @@ const ChatSidebar = ({
               <Icon name="X" size={16} />
             </Button>
           </div>
-          <OnlineUsers
-            count={activeUsers.length}
-            users={activeUsers}
-            showList={showUserPanel}
-          />
+          <div className="flex-1 overflow-hidden">
+            <OnlineUsers
+              count={activeUsers.length}
+              users={activeUsers}
+              showList={showUserPanel}
+            />
+          </div>
         </div>
         <div className="flex-1" onClick={onClose} />
       </div>
