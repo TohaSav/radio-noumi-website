@@ -10,9 +10,12 @@ export const useChatMessages = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   useEffect(() => {
-    // Очищаем все существующие сообщения - чат начинается пустым
-    localStorage.removeItem("chat-messages");
-    setMessages([]);
+    // Загружаем сохранённые сообщения при инициализации
+    const savedMessages = loadFromLocalStorage<ChatMessage[]>(
+      "chat-messages",
+      [],
+    );
+    setMessages(savedMessages);
   }, []);
 
   // Сохранение сообщений
