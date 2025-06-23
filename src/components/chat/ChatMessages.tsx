@@ -44,11 +44,30 @@ const ChatMessages = ({
   const [activeMessageMenu, setActiveMessageMenu] = useState<string | null>(
     null,
   );
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString("ru-RU", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+  const formatTime = (date: Date | string | number): string => {
+    try {
+      // Преобразуем в Date объект если это не Date
+      const dateObj = date instanceof Date ? date : new Date(date);
+
+      // Проверяем, что получился валидный Date
+      if (isNaN(dateObj.getTime())) {
+        return new Date().toLocaleTimeString("ru-RU", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
+
+      return dateObj.toLocaleTimeString("ru-RU", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } catch (error) {
+      // Если что-то пошло не так, возвращаем текущее время
+      return new Date().toLocaleTimeString("ru-RU", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    }
   };
 
   const handleMessageClick = (message: ChatMessage) => {
