@@ -180,5 +180,16 @@ export const useOnlineUsers = (
     return () => clearInterval(addRandomBots);
   }, [isLoggedIn, activeUsers.length]);
 
-  return { activeUsers, setActiveUsers };
+  const addUser = (user: OnlineUser) => {
+    setActiveUsers((prev) => {
+      const updatedUsers = [...prev, user];
+      saveToLocalStorage("onlineUsers", updatedUsers);
+      return updatedUsers;
+    });
+  };
+
+  return {
+    activeUsers,
+    addUser,
+  };
 };

@@ -31,7 +31,7 @@ const OnlineChat = () => {
   const { messages, addMessage, deleteMessage, addReaction } =
     useChatMessages();
 
-  const { activeUsers, updateUsers, addUser } = useOnlineUsers(
+  const { activeUsers, addUser } = useOnlineUsers(
     isLoggedIn,
     userName,
     userAvatar,
