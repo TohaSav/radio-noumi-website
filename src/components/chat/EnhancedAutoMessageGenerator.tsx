@@ -288,66 +288,52 @@ const EnhancedAutoMessageGenerator = ({
   };
 
   const generateUniqueMessage = () => {
-    // Создаем только виртуальных ботов, исключаем реальных пользователей
-    const getBotUser = () => {
-      const botNames = [
-        "МузыкБот",
-        "ФотоБот",
-        "КиноБот",
-        "СпортБот",
-        "КулинарБот",
-        "ПутешественникБот",
-        "ИгровойБот",
-        "КнижныйБот",
-        "ТехноБот",
-        "АртБот",
-        "НовостнойБот",
-        "ПогодныйБот",
-      ];
+    // Используем зарегистрированных ботов как настоящих пользователей
+    const availableBots = activeUsers.filter((user) => user.isActive);
 
-      const botAvatars = [
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-        "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
-        "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face",
-        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face",
-      ];
+    if (availableBots.length === 0) return null;
 
-      return {
-        id: `bot_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-        name: botNames[Math.floor(Math.random() * botNames.length)],
-        avatar: botAvatars[Math.floor(Math.random() * botAvatars.length)],
-      };
-    };
-
-    // ВСЕГДА используем только ботов, игнорируем реальных пользователей
-    const user = getBotUser();
-
+    const user =
+      availableBots[Math.floor(Math.random() * availableBots.length)];
     const messageType = Math.random();
     const timestamp = Date.now();
+    const uniqueId = Math.random().toString(36).substr(2, 9);
 
-    // 15% - видео, 25% - фото, 60% - текст
-    if (messageType < 0.15) {
-      // Видео сообщение
-      const video = generateUniqueVideo();
-      const contentKey = `video_${timestamp}_${user.id}`;
+    // 20% - видео, 30% - фото, 50% - текст
+    if (messageType < 0.2) {
+      // Уникальное видео сообщение
+      const videoId = `${timestamp}_${user.id}_${uniqueId}`;
+      const videoUrl = `https://sample-videos.com/zip/10/mp4/SampleVideo_640x360_1mb.mp4?id=${videoId}&t=${timestamp}&u=${user.id}`;
 
+      const videoMessages = [
+        "Посмотрите что снял!",
+        "Интересное видео сегодня",
+        "Делюсь моментом",
+        "Классный ролик получился",
+        "Смотрите что происходит",
+        "Забавное видео",
+        "Решил поделиться",
+        "Вот такие дела",
+        "Интересный момент",
+        "Рекомендую посмотреть",
+      ];
+
+      const contentKey = `video_${videoId}`;
       if (usedContent.has(contentKey)) return null;
 
       return {
-        id: `msg_${timestamp}_${Math.random().toString(36).substr(2, 9)}`,
+        id: `msg_${timestamp}_${uniqueId}`,
         userName: user.name,
-        message: video.message,
+        message:
+          videoMessages[Math.floor(Math.random() * videoMessages.length)],
         timestamp: new Date(),
         avatar: user.avatar,
         type: "video" as const,
-        mediaUrl: video.url,
+        mediaUrl: videoUrl,
         contentKey,
       };
-    } else if (messageType < 0.4) {
-      // Фото сообщение
+    } else if (messageType < 0.5) {
+      // Уникальное фото сообщение
       const categories = Object.keys(photoCategories);
       const category =
         categories[Math.floor(Math.random() * categories.length)];
@@ -358,17 +344,19 @@ const EnhancedAutoMessageGenerator = ({
         categoryData.baseUrls[
           Math.floor(Math.random() * categoryData.baseUrls.length)
         ];
-      const uniqueUrl = `${baseUrl}?w=400&h=400&fit=crop&t=${timestamp}&u=${user.id}&r=${Math.random()}`;
+      const photoId = `${timestamp}_${user.id}_${uniqueId}`;
+      const uniqueUrl = `${baseUrl}?w=400&h=400&fit=crop&id=${photoId}&t=${timestamp}&u=${user.id}&r=${Math.random()}`;
+
       const message =
         categoryData.messages[
           Math.floor(Math.random() * categoryData.messages.length)
         ];
 
-      const contentKey = `photo_${category}_${timestamp}_${user.id}`;
+      const contentKey = `photo_${category}_${photoId}`;
       if (usedContent.has(contentKey)) return null;
 
       return {
-        id: `msg_${timestamp}_${Math.random().toString(36).substr(2, 9)}`,
+        id: `msg_${timestamp}_${uniqueId}`,
         userName: user.name,
         message: message,
         timestamp: new Date(),
@@ -378,7 +366,7 @@ const EnhancedAutoMessageGenerator = ({
         contentKey,
       };
     } else {
-      // Текстовое сообщение
+      // Живое текстовое сообщение
       const templateCategories = Object.keys(messageTemplates);
       const category =
         templateCategories[
@@ -389,40 +377,39 @@ const EnhancedAutoMessageGenerator = ({
 
       let baseMessage = templates[Math.floor(Math.random() * templates.length)];
 
-      // Создаем вариации сообщения
-      const messageKey = `${category}_${baseMessage}`;
+      // Персонализация сообщения под конкретного пользователя
+      const messageKey = `${category}_${baseMessage}_${user.name}`;
       const variation = messageVariations.get(messageKey) || 0;
 
-      // Добавляем уникальность через вариации
-      if (variation > 0) {
-        if (Math.random() < 0.5) {
-          baseMessage += ` ${emojis[Math.floor(Math.random() * emojis.length)]}`;
-        }
-        if (Math.random() < 0.3) {
-          const modifiers = [
-            "кстати",
-            "между прочим",
-            "вообще",
-            "сегодня",
-            "сейчас",
-          ];
-          baseMessage =
-            modifiers[Math.floor(Math.random() * modifiers.length)] +
-            ", " +
-            baseMessage.toLowerCase();
-        }
+      // Добавляем живости через вариации
+      if (variation > 0 && Math.random() < 0.4) {
+        const personalTouches = [
+          "у меня",
+          "кстати",
+          "сегодня",
+          "вообще-то",
+          "между прочим",
+          "как всегда",
+        ];
+        const touch =
+          personalTouches[Math.floor(Math.random() * personalTouches.length)];
+        baseMessage = `${touch}, ${baseMessage.toLowerCase()}`;
       }
 
-      const contentKey = `text_${messageKey}_${variation}_${user.id}`;
+      // Добавляем эмоджи для живости
+      if (Math.random() < 0.6) {
+        baseMessage += ` ${emojis[Math.floor(Math.random() * emojis.length)]}`;
+      }
+
+      const contentKey = `text_${messageKey}_${variation}`;
       if (usedContent.has(contentKey)) return null;
 
-      // Обновляем счетчик вариаций
       setMessageVariations(
         (prev) => new Map(prev.set(messageKey, variation + 1)),
       );
 
       return {
-        id: `msg_${timestamp}_${Math.random().toString(36).substr(2, 9)}`,
+        id: `msg_${timestamp}_${uniqueId}`,
         userName: user.name,
         message: baseMessage,
         timestamp: new Date(),
@@ -454,17 +441,17 @@ const EnhancedAutoMessageGenerator = ({
           setUsedContent((prev) => {
             const newSet = new Set([...prev, message.contentKey]);
 
-            // Ограничиваем размер истории (сохраняем последние 2000 записей)
-            if (newSet.size > 2000) {
+            // Ограничиваем размер истории (сохраняем последние 3000 записей)
+            if (newSet.size > 3000) {
               const array = Array.from(newSet);
-              return new Set(array.slice(-1500));
+              return new Set(array.slice(-2000));
             }
 
             return newSet;
           });
         }
       },
-      800 + Math.random() * 2000, // Ускорил генерацию: 0.8-2.8 секунд
+      1200 + Math.random() * 3000, // 1.2-4.2 секунд между сообщениями
     );
 
     return () => clearInterval(messageInterval);
