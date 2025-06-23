@@ -37,20 +37,30 @@ export const useChatMessages = () => {
 
         const reactions = { ...msg.reactions };
 
-        // Убираем пользователя из всех реакций
+        // Убираем пользователя из всех других реакций (один пользователь - одна реакция)
         Object.keys(reactions).forEach((existingEmoji) => {
-          const userIndex = reactions[existingEmoji].indexOf(userName);
-          if (userIndex > -1) {
-            reactions[existingEmoji].splice(userIndex, 1);
-            if (reactions[existingEmoji].length === 0) {
-              delete reactions[existingEmoji];
+          if (existingEmoji !== emoji) {
+            const userIndex = reactions[existingEmoji].indexOf(userName);
+            if (userIndex > -1) {
+              reactions[existingEmoji].splice(userIndex, 1);
+              if (reactions[existingEmoji].length === 0) {
+                delete reactions[existingEmoji];
+              }
             }
           }
         });
 
-        // Добавляем новую реакцию
+        // Добавляем/убираем текущую реакцию
         const hadThisReaction = msg.reactions?.[emoji]?.includes(userName);
-        if (!hadThisReaction) {
+        if (hadThisReaction) {
+          // Убираем реакцию
+          const userIndex = reactions[emoji].indexOf(userName);
+          reactions[emoji].splice(userIndex, 1);
+          if (reactions[emoji].length === 0) {
+            delete reactions[emoji];
+          }
+        } else {
+          // Добавляем реакцию
           if (!reactions[emoji]) {
             reactions[emoji] = [];
           }
@@ -62,11 +72,16 @@ export const useChatMessages = () => {
     );
   };
 
+  const getRecentMessages = (count: number = 10): ChatMessage[] => {
+    return messages.slice(-count);
+  };
+
   return {
     messages,
     addMessage,
     deleteMessage,
     addReaction,
     setMessages,
+    getRecentMessages,
   };
 };

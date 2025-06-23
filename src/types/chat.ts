@@ -15,6 +15,21 @@ export interface ChatMessage {
     message: string;
   };
   reactions?: { [emoji: string]: string[] };
+  contentKey?: string;
+  isUnique?: boolean;
+}
+
+export interface BotMessage extends ChatMessage {
+  botId: string;
+  contextReply?: boolean;
+  uniqueHash?: string;
+}
+
+export interface BotReaction {
+  messageId: string;
+  emoji: string;
+  botName: string;
+  timestamp: Date;
 }
 
 export interface OnlineUser {
