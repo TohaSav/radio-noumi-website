@@ -287,10 +287,15 @@ class UniqueContentGenerator {
 
   // Генерация уникального хеша для контента
   private generateHash(content: string, type: string, botId: string): string {
-    return btoa(`${type}_${botId}_${content}_${Date.now()}`).replace(
-      /[^a-zA-Z0-9]/g,
-      "",
-    );
+    const fullContent = `${type}_${botId}_${content}_${Date.now()}`;
+    // Простая хеш-функция для UTF-8 строк
+    let hash = 0;
+    for (let i = 0; i < fullContent.length; i++) {
+      const char = fullContent.charCodeAt(i);
+      hash = (hash << 5) - hash + char;
+      hash = hash & hash; // Преобразуем в 32-битное целое
+    }
+    return Math.abs(hash).toString(16);
   }
 
   // Проверка уникальности
