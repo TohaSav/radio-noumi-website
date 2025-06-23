@@ -54,15 +54,26 @@ const OnlineChat = () => {
   };
 
   const handleAutoMessage = (autoMessage: any) => {
-    const newMessage = createMessage(
-      autoMessage.userName,
-      autoMessage.avatar,
-      autoMessage.message,
-      autoMessage.type,
-      null,
-      autoMessage.mediaUrl,
-    );
+    // Создаем сообщение с правильной структурой
+    const newMessage = {
+      id: autoMessage.id,
+      userName: autoMessage.userName,
+      message: autoMessage.message,
+      timestamp: autoMessage.timestamp,
+      avatar: autoMessage.avatar,
+      type: autoMessage.type,
+      mediaUrl: autoMessage.mediaUrl,
+      replyTo: autoMessage.replyTo,
+    };
     addMessage(newMessage);
+  };
+
+  const handleAutoReaction = (
+    messageId: string,
+    emoji: string,
+    userName: string,
+  ) => {
+    addReaction(messageId, emoji, userName);
   };
 
   const handleMediaSend = (file: File, type: "image" | "video") => {
@@ -138,6 +149,12 @@ const OnlineChat = () => {
         onCancelReply={() => setReplyTo(null)}
         onToggleUserPanel={() => setShowUserPanel(!showUserPanel)}
         onAddMessage={addMessage}
+      />
+      <EnhancedAutoMessageGenerator
+        onMessageGenerated={handleAutoMessage}
+        onReactionAdded={handleAutoReaction}
+        activeUsers={activeUsers}
+        recentMessages={messages.slice(-10)}
       />
       <HiddenRadio streamUrl="https://radio.noumi.fm/stream" />
     </>
