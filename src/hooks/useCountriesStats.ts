@@ -88,7 +88,7 @@ const initialCountries: CountryStats[] = [
 ];
 
 const STORAGE_KEY = "radio-countries-stats";
-const UPDATE_INTERVAL = 3 * 60 * 60 * 1000; // 3 часа
+const UPDATE_INTERVAL = 1000; // 1 секунда
 
 export const useCountriesStats = () => {
   const [countries, setCountries] = useState<CountryStats[]>(() => {
@@ -98,36 +98,29 @@ export const useCountriesStats = () => {
 
   const updatePercentages = () => {
     setCountries((prev) => {
-      const updated = prev.map((country) => ({
-        ...country,
-        percentage: Math.min(
-          99,
-          country.percentage + Math.floor(Math.random() * 5) + 1,
-        ),
-        lastUpdated: Date.now(),
-      }));
+      const updated = prev.map((country) => {
+        // Случайное изменение от -5% до +5%
+        const change = Math.floor(Math.random() * 11) - 5; // -5 до +5
+        const newPercentage = Math.max(
+          0,
+          Math.min(99, country.percentage + change),
+        );
+
+        return {
+          ...country,
+          percentage: newPercentage,
+          lastUpdated: Date.now(),
+        };
+      });
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
       return updated;
     });
   };
 
   useEffect(() => {
-    const checkForUpdates = () => {
-      const now = Date.now();
-      const shouldUpdate = countries.some(
-        (country) => now - country.lastUpdated >= UPDATE_INTERVAL,
-      );
-
-      if (shouldUpdate) {
-        updatePercentages();
-      }
-    };
-
-    checkForUpdates();
-    const interval = setInterval(checkForUpdates, 60000); // Проверяем каждую минуту
-
+    const interval = setInterval(updatePercentages, UPDATE_INTERVAL);
     return () => clearInterval(interval);
-  }, [countries]);
+  }, []);
 
   return { countries };
 };
