@@ -88,7 +88,7 @@ const initialCountries: CountryStats[] = [
 ];
 
 const STORAGE_KEY = "radio-countries-stats";
-const UPDATE_INTERVAL = 1000; // 1 секунда
+const UPDATE_INTERVAL = 60000; // 60 секунд
 
 export const useCountriesStats = () => {
   const [countries, setCountries] = useState<CountryStats[]>(() => {
