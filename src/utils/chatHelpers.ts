@@ -61,7 +61,7 @@ export const createMessage = (
   voiceDuration?: number,
 ): ChatMessage => {
   return {
-    id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    id: `msg_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
     userName,
     message,
     timestamp: new Date(),
@@ -76,7 +76,7 @@ export const createMessage = (
 
 export const createUser = (name: string, avatar?: string): OnlineUser => {
   return {
-    id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    id: `user_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
     name,
     avatar: avatar || getRandomAvatar(),
     joinedAt: new Date(),
@@ -122,6 +122,10 @@ export const getWelcomeMessages = (): ChatMessage[] => {
       "Система",
       "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=150&h=150&fit=crop&crop=face",
       msg,
+      "text",
+      undefined,
+      undefined,
+      undefined,
     ),
   );
 };

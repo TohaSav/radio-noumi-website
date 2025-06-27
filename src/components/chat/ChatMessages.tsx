@@ -78,10 +78,26 @@ const ChatMessages = ({
     switch (message.type) {
       case "voice":
         return (
-          <VoiceMessage
-            audioUrl={message.mediaUrl!}
-            duration={message.voiceDuration || 0}
-          />
+          <div className="max-w-xs">
+            <audio
+              src={message.mediaUrl}
+              controls
+              className="w-full"
+              preload="metadata"
+            >
+              Ваш браузер не поддерживает аудио
+            </audio>
+            {message.voiceDuration && (
+              <div className="text-xs text-gray-400 mt-1">
+                Длительность: {Math.round(message.voiceDuration)}с
+              </div>
+            )}
+            {message.message && (
+              <p className="text-sm md:text-base break-words mt-2">
+                {message.message}
+              </p>
+            )}
+          </div>
         );
       case "square-video":
         return (

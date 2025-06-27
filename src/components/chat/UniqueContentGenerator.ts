@@ -285,17 +285,20 @@ class UniqueContentGenerator {
     this.loadHistory();
   }
 
-  // Генерация уникального хеша для контента
-  private generateHash(content: string, type: string, botId: string): string {
-    const fullContent = `${type}_${botId}_${content}_${Date.now()}`;
-    // Простая хеш-функция для UTF-8 строк
+  // Генерация хеша для проверки уникальности
+  private generateHash(text: string): string {
     let hash = 0;
-    for (let i = 0; i < fullContent.length; i++) {
-      const char = fullContent.charCodeAt(i);
+    const str = text.toLowerCase().trim();
+
+    if (str.length === 0) return hash.toString();
+
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
       hash = (hash << 5) - hash + char;
-      hash = hash & hash; // Преобразуем в 32-битное целое
+      hash = hash & hash; // Преобразуем в 32-битное целое число
     }
-    return Math.abs(hash).toString(16);
+
+    return Math.abs(hash).toString();
   }
 
   // Проверка уникальности
@@ -381,31 +384,45 @@ class UniqueContentGenerator {
   // Генерация контекстного ответа
   generateContextualReply(
     originalMessage: string,
-    botStyle: string,
+    style: "casual" | "energetic" | "formal",
   ): string | null {
-    const context = this.analyzeMessageContext(originalMessage);
-    const replyTemplates = this.getReplyTemplates(context, botStyle);
+    try {
+      const lowerMessage = originalMessage.toLowerCase();
 
-    if (replyTemplates.length === 0) return null;
+      // Простые реакции на ключевые слова
+      const reactions = {
+        casual: [
+          "согласен",
+          "да, точно",
+          "интересно",
+          "хорошая мысль",
+          "поддерживаю",
+        ],
+        energetic: [
+          "супер!",
+          "класс!",
+          "офигенно!",
+          "круто сказано!",
+          "точно в цель!",
+        ],
+        formal: [
+          "согласен с вашим мнением",
+          "интересная точка зрения",
+          "логично рассуждаете",
+          "хорошо подмечено",
+          "справедливое замечание",
+        ],
+      };
 
-    const maxAttempts = 20;
-    for (let i = 0; i < maxAttempts; i++) {
-      const template =
-        replyTemplates[Math.floor(Math.random() * replyTemplates.length)];
-      const reply = this.personalizeReply(template, originalMessage, botStyle);
-      const hash = this.generateHash(
-        reply + originalMessage,
-        "reply",
-        botStyle,
-      );
+      const styleReactions = reactions[style] || reactions.casual;
+      const reply =
+        styleReactions[Math.floor(Math.random() * styleReactions.length)];
 
-      if (this.isUnique(hash)) {
-        this.addToHistory(hash);
-        return reply;
-      }
+      return reply;
+    } catch (error) {
+      console.error("Ошибка генерации ответа:", error);
+      return null;
     }
-
-    return null;
   }
 
   // Анализ контекста сообщения

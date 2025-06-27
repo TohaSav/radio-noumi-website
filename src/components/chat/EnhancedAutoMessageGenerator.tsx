@@ -47,7 +47,7 @@ const EnhancedAutoMessageGenerator = ({
     const bot = availableBots[Math.floor(Math.random() * availableBots.length)];
     const messageType = Math.random();
     const timestamp = Date.now();
-    const uniqueId = Math.random().toString(36).substr(2, 9);
+    const uniqueId = Math.random().toString(36).substring(2, 9);
 
     // Проверяем, нужно ли ответить на недавнее сообщение
     if (recentMessages.length > 0 && Math.random() < bot.replyChance) {
@@ -62,9 +62,9 @@ const EnhancedAutoMessageGenerator = ({
           id: `msg_${timestamp}_${uniqueId}`,
           userName: bot.name,
           message: reply,
-          timestamp: new Date(),
+          timestamp: new Date(timestamp),
           avatar: bot.avatar,
-          type: "text",
+          type: "text" as const,
           replyTo: {
             id: messageToReply.id,
             userName: messageToReply.userName,
@@ -86,9 +86,9 @@ const EnhancedAutoMessageGenerator = ({
           id: `msg_${timestamp}_${uniqueId}`,
           userName: bot.name,
           message: textContent,
-          timestamp: new Date(),
+          timestamp: new Date(timestamp),
           avatar: bot.avatar,
-          type: "text",
+          type: "text" as const,
         };
       }
     } else if (messageType < 0.7) {
@@ -99,9 +99,9 @@ const EnhancedAutoMessageGenerator = ({
           id: `msg_${timestamp}_${uniqueId}`,
           userName: bot.name,
           message: imageContent.message,
-          timestamp: new Date(),
+          timestamp: new Date(timestamp),
           avatar: bot.avatar,
-          type: "image",
+          type: "image" as const,
           mediaUrl: imageContent.url,
         };
       }
@@ -113,9 +113,9 @@ const EnhancedAutoMessageGenerator = ({
           id: `msg_${timestamp}_${uniqueId}`,
           userName: bot.name,
           message: videoContent.message,
-          timestamp: new Date(),
+          timestamp: new Date(timestamp),
           avatar: bot.avatar,
-          type: "video",
+          type: "video" as const,
           mediaUrl: videoContent.url,
         };
       }

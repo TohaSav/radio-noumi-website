@@ -39,11 +39,11 @@ export const useChatMessages = () => {
       prev.map((msg) => {
         if (msg.id !== messageId) return msg;
 
-        const reactions = { ...msg.reactions };
+        const reactions = { ...(msg.reactions || {}) };
 
         // Убираем пользователя из всех других реакций (один пользователь - одна реакция)
         Object.keys(reactions).forEach((existingEmoji) => {
-          if (existingEmoji !== emoji) {
+          if (existingEmoji !== emoji && reactions[existingEmoji]) {
             const userIndex = reactions[existingEmoji].indexOf(userName);
             if (userIndex > -1) {
               reactions[existingEmoji].splice(userIndex, 1);
@@ -55,13 +55,15 @@ export const useChatMessages = () => {
         });
 
         // Добавляем/убираем текущую реакцию
-        const hadThisReaction = msg.reactions?.[emoji]?.includes(userName);
+        const hadThisReaction = reactions[emoji]?.includes(userName);
         if (hadThisReaction) {
           // Убираем реакцию
           const userIndex = reactions[emoji].indexOf(userName);
-          reactions[emoji].splice(userIndex, 1);
-          if (reactions[emoji].length === 0) {
-            delete reactions[emoji];
+          if (userIndex > -1) {
+            reactions[emoji].splice(userIndex, 1);
+            if (reactions[emoji].length === 0) {
+              delete reactions[emoji];
+            }
           }
         } else {
           // Добавляем реакцию
