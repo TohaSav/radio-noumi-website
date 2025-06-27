@@ -165,7 +165,9 @@ const ChatInput = ({
                 : "Нажмите для входа в чат..."
             }
             className="flex-1 h-12"
-            onKeyPress={(e) => e.key === "Enter" && onSend()}
+            onKeyPress={(e) =>
+              e.key === "Enter" && value.trim() && isLoggedIn && onSend()
+            }
           />
 
           <Button

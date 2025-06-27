@@ -111,6 +111,28 @@ const OnlineChat = () => {
     setReplyTo(null);
   };
 
+  const handleVideoSend = (
+    videoBlob: Blob,
+    duration: number,
+    thumbnail: string,
+  ) => {
+    if (!isLoggedIn) return;
+
+    const videoUrl = URL.createObjectURL(videoBlob);
+    const newMessage = createMessage(
+      userName,
+      userAvatar,
+      "",
+      "square-video",
+      replyTo,
+      videoUrl,
+      duration,
+    );
+
+    addMessage(newMessage);
+    setReplyTo(null);
+  };
+
   const handleReaction = (messageId: string, emoji: string) => {
     addReaction(messageId, emoji, userName);
   };
@@ -143,6 +165,7 @@ const OnlineChat = () => {
         onSendMessage={handleSendMessage}
         onMediaSend={handleMediaSend}
         onVoiceSend={handleVoiceSend}
+        onVideoSend={handleVideoSend}
         onReply={setReplyTo}
         onDeleteMessage={deleteMessage}
         onReaction={handleReaction}

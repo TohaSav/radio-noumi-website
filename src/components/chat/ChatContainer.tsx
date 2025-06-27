@@ -18,6 +18,7 @@ interface ChatContainerProps {
   onSendMessage: () => void;
   onMediaSend: (file: File, type: "image" | "video") => void;
   onVoiceSend: (audioBlob: Blob, duration: number) => void;
+  onVideoSend?: (videoBlob: Blob, duration: number, thumbnail: string) => void;
   onReply: (message: ChatMessage) => void;
   onDeleteMessage: (messageId: string) => void;
   onReaction: (messageId: string, emoji: string) => void;
@@ -38,6 +39,7 @@ const ChatContainer = ({
   onSendMessage,
   onMediaSend,
   onVoiceSend,
+  onVideoSend,
   onReply,
   onDeleteMessage,
   onReaction,
@@ -120,6 +122,7 @@ const ChatContainer = ({
         onSend={onSendMessage}
         onMediaSend={onMediaSend}
         onVoiceSend={onVoiceSend}
+        onVideoSend={onVideoSend}
         isLoggedIn={true}
         onLogin={handleLogin}
         userName={userName}

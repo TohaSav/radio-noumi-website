@@ -15,47 +15,30 @@ export interface ChatMessage {
     message: string;
   };
   reactions?: { [emoji: string]: string[] };
-  contentKey?: string;
-  isUnique?: boolean;
-}
-
-export interface BotMessage extends ChatMessage {
-  botId: string;
-  contextReply?: boolean;
-  uniqueHash?: string;
-}
-
-export interface BotReaction {
-  messageId: string;
-  emoji: string;
-  botName: string;
-  timestamp: Date;
 }
 
 export interface OnlineUser {
   id: string;
   name: string;
   avatar: string;
-  joinedAt?: Date;
-  lastActivity?: Date;
+  lastSeen?: Date;
   isActive?: boolean;
 }
 
 export interface UserData {
   name: string;
   avatar: string;
+  id?: string;
 }
 
-export type MessageType = "text" | "image" | "video" | "voice" | "square-video";
-
-export interface ChatState {
-  messages: ChatMessage[];
-  messageInput: string;
-  userName: string;
-  userAvatar: string;
-  isLoggedIn: boolean;
-  registeredUsers: string[];
-  showUserPanel: boolean;
-  activeUsers: OnlineUser[];
-  replyTo: ChatMessage | null;
+export interface BotPersonality {
+  id: string;
+  name: string;
+  avatar: string;
+  style: string;
+  replyChance: number;
+  reactionChance: number;
+  emojis: string[];
+  isActive?: boolean;
+  lastActivity?: number;
 }

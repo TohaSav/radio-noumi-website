@@ -31,6 +31,7 @@ const EnhancedAutoMessageGenerator = ({
   recentMessages,
 }: EnhancedAutoMessageGeneratorProps) => {
   const contentGenerator = useRef(new UniqueContentGenerator());
+  const intervalRefs = useRef<NodeJS.Timeout[]>([]);
   const [activeBots] = useState(() =>
     BOT_PERSONALITIES.map((bot) => ({
       ...bot,
@@ -160,7 +161,11 @@ const EnhancedAutoMessageGenerator = ({
   };
 
   useEffect(() => {
-    // Очень частая генерация сообщений - каждые 2-8 секунд
+    // Очистка предыдущих интервалов
+    intervalRefs.current.forEach(clearInterval);
+    intervalRefs.current = [];
+
+    // Генерация сообщений каждые 3-8 секунд
     const messageInterval = setInterval(
       () => {
         const message = generateUniqueMessage();
@@ -168,37 +173,24 @@ const EnhancedAutoMessageGenerator = ({
           onMessageGenerated(message);
         }
       },
-      2000 + Math.random() * 6000,
+      3000 + Math.random() * 5000,
     );
+    intervalRefs.current.push(messageInterval);
 
-    // Частые реакции - каждые 3-10 секунд
+    // Реакции каждые 5-12 секунд
     const reactionInterval = setInterval(
       () => {
         generateReaction();
       },
-      3000 + Math.random() * 7000,
+      5000 + Math.random() * 7000,
     );
-
-    // Очень частое появление новых ботов - каждые 5-15 секунд
-    const botRegistrationInterval = setInterval(
-      () => {
-        const inactiveBots = activeBots.filter((bot) => !bot.isActive);
-        if (inactiveBots.length > 0 && Math.random() < 0.8) {
-          const randomBot =
-            inactiveBots[Math.floor(Math.random() * inactiveBots.length)];
-          randomBot.isActive = true;
-          randomBot.lastActivity = Date.now();
-        }
-      },
-      5000 + Math.random() * 10000,
-    );
+    intervalRefs.current.push(reactionInterval);
 
     return () => {
-      clearInterval(messageInterval);
-      clearInterval(reactionInterval);
-      clearInterval(botRegistrationInterval);
+      intervalRefs.current.forEach(clearInterval);
+      intervalRefs.current = [];
     };
-  }, [recentMessages]);
+  }, [recentMessages.length]); // Зависимость только от длины массива
 
   return null;
 };
