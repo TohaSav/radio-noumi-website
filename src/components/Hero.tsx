@@ -2,9 +2,46 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import AdBanner from "@/components/AdBanner";
+import { useState, useEffect } from "react";
 
 const Hero = () => {
   const navigate = useNavigate();
+  const [likes, setLikes] = useState(18620320);
+  const [dislikes, setDislikes] = useState(15230);
+
+  // Функция для сокращения чисел
+  const formatNumber = (num: number): string => {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1) + "M";
+    } else if (num >= 1000) {
+      return (num / 1000).toFixed(0) + "K";
+    }
+    return num.toString();
+  };
+
+  useEffect(() => {
+    // Увеличение лайков каждые 15 минут
+    const likesInterval = setInterval(
+      () => {
+        const increment = Math.floor(Math.random() * (6900 - 250 + 1)) + 250;
+        setLikes((prev) => prev + increment);
+      },
+      15 * 60 * 1000,
+    );
+
+    // Увеличение дизлайков каждые 25 минут
+    const dislikesInterval = setInterval(
+      () => {
+        setDislikes((prev) => prev + 3);
+      },
+      25 * 60 * 1000,
+    );
+
+    return () => {
+      clearInterval(likesInterval);
+      clearInterval(dislikesInterval);
+    };
+  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center text-center px-4">
@@ -27,6 +64,23 @@ const Hero = () => {
             Noumi
           </span>
         </h1>
+
+        {/* Лайк/Дизлайк кнопки */}
+        <div className="flex items-center justify-center gap-4 sm:gap-6 md:gap-8">
+          <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20">
+            <Icon name="ThumbsUp" size={20} className="text-green-400" />
+            <span className="text-white font-semibold text-sm sm:text-base">
+              {formatNumber(likes)}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20">
+            <Icon name="ThumbsDown" size={20} className="text-red-400" />
+            <span className="text-white font-semibold text-sm sm:text-base">
+              {formatNumber(dislikes)}
+            </span>
+          </div>
+        </div>
 
         <p className="text-xl md:text-2xl text-purple-200 max-w-2xl mx-auto leading-relaxed">
           Музыка, что вдохновляет жить
