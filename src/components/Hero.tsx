@@ -49,6 +49,16 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center text-center px-4">
+      {/* Navigation Menu */}
+      <div className="absolute top-6 left-6 z-10">
+        <button
+          onClick={() => navigate("/chat")}
+          className="flex items-center gap-2 bg-white/10 border border-white/20 text-white hover:bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg transition-all duration-200"
+        >
+          <Icon name="MessageCircle" size={16} />
+          Онлайн чат
+        </button>
+      </div>
 
 
       {/* Hero Content */}
