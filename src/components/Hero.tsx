@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import AdBanner from "@/components/AdBanner";
+import EmbeddedRadioPlayer from "@/components/EmbeddedRadioPlayer";
 import { useState, useEffect } from "react";
 
 const Hero = () => {
@@ -63,11 +64,7 @@ const Hero = () => {
 
       {/* Hero Content */}
       <div className="max-w-4xl mx-auto space-y-8">
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
-          <span className="bg-gradient-to-r from-pink-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent font-bold animate-pulse">
-            Noumi
-          </span>
-        </h1>
+        <EmbeddedRadioPlayer streamUrl="https://myradio24.org/61673" />
 
         {/* Лайки с сердечком */}
         <div className="flex items-center justify-center">
