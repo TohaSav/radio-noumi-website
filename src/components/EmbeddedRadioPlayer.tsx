@@ -275,25 +275,7 @@ const EmbeddedRadioPlayer = ({ streamUrl }: EmbeddedRadioPlayerProps) => {
       className="relative w-full max-w-2xl mx-auto p-8 rounded-3xl backdrop-blur-md border border-white/20 shadow-2xl"
       style={backgroundStyle}
     >
-      {/* Музыкальные волны */}
-      {isPlaying && (
-        <div className="absolute inset-0 overflow-hidden rounded-3xl">
-          {[...Array(5)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-2 bg-gradient-to-t from-purple-400 to-pink-400 rounded-full opacity-60"
-              style={{
-                left: `${20 + i * 15}%`,
-                height: `${30 + (audioData.bass + audioData.mid + audioData.treble) * 50}px`,
-                bottom: '20px',
-                animation: `musicWave ${0.5 + i * 0.1}s infinite ease-in-out`,
-                animationDelay: `${i * 0.1}s`,
-                transform: `scaleY(${0.5 + audioData.overall * 2})`
-              }}
-            />
-          ))}
-        </div>
-      )}
+
 
       <div className="relative z-10 flex flex-col items-center space-y-6">
         {/* Центральная кнопка воспроизведения */}
@@ -322,7 +304,11 @@ const EmbeddedRadioPlayer = ({ streamUrl }: EmbeddedRadioPlayerProps) => {
 
         {/* Название станции */}
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-white mb-2">Радио Noumi</h2>
+          <h2 className="text-3xl font-bold mb-2">
+            <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent animate-pulse">
+              Noumi
+            </span>
+          </h2>
           <p className="text-white/80 text-sm mb-2">
             {isPlaying ? "В эфире..." : "Нажмите для воспроизведения"}
           </p>
