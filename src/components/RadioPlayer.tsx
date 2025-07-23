@@ -65,6 +65,7 @@ const RadioPlayer = (props: RadioPlayerProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [listeners, setListeners] = useState(3150084);
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
+  const [showCountries, setShowCountries] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
