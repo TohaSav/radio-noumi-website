@@ -45,7 +45,7 @@ export default function CountriesModal({
                   />
                 </div>
                 <span className="font-bold text-purple-600 min-w-[3rem] text-right">
-                  {country.percentage}%
+                  {country.percentage.toFixed(1)}%
                 </span>
               </div>
             </div>
