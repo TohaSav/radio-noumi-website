@@ -8,6 +8,12 @@ const Hero = () => {
   const navigate = useNavigate();
   const [likes, setLikes] = useState(12750000);
   const [pulse, setPulse] = useState(false);
+  
+  const handleLike = () => {
+    setLikes(prev => prev + 1);
+    setPulse(true);
+    setTimeout(() => setPulse(false), 600);
+  };
 
   // Функция для сокращения чисел
   const formatNumber = (num: number): string => {
@@ -61,9 +67,12 @@ const Hero = () => {
 
         {/* Лайки с сердечком */}
         <div className="flex items-center justify-center">
-          <div className={`flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20 transition-all duration-300 ${
-            pulse ? 'scale-110 shadow-lg shadow-pink-500/50' : 'scale-100'
-          }`}>
+          <button 
+            onClick={handleLike}
+            className={`flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20 transition-all duration-300 hover:bg-white/20 cursor-pointer ${
+              pulse ? 'scale-110 shadow-lg shadow-pink-500/50' : 'scale-100'
+            }`}
+          >
             <Icon 
               name="Heart" 
               size={20} 
@@ -74,7 +83,7 @@ const Hero = () => {
             <span className="text-white font-semibold text-sm sm:text-base">
               {formatNumber(likes)}
             </span>
-          </div>
+          </button>
         </div>
 
         <p className="text-xl md:text-2xl text-purple-200 max-w-2xl mx-auto leading-relaxed">
