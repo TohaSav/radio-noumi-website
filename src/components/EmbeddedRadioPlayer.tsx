@@ -5,17 +5,143 @@ interface EmbeddedRadioPlayerProps {
   streamUrl: string;
 }
 
+// Функция для получения уральского времени
+const getUralTime = () => {
+  const now = new Date();
+  const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+  const uralTime = new Date(utc + 5 * 3600000); // UTC+5
+  return uralTime;
+};
+
+// Функция для форматирования числа в сокращенный вид
+const formatListeners = (num: number): string => {
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(2) + "M";
+  } else if (num >= 1000) {
+    return (num / 1000).toFixed(1) + "K";
+  }
+  return num.toString();
+};
+
+// Функция для получения диапазона слушателей по времени
+const getListenerRange = (hour: number) => {
+  if (hour >= 9 && hour < 15) {
+    return { min: 3150129, max: 12458760 };
+  } else if (hour >= 15 && hour < 21) {
+    return { min: 4789236, max: 78960456 };
+  } else if (hour >= 21 || hour < 3) {
+    return { min: 7963509, max: 96350521 };
+  } else {
+    return { min: 5698750, max: 9321456 };
+  }
+};
+
+// Функция для генерации базового значения на основе времени и даты
+const generateBaseListeners = (uralTime: Date): number => {
+  const hour = uralTime.getHours();
+  const day = uralTime.getDate();
+  const range = getListenerRange(hour);
+
+  // Используем день месяца и час для создания стабильного базового значения
+  const seed = day * 100 + hour;
+  const random = Math.sin(seed) * 10000;
+  const normalizedRandom = random - Math.floor(random);
+
+  return Math.floor(range.min + normalizedRandom * (range.max - range.min));
+};
+
 const EmbeddedRadioPlayer = ({ streamUrl }: EmbeddedRadioPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(50);
   const [isLoading, setIsLoading] = useState(false);
   const [audioData, setAudioData] = useState({ bass: 0, mid: 0, treble: 0, overall: 0 });
+  const [listeners, setListeners] = useState(3150084);
   
   const audioRef = useRef<HTMLAudioElement>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
   const animationFrameRef = useRef<number>();
+
+  // Инициализация счетчика слушателей
+  useEffect(() => {
+    const uralTime = getUralTime();
+    const currentHour = uralTime.getHours();
+    const currentDay = uralTime.getDate();
+
+    // Ключ для хранения данных на основе дня и часа
+    const storageKey = `radioListeners_${currentDay}_${currentHour}`;
+    const savedListeners = localStorage.getItem(storageKey);
+    const lastUpdateKey = `radioLastUpdate_${currentDay}_${currentHour}`;
+    const savedTime = localStorage.getItem(lastUpdateKey);
+
+    if (savedListeners && savedTime) {
+      const lastUpdate = new Date(savedTime);
+      const now = getUralTime();
+      const timeDiff = (now.getTime() - lastUpdate.getTime()) / 1000 / 60; // в минутах
+
+      if (timeDiff < 60) {
+        // Если прошло меньше часа, используем сохраненное значение
+        setListeners(parseInt(savedListeners));
+        return;
+      }
+    }
+
+    // Генерируем базовое значение для текущего часа
+    const baseListeners = generateBaseListeners(uralTime);
+
+    // Добавляем небольшую вариацию (±1-3%)
+    const variation = Math.floor(baseListeners * (Math.random() * 0.06 - 0.03));
+    const finalListeners = Math.max(3150084, baseListeners + variation);
+
+    setListeners(finalListeners);
+    localStorage.setItem(storageKey, finalListeners.toString());
+    localStorage.setItem(lastUpdateKey, new Date().toISOString());
+  }, []);
+
+  // Обновление счетчика каждые 3-7 минут на небольшое значение
+  useEffect(() => {
+    const updateListeners = () => {
+      const uralTime = getUralTime();
+      const hour = uralTime.getHours();
+      const day = uralTime.getDate();
+      const range = getListenerRange(hour);
+      const storageKey = `radioListeners_${day}_${hour}`;
+      const lastUpdateKey = `radioLastUpdate_${day}_${hour}`;
+
+      setListeners((current) => {
+        // Реалистичные изменения: ±0.5-2% от текущего значения
+        const changePercent = Math.random() * 0.035 - 0.0175; // от -1.75% до +1.75%
+        const change = Math.floor(current * changePercent);
+        let newValue = current + change;
+
+        // Ограничиваем значение диапазоном для текущего времени
+        newValue = Math.max(range.min, Math.min(range.max, newValue));
+        // Не опускаем ниже стартового значения
+        newValue = Math.max(3150084, newValue);
+
+        // Сохраняем с привязкой к часу
+        localStorage.setItem(storageKey, newValue.toString());
+        localStorage.setItem(lastUpdateKey, new Date().toISOString());
+
+        return newValue;
+      });
+    };
+
+    // Первое обновление через 30 секунд
+    const initialTimeout = setTimeout(updateListeners, 30000);
+
+    // Затем обновления каждые 3-7 минут
+    const interval = setInterval(
+      updateListeners,
+      Math.random() * 240000 + 180000,
+    );
+
+    return () => {
+      clearTimeout(initialTimeout);
+      clearInterval(interval);
+    };
+  }, []);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -197,9 +323,12 @@ const EmbeddedRadioPlayer = ({ streamUrl }: EmbeddedRadioPlayerProps) => {
         {/* Название станции */}
         <div className="text-center">
           <h2 className="text-2xl font-bold text-white mb-2">Радио Noumi</h2>
-          <p className="text-white/80 text-sm">
+          <p className="text-white/80 text-sm mb-2">
             {isPlaying ? "В эфире..." : "Нажмите для воспроизведения"}
           </p>
+          <div className="text-sm text-green-400 px-3 py-1 rounded-full bg-green-400/10 inline-block">
+            {formatListeners(listeners)} слушателей
+          </div>
         </div>
 
         {/* Регулятор громкости */}
