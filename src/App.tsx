@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import TopChart from "./pages/TopChart";
-import OnlineChat from "./pages/OnlineChat";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,7 +24,6 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/top-chart" element={<TopChart />} />
-          <Route path="/chat" element={<OnlineChat />} />
         </Routes>
       </Router>
     </TooltipProvider>
