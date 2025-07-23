@@ -126,7 +126,7 @@ const Chat = () => {
       {/* Input Area */}
       <div className="bg-black/30 backdrop-blur-md border-t border-white/10 p-4">
         <div className="max-w-4xl mx-auto">
-          <div className="flex items-end gap-2 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             {/* Image Upload */}
             <button
               onClick={() => fileInputRef.current?.click()}
