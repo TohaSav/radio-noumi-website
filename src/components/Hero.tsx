@@ -49,7 +49,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center text-center px-4">
+    <section className="relative min-h-screen flex items-start justify-center text-center px-4 pt-24">
       {/* Navigation Menu */}
       <div className="absolute top-6 left-6 z-10">
         <button
