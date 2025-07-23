@@ -277,7 +277,11 @@ const RadioPlayer = (props: RadioPlayerProps) => {
 
   return (
     <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl px-4 sm:px-0">
-      <div className="bg-black/80 backdrop-blur-md rounded-xl sm:rounded-2xl px-3 sm:px-4 md:px-6 py-3 sm:py-4 shadow-2xl border border-white/10">
+      <div className={`backdrop-blur-md rounded-xl sm:rounded-2xl px-3 sm:px-4 md:px-6 py-3 sm:py-4 shadow-2xl border transition-all duration-1000 ${
+        isPlaying 
+          ? 'bg-gradient-to-r from-purple-900/80 via-pink-900/80 to-blue-900/80 border-purple-400/30 animate-pulse-slow' 
+          : 'bg-black/80 border-white/10'
+      }`}>
         <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4">
           {/* Play/Pause Button */}
           <button
