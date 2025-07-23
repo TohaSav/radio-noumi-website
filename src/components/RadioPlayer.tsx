@@ -274,8 +274,6 @@ const RadioPlayer = (props: RadioPlayerProps) => {
     }
   };
 
-  const [showCountries, setShowCountries] = useState(false);
-
   return (
     <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl px-4 sm:px-0">
       <div className={`backdrop-blur-md rounded-xl sm:rounded-2xl px-3 sm:px-4 md:px-6 py-3 sm:py-4 shadow-2xl border transition-all duration-1000 ${
