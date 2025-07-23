@@ -6,8 +6,8 @@ import { useState, useEffect } from "react";
 
 const Hero = () => {
   const navigate = useNavigate();
-  const [likes, setLikes] = useState(18620320);
-  const [dislikes, setDislikes] = useState(15230);
+  const [likes, setLikes] = useState(12750000);
+  const [pulse, setPulse] = useState(false);
 
   // Функция для сокращения чисел
   const formatNumber = (num: number): string => {
@@ -20,26 +20,20 @@ const Hero = () => {
   };
 
   useEffect(() => {
-    // Увеличение лайков каждые 15 минут
+    // Увеличение лайков каждые 5 минут на 20
     const likesInterval = setInterval(
       () => {
-        const increment = Math.floor(Math.random() * (6900 - 250 + 1)) + 250;
-        setLikes((prev) => prev + increment);
+        setLikes((prev) => prev + 20);
+        
+        // Активируем анимацию пульса
+        setPulse(true);
+        setTimeout(() => setPulse(false), 600);
       },
-      15 * 60 * 1000,
-    );
-
-    // Увеличение дизлайков каждые 25 минут
-    const dislikesInterval = setInterval(
-      () => {
-        setDislikes((prev) => prev + 3);
-      },
-      25 * 60 * 1000,
+      5 * 60 * 1000,
     );
 
     return () => {
       clearInterval(likesInterval);
-      clearInterval(dislikesInterval);
     };
   }, []);
 
@@ -65,19 +59,20 @@ const Hero = () => {
           </span>
         </h1>
 
-        {/* Лайк/Дизлайк кнопки */}
-        <div className="flex items-center justify-center gap-4 sm:gap-6 md:gap-8">
-          <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20">
-            <Icon name="ThumbsUp" size={20} className="text-green-400" />
+        {/* Лайки с сердечком */}
+        <div className="flex items-center justify-center">
+          <div className={`flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20 transition-all duration-300 ${
+            pulse ? 'scale-110 shadow-lg shadow-pink-500/50' : 'scale-100'
+          }`}>
+            <Icon 
+              name="Heart" 
+              size={20} 
+              className={`text-pink-400 transition-all duration-300 ${
+                pulse ? 'scale-125 text-pink-300' : 'scale-100'
+              }`} 
+            />
             <span className="text-white font-semibold text-sm sm:text-base">
               {formatNumber(likes)}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20">
-            <Icon name="ThumbsDown" size={20} className="text-red-400" />
-            <span className="text-white font-semibold text-sm sm:text-base">
-              {formatNumber(dislikes)}
             </span>
           </div>
         </div>
