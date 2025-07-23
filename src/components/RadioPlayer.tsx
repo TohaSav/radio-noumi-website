@@ -66,6 +66,12 @@ const RadioPlayer = (props: RadioPlayerProps) => {
   const [listeners, setListeners] = useState(3150084);
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
   const [showCountries, setShowCountries] = useState(false);
+  const [audioData, setAudioData] = useState({
+    bass: 0,
+    mid: 0,
+    treble: 0,
+    overall: 0,
+  });
   const audioRef = useRef<HTMLAudioElement>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
@@ -197,7 +203,7 @@ const RadioPlayer = (props: RadioPlayerProps) => {
     };
 
     const startAudioAnalysis = () => {
-      if (!analyserRef.current || !props.onAudioData) return;
+      if (!analyserRef.current) return;
 
       const bufferLength = analyserRef.current.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
@@ -217,6 +223,7 @@ const RadioPlayer = (props: RadioPlayerProps) => {
         const overall =
           dataArray.reduce((a, b) => a + b, 0) / bufferLength / 255;
 
+        setAudioData({ bass, mid, treble, overall });
         props.onAudioData?.({ bass, mid, treble, overall });
 
         animationFrameRef.current = requestAnimationFrame(analyze);
@@ -276,12 +283,31 @@ const RadioPlayer = (props: RadioPlayerProps) => {
 
   return (
     <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl px-4 sm:px-0">
-      <div className={`backdrop-blur-md rounded-xl sm:rounded-2xl px-3 sm:px-4 md:px-6 py-3 sm:py-4 shadow-2xl border transition-all duration-1000 ${
+      <div className={`relative backdrop-blur-md rounded-xl sm:rounded-2xl px-3 sm:px-4 md:px-6 py-3 sm:py-4 shadow-2xl border transition-all duration-1000 overflow-hidden ${
         isPlaying 
           ? 'bg-gradient-to-r from-purple-900/80 via-pink-900/80 to-blue-900/80 border-purple-400/30 animate-pulse-slow' 
           : 'bg-black/80 border-white/10'
       }`}>
-        <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4">
+        {/* Музыкальные волны */}
+        {isPlaying && (
+          <div className="absolute inset-0 overflow-hidden rounded-xl sm:rounded-2xl">
+            {[...Array(5)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute w-1 sm:w-1.5 bg-gradient-to-t from-purple-400 to-pink-400 rounded-full opacity-40"
+                style={{
+                  left: `${15 + i * 15}%`,
+                  height: `${10 + (audioData.bass + audioData.mid + audioData.treble) * 30}px`,
+                  bottom: '8px',
+                  animation: `musicWave ${0.5 + i * 0.1}s infinite ease-in-out`,
+                  animationDelay: `${i * 0.1}s`,
+                  transform: `scaleY(${0.3 + audioData.overall * 1.5})`
+                }}
+              />
+            ))}
+          </div>
+        )}
+        <div className="relative z-10 flex items-center space-x-2 sm:space-x-3 md:space-x-4">
           {/* Play/Pause Button */}
           <button
             onClick={togglePlay}
