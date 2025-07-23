@@ -63,7 +63,7 @@ const Hero = () => {
 
 
       {/* Hero Content */}
-      <div className="max-w-4xl mx-auto space-y-8">
+      <div className="max-w-4xl mx-auto space-y-4">
         <EmbeddedRadioPlayer streamUrl="https://myradio24.org/61673" />
 
         {/* Лайки с сердечком */}
