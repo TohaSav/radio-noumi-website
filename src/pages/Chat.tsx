@@ -28,8 +28,19 @@ const Chat = () => {
   const [newMessage, setNewMessage] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [userName] = useState(`Слушатель${Math.floor(Math.random() * 1000)}`);
+  const [onlineCount, setOnlineCount] = useState(3150084);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Функция для форматирования числа в сокращенный вид
+  const formatNumber = (num: number): string => {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1) + "M";
+    } else if (num >= 1000) {
+      return (num / 1000).toFixed(0) + "K";
+    }
+    return num.toString();
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -38,6 +49,37 @@ const Chat = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Обновление счетчика онлайн пользователей (синхронно с радио)
+  useEffect(() => {
+    const updateOnlineCount = () => {
+      setOnlineCount((current) => {
+        // Реалистичные изменения: ±0.5-2% от текущего значения
+        const changePercent = Math.random() * 0.035 - 0.0175;
+        const change = Math.floor(current * changePercent);
+        let newValue = current + change;
+        
+        // Ограничиваем значение разумными пределами
+        newValue = Math.max(3150084, Math.min(96350521, newValue));
+        
+        return newValue;
+      });
+    };
+
+    // Первое обновление через 30 секунд
+    const initialTimeout = setTimeout(updateOnlineCount, 30000);
+
+    // Затем обновления каждые 3-7 минут
+    const interval = setInterval(
+      updateOnlineCount,
+      Math.random() * 240000 + 180000,
+    );
+
+    return () => {
+      clearTimeout(initialTimeout);
+      clearInterval(interval);
+    };
+  }, []);
 
   const sendMessage = () => {
     if (!newMessage.trim()) return;
@@ -108,7 +150,10 @@ const Chat = () => {
 
           <div className="text-sm text-green-400 flex items-center gap-1">
             <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-            <span className="hidden sm:inline">Онлайн</span>
+            <div className="flex flex-col items-end">
+              <span className="font-medium">{formatNumber(onlineCount)}</span>
+              <span className="text-xs text-gray-400">онлайн</span>
+            </div>
           </div>
         </div>
       </header>
