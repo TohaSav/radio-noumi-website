@@ -8,11 +8,15 @@ const Hero = () => {
   const navigate = useNavigate();
   const [likes, setLikes] = useState(12750000);
   const [pulse, setPulse] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
   
   const handleLike = () => {
-    setLikes(prev => prev + 1);
-    setPulse(true);
-    setTimeout(() => setPulse(false), 600);
+    if (!isLiked) {
+      setLikes(prev => prev + 1);
+      setIsLiked(true);
+      setPulse(true);
+      setTimeout(() => setPulse(false), 600);
+    }
   };
 
   // Функция для сокращения чисел
@@ -76,8 +80,10 @@ const Hero = () => {
             <Icon 
               name="Heart" 
               size={20} 
-              className={`text-pink-400 transition-all duration-300 ${
-                pulse ? 'scale-125 text-pink-300' : 'scale-100'
+              className={`transition-all duration-300 ${
+                isLiked ? 'text-red-500' : 'text-pink-400'
+              } ${
+                pulse ? 'scale-125' : 'scale-100'
               }`} 
             />
             <span className="text-white font-semibold text-sm sm:text-base">
