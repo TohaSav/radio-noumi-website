@@ -31,20 +31,37 @@ const Hero = () => {
   };
 
   useEffect(() => {
-    // Увеличение лайков каждые 5 минут на 20
+    // Более частое и реалистичное увеличение лайков
     const likesInterval = setInterval(
       () => {
-        setLikes((prev) => prev + 20);
+        // Случайное увеличение от 15 до 85 каждые 3-7 секунд
+        const randomIncrease = Math.floor(Math.random() * 71) + 15; // 15-85
+        setLikes((prev) => prev + randomIncrease);
         
         // Активируем анимацию пульса
         setPulse(true);
         setTimeout(() => setPulse(false), 600);
       },
-      5 * 60 * 1000,
+      Math.random() * 4000 + 3000, // 3-7 секунд
     );
+
+    // Дополнительный интервал для более быстрого роста в пиковые часы
+    const peakHoursInterval = setInterval(() => {
+      const currentHour = new Date().getHours();
+      
+      // Пиковые часы: 18-23 (вечер) и 9-12 (утро)
+      if ((currentHour >= 18 && currentHour <= 23) || (currentHour >= 9 && currentHour <= 12)) {
+        const peakIncrease = Math.floor(Math.random() * 150) + 50; // 50-200
+        setLikes((prev) => prev + peakIncrease);
+        
+        setPulse(true);
+        setTimeout(() => setPulse(false), 600);
+      }
+    }, 8000); // Каждые 8 секунд в пиковые часы
 
     return () => {
       clearInterval(likesInterval);
+      clearInterval(peakHoursInterval);
     };
   }, []);
 
