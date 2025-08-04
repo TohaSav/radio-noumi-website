@@ -103,20 +103,21 @@ const Hero = () => {
         <div className="flex items-center justify-center">
           <button 
             onClick={handleLike}
-            className={`flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20 transition-all duration-300 hover:bg-white/20 cursor-pointer ${
-              pulse ? 'scale-110 shadow-lg shadow-pink-500/50' : 'scale-100'
+            className={`relative flex items-center justify-center w-20 h-20 transition-all duration-300 hover:scale-105 cursor-pointer ${
+              pulse ? 'scale-110' : 'scale-100'
             }`}
           >
-            <Icon 
-              name="Heart" 
-              size={20} 
-              className={`transition-all duration-300 ${
-                isLiked ? 'text-red-500' : 'text-pink-400'
-              } ${
-                pulse ? 'scale-125' : 'scale-100'
-              }`} 
-            />
-            <span className="text-white font-semibold text-sm sm:text-base">
+            {/* Сердечко фон */}
+            <div className={`absolute inset-0 text-6xl transition-all duration-300 ${
+              isLiked ? 'text-red-500' : 'text-pink-400'
+            } ${
+              pulse ? 'animate-pulse' : ''
+            }`}>
+              ❤️
+            </div>
+            
+            {/* Цифра внутри сердечка */}
+            <span className="relative z-10 text-white font-bold text-xs leading-none mt-1">
               {formatNumber(likes)}
             </span>
           </button>
