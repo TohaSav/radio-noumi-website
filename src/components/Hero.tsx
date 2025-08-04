@@ -103,7 +103,7 @@ const Hero = () => {
         <EmbeddedRadioPlayer streamUrl="https://myradio24.org/61673" />
 
         {/* Лайки с сердечком */}
-        <div className="flex items-center justify-center">
+        <div className="flex flex-col items-center justify-center gap-3">
           <button 
             onClick={handleLike}
             className={`relative flex items-center justify-center ${getHeartSize(formatNumber(likes)).container} transition-all duration-300 hover:scale-105 cursor-pointer ${
@@ -118,12 +118,12 @@ const Hero = () => {
             }`}>
               ♡
             </div>
-            
-            {/* Цифра внутри сердечка */}
-            <span className={`absolute inset-0 z-10 text-red-500 font-bold ${getHeartSize(formatNumber(likes)).text} leading-none drop-shadow-lg flex items-center justify-center text-center`}>
-              {formatNumber(likes)}
-            </span>
           </button>
+          
+          {/* Цифра под сердечком */}
+          <span className="text-white font-bold text-lg drop-shadow-lg">
+            {formatNumber(likes)}
+          </span>
         </div>
 
         <p className="text-xl md:text-2xl text-purple-200 max-w-2xl mx-auto leading-relaxed">
