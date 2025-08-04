@@ -19,12 +19,15 @@ const Hero = () => {
       setPulse(true);
       setTimeout(() => setPulse(false), 600);
       
-      // Создаем сердечки
-      const rect = (e.target as HTMLElement).getBoundingClientRect();
-      const newHearts = Array.from({ length: 5 }, (_, i) => ({
+      // Создаем сердечки от места клика
+      const rect = e.currentTarget.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      
+      const newHearts = Array.from({ length: 8 }, (_, i) => ({
         id: Date.now() + i,
-        x: rect.left + rect.width / 2 + (Math.random() - 0.5) * 60,
-        y: rect.top + rect.height / 2
+        x: centerX + (Math.random() - 0.5) * 100,
+        y: centerY + (Math.random() - 0.5) * 50,
       }));
       
       setHearts(prev => [...prev, ...newHearts]);
@@ -103,12 +106,12 @@ const Hero = () => {
         <div className="flex items-center justify-center">
           <button 
             onClick={handleLike}
-            className={`relative flex items-center justify-center w-20 h-20 transition-all duration-300 hover:scale-105 cursor-pointer ${
+            className={`relative flex items-center justify-center w-28 h-28 transition-all duration-300 hover:scale-105 cursor-pointer ${
               pulse ? 'scale-110' : 'scale-100'
             }`}
           >
             {/* Сердечко фон */}
-            <div className={`absolute inset-0 text-6xl transition-all duration-300 ${
+            <div className={`absolute inset-0 text-8xl transition-all duration-300 ${
               isLiked ? 'text-red-500' : 'text-pink-400'
             } ${
               pulse ? 'animate-pulse' : ''
@@ -117,7 +120,7 @@ const Hero = () => {
             </div>
             
             {/* Цифра внутри сердечка */}
-            <span className="relative z-10 text-white font-bold text-xs leading-none mt-1">
+            <span className="relative z-10 text-white font-bold text-sm leading-none drop-shadow-lg">
               {formatNumber(likes)}
             </span>
           </button>
