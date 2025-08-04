@@ -14,9 +14,9 @@ const LiveListenerCounter = () => {
     const timeUntilMidnight = nextMidnight.getTime() - uralTime.getTime();
     const totalMillisecondsInDay = 24 * 60 * 60 * 1000;
     
-    // Целевое значение 1,485,210,369
-    const targetValue = 1485210369;
-    const startValue = 372360000; // Текущее приблизительное значение
+    // Целевое значение к полуночи
+    const targetValue = 385000000; // ~385M к полуночи 
+    const startValue = 382860000; // Текущее значение 382.86M
     
     // Прогресс от начального к целевому значению
     const progress = 1 - (timeUntilMidnight / totalMillisecondsInDay);
