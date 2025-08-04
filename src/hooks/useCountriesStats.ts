@@ -31,25 +31,26 @@ export const useCountriesStats = () => {
           // Устанавливаем разные минимумы для разных стран
           let minPercentage = 0.5;
           if (country.name === "Россия") minPercentage = 48;
-          else if (country.name === "Украина") minPercentage = 30;
+          else if (country.name === "Украина") minPercentage = 52;
           else if (country.name === "Беларусь") minPercentage = 12;
-          else if (country.name === "Казахстан") minPercentage = 9;
-          else if (country.name === "Германия") minPercentage = 24;
-          else if (country.name === "США") minPercentage = 18;
+          else if (country.name === "Казахстан") minPercentage = 38;
+          else if (country.name === "Германия") minPercentage = 46;
+          else if (country.name === "США") minPercentage = 42;
           else if (country.name === "Литва") minPercentage = 3;
           else if (country.name === "Латвия") minPercentage = 15;
           else if (country.name === "Эстония") minPercentage = 1.5;
-          else if (country.name === "Молдова") minPercentage = 12;
+          else if (country.name === "Молдова") minPercentage = 32;
           
           return {
             ...country,
             percentage: Math.max(minPercentage, Math.min(
               country.name === "Россия" ? 65 : 
-              country.name === "Украина" ? 42 : 
-              country.name === "Германия" ? 35 :
-              country.name === "США" ? 28 :
+              country.name === "Украина" ? 58 : 
+              country.name === "Германия" ? 52 :
+              country.name === "США" ? 48 :
+              country.name === "Казахстан" ? 44 :
+              country.name === "Молдова" ? 38 :
               country.name === "Латвия" ? 23 :
-              country.name === "Молдова" ? 20 :
               country.name === "Беларусь" ? 20 : 15, 
               newPercentage
             ))
