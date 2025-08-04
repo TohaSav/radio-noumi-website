@@ -103,15 +103,15 @@ const Hero = () => {
           >
             {/* Сердечко фон */}
             <div className={`absolute inset-0 text-8xl transition-all duration-300 ${
-              isLiked ? 'text-red-500' : 'text-pink-400'
+              isLiked ? 'text-red-600' : 'text-red-500'
             } ${
               pulse ? 'animate-pulse' : ''
             }`}>
-              🤍
+              ♡
             </div>
             
             {/* Цифра внутри сердечка */}
-            <span className="absolute inset-0 z-10 text-white font-bold text-sm leading-none drop-shadow-lg flex items-center justify-center text-center">
+            <span className="absolute inset-0 z-10 text-red-500 font-bold text-sm leading-none drop-shadow-lg flex items-center justify-center text-center">
               {formatNumber(likes)}
             </span>
           </button>
