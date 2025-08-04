@@ -31,18 +31,18 @@ const formatListeners = (num: number): string => {
   return num.toString();
 };
 
-// Функция для получения диапазона слушателей по времени
-const getListenerRange = (hour: number) => {
-  // Пиковое время с 18:00 до 00:00 - много слушателей
-  if (hour >= 18 || hour < 1) {
+// Функция для получения диапазона слушателей по времени (по Уральскому времени UTC+5)
+const getListenerRange = (uralHour: number) => {
+  // Пиковое время с 18:00 до 00:00 по Уральскому времени - много слушателей
+  if (uralHour >= 18 || uralHour === 23 || uralHour === 0) {
     return { min: 359941258, max: 1579352698 };
   } 
-  // Обычное время с 00:00 до 18:00 - стандартные показатели
-  else if (hour >= 9 && hour < 15) {
+  // Обычное время с 00:00 до 18:00 по Уральскому времени - стандартные показатели
+  else if (uralHour >= 9 && uralHour < 15) {
     return { min: 3150129, max: 12458760 };
-  } else if (hour >= 15 && hour < 18) {
+  } else if (uralHour >= 15 && uralHour < 18) {
     return { min: 4789236, max: 78960456 };
-  } else if (hour >= 1 && hour < 3) {
+  } else if (uralHour >= 1 && uralHour < 3) {
     return { min: 7963509, max: 96350521 };
   } else {
     return { min: 5698750, max: 9321456 };
@@ -145,8 +145,8 @@ const RadioPlayer = (props: RadioPlayerProps) => {
         // Ограничиваем значение диапазоном для текущего времени
         newValue = Math.max(range.min, Math.min(range.max, newValue));
         
-        // Для пикового времени (18:00-00:00) устанавливаем высокий минимум
-        if (hour >= 18 || hour < 1) {
+        // Для пикового времени (18:00-00:00) по Уральскому времени устанавливаем высокий минимум
+        if (hour >= 18 || hour === 23 || hour === 0) {
           newValue = Math.max(359941258, newValue);
         } else {
           // Для обычного времени не опускаем ниже стартового значения
