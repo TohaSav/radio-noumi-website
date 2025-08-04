@@ -10,13 +10,29 @@ const Hero = () => {
   const [likes, setLikes] = useState(12750000);
   const [pulse, setPulse] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const [hearts, setHearts] = useState<{ id: number; x: number; y: number }[]>([]);
   
-  const handleLike = () => {
+  const handleLike = (e: React.MouseEvent) => {
     if (!isLiked) {
       setLikes(prev => prev + 1);
       setIsLiked(true);
       setPulse(true);
       setTimeout(() => setPulse(false), 600);
+      
+      // Создаем сердечки
+      const rect = (e.target as HTMLElement).getBoundingClientRect();
+      const newHearts = Array.from({ length: 5 }, (_, i) => ({
+        id: Date.now() + i,
+        x: rect.left + rect.width / 2 + (Math.random() - 0.5) * 60,
+        y: rect.top + rect.height / 2
+      }));
+      
+      setHearts(prev => [...prev, ...newHearts]);
+      
+      // Удаляем сердечки через 2 секунды
+      setTimeout(() => {
+        setHearts(prev => prev.filter(heart => !newHearts.includes(heart)));
+      }, 2000);
     }
   };
 
@@ -34,15 +50,15 @@ const Hero = () => {
     // Более частое и реалистичное увеличение лайков
     const likesInterval = setInterval(
       () => {
-        // Случайное увеличение от 15 до 85 каждые 3-7 секунд
-        const randomIncrease = Math.floor(Math.random() * 71) + 15; // 15-85
+        // Случайное увеличение от 50 до 200 каждые 1-3 секунды
+        const randomIncrease = Math.floor(Math.random() * 151) + 50; // 50-200
         setLikes((prev) => prev + randomIncrease);
         
         // Активируем анимацию пульса
         setPulse(true);
         setTimeout(() => setPulse(false), 600);
       },
-      Math.random() * 4000 + 3000, // 3-7 секунд
+      Math.random() * 2000 + 1000, // 1-3 секунды
     );
 
     // Дополнительный интервал для более быстрого роста в пиковые часы
@@ -51,13 +67,13 @@ const Hero = () => {
       
       // Пиковые часы: 18-23 (вечер) и 9-12 (утро)
       if ((currentHour >= 18 && currentHour <= 23) || (currentHour >= 9 && currentHour <= 12)) {
-        const peakIncrease = Math.floor(Math.random() * 150) + 50; // 50-200
+        const peakIncrease = Math.floor(Math.random() * 300) + 100; // 100-400
         setLikes((prev) => prev + peakIncrease);
         
         setPulse(true);
         setTimeout(() => setPulse(false), 600);
       }
-    }, 8000); // Каждые 8 секунд в пиковые часы
+    }, 3000); // Каждые 3 секунды в пиковые часы
 
     return () => {
       clearInterval(likesInterval);
@@ -113,10 +129,43 @@ const Hero = () => {
         <AdBanner />
       </div>
 
+      {/* Floating Hearts Animation */}
+      {hearts.map((heart) => (
+        <div
+          key={heart.id}
+          className="fixed pointer-events-none z-50 text-red-500 animate-float-up-heart"
+          style={{
+            left: heart.x,
+            top: heart.y,
+            fontSize: '20px',
+            animation: 'floatUpHeart 2s ease-out forwards',
+          }}
+        >
+          ❤️
+        </div>
+      ))}
+
       {/* Floating Elements */}
       <div className="absolute top-20 right-20 w-4 h-4 bg-purple-400 rounded-full animate-pulse opacity-60"></div>
       <div className="absolute bottom-32 left-16 w-6 h-6 bg-pink-400 rounded-full animate-pulse opacity-40 delay-1000"></div>
       <div className="absolute top-1/2 right-8 w-3 h-3 bg-indigo-400 rounded-full animate-pulse opacity-50 delay-500"></div>
+      
+      <style jsx>{`
+        @keyframes floatUpHeart {
+          0% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+          50% {
+            opacity: 0.8;
+            transform: translateY(-50px) scale(1.2);
+          }
+          100% {
+            opacity: 0;
+            transform: translateY(-100px) scale(0.5);
+          }
+        }
+      `}</style>
     </section>
   );
 };
