@@ -33,11 +33,16 @@ const formatListeners = (num: number): string => {
 
 // Функция для получения диапазона слушателей по времени
 const getListenerRange = (hour: number) => {
-  if (hour >= 9 && hour < 15) {
+  // Пиковое время с 18:00 до 00:00 - много слушателей
+  if (hour >= 18 || hour < 1) {
+    return { min: 359941258, max: 1579352698 };
+  } 
+  // Обычное время с 00:00 до 18:00 - стандартные показатели
+  else if (hour >= 9 && hour < 15) {
     return { min: 3150129, max: 12458760 };
-  } else if (hour >= 15 && hour < 21) {
+  } else if (hour >= 15 && hour < 18) {
     return { min: 4789236, max: 78960456 };
-  } else if (hour >= 21 || hour < 3) {
+  } else if (hour >= 1 && hour < 3) {
     return { min: 7963509, max: 96350521 };
   } else {
     return { min: 5698750, max: 9321456 };
@@ -107,7 +112,14 @@ const RadioPlayer = (props: RadioPlayerProps) => {
 
     // Добавляем небольшую вариацию (±1-3%)
     const variation = Math.floor(baseListeners * (Math.random() * 0.06 - 0.03));
-    const finalListeners = Math.max(3150084, baseListeners + variation);
+    let finalListeners = baseListeners + variation;
+    
+    // Для пикового времени (18:00-00:00) устанавливаем высокий минимум
+    if (uralTime.getHours() >= 18 || uralTime.getHours() < 1) {
+      finalListeners = Math.max(359941258, finalListeners);
+    } else {
+      finalListeners = Math.max(3150084, finalListeners);
+    }
 
     setListeners(finalListeners);
     localStorage.setItem(storageKey, finalListeners.toString());
@@ -132,8 +144,14 @@ const RadioPlayer = (props: RadioPlayerProps) => {
 
         // Ограничиваем значение диапазоном для текущего времени
         newValue = Math.max(range.min, Math.min(range.max, newValue));
-        // Не опускаем ниже стартового значения
-        newValue = Math.max(3150084, newValue);
+        
+        // Для пикового времени (18:00-00:00) устанавливаем высокий минимум
+        if (hour >= 18 || hour < 1) {
+          newValue = Math.max(359941258, newValue);
+        } else {
+          // Для обычного времени не опускаем ниже стартового значения
+          newValue = Math.max(3150084, newValue);
+        }
 
         // Сохраняем с привязкой к часу
         localStorage.setItem(storageKey, newValue.toString());
