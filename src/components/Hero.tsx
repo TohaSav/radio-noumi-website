@@ -49,6 +49,15 @@ const Hero = () => {
     return num.toString();
   };
 
+  // Функция для определения размера сердечка в зависимости от длины текста
+  const getHeartSize = (text: string) => {
+    const length = text.length;
+    if (length <= 3) return { container: 'w-24 h-24', heart: 'text-6xl', text: 'text-xs' };
+    if (length <= 5) return { container: 'w-28 h-28', heart: 'text-7xl', text: 'text-sm' };
+    if (length <= 7) return { container: 'w-32 h-32', heart: 'text-8xl', text: 'text-base' };
+    return { container: 'w-36 h-36', heart: 'text-9xl', text: 'text-lg' };
+  };
+
   useEffect(() => {
     // Более частое и реалистичное увеличение лайков
     const likesInterval = setInterval(
@@ -97,12 +106,12 @@ const Hero = () => {
         <div className="flex items-center justify-center">
           <button 
             onClick={handleLike}
-            className={`relative flex items-center justify-center w-28 h-28 transition-all duration-300 hover:scale-105 cursor-pointer ${
+            className={`relative flex items-center justify-center ${getHeartSize(formatNumber(likes)).container} transition-all duration-300 hover:scale-105 cursor-pointer ${
               pulse ? 'scale-110' : 'scale-100'
             }`}
           >
             {/* Сердечко фон */}
-            <div className={`absolute inset-0 text-8xl transition-all duration-300 ${
+            <div className={`absolute inset-0 ${getHeartSize(formatNumber(likes)).heart} transition-all duration-300 ${
               isLiked ? 'text-red-600' : 'text-red-500'
             } ${
               pulse ? 'animate-pulse' : ''
@@ -111,7 +120,7 @@ const Hero = () => {
             </div>
             
             {/* Цифра внутри сердечка */}
-            <span className="absolute inset-0 z-10 text-red-500 font-bold text-sm leading-none drop-shadow-lg flex items-center justify-center text-center">
+            <span className={`absolute inset-0 z-10 text-red-500 font-bold ${getHeartSize(formatNumber(likes)).text} leading-none drop-shadow-lg flex items-center justify-center text-center`}>
               {formatNumber(likes)}
             </span>
           </button>
