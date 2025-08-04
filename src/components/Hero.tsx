@@ -120,7 +120,7 @@ const Hero = () => {
             </div>
             
             {/* Цифра внутри сердечка */}
-            <span className="absolute inset-0 z-10 text-white font-bold text-sm leading-none drop-shadow-lg flex items-center justify-center">
+            <span className="absolute inset-0 z-10 text-white font-bold text-sm leading-none drop-shadow-lg flex items-center justify-center text-center">
               {formatNumber(likes)}
             </span>
           </button>
