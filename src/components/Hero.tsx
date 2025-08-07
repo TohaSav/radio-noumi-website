@@ -136,7 +136,7 @@ const Hero = () => {
               }`}>
                 ♡
               </div>
-            </div>
+            </button>
             
             {/* Летящие тексты "Like" */}
             {likeTexts.map((likeText) => (
