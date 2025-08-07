@@ -102,15 +102,15 @@ const Hero = () => {
         <EmbeddedRadioPlayer streamUrl="https://myradio24.org/61673" />
 
         {/* Лайки с сердечком */}
-        <div className="flex flex-col items-center justify-center gap-3">
+        <div className="flex flex-col items-center justify-center gap-2">
           <button 
             onClick={handleLike}
-            className={`relative flex items-center justify-center ${getHeartSize(formatNumber(likes)).container} transition-all duration-300 hover:scale-105 cursor-pointer ${
-              pulse ? 'scale-110' : 'scale-100'
+            className={`relative flex items-center justify-center w-12 h-12 transition-all duration-300 hover:scale-110 cursor-pointer ${
+              pulse ? 'scale-125' : 'scale-100'
             }`}
           >
             {/* Сердечко фон */}
-            <div className={`absolute inset-0 ${getHeartSize(formatNumber(likes)).heart} transition-all duration-300 ${
+            <div className={`text-3xl transition-all duration-300 ${
               isLiked ? 'text-red-600' : 'text-red-500'
             } ${
               pulse ? 'animate-pulse' : ''
@@ -120,7 +120,7 @@ const Hero = () => {
           </button>
           
           {/* Цифра под сердечком */}
-          <span className="text-white font-bold text-lg drop-shadow-lg">
+          <span className="text-white/90 font-medium text-sm drop-shadow-sm">
             {formatNumber(likes)}
           </span>
         </div>
