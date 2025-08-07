@@ -472,9 +472,7 @@ const Hero = () => {
                       </div>
                     </div>
                     
-                      <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Icon name="Play" size={16} className="text-purple-400" />
-                      </div>
+
                     </div>
                   );
                 })}
