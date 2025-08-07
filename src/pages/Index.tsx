@@ -3,6 +3,7 @@ import RadioPlayer from "@/components/RadioPlayer";
 import Hero from "@/components/Hero";
 import WaveVisualizer from "@/components/WaveVisualizer";
 import BackgroundWaves from "@/components/BackgroundWaves";
+import AdBanner from "@/components/AdBanner";
 
 const Index = () => {
   const [isRadioPlaying, setIsRadioPlaying] = useState(false);
@@ -23,6 +24,7 @@ const Index = () => {
       <BackgroundWaves isActive={isRadioPlaying} audioData={audioData} />
 
       <div className="relative z-10">
+        <AdBanner />
         <Hero />
 
         <WaveVisualizer />
