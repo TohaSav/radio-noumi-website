@@ -11,6 +11,30 @@ const Hero = () => {
   const [isLiked, setIsLiked] = useState(false);
   const [hearts, setHearts] = useState<{ id: number; x: number; y: number }[]>([]);
   const [likeTexts, setLikeTexts] = useState<{ id: number; x: number; y: number }[]>([]);
+  const [showTopChart, setShowTopChart] = useState(false);
+
+  // Список песен топ чарта
+  const topChartSongs = [
+    "Ночь (Альфа ночь)", "Чебер кышно", "Ночь для меня", "Ночной город", "Наше лето",
+    "Моја мала", "Русская душа", "Давайте танцевать", "Виталенька мой", "Біз өмір сүреміз",
+    "Sola Sin Ti", "Девочка моя", "Виталя твой щит", "Лиловый город", "Бәхетле йөрәк",
+    "Бабули", "В тени рассвета", "Уши", "I Want It All", "Сука", "Слёзы", "Открой глаза",
+    "Малыш", "Менің Жарығым", "Лето зовёт", "Ледянное сердце", "Ах лето", "Бокал за бокалом",
+    "Бокал за Бокалом Danc remix", "Виталя Жұлдыз", "Вы ушли", "Клеопатра", "独特的爱",
+    "Я феникс", "Я орел", "Я добился", "Частушки", "Ты Королева Ты звезда", "Тихий Плач",
+    "Тиктоник бой", "Танцуя в поисках любви", "Танцую одна", "Танцуй", "Танцпол мой",
+    "Счастливое детсво", "Сұлу Патшайым", "Стальной человек", "Спасибо боже",
+    "Солнышко и Друзья", "Сломаные крылья", "Сила Внутри", "Русская женщина",
+    "Рулетка любовь", "Реальная любовь", "Пустой дом", "Пряничная тучка",
+    "Поцелуи в Сумерках", "Песня про Россию", "Песня по друга", "Папа я с тобой",
+    "Открытое сердце", "Одиночка шансон", "Ночная жизнь", "Крик ребенка",
+    "Курортный роман", "Незмаконец с улице", "Наши Герои", "Наш призидент",
+    "Моя королева", "Моя жена", "Моя девочка со мной", "Мой путь", "Мои мамы и жена",
+    "Мамина боль", "Лето у Моря", "Королева бала", "Клубничный поцелуй",
+    "Зеленоглазый мед", "Вечная память", "Вернись мама", "Великая Россия",
+    "Большая,чем дружба", "Queen of Dance (Bass Remix)", "Hot Summer Girls",
+    "Game of Life", "Chocolate Lips", "22 июня"
+  ];
   
   const handleLike = (e: React.MouseEvent) => {
     if (!isLiked) {
@@ -181,6 +205,14 @@ const Hero = () => {
         </div>
       ))}
 
+      {/* Кнопка Топ Чарт */}
+      <button
+        onClick={() => setShowTopChart(true)}
+        className="absolute top-4 right-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 shadow-lg z-20"
+      >
+        🎵 Топ Чарт
+      </button>
+
       {/* Floating Elements */}
       <div className="absolute top-20 right-20 w-4 h-4 bg-purple-400 rounded-full animate-pulse opacity-60"></div>
       <div className="absolute bottom-32 left-16 w-6 h-6 bg-pink-400 rounded-full animate-pulse opacity-40 delay-1000"></div>
@@ -202,6 +234,57 @@ const Hero = () => {
           }
         }
       `}</style>
+
+      {/* Модальное окно Топ Чарт */}
+      {showTopChart && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 rounded-2xl p-6 max-w-2xl w-full max-h-[80vh] relative border border-purple-500/30">
+            {/* Заголовок */}
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                🎵 <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Топ Чарт Radio Noumi</span>
+              </h2>
+              <button
+                onClick={() => setShowTopChart(false)}
+                className="text-white/70 hover:text-white p-2 hover:bg-white/10 rounded-full transition-all"
+              >
+                <Icon name="X" size={20} />
+              </button>
+            </div>
+
+            {/* Список песен */}
+            <div className="overflow-y-auto max-h-[60vh] custom-scrollbar">
+              <div className="space-y-2">
+                {topChartSongs.map((song, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors group"
+                  >
+                    <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                      {index + 1}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-white font-medium truncate group-hover:text-purple-300 transition-colors">
+                        {song}
+                      </div>
+                    </div>
+                    <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Icon name="Play" size={16} className="text-purple-400" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Подвал */}
+            <div className="mt-6 pt-4 border-t border-white/10 text-center">
+              <p className="text-white/60 text-sm">
+                🔥 Самые популярные треки Radio Noumi
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
