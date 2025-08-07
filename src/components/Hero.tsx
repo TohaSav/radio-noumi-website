@@ -62,15 +62,15 @@ const Hero = () => {
     // Более частое и реалистичное увеличение лайков
     const likesInterval = setInterval(
       () => {
-        // Случайное увеличение от 50 до 200 каждые 1-3 секунды
-        const randomIncrease = Math.floor(Math.random() * 151) + 50; // 50-200
+        // Увеличенное случайное увеличение от 200 до 500
+        const randomIncrease = Math.floor(Math.random() * 301) + 200; // 200-500
         setLikes((prev) => prev + randomIncrease);
         
         // Активируем анимацию пульса
         setPulse(true);
         setTimeout(() => setPulse(false), 600);
       },
-      Math.random() * 2000 + 1000, // 1-3 секунды
+      Math.random() * 1000 + 500, // 0.5-1.5 секунды (быстрее!)
     );
 
     // Дополнительный интервал для более быстрого роста в пиковые часы
@@ -79,13 +79,13 @@ const Hero = () => {
       
       // Пиковые часы: 18-23 (вечер) и 9-12 (утро)
       if ((currentHour >= 18 && currentHour <= 23) || (currentHour >= 9 && currentHour <= 12)) {
-        const peakIncrease = Math.floor(Math.random() * 300) + 100; // 100-400
+        const peakIncrease = Math.floor(Math.random() * 500) + 300; // 300-800 (ещё больше!)
         setLikes((prev) => prev + peakIncrease);
         
         setPulse(true);
         setTimeout(() => setPulse(false), 600);
       }
-    }, 3000); // Каждые 3 секунды в пиковые часы
+    }, 1500); // Каждые 1.5 секунды в пиковые часы (быстрее!)
 
     // Интервал для летящих текстов "Like"
     const likeTextInterval = setInterval(() => {
