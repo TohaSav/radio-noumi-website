@@ -97,10 +97,10 @@ const Hero = () => {
       
       setLikeTexts((prev) => [...prev, newLikeText]);
       
-      // Удаляем текст через 2 секунды
+      // Удаляем текст через 3 секунды (время анимации)
       setTimeout(() => {
         setLikeTexts((prev) => prev.filter((text) => text.id !== newLikeText.id));
-      }, 2000);
+      }, 3000);
     }, 1500); // Каждые 1.5 секунды
 
     return () => {
@@ -142,10 +142,10 @@ const Hero = () => {
             {likeTexts.map((likeText) => (
               <div
                 key={likeText.id}
-                className="absolute pointer-events-none text-white/70 text-xs font-medium animate-float-up-heart z-50"
+                className="fixed pointer-events-none text-white/70 text-xs font-medium animate-like-float z-50"
                 style={{
-                  left: `${likeText.x}%`,
-                  top: '50%',
+                  left: `calc(50vw + ${likeText.x - 50}px)`,
+                  top: '50vh',
                   transform: 'translate(-50%, -50%)',
                 }}
               >
