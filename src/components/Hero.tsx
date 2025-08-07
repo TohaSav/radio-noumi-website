@@ -92,6 +92,46 @@ const Hero = () => {
     return () => clearInterval(activityInterval);
   }, []);
 
+  // Функция для определения лучшего трека (самый популярный)
+  const getBestTrack = () => {
+    let bestIndex = -1;
+    let maxScore = -1;
+    
+    Object.entries(songLikes).forEach(([index, stats]) => {
+      const score = stats.likes - stats.dislikes; // Общий рейтинг
+      if (score > maxScore) {
+        maxScore = score;
+        bestIndex = parseInt(index);
+      }
+    });
+    
+    return bestIndex;
+  };
+
+  // Функция для определения худшего трека (низкие лайки + много дизлайков)
+  const getWorstTrack = () => {
+    let worstIndex = -1;
+    let minScore = Infinity;
+    
+    Object.entries(songLikes).forEach(([index, stats]) => {
+      if (stats.likes < 10 && stats.dislikes < 5) return; // Игнорируем треки с очень низкой активностью
+      
+      const ratio = stats.dislikes > 0 ? stats.likes / stats.dislikes : stats.likes;
+      const score = ratio + stats.likes * 0.1; // Учитываем соотношение и абсолютное количество лайков
+      
+      if (score < minScore && stats.dislikes > 0) {
+        minScore = score;
+        worstIndex = parseInt(index);
+      }
+    });
+    
+    return worstIndex;
+  };
+
+  // Получаем индексы лучшего и худшего трека
+  const bestTrackIndex = getBestTrack();
+  const worstTrackIndex = getWorstTrack();
+
   // Обработка лайка/дизлайка
   const handleSongAction = (songIndex: number, action: 'like' | 'dislike') => {
     setSongLikes(prev => {
@@ -358,19 +398,44 @@ const Hero = () => {
             {/* Список песен */}
             <div className="overflow-y-auto max-h-[60vh] custom-scrollbar">
               <div className="space-y-2">
-                {topChartSongs.map((song, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors group"
-                  >
-                    <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                      {index + 1}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-white font-medium truncate group-hover:text-purple-300 transition-colors">
-                        {song}
+                {topChartSongs.map((song, index) => {
+                  const isBestTrack = index === bestTrackIndex;
+                  const isWorstTrack = index === worstTrackIndex;
+                  
+                  return (
+                    <div
+                      key={index}
+                      className={`flex items-center gap-3 p-3 rounded-lg transition-all group ${
+                        isBestTrack
+                          ? 'bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-400/50 shadow-lg shadow-yellow-500/20'
+                          : isWorstTrack
+                          ? 'bg-gradient-to-r from-red-500/20 to-red-600/20 border border-red-400/50 shadow-lg shadow-red-500/20'
+                          : 'bg-white/5 hover:bg-white/10'
+                      }`}
+                    >
+                      <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ${
+                        isBestTrack
+                          ? 'bg-gradient-to-r from-yellow-500 to-orange-500'
+                          : isWorstTrack
+                          ? 'bg-gradient-to-r from-red-500 to-red-600'
+                          : 'bg-gradient-to-r from-purple-600 to-pink-600'
+                      }`}>
+                        {index + 1}
                       </div>
-                    </div>
+                      
+                      <div className="flex-1 min-w-0">
+                        <div className={`font-medium truncate transition-colors flex items-center gap-2 ${
+                          isBestTrack
+                            ? 'text-yellow-300'
+                            : isWorstTrack
+                            ? 'text-red-300'
+                            : 'text-white group-hover:text-purple-300'
+                        }`}>
+                          {isBestTrack && <span className="text-yellow-400">🏆</span>}
+                          {isWorstTrack && <span className="text-red-400">😢</span>}
+                          {song}
+                        </div>
+                      </div>
                     
                     {/* Лайки и дизлайки */}
                     <div className="flex items-center gap-4 text-sm">
@@ -407,11 +472,12 @@ const Hero = () => {
                       </div>
                     </div>
                     
-                    <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Icon name="Play" size={16} className="text-purple-400" />
+                      <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Icon name="Play" size={16} className="text-purple-400" />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
