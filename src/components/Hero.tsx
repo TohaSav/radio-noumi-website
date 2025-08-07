@@ -12,6 +12,109 @@ const Hero = () => {
   const [hearts, setHearts] = useState<{ id: number; x: number; y: number }[]>([]);
   const [likeTexts, setLikeTexts] = useState<{ id: number; x: number; y: number }[]>([]);
   const [showTopChart, setShowTopChart] = useState(false);
+  const [songLikes, setSongLikes] = useState<{ [key: number]: { likes: number; dislikes: number } }>({});
+
+  // Функция для генерации реалистичных лайков/дизлайков
+  const generateSongStats = () => {
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    const storageKey = `songStats_${currentYear}_${currentMonth}`;
+    
+    // Проверяем есть ли сохраненные данные для текущего месяца
+    const savedStats = localStorage.getItem(storageKey);
+    if (savedStats) {
+      return JSON.parse(savedStats);
+    }
+
+    // Генерируем новые статистики для каждой песни
+    const stats: { [key: number]: { likes: number; dislikes: number } } = {};
+    topChartSongs.forEach((_, index) => {
+      // Популярные песни (топ 20) получают больше взаимодействий
+      const isPopular = index < 20;
+      const baseRange = isPopular ? [500, 2000] : [50, 500];
+      
+      const likes = Math.floor(Math.random() * (baseRange[1] - baseRange[0]) + baseRange[0]);
+      // Дизлайки обычно 10-30% от лайков
+      const dislikeRatio = Math.random() * 0.2 + 0.1; // 10-30%
+      const dislikes = Math.floor(likes * dislikeRatio);
+      
+      stats[index] = { likes, dislikes };
+    });
+
+    localStorage.setItem(storageKey, JSON.stringify(stats));
+    return stats;
+  };
+
+  // Инициализация статистик песен
+  useEffect(() => {
+    const stats = generateSongStats();
+    setSongLikes(stats);
+    
+    // Автоматическое увеличение лайков/дизлайков (имитация реальной активности)
+    const activityInterval = setInterval(() => {
+      setSongLikes(prev => {
+        const updated = { ...prev };
+        
+        // Случайно выбираем 1-3 песни для обновления
+        const songsToUpdate = Math.floor(Math.random() * 3) + 1;
+        const allSongIndexes = Object.keys(topChartSongs).map(Number);
+        
+        for (let i = 0; i < songsToUpdate; i++) {
+          const randomIndex = allSongIndexes[Math.floor(Math.random() * allSongIndexes.length)];
+          
+          if (!updated[randomIndex]) {
+            updated[randomIndex] = { likes: 0, dislikes: 0 };
+          }
+          
+          // Популярные песни (топ 20) получают больше активности
+          const isPopular = randomIndex < 20;
+          const likeChance = Math.random();
+          
+          if (likeChance < 0.75) { // 75% шанс на лайк
+            const increment = isPopular ? Math.floor(Math.random() * 5) + 1 : Math.floor(Math.random() * 2) + 1;
+            updated[randomIndex].likes += increment;
+          } else { // 25% шанс на дизлайк
+            const increment = isPopular ? Math.floor(Math.random() * 2) + 1 : 1;
+            updated[randomIndex].dislikes += increment;
+          }
+        }
+        
+        // Сохраняем обновленную статистику
+        const currentMonth = new Date().getMonth();
+        const currentYear = new Date().getFullYear();
+        const storageKey = `songStats_${currentYear}_${currentMonth}`;
+        localStorage.setItem(storageKey, JSON.stringify(updated));
+        
+        return updated;
+      });
+    }, 15000); // Каждые 15 секунд
+
+    return () => clearInterval(activityInterval);
+  }, []);
+
+  // Обработка лайка/дизлайка
+  const handleSongAction = (songIndex: number, action: 'like' | 'dislike') => {
+    setSongLikes(prev => {
+      const updated = { ...prev };
+      if (!updated[songIndex]) {
+        updated[songIndex] = { likes: 0, dislikes: 0 };
+      }
+      
+      if (action === 'like') {
+        updated[songIndex].likes += 1;
+      } else {
+        updated[songIndex].dislikes += 1;
+      }
+
+      // Сохраняем в localStorage
+      const currentMonth = new Date().getMonth();
+      const currentYear = new Date().getFullYear();
+      const storageKey = `songStats_${currentYear}_${currentMonth}`;
+      localStorage.setItem(storageKey, JSON.stringify(updated));
+      
+      return updated;
+    });
+  };
 
   // Список песен топ чарта
   const topChartSongs = [
@@ -268,6 +371,42 @@ const Hero = () => {
                         {song}
                       </div>
                     </div>
+                    
+                    {/* Лайки и дизлайки */}
+                    <div className="flex items-center gap-4 text-sm">
+                      {/* Лайк */}
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSongAction(index, 'like');
+                          }}
+                          className="text-green-400 hover:text-green-300 transition-colors p-1 hover:bg-green-400/10 rounded"
+                        >
+                          👍
+                        </button>
+                        <span className="text-green-400 font-medium min-w-[30px]">
+                          {songLikes[index]?.likes || 0}
+                        </span>
+                      </div>
+                      
+                      {/* Дизлайк */}
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSongAction(index, 'dislike');
+                          }}
+                          className="text-red-400 hover:text-red-300 transition-colors p-1 hover:bg-red-400/10 rounded"
+                        >
+                          👎
+                        </button>
+                        <span className="text-red-400 font-medium min-w-[30px]">
+                          {songLikes[index]?.dislikes || 0}
+                        </span>
+                      </div>
+                    </div>
+                    
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
                       <Icon name="Play" size={16} className="text-purple-400" />
                     </div>
