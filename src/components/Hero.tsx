@@ -10,6 +10,7 @@ const Hero = () => {
   const [pulse, setPulse] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [hearts, setHearts] = useState<{ id: number; x: number; y: number }[]>([]);
+  const [likeTexts, setLikeTexts] = useState<{ id: number; x: number; y: number }[]>([]);
   
   const handleLike = (e: React.MouseEvent) => {
     if (!isLiked) {
@@ -86,9 +87,26 @@ const Hero = () => {
       }
     }, 3000); // Каждые 3 секунды в пиковые часы
 
+    // Интервал для летящих текстов "Like"
+    const likeTextInterval = setInterval(() => {
+      const newLikeText = {
+        id: Date.now() + Math.random(),
+        x: Math.random() * 60 + 20, // 20-80% от ширины
+        y: 50, // Начинаем с середины
+      };
+      
+      setLikeTexts((prev) => [...prev, newLikeText]);
+      
+      // Удаляем текст через 2 секунды
+      setTimeout(() => {
+        setLikeTexts((prev) => prev.filter((text) => text.id !== newLikeText.id));
+      }, 2000);
+    }, 1500); // Каждые 1.5 секунды
+
     return () => {
       clearInterval(likesInterval);
       clearInterval(peakHoursInterval);
+      clearInterval(likeTextInterval);
     };
   }, []);
 
@@ -103,21 +121,38 @@ const Hero = () => {
 
         {/* Лайки с сердечком */}
         <div className="flex flex-col items-center justify-center gap-2">
-          <button 
-            onClick={handleLike}
-            className={`relative flex items-center justify-center w-12 h-12 transition-all duration-300 hover:scale-110 cursor-pointer ${
-              pulse ? 'scale-125' : 'scale-100'
-            }`}
-          >
-            {/* Сердечко фон */}
-            <div className={`text-3xl transition-all duration-300 ${
-              isLiked ? 'text-red-600' : 'text-red-500'
-            } ${
-              pulse ? 'animate-pulse' : ''
-            }`}>
-              ♡
+          <div className="relative">
+            <button 
+              onClick={handleLike}
+              className={`relative flex items-center justify-center w-12 h-12 transition-all duration-300 hover:scale-110 cursor-pointer ${
+                pulse ? 'scale-125' : 'scale-100'
+              }`}
+            >
+              {/* Сердечко фон */}
+              <div className={`text-3xl transition-all duration-300 ${
+                isLiked ? 'text-red-600' : 'text-red-500'
+              } ${
+                pulse ? 'animate-pulse' : ''
+              }`}>
+                ♡
+              </div>
             </div>
-          </button>
+            
+            {/* Летящие тексты "Like" */}
+            {likeTexts.map((likeText) => (
+              <div
+                key={likeText.id}
+                className="absolute pointer-events-none text-white/70 text-xs font-medium animate-float-up-heart z-50"
+                style={{
+                  left: `${likeText.x}%`,
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)',
+                }}
+              >
+                Like
+              </div>
+            ))}
+          </div>
           
           {/* Цифра под сердечком */}
           <span className="text-white/90 font-medium text-sm drop-shadow-sm">
