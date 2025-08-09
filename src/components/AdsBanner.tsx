@@ -83,14 +83,14 @@ const AdsBanner = () => {
   }, [adLinks.length]);
 
   return (
-    <div className="w-[470px] h-[260px] bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 rounded-lg border border-gray-700 overflow-hidden relative shadow-xl">
+    <div className="w-[235px] h-[300px] bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 rounded-lg border border-gray-700 overflow-hidden relative shadow-xl">
       {/* Заголовок рекламного блока */}
       <div className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 text-white font-semibold text-sm">
         📢 Специальные предложения
       </div>
       
       {/* Контейнер для анимированных ссылок */}
-      <div className="relative h-[228px] overflow-hidden">
+      <div className="relative h-[268px] overflow-hidden">
         <div 
           className="absolute w-full transition-transform duration-1000 ease-out"
           style={{
