@@ -87,7 +87,7 @@ const Hero = () => {
         
         return updated;
       });
-    }, 15000); // Каждые 15 секунд
+    }, 3000); // Каждые 3 секунды для более быстрой динамики
 
     return () => clearInterval(activityInterval);
   }, []);
@@ -132,7 +132,7 @@ const Hero = () => {
   const bestTrackIndex = getBestTrack();
   const worstTrackIndex = getWorstTrack();
 
-  // Обработка лайка/дизлайка
+  // Обработка лайка/дизлайка с ускоренным набором
   const handleSongAction = (songIndex: number, action: 'like' | 'dislike') => {
     setSongLikes(prev => {
       const updated = { ...prev };
@@ -140,10 +140,13 @@ const Hero = () => {
         updated[songIndex] = { likes: 0, dislikes: 0 };
       }
       
+      // Ускоренный набор лайков/дизлайков
       if (action === 'like') {
-        updated[songIndex].likes += 1;
+        const randomBoost = Math.floor(Math.random() * 3) + 2; // От 2 до 4 лайков за раз
+        updated[songIndex].likes += randomBoost;
       } else {
-        updated[songIndex].dislikes += 1;
+        const randomBoost = Math.floor(Math.random() * 2) + 1; // От 1 до 2 дизлайков за раз
+        updated[songIndex].dislikes += randomBoost;
       }
 
       // Сохраняем в localStorage
