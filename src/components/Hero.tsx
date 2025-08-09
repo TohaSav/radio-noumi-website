@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import EmbeddedRadioPlayer from "@/components/EmbeddedRadioPlayer";
-import AdsBanner from "@/components/AdsBanner";
+
 import LikesSection from "@/components/hero/LikesSection";
 import TopChart from "@/components/hero/TopChart";
 import { useTopChart } from "@/hooks/useTopChart";
@@ -27,11 +27,6 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-start justify-center text-center px-4 pt-4">
-      {/* Рекламное окно слева */}
-      <div className="absolute left-4 top-4 z-10">
-        <AdsBanner />
-      </div>
-
       {/* Hero Content */}
       <div className="max-w-4xl mx-auto space-y-4">
         <EmbeddedRadioPlayer streamUrl="https://myradio24.org/61673" />
