@@ -64,7 +64,7 @@ const LikesSection = ({
     // Более частое и реалистичное увеличение лайков
     const likesInterval = setInterval(
       () => {
-        // Увеличенное случайное увеличение от 200 до 500
+        // Увеличение лайков от 200 до 500 каждую минуту
         const randomIncrease = Math.floor(Math.random() * 301) + 200; // 200-500
         setLikes((prev) => prev + randomIncrease);
         
@@ -72,7 +72,7 @@ const LikesSection = ({
         setPulse(true);
         setTimeout(() => setPulse(false), 600);
       },
-      Math.random() * 1000 + 500, // 0.5-1.5 секунды (быстрее!)
+      60000, // Каждую минуту (60 секунд)
     );
 
     // Дополнительный интервал для более быстрого роста в пиковые часы
