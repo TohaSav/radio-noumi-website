@@ -85,8 +85,8 @@ const RadioPlayer = (props: RadioPlayerProps) => {
 
   // Инициализация счетчика слушателей
   useEffect(() => {
-    // Проверяем временный режим "2.95 млрд на 3 часа"
-    const tempModeKey = 'radioTempMode_2_95B';
+    // Проверяем временный режим "5.87 млрд на 3 часа"
+    const tempModeKey = 'radioTempMode_5_87B';
     const tempStartTime = localStorage.getItem(tempModeKey);
     
     if (tempStartTime) {
@@ -95,8 +95,8 @@ const RadioPlayer = (props: RadioPlayerProps) => {
       const hoursElapsed = (now.getTime() - startTime.getTime()) / (1000 * 60 * 60);
       
       if (hoursElapsed < 3) {
-        // Ещё в временном режиме - показываем ~2.95 млрд с небольшими колебаниями
-        const baseTemp = 2954120359;
+        // Ещё в временном режиме - показываем ~5.87 млрд с небольшими колебаниями
+        const baseTemp = 5879250300;
         const variation = Math.floor(baseTemp * (Math.random() * 0.001 - 0.0005)); // ±0.05%
         setListeners(baseTemp + variation);
         return;
@@ -107,7 +107,7 @@ const RadioPlayer = (props: RadioPlayerProps) => {
     } else {
       // Устанавливаем временный режим (первый запуск)
       localStorage.setItem(tempModeKey, new Date().toISOString());
-      const baseTemp = 2954120359;
+      const baseTemp = 5879250300;
       const variation = Math.floor(baseTemp * (Math.random() * 0.001 - 0.0005));
       setListeners(baseTemp + variation);
       return;
