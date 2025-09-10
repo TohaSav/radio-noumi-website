@@ -52,7 +52,9 @@ const LikesSection = ({
 
   // Функция для сокращения чисел
   const formatNumber = (num: number): string => {
-    if (num >= 1000000) {
+    if (num >= 1000000000) {
+      return (num / 1000000000).toFixed(2) + "B";
+    } else if (num >= 1000000) {
       return (num / 1000000).toFixed(1) + "M";
     } else if (num >= 1000) {
       return (num / 1000).toFixed(0) + "K";
@@ -72,7 +74,7 @@ const LikesSection = ({
         setPulse(true);
         setTimeout(() => setPulse(false), 600);
       },
-      60000, // Каждую минуту (60 секунд)
+      30000, // Каждые 30 секунд (быстрее!)
     );
 
     // Дополнительный интервал для более быстрого роста в пиковые часы
@@ -87,7 +89,7 @@ const LikesSection = ({
         setPulse(true);
         setTimeout(() => setPulse(false), 600);
       }
-    }, 1500); // Каждые 1.5 секунды в пиковые часы (быстрее!)
+    }, 800); // Каждые 0.8 секунды в пиковые часы (очень быстро!)
 
     // Интервал для летящих текстов "Like"
     const likeTextInterval = setInterval(() => {
