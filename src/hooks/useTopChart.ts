@@ -5,7 +5,7 @@ export const useTopChart = () => {
 
   // Список песен топ чарта
   const topChartSongs = [
-    "Ночь (Альфа ночь)", "Чебер кышно", "Ночь для меня", "Ночной город", "Наше лето",
+    "Почему вы выбрали экран", "Ночь (Альфа ночь)", "Чебер кышно", "Ночь для меня", "Ночной город", "Наше лето",
     "Моја мала", "Русская душа", "Давайте танцевать", "Виталенька мой", "Біз өмір сүреміз",
     "Sola Sin Ti", "Девочка моя", "Виталя твой щит", "Лиловый город", "Бәхетле йөрәк",
     "Бабули", "В тени рассвета", "Уши", "I Want It All", "Сука", "Слёзы", "Открой глаза",
@@ -32,6 +32,9 @@ export const useTopChart = () => {
     const currentYear = new Date().getFullYear();
     const storageKey = `songStats_${currentYear}_${currentMonth}`;
     
+    // ВРЕМЕННО: Очищаем кеш чтобы обновить данные для первой песни
+    localStorage.removeItem(storageKey);
+    
     // Проверяем есть ли сохраненные данные для текущего месяца
     const savedStats = localStorage.getItem(storageKey);
     if (savedStats) {
@@ -41,16 +44,21 @@ export const useTopChart = () => {
     // Генерируем новые статистики для каждой песни
     const stats: { [key: number]: { likes: number; dislikes: number } } = {};
     topChartSongs.forEach((_, index) => {
-      // Популярные песни (топ 20) получают больше взаимодействий
-      const isPopular = index < 20;
-      const baseRange = isPopular ? [500, 2000] : [50, 500];
-      
-      const likes = Math.floor(Math.random() * (baseRange[1] - baseRange[0]) + baseRange[0]);
-      // Дизлайки обычно 10-30% от лайков
-      const dislikeRatio = Math.random() * 0.2 + 0.1; // 10-30%
-      const dislikes = Math.floor(likes * dislikeRatio);
-      
-      stats[index] = { likes, dislikes };
+      if (index === 0) {
+        // Первая песня "Почему вы выбрали экран" - золотая с 2.78B лайков
+        stats[index] = { likes: 2789005304, dislikes: 1205 };
+      } else {
+        // Популярные песни (топ 20) получают больше взаимодействий
+        const isPopular = index < 20;
+        const baseRange = isPopular ? [500, 2000] : [50, 500];
+        
+        const likes = Math.floor(Math.random() * (baseRange[1] - baseRange[0]) + baseRange[0]);
+        // Дизлайки обычно 10-30% от лайков
+        const dislikeRatio = Math.random() * 0.2 + 0.1; // 10-30%
+        const dislikes = Math.floor(likes * dislikeRatio);
+        
+        stats[index] = { likes, dislikes };
+      }
     });
 
     localStorage.setItem(storageKey, JSON.stringify(stats));

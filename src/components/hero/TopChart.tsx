@@ -21,6 +21,19 @@ const TopChart = ({
 }: TopChartProps) => {
   if (!showTopChart) return null;
 
+  const formatLikes = (count: number): string => {
+    if (count >= 1000000000) {
+      return (count / 1000000000).toFixed(2) + "B";
+    }
+    if (count >= 1000000) {
+      return (count / 1000000).toFixed(1) + "M";
+    }
+    if (count >= 1000) {
+      return (count / 1000).toFixed(1) + "K";
+    }
+    return count.toString();
+  };
+
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 rounded-2xl p-6 max-w-2xl w-full max-h-[80vh] relative border border-purple-500/30">
@@ -43,12 +56,15 @@ const TopChart = ({
             {topChartSongs.map((song, index) => {
               const isBestTrack = index === bestTrackIndex;
               const isWorstTrack = index === worstTrackIndex;
+              const isGoldTrack = index === 0; // Первая песня - золотая
               
               return (
                 <div
                   key={index}
                   className={`flex items-center gap-3 p-3 rounded-lg transition-all group ${
-                    isBestTrack
+                    isGoldTrack
+                      ? 'bg-gradient-to-r from-yellow-500/30 via-amber-500/30 to-yellow-500/30 animate-pulse border border-yellow-400/60 shadow-xl shadow-yellow-500/30'
+                      : isBestTrack
                       ? 'bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-400/50 shadow-lg shadow-yellow-500/20'
                       : isWorstTrack
                       ? 'bg-gradient-to-r from-red-500/20 to-red-600/20 border border-red-400/50 shadow-lg shadow-red-500/20'
@@ -56,7 +72,9 @@ const TopChart = ({
                   }`}
                 >
                   <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ${
-                    isBestTrack
+                    isGoldTrack
+                      ? 'bg-gradient-to-r from-yellow-500 to-amber-400 animate-pulse shadow-lg shadow-yellow-500/50'
+                      : isBestTrack
                       ? 'bg-gradient-to-r from-yellow-500 to-orange-500'
                       : isWorstTrack
                       ? 'bg-gradient-to-r from-red-500 to-red-600'
@@ -67,13 +85,16 @@ const TopChart = ({
                   
                   <div className="flex-1 min-w-0">
                     <div className={`font-medium truncate transition-colors flex items-center gap-2 ${
-                      isBestTrack
+                      isGoldTrack
+                        ? 'text-yellow-300 font-bold animate-pulse'
+                        : isBestTrack
                         ? 'text-yellow-300'
                         : isWorstTrack
                         ? 'text-red-300'
                         : 'text-white group-hover:text-purple-300'
                     }`}>
-                      {isBestTrack && <span className="text-yellow-400">🏆</span>}
+                      {isGoldTrack && <span className="text-yellow-400 animate-bounce">👑</span>}
+                      {!isGoldTrack && isBestTrack && <span className="text-yellow-400">🏆</span>}
                       {isWorstTrack && <span className="text-red-400">😢</span>}
                       {song}
                     </div>
@@ -92,8 +113,8 @@ const TopChart = ({
                     >
                       👍
                     </button>
-                    <span className="text-green-400 font-medium min-w-[30px]">
-                      {songLikes[index]?.likes || 0}
+                    <span className="text-green-400 font-medium min-w-[50px]">
+                      {formatLikes(songLikes[index]?.likes || 0)}
                     </span>
                   </div>
                   
