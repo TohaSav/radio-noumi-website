@@ -39,6 +39,9 @@ const TrackItem = ({
   const formatLikes = (count: number | undefined): string => {
     const likes = Number(count) || 0;
 
+    if (likes >= 1000000000) {
+      return (likes / 1000000000).toFixed(2) + "B";
+    }
     if (likes >= 1000000) {
       return (likes / 1000000).toFixed(1) + "M";
     }
@@ -50,14 +53,23 @@ const TrackItem = ({
 
   return (
     <div
-      className={`flex items-center gap-2 sm:gap-3 md:gap-4 p-2 sm:p-3 md:p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors ${
-        onEdit ? "cursor-pointer" : ""
-      }`}
+      className={`flex items-center gap-2 sm:gap-3 md:gap-4 p-2 sm:p-3 md:p-4 rounded-lg hover:bg-white/10 transition-all duration-300 ${
+        track.isGold 
+          ? "bg-gradient-to-r from-yellow-500/20 via-amber-500/20 to-yellow-500/20 animate-pulse border border-yellow-400/30 shadow-lg shadow-yellow-500/20" 
+          : "bg-white/5"
+      } ${onEdit ? "cursor-pointer" : ""}`}
       onClick={onEdit ? () => onEdit(track) : undefined}
     >
-      <span className="text-white font-bold text-sm sm:text-lg md:text-xl w-6 sm:w-7 md:w-8 flex-shrink-0">
+      <span className={`font-bold text-sm sm:text-lg md:text-xl w-6 sm:w-7 md:w-8 flex-shrink-0 ${
+        track.isGold ? "text-yellow-400 animate-pulse" : "text-white"
+      }`}>
         #{index + 1}
       </span>
+      {track.isGold && (
+        <div className="animate-bounce">
+          <Icon name="Crown" size={16} className="text-yellow-400" />
+        </div>
+      )}
       <div className="relative group flex-shrink-0">
         <img
           src={track.cover}
@@ -85,10 +97,14 @@ const TrackItem = ({
         </button>
       </div>
       <div className="flex-1 min-w-0">
-        <h3 className="text-white font-medium text-sm sm:text-base md:text-lg truncate">
+        <h3 className={`font-medium text-sm sm:text-base md:text-lg truncate ${
+          track.isGold ? "text-yellow-300 font-bold" : "text-white"
+        }`}>
           {track.title}
         </h3>
-        <p className="text-white/70 text-xs sm:text-sm truncate">Noumi Music</p>
+        <p className="text-white/70 text-xs sm:text-sm truncate">
+          {track.artist || "Noumi Music"}
+        </p>
       </div>
       <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
         <button

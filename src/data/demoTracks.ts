@@ -3,6 +3,16 @@ import { Track } from "@/types/track";
 export const getDemoTracks = (): Track[] => {
   const baseTracks: Track[] = [
     {
+      id: "0",
+      title: "Почему вы выбрали экран",
+      artist: "Stellar Music",
+      cover: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop",
+      plays: "2.78B",
+      likes: 2789005304,
+      addedAt: Date.now(),
+      isGold: true,
+    },
+    {
       id: "1",
       title: "Cosmic Journey",
       artist: "Stellar Voyager",
