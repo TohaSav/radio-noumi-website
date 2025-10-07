@@ -398,7 +398,7 @@ const RadioPlayer = (props: RadioPlayerProps) => {
           <div className="text-white min-w-0 flex-1">
             <div className="text-sm sm:text-base font-medium flex items-center space-x-1 sm:space-x-2">
               <span className="truncate">Радио Noumi</span>
-              <span className="text-xs sm:text-sm text-emerald-400 px-2 sm:px-2.5 py-1 rounded-full bg-emerald-400/10 border border-emerald-500/20 whitespace-nowrap"
+              <span className="text-xs sm:text-sm text-emerald-400 px-2 sm:px-2.5 py-1 rounded-full bg-emerald-400/10 border border-emerald-500/20 whitespace-nowrap">
                 {formatListeners(listeners)} слушателей
               </span>
               <button
