@@ -347,7 +347,7 @@ const RadioPlayer = (props: RadioPlayerProps) => {
   };
 
   return (
-    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl px-4 sm:px-0">
+    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl px-4 sm:px-0 opacity-0 animate-fade-in" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
       <div className={`relative backdrop-blur-xl rounded-2xl sm:rounded-3xl px-4 sm:px-5 md:px-7 py-4 sm:py-5 shadow-2xl border transition-all duration-700 overflow-hidden ${
         isPlaying 
           ? 'bg-gradient-to-r from-emerald-950/90 via-teal-950/90 to-cyan-950/90 border-emerald-500/40 shadow-emerald-500/20' 

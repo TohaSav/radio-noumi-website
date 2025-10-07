@@ -23,7 +23,7 @@ const Index = () => {
       {/* Background waves controlled by radio */}
       <BackgroundWaves isActive={isRadioPlaying} audioData={audioData} />
 
-      <div className="relative z-10">
+      <div className="relative z-10 opacity-0 animate-fade-in" style={{ animationDelay: '0.05s', animationFillMode: 'forwards' }}>
         <AdBanner />
         <Hero />
 

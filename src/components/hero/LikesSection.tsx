@@ -117,7 +117,7 @@ const LikesSection = ({
   return (
     <>
       {/* Лайки с сердечком */}
-      <div className="flex flex-col items-center justify-center gap-2">
+      <div className="flex flex-col items-center justify-center gap-2 opacity-0 animate-fade-in" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
         <div className="relative">
           <button 
             onClick={handleLike}
