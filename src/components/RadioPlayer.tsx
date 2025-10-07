@@ -352,7 +352,7 @@ const RadioPlayer = (props: RadioPlayerProps) => {
         isPlaying 
           ? 'bg-gradient-to-r from-emerald-950/90 via-teal-950/90 to-cyan-950/90 border-emerald-500/40 shadow-emerald-500/20' 
           : 'bg-zinc-950/95 border-zinc-800/50'
-      }`}
+      }`}>
         {/* Музыкальные волны */}
         {isPlaying && (
           <div className="absolute inset-0 overflow-hidden rounded-2xl sm:rounded-3xl">
