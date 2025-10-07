@@ -43,7 +43,7 @@ const Hero = () => {
           setHearts={setHearts}
         />
 
-        <p className="text-xl md:text-2xl text-purple-200 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-xl md:text-2xl text-zinc-300 max-w-2xl mx-auto leading-relaxed">
           Музыка, что вдохновляет жить
         </p>
       </div>
@@ -51,15 +51,15 @@ const Hero = () => {
       {/* Кнопка Топ Чарт */}
       <button
         onClick={() => setShowTopChart(true)}
-        className="absolute top-4 right-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 shadow-lg z-20"
+        className="absolute top-4 right-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-emerald-500/30 z-20"
       >
         🎵 Топ Чарт
       </button>
 
       {/* Floating Elements */}
-      <div className="absolute top-20 right-20 w-4 h-4 bg-purple-400 rounded-full animate-pulse opacity-60"></div>
-      <div className="absolute bottom-32 left-16 w-6 h-6 bg-pink-400 rounded-full animate-pulse opacity-40 delay-1000"></div>
-      <div className="absolute top-1/2 right-8 w-3 h-3 bg-indigo-400 rounded-full animate-pulse opacity-50 delay-500"></div>
+      <div className="absolute top-20 right-20 w-4 h-4 bg-emerald-400 rounded-full animate-pulse opacity-40"></div>
+      <div className="absolute bottom-32 left-16 w-6 h-6 bg-teal-400 rounded-full animate-pulse opacity-30 delay-1000"></div>
+      <div className="absolute top-1/2 right-8 w-3 h-3 bg-cyan-400 rounded-full animate-pulse opacity-35 delay-500"></div>
 
       {/* Модальное окно Топ Чарт */}
       <TopChart

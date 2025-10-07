@@ -7,10 +7,10 @@ interface EmbeddedRadioPlayerProps {
 const EmbeddedRadioPlayer = (props: EmbeddedRadioPlayerProps) => {
   return (
     <div className="flex items-center justify-center py-12">
-      <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-center">
-        <span className="bg-gradient-to-r from-purple-400 via-pink-500 via-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-400 bg-clip-text text-transparent animate-pulse bg-[length:200%_100%]" 
+      <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-center tracking-tight">
+        <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent" 
               style={{
-                animation: 'gradient-shift 3s ease-in-out infinite'
+                textShadow: '0 0 40px rgba(16, 185, 129, 0.3)'
               }}>
           Noumi
         </span>

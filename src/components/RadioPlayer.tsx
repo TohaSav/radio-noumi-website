@@ -348,25 +348,25 @@ const RadioPlayer = (props: RadioPlayerProps) => {
 
   return (
     <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl px-4 sm:px-0">
-      <div className={`relative backdrop-blur-md rounded-xl sm:rounded-2xl px-3 sm:px-4 md:px-6 py-3 sm:py-4 shadow-2xl border transition-all duration-1000 overflow-hidden ${
+      <div className={`relative backdrop-blur-xl rounded-2xl sm:rounded-3xl px-4 sm:px-5 md:px-7 py-4 sm:py-5 shadow-2xl border transition-all duration-700 overflow-hidden ${
         isPlaying 
-          ? 'bg-gradient-to-r from-purple-900/80 via-pink-900/80 to-blue-900/80 border-purple-400/30 animate-pulse-slow' 
-          : 'bg-black/80 border-white/10'
-      }`}>
+          ? 'bg-gradient-to-r from-emerald-950/90 via-teal-950/90 to-cyan-950/90 border-emerald-500/40 shadow-emerald-500/20' 
+          : 'bg-zinc-950/95 border-zinc-800/50'
+      }`}
         {/* Музыкальные волны */}
         {isPlaying && (
-          <div className="absolute inset-0 overflow-hidden rounded-xl sm:rounded-2xl">
-            {[...Array(5)].map((_, i) => (
+          <div className="absolute inset-0 overflow-hidden rounded-2xl sm:rounded-3xl">
+            {[...Array(8)].map((_, i) => (
               <div
                 key={i}
-                className="absolute w-1 sm:w-1.5 bg-gradient-to-t from-purple-400 to-pink-400 rounded-full opacity-40"
+                className="absolute w-1 sm:w-1.5 bg-gradient-to-t from-emerald-400 via-teal-400 to-cyan-400 rounded-full opacity-50"
                 style={{
-                  left: `${15 + i * 15}%`,
-                  height: `${10 + (audioData.bass + audioData.mid + audioData.treble) * 30}px`,
-                  bottom: '8px',
-                  animation: `musicWave ${0.5 + i * 0.1}s infinite ease-in-out`,
-                  animationDelay: `${i * 0.1}s`,
-                  transform: `scaleY(${0.3 + audioData.overall * 1.5})`
+                  left: `${10 + i * 10}%`,
+                  height: `${15 + (audioData.bass + audioData.mid + audioData.treble) * 35}px`,
+                  bottom: '10px',
+                  animation: `musicWave ${0.4 + i * 0.08}s infinite ease-in-out`,
+                  animationDelay: `${i * 0.08}s`,
+                  transform: `scaleY(${0.4 + audioData.overall * 1.8})`
                 }}
               />
             ))}
@@ -377,7 +377,7 @@ const RadioPlayer = (props: RadioPlayerProps) => {
           <button
             onClick={togglePlay}
             disabled={isLoading}
-            className="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full hover:scale-105 transition-transform duration-200 disabled:opacity-50 flex-shrink-0"
+            className="flex items-center justify-center w-12 h-12 sm:w-13 sm:h-13 md:w-14 md:h-14 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 rounded-full hover:scale-110 hover:shadow-lg hover:shadow-emerald-500/50 transition-all duration-300 disabled:opacity-50 flex-shrink-0"
           >
             {isLoading ? (
               <Icon
@@ -398,12 +398,12 @@ const RadioPlayer = (props: RadioPlayerProps) => {
           <div className="text-white min-w-0 flex-1">
             <div className="text-sm sm:text-base font-medium flex items-center space-x-1 sm:space-x-2">
               <span className="truncate">Радио Noumi</span>
-              <span className="text-xs sm:text-sm text-green-400 px-1.5 sm:px-2 py-0.5 rounded-full bg-green-400/10 whitespace-nowrap">
+              <span className="text-xs sm:text-sm text-emerald-400 px-2 sm:px-2.5 py-1 rounded-full bg-emerald-400/10 border border-emerald-500/20 whitespace-nowrap"
                 {formatListeners(listeners)} слушателей
               </span>
               <button
                 onClick={() => setShowCountries(true)}
-                className="text-purple-300 hover:text-purple-200 transition-colors text-xs px-1 py-0.5 rounded bg-white/10 hover:bg-white/20"
+                className="text-teal-300 hover:text-teal-200 transition-colors text-xs px-2 py-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10"
               >
                 Страны
               </button>
@@ -411,7 +411,7 @@ const RadioPlayer = (props: RadioPlayerProps) => {
             <div className="text-xs sm:text-sm text-gray-400 truncate">
               {isPlaying ? (
                 <div>
-                  <span className="text-green-400">В эфире...</span>
+                  <span className="text-emerald-400">● В эфире</span>
                 </div>
               ) : (
                 "Нажмите для воспроизведения"
@@ -449,7 +449,7 @@ const RadioPlayer = (props: RadioPlayerProps) => {
 
               {/* Mobile Volume Slider */}
               {showVolumeSlider && (
-                <div className="absolute bottom-full right-0 mb-2 bg-black/90 backdrop-blur-md rounded-lg p-3 border border-white/10 shadow-lg">
+                <div className="absolute bottom-full right-0 mb-2 bg-zinc-950/95 backdrop-blur-xl rounded-xl p-4 border border-zinc-800/50 shadow-2xl">
                   <div className="flex flex-col items-center space-y-2">
                     <input
                       type="range"

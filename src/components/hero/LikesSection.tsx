@@ -121,13 +121,13 @@ const LikesSection = ({
         <div className="relative">
           <button 
             onClick={handleLike}
-            className={`relative flex items-center justify-center w-12 h-12 transition-all duration-300 hover:scale-110 cursor-pointer ${
-              pulse ? 'scale-125' : 'scale-100'
+            className={`relative flex items-center justify-center w-14 h-14 rounded-full transition-all duration-300 hover:scale-110 cursor-pointer bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 hover:border-emerald-500/40 ${
+              pulse ? 'scale-125 shadow-lg shadow-emerald-500/30' : 'scale-100'
             }`}
           >
             {/* Сердечко фон */}
             <div className={`text-3xl transition-all duration-300 ${
-              isLiked ? 'text-red-600' : 'text-red-500'
+              isLiked ? 'text-emerald-500' : 'text-emerald-400'
             } ${
               pulse ? 'animate-pulse' : ''
             }`}>
@@ -139,7 +139,7 @@ const LikesSection = ({
           {likeTexts.map((likeText) => (
             <div
               key={likeText.id}
-              className="fixed pointer-events-none text-white/70 text-xs font-medium animate-like-float z-50"
+              className="fixed pointer-events-none text-emerald-400/80 text-xs font-semibold animate-like-float z-50"
               style={{
                 left: `calc(50vw + ${likeText.x - 50}px)`,
                 top: '50vh',
@@ -152,7 +152,7 @@ const LikesSection = ({
         </div>
         
         {/* Цифра под сердечком */}
-        <span className="text-white/90 font-medium text-sm drop-shadow-sm">
+        <span className="text-emerald-300 font-semibold text-sm drop-shadow-lg">
           {formatNumber(likes)}
         </span>
       </div>
@@ -161,7 +161,7 @@ const LikesSection = ({
       {hearts.map((heart) => (
         <div
           key={heart.id}
-          className="fixed pointer-events-none z-50 text-red-500 animate-float-up-heart"
+          className="fixed pointer-events-none z-50 text-emerald-400 animate-float-up-heart"
           style={{
             left: heart.x,
             top: heart.y,
