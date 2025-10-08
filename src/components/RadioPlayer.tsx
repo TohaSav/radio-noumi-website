@@ -318,8 +318,8 @@ const RadioPlayer = (props: RadioPlayerProps) => {
   };
 
   return (
-    <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-2xl px-6 opacity-0 animate-fade-in" style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}>
-      <div className={`relative backdrop-blur-2xl rounded-3xl px-8 py-6 shadow-2xl border transition-all duration-700 overflow-hidden ${
+    <div className="fixed bottom-0 left-0 right-0 z-50 w-full opacity-0 animate-fade-in" style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}>
+      <div className={`relative backdrop-blur-2xl px-4 sm:px-6 md:px-8 lg:px-12 py-4 sm:py-5 md:py-6 shadow-2xl border-t transition-all duration-700 overflow-hidden ${
         isPlaying 
           ? 'bg-gradient-to-br from-purple-900/40 via-indigo-900/40 to-blue-900/40 border-purple-500/30 shadow-purple-500/30' 
           : 'bg-slate-900/60 border-slate-700/40'
@@ -349,12 +349,12 @@ const RadioPlayer = (props: RadioPlayerProps) => {
           </div>
         )}
 
-        <div className="relative z-10 flex items-center gap-6">
+        <div className="relative z-10 flex items-center gap-3 sm:gap-4 md:gap-6">
           {/* Play/Pause Button */}
           <button
             onClick={togglePlay}
             disabled={isLoading}
-            className={`flex items-center justify-center w-16 h-16 rounded-2xl transition-all duration-500 disabled:opacity-50 flex-shrink-0 shadow-xl ${
+            className={`flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl transition-all duration-500 disabled:opacity-50 flex-shrink-0 shadow-xl ${
               isPlaying 
                 ? 'bg-gradient-to-br from-purple-600 via-pink-600 to-blue-600 hover:scale-110 hover:shadow-2xl hover:shadow-purple-500/50' 
                 : 'bg-gradient-to-br from-slate-700 to-slate-600 hover:scale-105'
@@ -363,40 +363,40 @@ const RadioPlayer = (props: RadioPlayerProps) => {
             {isLoading ? (
               <Icon
                 name="Loader2"
-                size={24}
-                className="text-white animate-spin"
+                size={20}
+                className="text-white animate-spin sm:w-6 sm:h-6"
               />
             ) : (
               <Icon
                 name={isPlaying ? "Pause" : "Play"}
-                size={24}
-                className="text-white"
+                size={20}
+                className="text-white sm:w-6 sm:h-6"
               />
             )}
           </button>
 
           {/* Track Info */}
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-3 mb-2">
-              <h3 className="text-xl font-bold bg-gradient-to-r from-purple-300 via-pink-300 to-blue-300 bg-clip-text text-transparent">
+            <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
+              <h3 className="text-base sm:text-lg md:text-xl font-bold bg-gradient-to-r from-purple-300 via-pink-300 to-blue-300 bg-clip-text text-transparent truncate">
                 Радио Noumi
               </h3>
               {isPlaying && (
-                <span className="flex items-center gap-2 text-xs font-medium text-purple-300 px-3 py-1.5 rounded-full bg-purple-500/20 border border-purple-500/30 backdrop-blur-sm">
+                <span className="hidden sm:flex items-center gap-2 text-xs font-medium text-purple-300 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-purple-500/20 border border-purple-500/30 backdrop-blur-sm whitespace-nowrap">
                   <span className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></span>
                   В эфире
                 </span>
               )}
             </div>
             
-            <div className="flex items-center gap-3 text-sm text-slate-300">
-              <span className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-                <Icon name="Users" size={14} className="text-purple-400" />
-                {formatListeners(listeners)}
+            <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-slate-300">
+              <span className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
+                <Icon name="Users" size={12} className="text-purple-400 sm:w-3.5 sm:h-3.5" />
+                <span className="text-xs sm:text-sm">{formatListeners(listeners)}</span>
               </span>
               <button
                 onClick={() => setShowCountries(true)}
-                className="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-purple-500/30 transition-all duration-300"
+                className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-purple-500/30 transition-all duration-300 text-xs sm:text-sm whitespace-nowrap"
               >
                 🌍 Страны
               </button>
@@ -404,11 +404,11 @@ const RadioPlayer = (props: RadioPlayerProps) => {
           </div>
 
           {/* Volume Control */}
-          <div className="flex items-center gap-3 flex-shrink-0">
-            <div className="hidden md:flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+            <div className="hidden lg:flex items-center gap-3">
               <Icon
                 name={volume === 0 ? "VolumeX" : "Volume2"}
-                size={20}
+                size={18}
                 className="text-slate-400"
               />
               <input
@@ -417,18 +417,18 @@ const RadioPlayer = (props: RadioPlayerProps) => {
                 max="100"
                 value={volume}
                 onChange={(e) => handleVolumeChange(Number(e.target.value))}
-                className="w-24 h-2 bg-slate-600/50 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-gradient-to-r [&::-webkit-slider-thumb]:from-purple-500 [&::-webkit-slider-thumb]:to-pink-500 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-lg"
+                className="w-20 lg:w-24 h-2 bg-slate-600/50 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-gradient-to-r [&::-webkit-slider-thumb]:from-purple-500 [&::-webkit-slider-thumb]:to-pink-500 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-lg"
               />
-              <span className="text-xs font-medium text-slate-400 w-10 text-right">{volume}%</span>
+              <span className="text-xs font-medium text-slate-400 w-8 lg:w-10 text-right">{volume}%</span>
             </div>
 
             {/* Mobile Volume */}
-            <div className="md:hidden relative">
+            <div className="lg:hidden relative">
               <button
                 onClick={() => setShowVolumeSlider(!showVolumeSlider)}
-                className="flex items-center justify-center w-10 h-10 rounded-xl hover:bg-white/5 transition-colors"
+                className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl hover:bg-white/5 transition-colors"
               >
-                <Icon name={volume === 0 ? "VolumeX" : "Volume2"} size={20} className="text-slate-400" />
+                <Icon name={volume === 0 ? "VolumeX" : "Volume2"} size={18} className="text-slate-400 sm:w-5 sm:h-5" />
               </button>
 
               {showVolumeSlider && (
