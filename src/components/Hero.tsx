@@ -43,7 +43,7 @@ const Hero = () => {
           setHearts={setHearts}
         />
 
-        <p className="text-xl md:text-2xl text-zinc-300 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-xl md:text-2xl text-slate-300/80 max-w-2xl mx-auto leading-relaxed font-light">
           Музыка, что вдохновляет жить
         </p>
       </div>
@@ -51,15 +51,15 @@ const Hero = () => {
       {/* Кнопка Топ Чарт */}
       <button
         onClick={() => setShowTopChart(true)}
-        className="absolute top-4 right-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-emerald-500/30 z-20 opacity-0 animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}
+        className="absolute top-6 right-6 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 hover:from-purple-700 hover:via-pink-700 hover:to-blue-700 text-white px-6 py-3 rounded-2xl text-sm font-bold transition-all duration-500 hover:scale-110 shadow-xl hover:shadow-purple-500/50 z-20 opacity-0 animate-fade-in backdrop-blur-sm border border-white/10" style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}
       >
         🎵 Топ Чарт
       </button>
 
       {/* Floating Elements */}
-      <div className="absolute top-20 right-20 w-4 h-4 bg-emerald-400 rounded-full animate-pulse opacity-0" style={{ animationDelay: '0.5s', animationFillMode: 'forwards', opacity: '0.4' }}></div>
-      <div className="absolute bottom-32 left-16 w-6 h-6 bg-teal-400 rounded-full animate-pulse opacity-0" style={{ animationDelay: '0.7s', animationFillMode: 'forwards', opacity: '0.3' }}></div>
-      <div className="absolute top-1/2 right-8 w-3 h-3 bg-cyan-400 rounded-full animate-pulse opacity-0" style={{ animationDelay: '0.6s', animationFillMode: 'forwards', opacity: '0.35' }}></div>
+      <div className="absolute top-20 right-20 w-4 h-4 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full animate-pulse opacity-0 blur-sm" style={{ animationDelay: '0.5s', animationFillMode: 'forwards', opacity: '0.5' }}></div>
+      <div className="absolute bottom-32 left-16 w-6 h-6 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full animate-pulse opacity-0 blur-sm" style={{ animationDelay: '0.7s', animationFillMode: 'forwards', opacity: '0.4' }}></div>
+      <div className="absolute top-1/2 right-8 w-3 h-3 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full animate-pulse opacity-0 blur-sm" style={{ animationDelay: '0.6s', animationFillMode: 'forwards', opacity: '0.45' }}></div>
 
       {/* Модальное окно Топ Чарт */}
       <TopChart

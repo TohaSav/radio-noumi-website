@@ -117,17 +117,16 @@ const LikesSection = ({
   return (
     <>
       {/* Лайки с сердечком */}
-      <div className="flex flex-col items-center justify-center gap-2 opacity-0 animate-fade-in" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
+      <div className="flex flex-col items-center justify-center gap-3 opacity-0 animate-fade-in" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
         <div className="relative">
           <button 
             onClick={handleLike}
-            className={`relative flex items-center justify-center w-14 h-14 rounded-full transition-all duration-300 hover:scale-110 cursor-pointer bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 hover:border-emerald-500/40 ${
-              pulse ? 'scale-125 shadow-lg shadow-emerald-500/30' : 'scale-100'
+            className={`relative flex items-center justify-center w-20 h-20 rounded-2xl transition-all duration-500 hover:scale-110 cursor-pointer bg-gradient-to-br from-purple-600/20 via-pink-600/20 to-blue-600/20 border-2 border-purple-500/30 hover:border-pink-500/50 backdrop-blur-sm ${
+              pulse ? 'scale-125 shadow-2xl shadow-purple-500/50' : 'scale-100'
             }`}
           >
-            {/* Сердечко фон */}
-            <div className={`text-3xl transition-all duration-300 ${
-              isLiked ? 'text-emerald-500' : 'text-emerald-400'
+            <div className={`text-5xl transition-all duration-500 ${
+              isLiked ? 'text-pink-500' : 'text-purple-400'
             } ${
               pulse ? 'animate-pulse' : ''
             }`}>
@@ -135,11 +134,10 @@ const LikesSection = ({
             </div>
           </button>
           
-          {/* Летящие тексты "Like" */}
           {likeTexts.map((likeText) => (
             <div
               key={likeText.id}
-              className="fixed pointer-events-none text-emerald-400/80 text-xs font-semibold animate-like-float z-50"
+              className="fixed pointer-events-none text-purple-400/90 text-sm font-bold animate-like-float z-50"
               style={{
                 left: `calc(50vw + ${likeText.x - 50}px)`,
                 top: '50vh',
@@ -151,8 +149,7 @@ const LikesSection = ({
           ))}
         </div>
         
-        {/* Цифра под сердечком */}
-        <span className="text-emerald-300 font-semibold text-sm drop-shadow-lg">
+        <span className="text-lg font-bold bg-gradient-to-r from-purple-300 via-pink-300 to-blue-300 bg-clip-text text-transparent drop-shadow-lg">
           {formatNumber(likes)}
         </span>
       </div>
@@ -161,15 +158,15 @@ const LikesSection = ({
       {hearts.map((heart) => (
         <div
           key={heart.id}
-          className="fixed pointer-events-none z-50 text-emerald-400 animate-float-up-heart"
+          className="fixed pointer-events-none z-50 text-pink-500 animate-float-up-heart"
           style={{
             left: heart.x,
             top: heart.y,
-            fontSize: '20px',
+            fontSize: '28px',
             animation: 'floatUpHeart 2s ease-out forwards',
           }}
         >
-          ❤️
+          💖
         </div>
       ))}
 

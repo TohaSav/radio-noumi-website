@@ -148,10 +148,11 @@ const WaveVisualizer = ({ audioElement }: WaveVisualizerProps) => {
 
         // Градиент зависит от интенсивности
         const gradient = ctx.createLinearGradient(0, y, 0, canvas.offsetHeight);
-        const alpha = Math.max(0.4, overallIntensity + bassIntensity * 0.5);
+        const alpha = Math.max(0.5, overallIntensity + bassIntensity * 0.6);
 
-        gradient.addColorStop(0, `rgba(168, 85, 247, ${alpha})`);
-        gradient.addColorStop(1, `rgba(236, 72, 153, ${alpha * 0.6})`);
+        gradient.addColorStop(0, `rgba(147, 51, 234, ${alpha})`);
+        gradient.addColorStop(0.5, `rgba(236, 72, 153, ${alpha * 0.8})`);
+        gradient.addColorStop(1, `rgba(59, 130, 246, ${alpha * 0.6})`);
 
         ctx.fillStyle = gradient;
         ctx.fillRect(x, y, barWidth - 2, height);
