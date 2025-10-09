@@ -1,7 +1,10 @@
 const LeftAdBanner = () => {
   return (
-    <div className="fixed left-2 lg:left-4 top-1/2 -translate-y-1/2 z-40 hidden md:block">
-      <div className="w-[250px] h-[300px] bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl rounded-2xl border border-slate-700/50 shadow-2xl overflow-hidden">
+    <div className="fixed left-4 top-1/2 -translate-y-1/2 z-40 hidden sm:block">
+      <div 
+        className="bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl rounded-2xl border border-slate-700/50 shadow-2xl overflow-hidden"
+        style={{ width: '250px', height: '300px' }}
+      >
         <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center relative">
           {/* Decorative corner elements */}
           <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-purple-500/20 to-transparent rounded-bl-full"></div>
