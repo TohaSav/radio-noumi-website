@@ -1,6 +1,6 @@
 const LeftAdBanner = () => {
   return (
-    <div className="fixed left-4 top-1/2 -translate-y-1/2 z-40 hidden sm:block">
+    <div className="fixed left-2 sm:left-4 top-1/2 -translate-y-1/2 z-40">
       <div 
         className="bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl rounded-2xl border border-slate-700/50 shadow-2xl overflow-hidden"
         style={{ width: '250px', height: '300px' }}
