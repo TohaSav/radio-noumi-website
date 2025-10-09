@@ -3,7 +3,7 @@ import RadioPlayer from "@/components/RadioPlayer";
 import Hero from "@/components/Hero";
 import WaveVisualizer from "@/components/WaveVisualizer";
 import BackgroundWaves from "@/components/BackgroundWaves";
-import AdBanner from "@/components/AdBanner";
+import LeftAdBanner from "@/components/LeftAdBanner";
 
 const Index = () => {
   const [isRadioPlaying, setIsRadioPlaying] = useState(false);
@@ -25,6 +25,9 @@ const Index = () => {
 
       {/* Background waves controlled by radio */}
       <BackgroundWaves isActive={isRadioPlaying} audioData={audioData} />
+
+      {/* Left Ad Banner */}
+      <LeftAdBanner />
 
       <div className="relative z-10 opacity-0 animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}>
         <Hero />
