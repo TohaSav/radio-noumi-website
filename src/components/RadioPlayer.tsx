@@ -326,8 +326,10 @@ const RadioPlayer = (props: RadioPlayerProps) => {
       }`}>
         {/* Animated gradient overlay when playing */}
         {isPlaying && (
-          <div className="absolute inset-0 overflow-hidden rounded-3xl">
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 via-pink-600/10 to-blue-600/10 animate-pulse"></div>
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 via-pink-600/20 to-blue-600/20 animate-[gradient_3s_ease_infinite] bg-[length:200%_200%]"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 via-fuchsia-500/10 to-cyan-500/10 animate-pulse"></div>
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent animate-[shimmer_2s_ease-in-out_infinite]"></div>
           </div>
         )}
 
