@@ -170,7 +170,7 @@ const LikesSection = ({
         </div>
       ))}
 
-      <style jsx>{`
+      <style>{`
         @keyframes floatUpHeart {
           0% {
             opacity: 1;
