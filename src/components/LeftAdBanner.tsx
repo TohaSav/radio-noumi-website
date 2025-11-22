@@ -13,7 +13,10 @@ const LeftAdBanner = () => {
           
           <div className="mb-4 relative">
             <div className="absolute inset-0 bg-slate-700/30 blur-xl rounded-full"></div>
-            <div className="relative text-5xl">🖤</div>
+            <div className="relative text-5xl flex items-center gap-2">
+              🕯️
+              <span>🖤</span>
+            </div>
           </div>
           
           <div className="space-y-2 mb-4">
