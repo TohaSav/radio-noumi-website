@@ -43,7 +43,17 @@ const LeftAdBanner = () => {
         className="bg-gradient-to-br from-slate-900/95 via-slate-950/95 to-slate-900/95 backdrop-blur-xl rounded-2xl border border-slate-800/70 shadow-2xl overflow-hidden"
         style={{ width: '250px', minHeight: '300px' }}
       >
-        <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center relative">
+        <div className="absolute top-6 left-0 right-0 z-10">
+          <div className="relative bg-gradient-to-r from-black via-zinc-900 to-black py-2 shadow-lg">
+            <div className="absolute inset-0 bg-gradient-to-b from-zinc-800/30 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-zinc-700 to-transparent"></div>
+            <div className="relative text-slate-200 text-xs font-bold tracking-wider text-center px-2">
+              Radio Noumi скорбит
+            </div>
+          </div>
+        </div>
+
+        <div className="w-full h-full flex flex-col items-center justify-center p-6 pt-16 text-center relative">
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-slate-600 to-transparent"></div>
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-slate-600 to-transparent"></div>
           
