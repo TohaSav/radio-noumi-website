@@ -13,42 +13,27 @@ const formatCondolences = (num: number): string => {
 
 const LeftAdBanner = () => {
   const [condolences, setCondolences] = useState(1985352950);
-  const [heartClicked, setHeartClicked] = useState(false);
-  const [cryClicked, setCryClicked] = useState(false);
+  const [candleClicked, setCandleClicked] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem('karina_condolences');
-    const heartSaved = localStorage.getItem('karina_heart_clicked');
-    const crySaved = localStorage.getItem('karina_cry_clicked');
+    const candleSaved = localStorage.getItem('karina_candle_clicked');
     
     if (saved) {
       setCondolences(parseInt(saved));
     }
-    if (heartSaved === 'true') {
-      setHeartClicked(true);
-    }
-    if (crySaved === 'true') {
-      setCryClicked(true);
+    if (candleSaved === 'true') {
+      setCandleClicked(true);
     }
   }, []);
 
-  const handleHeartClick = () => {
-    if (!heartClicked) {
+  const handleCandleClick = () => {
+    if (!candleClicked) {
       const newCount = condolences + 1;
       setCondolences(newCount);
-      setHeartClicked(true);
+      setCandleClicked(true);
       localStorage.setItem('karina_condolences', newCount.toString());
-      localStorage.setItem('karina_heart_clicked', 'true');
-    }
-  };
-
-  const handleCryClick = () => {
-    if (!cryClicked) {
-      const newCount = condolences + 1;
-      setCondolences(newCount);
-      setCryClicked(true);
-      localStorage.setItem('karina_condolences', newCount.toString());
-      localStorage.setItem('karina_cry_clicked', 'true');
+      localStorage.setItem('karina_candle_clicked', 'true');
     }
   };
 
@@ -81,30 +66,18 @@ const LeftAdBanner = () => {
             </div>
           </div>
           
-          <div className="flex items-center gap-3 text-2xl mb-3">
+          <div className="flex items-center justify-center text-3xl mb-3">
             <button
-              onClick={handleHeartClick}
-              disabled={heartClicked}
+              onClick={handleCandleClick}
+              disabled={candleClicked}
               className={`transition-all duration-300 ${
-                heartClicked 
+                candleClicked 
                   ? 'opacity-50 cursor-not-allowed' 
                   : 'hover:scale-125 cursor-pointer active:scale-110'
               }`}
-              title={heartClicked ? 'Вы уже выразили соболезнования' : 'Нажмите, чтобы выразить соболезнования'}
+              title={candleClicked ? 'Вы уже выразили соболезнования' : 'Нажмите, чтобы зажечь свечу'}
             >
-              ❤️
-            </button>
-            <button
-              onClick={handleCryClick}
-              disabled={cryClicked}
-              className={`transition-all duration-300 ${
-                cryClicked 
-                  ? 'opacity-50 cursor-not-allowed' 
-                  : 'hover:scale-125 cursor-pointer active:scale-110'
-              }`}
-              title={cryClicked ? 'Вы уже выразили соболезнования' : 'Нажмите, чтобы выразить соболезнования'}
-            >
-              😢
+              🕯️
             </button>
           </div>
           
