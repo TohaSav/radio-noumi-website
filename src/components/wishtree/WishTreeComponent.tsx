@@ -8,21 +8,29 @@ interface WishTreeComponentProps {
 
 const WishTreeComponent = ({ wishes, onAddWish }: WishTreeComponentProps) => {
   const branchPositions = [
-    { x: 50, y: 20 },
-    { x: 35, y: 30 },
-    { x: 65, y: 30 },
-    { x: 30, y: 42 },
-    { x: 50, y: 42 },
-    { x: 70, y: 42 },
-    { x: 25, y: 54 },
-    { x: 45, y: 54 },
-    { x: 55, y: 54 },
-    { x: 75, y: 54 },
-    { x: 20, y: 66 },
-    { x: 35, y: 66 },
-    { x: 50, y: 66 },
-    { x: 65, y: 66 },
-    { x: 80, y: 66 },
+    { x: 15, y: 15 },
+    { x: 30, y: 15 },
+    { x: 50, y: 15 },
+    { x: 70, y: 15 },
+    { x: 85, y: 15 },
+    { x: 20, y: 30 },
+    { x: 40, y: 30 },
+    { x: 60, y: 30 },
+    { x: 80, y: 30 },
+    { x: 15, y: 45 },
+    { x: 35, y: 45 },
+    { x: 50, y: 45 },
+    { x: 65, y: 45 },
+    { x: 85, y: 45 },
+    { x: 25, y: 60 },
+    { x: 45, y: 60 },
+    { x: 55, y: 60 },
+    { x: 75, y: 60 },
+    { x: 20, y: 75 },
+    { x: 35, y: 75 },
+    { x: 50, y: 75 },
+    { x: 65, y: 75 },
+    { x: 80, y: 75 },
   ];
 
   return (
@@ -66,6 +74,97 @@ const WishTreeComponent = ({ wishes, onAddWish }: WishTreeComponentProps) => {
       {/* Контейнер с кнопками + */}
       <div className="relative z-10 w-full h-full flex items-center justify-center p-8">
         <div className="relative w-full max-w-6xl h-full max-h-[80vh]">
+          {/* Новогодняя гирлянда по периметру */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+            <defs>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+            {/* Провод гирлянды */}
+            <path d="M 0,20 Q 25,10 50,20 T 100,20 T 150,20 T 200,20 T 250,20 T 300,20 T 350,20 T 400,20 T 450,20 T 500,20 T 550,20 T 600,20 T 650,20 T 700,20 T 750,20 T 800,20" 
+              stroke="#1e3a1a" strokeWidth="3" fill="none" className="opacity-60"/>
+            {/* Лампочки сверху */}
+            {[...Array(20)].map((_, i) => {
+              const colors = ['#ef4444', '#fbbf24', '#3b82f6', '#a855f7', '#10b981', '#ec4899'];
+              const x = (i * 5) + 2.5;
+              return (
+                <g key={`top-${i}`}>
+                  <circle cx={`${x}%`} cy="20" r="6" fill={colors[i % colors.length]} 
+                    className="animate-pulse" filter="url(#glow)"
+                    style={{ animationDelay: `${i * 0.15}s`, animationDuration: '1.5s' }}/>
+                  <circle cx={`${x}%`} cy="17" r="2" fill="white" opacity="0.8"/>
+                </g>
+              );
+            })}
+            {/* Провод снизу */}
+            <path d="M 0,98% Q 25,96% 50,98% T 100,98% T 150,98% T 200,98% T 250,98% T 300,98% T 350,98% T 400,98% T 450,98% T 500,98% T 550,98% T 600,98% T 650,98% T 700,98% T 750,98% T 800,98%" 
+              stroke="#1e3a1a" strokeWidth="3" fill="none" className="opacity-60"/>
+            {/* Лампочки снизу */}
+            {[...Array(20)].map((_, i) => {
+              const colors = ['#10b981', '#ec4899', '#ef4444', '#fbbf24', '#3b82f6', '#a855f7'];
+              const x = (i * 5) + 2.5;
+              return (
+                <g key={`bottom-${i}`}>
+                  <circle cx={`${x}%`} cy="98%" r="6" fill={colors[i % colors.length]} 
+                    className="animate-pulse" filter="url(#glow)"
+                    style={{ animationDelay: `${i * 0.15 + 0.75}s`, animationDuration: '1.5s' }}/>
+                  <circle cx={`${x}%`} cy="calc(98% - 3px)" r="2" fill="white" opacity="0.8"/>
+                </g>
+              );
+            })}
+          </svg>
+
+          {/* Мишура по периметру */}
+          <div className="absolute inset-0 rounded-3xl overflow-hidden pointer-events-none" style={{ zIndex: 2 }}>
+            {/* Верхняя мишура */}
+            <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-yellow-400/30 via-yellow-300/20 to-transparent">
+              <div className="absolute inset-0 bg-[repeating-linear-gradient(90deg,transparent,transparent_10px,rgba(255,215,0,0.3)_10px,rgba(255,215,0,0.3)_20px)] animate-pulse"></div>
+              {[...Array(30)].map((_, i) => (
+                <div key={`tinsel-top-${i}`} 
+                  className="absolute w-1 bg-gradient-to-b from-yellow-300 to-transparent opacity-60"
+                  style={{ 
+                    left: `${i * 3.33}%`, 
+                    height: '40px',
+                    animationDelay: `${i * 0.1}s`,
+                    transform: `rotate(${Math.sin(i) * 15}deg)`
+                  }}>
+                </div>
+              ))}
+            </div>
+            
+            {/* Нижняя мишура */}
+            <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-gold-400/30 via-gold-300/20 to-transparent">
+              <div className="absolute inset-0 bg-[repeating-linear-gradient(90deg,transparent,transparent_10px,rgba(255,215,0,0.3)_10px,rgba(255,215,0,0.3)_20px)] animate-pulse"></div>
+              {[...Array(30)].map((_, i) => (
+                <div key={`tinsel-bottom-${i}`} 
+                  className="absolute w-1 bg-gradient-to-t from-yellow-300 to-transparent opacity-60"
+                  style={{ 
+                    left: `${i * 3.33}%`, 
+                    height: '40px',
+                    bottom: 0,
+                    animationDelay: `${i * 0.1}s`,
+                    transform: `rotate(${Math.sin(i) * 15}deg)`
+                  }}>
+                </div>
+              ))}
+            </div>
+
+            {/* Левая мишура */}
+            <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-red-400/30 via-red-300/20 to-transparent">
+              <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_10px,rgba(239,68,68,0.3)_10px,rgba(239,68,68,0.3)_20px)] animate-pulse"></div>
+            </div>
+
+            {/* Правая мишура */}
+            <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-blue-400/30 via-blue-300/20 to-transparent">
+              <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_10px,rgba(59,130,246,0.3)_10px,rgba(59,130,246,0.3)_20px)] animate-pulse"></div>
+            </div>
+          </div>
+
           {/* Декоративная рамка */}
           <div className="absolute inset-0 border-4 border-white/20 rounded-3xl backdrop-blur-sm bg-white/5 shadow-2xl"></div>
           
