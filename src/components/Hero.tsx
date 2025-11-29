@@ -48,13 +48,22 @@ const Hero = () => {
         </p>
       </div>
 
-      {/* Кнопка Топ Чарт */}
-      <button
-        onClick={() => setShowTopChart(true)}
-        className="absolute top-6 right-6 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 hover:from-purple-700 hover:via-pink-700 hover:to-blue-700 text-white px-6 py-3 rounded-2xl text-sm font-bold transition-all duration-500 hover:scale-110 shadow-xl hover:shadow-purple-500/50 z-20 opacity-0 animate-fade-in backdrop-blur-sm border border-white/10" style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}
-      >
-        🎵 Топ Чарт
-      </button>
+      {/* Кнопки навигации */}
+      <div className="absolute top-6 right-6 flex gap-3 z-20">
+        <button
+          onClick={() => setShowTopChart(true)}
+          className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 hover:from-purple-700 hover:via-pink-700 hover:to-blue-700 text-white px-6 py-3 rounded-2xl text-sm font-bold transition-all duration-500 hover:scale-110 shadow-xl hover:shadow-purple-500/50 opacity-0 animate-fade-in backdrop-blur-sm border border-white/10" style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}
+        >
+          🎵 Топ Чарт
+        </button>
+        
+        <button
+          onClick={() => navigate('/wish-tree')}
+          className="bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 hover:from-green-700 hover:via-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-2xl text-sm font-bold transition-all duration-500 hover:scale-110 shadow-xl hover:shadow-green-500/50 opacity-0 animate-fade-in backdrop-blur-sm border border-white/10" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}
+        >
+          🎄 Ёлка желаний
+        </button>
+      </div>
 
       {/* Floating Elements */}
       <div className="absolute top-20 right-20 w-4 h-4 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full animate-pulse opacity-0 blur-sm" style={{ animationDelay: '0.5s', animationFillMode: 'forwards', opacity: '0.5' }}></div>
