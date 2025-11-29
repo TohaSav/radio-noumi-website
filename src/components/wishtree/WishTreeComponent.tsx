@@ -1,7 +1,5 @@
 import { Wish } from "@/pages/WishTree";
-import DedMoroz from "./DedMoroz";
 import ChristmasTree from "./ChristmasTree";
-import Snegurochka from "./Snegurochka";
 
 interface WishTreeComponentProps {
   wishes: Wish[];
@@ -29,16 +27,12 @@ const WishTreeComponent = ({ wishes, onAddWish }: WishTreeComponentProps) => {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <div className="flex items-end justify-center gap-8">
-        <DedMoroz />
-
+      <div className="flex items-end justify-center">
         <ChristmasTree 
           wishes={wishes} 
           onAddWish={onAddWish} 
           branchPositions={branchPositions}
         />
-
-        <Snegurochka />
       </div>
 
       <div className="mt-8 text-center">
