@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Icon from "@/components/ui/icon";
 import WishTreeComponent from "@/components/wishtree/WishTreeComponent";
 import AddWishModal from "@/components/wishtree/AddWishModal";
 import InfoModal from "@/components/wishtree/InfoModal";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 export interface Wish {
   id: string;
@@ -14,28 +15,82 @@ export interface Wish {
   position: { x: number; y: number };
 }
 
+const API_URL = 'https://functions.poehali.dev/2a670543-b845-4d66-ba79-3530a25cbf2e';
+
 const WishTree = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [wishes, setWishes] = useState<Wish[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState<{ x: number; y: number } | null>(null);
+
+  // Загрузка всех желаний при монтировании
+  useEffect(() => {
+    fetchWishes();
+  }, []);
+
+  const fetchWishes = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(API_URL);
+      if (!response.ok) throw new Error('Failed to fetch wishes');
+      const data = await response.json();
+      setWishes(data.wishes || []);
+    } catch (error) {
+      console.error('Error fetching wishes:', error);
+      toast({
+        title: "Ошибка загрузки",
+        description: "Не удалось загрузить желания",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleAddWish = (position: { x: number; y: number }) => {
     setSelectedPosition(position);
     setShowAddModal(true);
   };
 
-  const handleSubmitWish = (wishData: Omit<Wish, 'id' | 'position'>) => {
-    if (selectedPosition) {
-      const newWish: Wish = {
-        id: Date.now().toString(),
-        ...wishData,
-        position: selectedPosition
-      };
-      setWishes([...wishes, newWish]);
+  const handleSubmitWish = async (wishData: Omit<Wish, 'id' | 'position'>) => {
+    if (!selectedPosition) return;
+
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...wishData,
+          position: selectedPosition
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to add wish');
+      }
+
+      const data = await response.json();
+      setWishes([...wishes, data.wish]);
       setShowAddModal(false);
       setSelectedPosition(null);
+      
+      toast({
+        title: "Желание добавлено! 🎄",
+        description: "Ваше желание теперь висит на ёлке"
+      });
+    } catch (error) {
+      console.error('Error adding wish:', error);
+      toast({
+        title: "Ошибка",
+        description: error instanceof Error ? error.message : "Не удалось добавить желание",
+        variant: "destructive"
+      });
     }
   };
 
@@ -95,7 +150,13 @@ const WishTree = () => {
 
       {/* Основной контент */}
       <div className="relative z-10 pt-24 pb-12 px-4">
-        <WishTreeComponent wishes={wishes} onAddWish={handleAddWish} />
+        {loading ? (
+          <div className="flex items-center justify-center min-h-[60vh]">
+            <div className="text-white text-xl">Загрузка ёлки... 🎄</div>
+          </div>
+        ) : (
+          <WishTreeComponent wishes={wishes} onAddWish={handleAddWish} />
+        )}
       </div>
 
       {/* Модальные окна */}

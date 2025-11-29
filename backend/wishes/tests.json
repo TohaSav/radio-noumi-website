@@ -1,0 +1,39 @@
+{
+  "tests": [
+    {
+      "name": "Get all wishes (empty list initially)",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "wishes": []
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Create new wish",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "name": "Тестовый пользователь",
+        "address": "Тестовый адрес",
+        "phone": "+7 999 123 45 67",
+        "wish": "Тестовое желание",
+        "position": {
+          "x": 50,
+          "y": 20
+        }
+      },
+      "expectedStatus": 201,
+      "expectedBody": {
+        "wish": {
+          "name": "Тестовый пользователь",
+          "address": "Тестовый адрес",
+          "phone": "+7 999 123 45 67",
+          "wish": "Тестовое желание"
+        }
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
