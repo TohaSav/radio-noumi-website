@@ -64,6 +64,38 @@ const WishTreeAdmin = () => {
     });
   };
 
+  const handleDeleteWish = async (wishId: string) => {
+    if (!confirm('Вы уверены, что хотите удалить это желание?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}?id=${wishId}`, {
+        method: 'DELETE'
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Не удалось удалить желание');
+      }
+
+      toast({
+        title: "Желание удалено! 🗑️",
+        description: "Желание успешно удалено из базы"
+      });
+
+      setSelectedWish(null);
+      fetchWishes();
+    } catch (error) {
+      console.error('Error deleting wish:', error);
+      toast({
+        title: "Ошибка",
+        description: error instanceof Error ? error.message : "Не удалось удалить желание",
+        variant: "destructive"
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 relative overflow-hidden">
       {/* Декоративный фон */}
@@ -237,12 +269,21 @@ const WishTreeAdmin = () => {
               </div>
             </div>
 
-            <button
-              onClick={() => setSelectedWish(null)}
-              className="mt-6 w-full px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition-all relative z-10"
-            >
-              Закрыть
-            </button>
+            <div className="mt-6 flex gap-3 relative z-10">
+              <button
+                onClick={() => handleDeleteWish(selectedWish.id)}
+                className="flex-1 px-6 py-3 bg-red-500/20 hover:bg-red-500/30 text-red-300 rounded-lg font-medium transition-all flex items-center justify-center gap-2 border border-red-500/30"
+              >
+                <Icon name="Trash2" size={18} />
+                Удалить желание
+              </button>
+              <button
+                onClick={() => setSelectedWish(null)}
+                className="flex-1 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition-all"
+              >
+                Закрыть
+              </button>
+            </div>
           </div>
         </div>
       )}

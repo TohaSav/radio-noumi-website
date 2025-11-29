@@ -23,6 +23,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     Обработчик запросов для работы с желаниями
     GET - получить все желания
     POST - добавить новое желание
+    DELETE - удалить желание по ID
     OPTIONS - CORS preflight
     """
     method: str = event.get('httpMethod', 'GET')
@@ -33,7 +34,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             'statusCode': 200,
             'headers': {
                 'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+                'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
                 'Access-Control-Allow-Headers': 'Content-Type',
                 'Access-Control-Max-Age': '86400'
             },
@@ -153,6 +154,46 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 'statusCode': 201,
                 'headers': headers,
                 'body': json.dumps({'wish': result}),
+                'isBase64Encoded': False
+            }
+        
+        elif method == 'DELETE':
+            # Удаление желания по ID
+            query_params = event.get('queryStringParameters', {})
+            wish_id = query_params.get('id') if query_params else None
+            
+            if not wish_id:
+                cursor.close()
+                conn.close()
+                return {
+                    'statusCode': 400,
+                    'headers': headers,
+                    'body': json.dumps({'error': 'ID желания обязателен'}),
+                    'isBase64Encoded': False
+                }
+            
+            # Удаление желания
+            cursor.execute('DELETE FROM wishes WHERE id = %s RETURNING id', (wish_id,))
+            deleted = cursor.fetchone()
+            conn.commit()
+            
+            if not deleted:
+                cursor.close()
+                conn.close()
+                return {
+                    'statusCode': 404,
+                    'headers': headers,
+                    'body': json.dumps({'error': 'Желание не найдено'}),
+                    'isBase64Encoded': False
+                }
+            
+            cursor.close()
+            conn.close()
+            
+            return {
+                'statusCode': 200,
+                'headers': headers,
+                'body': json.dumps({'message': 'Желание успешно удалено', 'id': str(deleted['id'])}),
                 'isBase64Encoded': False
             }
         
