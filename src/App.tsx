@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import TopChart from "./pages/TopChart";
 import WishTree from "./pages/WishTree";
+import WishTreeAdmin from "./pages/WishTreeAdmin";
 
 
 const queryClient = new QueryClient({
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/top-chart" element={<TopChart />} />
           <Route path="/wish-tree" element={<WishTree />} />
+          <Route path="/wish-tree/admin" element={<WishTreeAdmin />} />
         </Routes>
       </Router>
     </TooltipProvider>
