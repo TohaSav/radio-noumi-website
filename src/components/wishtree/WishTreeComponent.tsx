@@ -29,98 +29,167 @@ const WishTreeComponent = ({ wishes, onAddWish }: WishTreeComponentProps) => {
   return (
     <div className="max-w-7xl mx-auto">
       <div className="flex items-end justify-center gap-8">
-        {/* Дед Мороз - более реалистичный */}
+        {/* Дед Мороз - фотореалистичный */}
         <div className="relative animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}>
-          <svg width="200" height="320" viewBox="0 0 200 320" className="drop-shadow-2xl">
+          <svg width="220" height="350" viewBox="0 0 220 350" className="drop-shadow-2xl">
             <defs>
-              <linearGradient id="coatGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#dc2626"/>
-                <stop offset="50%" stopColor="#b91c1c"/>
-                <stop offset="100%" stopColor="#991b1b"/>
+              <linearGradient id="redCoat" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#b91c1c"/>
+                <stop offset="40%" stopColor="#dc2626"/>
+                <stop offset="100%" stopColor="#7f1d1d"/>
               </linearGradient>
-              <radialGradient id="furGradient">
+              <linearGradient id="goldPattern" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#f59e0b"/>
+                <stop offset="50%" stopColor="#fbbf24"/>
+                <stop offset="100%" stopColor="#f59e0b"/>
+              </linearGradient>
+              <radialGradient id="whiteFur">
                 <stop offset="0%" stopColor="#ffffff"/>
-                <stop offset="100%" stopColor="#f3f4f6"/>
+                <stop offset="70%" stopColor="#f8fafc"/>
+                <stop offset="100%" stopColor="#e2e8f0"/>
               </radialGradient>
-              <filter id="softGlow">
-                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+              <filter id="beardTexture">
+                <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise"/>
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="3"/>
+              </filter>
+              <filter id="softShadow">
+                <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+                <feOffset dx="2" dy="2" result="offsetblur"/>
                 <feMerge>
-                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="offsetblur"/>
                   <feMergeNode in="SourceGraphic"/>
                 </feMerge>
               </filter>
             </defs>
             
-            {/* Шуба с градиентом и узорами */}
-            <path d="M 100 85 L 70 125 L 60 190 L 55 260 L 55 285 L 145 285 L 145 260 L 140 190 L 130 125 Z" 
-              fill="url(#coatGradient)" stroke="#7f1d1d" strokeWidth="2"/>
+            {/* Длинная шуба трапециевидная */}
+            <path d="M 110 95 L 75 140 L 65 200 L 58 270 L 55 315 L 165 315 L 162 270 L 155 200 L 145 140 Z" 
+              fill="url(#redCoat)" stroke="#7f1d1d" strokeWidth="2" filter="url(#softShadow)"/>
             
-            {/* Золотая окантовка */}
-            <path d="M 100 85 L 70 125 L 60 190" stroke="#fbbf24" strokeWidth="3" fill="none" opacity="0.8"/>
-            <path d="M 100 85 L 130 125 L 140 190" stroke="#fbbf24" strokeWidth="3" fill="none" opacity="0.8"/>
+            {/* Золотая парча с узорами - левая сторона */}
+            <path d="M 110 95 L 75 140 L 65 200 L 58 270" 
+              stroke="url(#goldPattern)" strokeWidth="18" fill="none" opacity="0.9"/>
+            <path d="M 110 95 L 75 140 L 65 200 L 58 270" 
+              stroke="#dc2626" strokeWidth="12" fill="none"/>
             
-            {/* Мех воротник */}
-            <ellipse cx="100" cy="85" rx="40" ry="15" fill="url(#furGradient)" filter="url(#softGlow)"/>
+            {/* Узоры на золотой парче - левая */}
+            {[120, 160, 200, 240, 280].map((y, i) => (
+              <g key={`left-${i}`}>
+                <circle cx={78 - i * 2} cy={y} r="3" fill="#f59e0b" opacity="0.8"/>
+                <circle cx={74 - i * 2} cy={y + 15} r="2" fill="#fbbf24"/>
+              </g>
+            ))}
             
-            {/* Мех низ шубы */}
-            <ellipse cx="100" cy="283" rx="45" ry="12" fill="url(#furGradient)" filter="url(#softGlow)"/>
+            {/* Золотая парча с узорами - правая сторона */}
+            <path d="M 110 95 L 145 140 L 155 200 L 162 270" 
+              stroke="url(#goldPattern)" strokeWidth="18" fill="none" opacity="0.9"/>
+            <path d="M 110 95 L 145 140 L 155 200 L 162 270" 
+              stroke="#dc2626" strokeWidth="12" fill="none"/>
             
-            {/* Мех центральная полоса */}
-            <rect x="93" y="90" width="14" height="190" rx="7" fill="url(#furGradient)" filter="url(#softGlow)"/>
+            {/* Узоры на золотой парче - правая */}
+            {[120, 160, 200, 240, 280].map((y, i) => (
+              <g key={`right-${i}`}>
+                <circle cx={142 + i * 2} cy={y} r="3" fill="#f59e0b" opacity="0.8"/>
+                <circle cx={146 + i * 2} cy={y + 15} r="2" fill="#fbbf24"/>
+              </g>
+            ))}
+            
+            {/* Белый мех воротник - пушистый */}
+            <ellipse cx="110" cy="95" rx="48" ry="18" fill="url(#whiteFur)" filter="url(#beardTexture)"/>
+            <ellipse cx="110" cy="93" rx="45" ry="15" fill="white" opacity="0.7"/>
+            
+            {/* Белый мех низ шубы */}
+            <ellipse cx="110" cy="313" rx="55" ry="15" fill="url(#whiteFur)" filter="url(#beardTexture)"/>
+            <ellipse cx="110" cy="311" rx="52" ry="12" fill="white" opacity="0.7"/>
+            
+            {/* Белая центральная меховая полоса */}
+            <rect x="101" y="100" width="18" height="208" rx="9" fill="url(#whiteFur)" filter="url(#beardTexture)"/>
+            <rect x="103" y="100" width="14" height="208" rx="7" fill="white" opacity="0.6"/>
             
             {/* Голова */}
-            <circle cx="100" cy="55" r="28" fill="#fdd5b1"/>
+            <ellipse cx="110" cy="60" rx="32" ry="34" fill="#fdd5b1"/>
+            <ellipse cx="105" cy="58" rx="28" ry="30" fill="#fde4c8" opacity="0.5"/>
             
-            {/* Шапка */}
-            <path d="M 70 50 Q 70 20 100 18 Q 130 20 130 50" fill="#dc2626" stroke="#7f1d1d" strokeWidth="2"/>
-            <ellipse cx="100" cy="50" rx="32" ry="10" fill="url(#furGradient)"/>
-            <circle cx="100" cy="15" r="8" fill="url(#furGradient)"/>
+            {/* Шапка красная */}
+            <path d="M 75 55 Q 72 25 110 20 Q 148 25 145 55" 
+              fill="#dc2626" stroke="#991b1b" strokeWidth="2" filter="url(#softShadow)"/>
+            <path d="M 78 55 Q 75 30 110 25 Q 145 30 142 55" 
+              fill="#b91c1c"/>
             
-            {/* Большая борода волнистая */}
-            <path d="M 75 58 Q 75 65 70 70 Q 70 80 75 85 Q 80 90 85 88 Q 90 92 95 90 Q 100 95 105 90 Q 110 92 115 88 Q 120 90 125 85 Q 130 80 130 70 Q 125 65 125 58" 
-              fill="url(#furGradient)" filter="url(#softGlow)"/>
+            {/* Белая опушка шапки */}
+            <ellipse cx="110" cy="55" rx="37" ry="12" fill="url(#whiteFur)" filter="url(#beardTexture)"/>
+            <ellipse cx="110" cy="54" rx="35" ry="10" fill="white" opacity="0.8"/>
             
-            {/* Усы */}
-            <path d="M 72 65 Q 60 63 50 65" stroke="#f3f4f6" strokeWidth="3" fill="none" strokeLinecap="round"/>
-            <path d="M 128 65 Q 140 63 150 65" stroke="#f3f4f6" strokeWidth="3" fill="none" strokeLinecap="round"/>
+            {/* Помпон */}
+            <circle cx="110" cy="18" r="10" fill="url(#whiteFur)" filter="url(#beardTexture)"/>
+            <circle cx="110" cy="18" r="8" fill="white" opacity="0.9"/>
+            
+            {/* Огромная пушистая борода */}
+            <ellipse cx="110" cy="78" rx="35" ry="28" fill="url(#whiteFur)" filter="url(#beardTexture)"/>
+            <ellipse cx="108" cy="76" rx="32" ry="25" fill="white" opacity="0.8"/>
+            
+            {/* Волны бороды */}
+            <path d="M 80 70 Q 75 80 78 90 Q 82 85 85 88" 
+              stroke="white" strokeWidth="4" fill="none" opacity="0.6"/>
+            <path d="M 95 72 Q 92 82 95 92" 
+              stroke="white" strokeWidth="4" fill="none" opacity="0.6"/>
+            <path d="M 110 73 Q 108 85 110 95" 
+              stroke="white" strokeWidth="5" fill="none" opacity="0.7"/>
+            <path d="M 125 72 Q 128 82 125 92" 
+              stroke="white" strokeWidth="4" fill="none" opacity="0.6"/>
+            <path d="M 140 70 Q 145 80 142 90 Q 138 85 135 88" 
+              stroke="white" strokeWidth="4" fill="none" opacity="0.6"/>
+            
+            {/* Усы пушистые */}
+            <ellipse cx="85" cy="68" rx="15" ry="8" fill="url(#whiteFur)" filter="url(#beardTexture)"/>
+            <ellipse cx="135" cy="68" rx="15" ry="8" fill="url(#whiteFur)" filter="url(#beardTexture)"/>
+            <ellipse cx="84" cy="67" rx="13" ry="6" fill="white" opacity="0.9"/>
+            <ellipse cx="136" cy="67" rx="13" ry="6" fill="white" opacity="0.9"/>
             
             {/* Глаза добрые */}
-            <ellipse cx="87" cy="48" rx="3" ry="4" fill="#1f2937"/>
-            <ellipse cx="113" cy="48" rx="3" ry="4" fill="#1f2937"/>
-            <circle cx="88" cy="47" r="1.5" fill="white" opacity="0.8"/>
-            <circle cx="114" cy="47" r="1.5" fill="white" opacity="0.8"/>
+            <ellipse cx="93" cy="54" rx="4" ry="5" fill="#3b2414"/>
+            <ellipse cx="127" cy="54" rx="4" ry="5" fill="#3b2414"/>
+            <circle cx="94" cy="53" r="2" fill="white" opacity="0.9"/>
+            <circle cx="128" cy="53" r="2" fill="white" opacity="0.9"/>
             
-            {/* Брови */}
-            <path d="M 80 42 Q 87 40 93 42" stroke="#f3f4f6" strokeWidth="2" fill="none" strokeLinecap="round"/>
-            <path d="M 107 42 Q 113 40 120 42" stroke="#f3f4f6" strokeWidth="2" fill="none" strokeLinecap="round"/>
+            {/* Брови седые */}
+            <path d="M 85 46 Q 93 44 100 46" stroke="#f3f4f6" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.8"/>
+            <path d="M 120 46 Q 127 44 135 46" stroke="#f3f4f6" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.8"/>
             
             {/* Нос */}
-            <ellipse cx="100" cy="58" rx="4" ry="5" fill="#f87171"/>
+            <ellipse cx="110" cy="64" rx="5" ry="6" fill="#f87171"/>
+            <ellipse cx="109" cy="63" rx="2" ry="3" fill="#fca5a5" opacity="0.7"/>
             
             {/* Румянец */}
-            <circle cx="75" cy="60" r="6" fill="#fca5a5" opacity="0.5"/>
-            <circle cx="125" cy="60" r="6" fill="#fca5a5" opacity="0.5"/>
+            <circle cx="82" cy="66" r="8" fill="#fca5a5" opacity="0.4"/>
+            <circle cx="138" cy="66" r="8" fill="#fca5a5" opacity="0.4"/>
             
-            {/* Руки в шубе */}
-            <ellipse cx="52" cy="160" rx="15" ry="45" fill="url(#coatGradient)" stroke="#7f1d1d" strokeWidth="2" transform="rotate(-15 52 160)"/>
-            <ellipse cx="148" cy="160" rx="15" ry="45" fill="url(#coatGradient)" stroke="#7f1d1d" strokeWidth="2" transform="rotate(15 148 160)"/>
+            {/* Руки в шубе приподняты */}
+            <ellipse cx="50" cy="170" rx="18" ry="50" fill="url(#redCoat)" stroke="#7f1d1d" strokeWidth="2" transform="rotate(-25 50 170)" filter="url(#softShadow)"/>
+            <ellipse cx="170" cy="170" rx="18" ry="50" fill="url(#redCoat)" stroke="#7f1d1d" strokeWidth="2" transform="rotate(25 170 170)" filter="url(#softShadow)"/>
             
-            {/* Мех на рукавах */}
-            <ellipse cx="48" cy="203" rx="16" ry="10" fill="url(#furGradient)" transform="rotate(-15 48 203)"/>
-            <ellipse cx="152" cy="203" rx="16" ry="10" fill="url(#furGradient)" transform="rotate(15 152 203)"/>
+            {/* Золотые полосы на рукавах */}
+            <ellipse cx="46" cy="190" rx="10" ry="18" fill="url(#goldPattern)" transform="rotate(-25 46 190)" opacity="0.8"/>
+            <ellipse cx="174" cy="190" rx="10" ry="18" fill="url(#goldPattern)" transform="rotate(25 174 190)" opacity="0.8"/>
             
-            {/* Варежки */}
-            <ellipse cx="45" cy="210" rx="12" ry="14" fill="#dc2626" stroke="#7f1d1d" strokeWidth="2"/>
-            <ellipse cx="155" cy="210" rx="12" ry="14" fill="#dc2626" stroke="#7f1d1d" strokeWidth="2"/>
+            {/* Белый мех на рукавах */}
+            <ellipse cx="44" cy="218" rx="20" ry="13" fill="url(#whiteFur)" transform="rotate(-25 44 218)" filter="url(#beardTexture)"/>
+            <ellipse cx="176" cy="218" rx="20" ry="13" fill="url(#whiteFur)" transform="rotate(25 176 218)" filter="url(#beardTexture)"/>
             
-            {/* Посох */}
-            <line x1="160" y1="205" x2="185" y2="60" stroke="#8b4513" strokeWidth="6" strokeLinecap="round"/>
-            <circle cx="185" cy="52" r="12" fill="#60a5fa" stroke="#3b82f6" strokeWidth="3"/>
-            <circle cx="187" cy="50" r="5" fill="#93c5fd" opacity="0.8"/>
+            {/* Варежки красные */}
+            <ellipse cx="40" cy="228" rx="15" ry="18" fill="#dc2626" stroke="#991b1b" strokeWidth="2" filter="url(#softShadow)"/>
+            <ellipse cx="180" cy="228" rx="15" ry="18" fill="#dc2626" stroke="#991b1b" strokeWidth="2" filter="url(#softShadow)"/>
+            <ellipse cx="42" cy="225" rx="8" ry="10" fill="#b91c1c" opacity="0.6"/>
+            <ellipse cx="178" cy="225" rx="8" ry="10" fill="#b91c1c" opacity="0.6"/>
             
-            {/* Пояс */}
-            <rect x="70" y="145" width="60" height="12" rx="6" fill="#1f2937" stroke="#fbbf24" strokeWidth="2"/>
-            <rect x="96" y="148" width="8" height="6" fill="#fbbf24"/>
+            {/* Посох деревянный */}
+            <line x1="185" y1="225" x2="205" y2="75" stroke="#6b4423" strokeWidth="8" strokeLinecap="round" filter="url(#softShadow)"/>
+            <line x1="187" y1="225" x2="207" y2="75" stroke="#8b5a3c" strokeWidth="5"/>
+            
+            {/* Кристалл на посохе */}
+            <circle cx="207" cy="68" r="14" fill="#3b82f6" stroke="#1e40af" strokeWidth="3" filter="url(#softShadow)"/>
+            <circle cx="209" cy="66" r="7" fill="#60a5fa" opacity="0.8"/>
+            <circle cx="211" cy="64" r="3" fill="#93c5fd"/>
           </svg>
         </div>
 
