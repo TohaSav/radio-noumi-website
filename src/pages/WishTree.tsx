@@ -144,13 +144,7 @@ const WishTree = () => {
             </button>
           </div>
 
-          <button
-            onClick={() => navigate("/wish-tree/admin")}
-            className="px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 border border-purple-400/50 text-purple-300 rounded-lg transition-all flex items-center gap-2 font-medium"
-          >
-            <Icon name="Settings" size={18} />
-            Админ-панель
-          </button>
+          <div className="w-32"></div>
         </div>
       </div>
 
