@@ -21,7 +21,9 @@ const getUralTime = () => {
 };
 
 const formatListeners = (num: number): string => {
-  if (num >= 1000000) {
+  if (num >= 1000000000) {
+    return (num / 1000000000).toFixed(2) + "B";
+  } else if (num >= 1000000) {
     return (num / 1000000).toFixed(2) + "M";
   } else if (num >= 1000) {
     return (num / 1000).toFixed(1) + "K";
@@ -30,18 +32,8 @@ const formatListeners = (num: number): string => {
 };
 
 const getListenerRange = (uralHour: number) => {
-  if (uralHour >= 18 || uralHour === 23 || uralHour === 0) {
-    return { min: 359941258, max: 1579352698 };
-  } 
-  else if (uralHour >= 9 && uralHour < 15) {
-    return { min: 3150129, max: 12458760 };
-  } else if (uralHour >= 15 && uralHour < 18) {
-    return { min: 4789236, max: 78960456 };
-  } else if (uralHour >= 1 && uralHour < 3) {
-    return { min: 7963509, max: 96350521 };
-  } else {
-    return { min: 5698750, max: 9321456 };
-  }
+  // Всегда возвращаем диапазон от 9.20B до 10.87B
+  return { min: 9200000000, max: 10870000000 };
 };
 
 const generateBaseListeners = (uralTime: Date): number => {
@@ -61,7 +53,7 @@ const RadioPlayer = (props: RadioPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(50);
   const [isLoading, setIsLoading] = useState(false);
-  const [listeners, setListeners] = useState(2954120359);
+  const [listeners, setListeners] = useState(9500000000);
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
   const [showCountries, setShowCountries] = useState(false);
   const [audioData, setAudioData] = useState({
@@ -77,107 +69,34 @@ const RadioPlayer = (props: RadioPlayerProps) => {
   const animationFrameRef = useRef<number>();
 
   useEffect(() => {
-    const tempModeKey = 'radioTempMode_5_87B';
-    const tempStartTime = localStorage.getItem(tempModeKey);
-    
-    if (tempStartTime) {
-      const startTime = new Date(tempStartTime);
-      const now = new Date();
-      const hoursElapsed = (now.getTime() - startTime.getTime()) / (1000 * 60 * 60);
-      
-      if (hoursElapsed < 3) {
-        const baseTemp = 5879250300;
-        const variation = Math.floor(baseTemp * (Math.random() * 0.001 - 0.0005));
-        setListeners(baseTemp + variation);
-        return;
-      } else {
-        localStorage.removeItem(tempModeKey);
-      }
-    } else {
-      localStorage.setItem(tempModeKey, new Date().toISOString());
-      const baseTemp = 5879250300;
-      const variation = Math.floor(baseTemp * (Math.random() * 0.001 - 0.0005));
-      setListeners(baseTemp + variation);
-      return;
-    }
-
-    const uralTime = getUralTime();
-    const currentHour = uralTime.getHours();
-    const currentDay = uralTime.getDate();
-
-    const storageKey = `radioListeners_${currentDay}_${currentHour}`;
+    const storageKey = 'radioListeners_stable';
     const savedListeners = localStorage.getItem(storageKey);
-    const lastUpdateKey = `radioLastUpdate_${currentDay}_${currentHour}`;
-    const savedTime = localStorage.getItem(lastUpdateKey);
-
-    if (savedListeners && savedTime) {
-      const lastUpdate = new Date(savedTime);
-      const now = getUralTime();
-      const timeDiff = (now.getTime() - lastUpdate.getTime()) / 1000 / 60;
-
-      if (timeDiff < 60) {
-        setListeners(parseInt(savedListeners));
+    
+    if (savedListeners) {
+      const saved = parseInt(savedListeners);
+      if (saved >= 9200000000 && saved <= 10870000000) {
+        setListeners(saved);
         return;
       }
     }
 
-    const baseListeners = generateBaseListeners(uralTime);
-
-    const variation = Math.floor(baseListeners * (Math.random() * 0.06 - 0.03));
-    let finalListeners = baseListeners + variation;
-    
-    if (uralTime.getHours() >= 18 || uralTime.getHours() < 1) {
-      finalListeners = Math.max(359941258, finalListeners);
-    } else {
-      finalListeners = Math.max(3150084, finalListeners);
-    }
-
-    setListeners(finalListeners);
-    localStorage.setItem(storageKey, finalListeners.toString());
-    localStorage.setItem(lastUpdateKey, new Date().toISOString());
+    const initialValue = Math.floor(Math.random() * (10870000000 - 9200000000) + 9200000000);
+    setListeners(initialValue);
+    localStorage.setItem(storageKey, initialValue.toString());
   }, []);
 
   useEffect(() => {
     const updateListeners = () => {
-      const uralTime = getUralTime();
-      const hour = uralTime.getHours();
-      const day = uralTime.getDate();
-      const range = getListenerRange(hour);
-      const storageKey = `radioListeners_${day}_${hour}`;
-      const lastUpdateKey = `radioLastUpdate_${day}_${hour}`;
+      const storageKey = 'radioListeners_stable';
 
       setListeners((current) => {
-        const tempModeKey = 'radioTempMode_2_95B';
-        const tempStartTime = localStorage.getItem(tempModeKey);
-        
-        if (tempStartTime) {
-          const startTime = new Date(tempStartTime);
-          const now = new Date();
-          const hoursElapsed = (now.getTime() - startTime.getTime()) / (1000 * 60 * 60);
-          
-          if (hoursElapsed < 3) {
-            const baseTemp = 2954120359;
-            const changePercent = Math.random() * 0.002 - 0.001;
-            const change = Math.floor(baseTemp * changePercent);
-            return Math.max(2950000000, Math.min(2960000000, baseTemp + change));
-          }
-        }
-
-        const changePercent = Math.random() * 0.035 - 0.0175;
+        const changePercent = (Math.random() * 0.004 - 0.002);
         const change = Math.floor(current * changePercent);
         let newValue = current + change;
 
-        newValue = Math.max(range.min, Math.min(range.max, newValue));
-        
-        if (hour >= 18 || hour === 23 || hour === 0) {
-          newValue = Math.max(359941258, newValue);
-        } else {
-          newValue = Math.max(3150084, newValue);
-        }
+        newValue = Math.max(9200000000, Math.min(10870000000, newValue));
 
         localStorage.setItem(storageKey, newValue.toString());
-        localStorage.setItem(lastUpdateKey, new Date().toISOString());
-
         return newValue;
       });
     };
