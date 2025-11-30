@@ -10,7 +10,7 @@ import { useState } from "react";
 
 const Hero = () => {
   const navigate = useNavigate();
-  const [likes, setLikes] = useState(7890025301);
+  const [likes, setLikes] = useState(250740000000);
   const [pulse, setPulse] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [hearts, setHearts] = useState<{ id: number; x: number; y: number }[]>([]);
