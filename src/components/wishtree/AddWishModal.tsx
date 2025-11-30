@@ -63,7 +63,7 @@ const AddWishModal = ({ onClose, onSubmit }: AddWishModalProps) => {
 
           <div>
             <label className="block text-white/80 text-sm font-medium mb-2">
-              Адрес *
+              Адрес (Город, Индекс, Улица, Номер квартиры или номер частного дома) *
             </label>
             <input
               type="text"
