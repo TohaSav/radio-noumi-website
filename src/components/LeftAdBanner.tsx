@@ -85,9 +85,9 @@ const LeftAdBanner = () => {
                   ? 'opacity-50 cursor-not-allowed' 
                   : 'hover:scale-125 cursor-pointer active:scale-110'
               }`}
-              title={candleClicked ? 'Вы уже выразили соболезнования' : 'Нажмите, чтобы зажечь свечу'}
+              title={candleClicked ? 'Вы уже выразили соболезнования' : 'Нажмите, чтобы возложить розу'}
             >
-              🕯️
+              🌹
             </button>
           </div>
           
