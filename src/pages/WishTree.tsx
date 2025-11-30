@@ -25,7 +25,7 @@ const WishTree = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState<{ x: number; y: number } | null>(null);
-  const [canAddWish, setCanAddWish] = useState(true);
+
 
   // Загрузка всех желаний при монтировании
   useEffect(() => {
@@ -39,7 +39,6 @@ const WishTree = () => {
       if (!response.ok) throw new Error('Failed to fetch wishes');
       const data = await response.json();
       setWishes(data.wishes || []);
-      setCanAddWish(data.canAddWish !== false);
     } catch (error) {
       console.error('Error fetching wishes:', error);
       toast({
@@ -59,16 +58,6 @@ const WishTree = () => {
       toast({
         title: "Место занято",
         description: "На этом месте уже есть желание",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    // Проверяем, может ли пользователь добавить желание (по IP)
-    if (!canAddWish) {
-      toast({
-        title: "Ограничение",
-        description: "Вы уже добавили своё желание на ёлку! Одно желание от одного человека 🎄",
         variant: "destructive"
       });
       return;
@@ -100,7 +89,6 @@ const WishTree = () => {
 
       const data = await response.json();
       setWishes([...wishes, data.wish]);
-      setCanAddWish(false); // Блокируем дальнейшее добавление для этого IP
       setShowAddModal(false);
       setSelectedPosition(null);
       
@@ -179,7 +167,7 @@ const WishTree = () => {
             <div className="text-white text-xl">Загрузка ёлки... 🎄</div>
           </div>
         ) : (
-          <WishTreeComponent wishes={wishes} onAddWish={handleAddWish} canAddWish={canAddWish} />
+          <WishTreeComponent wishes={wishes} onAddWish={handleAddWish} canAddWish={true} />
         )}
       </div>
 

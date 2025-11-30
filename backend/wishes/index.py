@@ -51,14 +51,6 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         cursor = conn.cursor()
         
         if method == 'GET':
-            # Получение IP адреса пользователя
-            request_context = event.get('requestContext', {})
-            identity = request_context.get('identity', {})
-            user_ip = identity.get('sourceIp', 'unknown')
-            
-            # Белый список IP с неограниченным доступом
-            whitelist_ip = '46.48.22.85'
-            
             # Получение всех желаний
             cursor.execute('''
                 SELECT id, name, address, phone, wish, position_x, position_y, created_at
@@ -67,15 +59,6 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             ''')
             
             wishes = cursor.fetchall()
-            
-            # Проверка, добавлял ли текущий пользователь желание (только для не-whitelisted IP)
-            if user_ip == whitelist_ip:
-                user_has_wish = False
-            else:
-                cursor.execute('''
-                    SELECT id FROM wishes WHERE user_ip = %s
-                ''', (user_ip,))
-                user_has_wish = cursor.fetchone() is not None
             
             # Преобразование данных в нужный формат
             result = []
@@ -100,8 +83,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 'statusCode': 200,
                 'headers': headers,
                 'body': json.dumps({
-                    'wishes': result,
-                    'canAddWish': not user_has_wish
+                    'wishes': result
                 }),
                 'isBase64Encoded': False
             }
@@ -118,14 +100,6 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             position_x = position.get('x')
             position_y = position.get('y')
             
-            # Получение IP адреса пользователя
-            request_context = event.get('requestContext', {})
-            identity = request_context.get('identity', {})
-            user_ip = identity.get('sourceIp', 'unknown')
-            
-            # Белый список IP с неограниченным доступом
-            whitelist_ip = '46.48.22.85'
-            
             # Валидация данных
             if not all([name, address, phone, wish, position_x is not None, position_y is not None]):
                 cursor.close()
@@ -136,22 +110,6 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'body': json.dumps({'error': 'Все поля обязательны для заполнения'}),
                     'isBase64Encoded': False
                 }
-            
-            # Проверка, не добавлял ли уже этот IP адрес желание (только для не-whitelisted IP)
-            if user_ip != whitelist_ip:
-                cursor.execute('''
-                    SELECT id FROM wishes WHERE user_ip = %s
-                ''', (user_ip,))
-                
-                if cursor.fetchone():
-                    cursor.close()
-                    conn.close()
-                    return {
-                        'statusCode': 403,
-                        'headers': headers,
-                        'body': json.dumps({'error': 'Вы уже добавили своё желание на ёлку! Одно желание от одного человека 🎄'}),
-                        'isBase64Encoded': False
-                    }
             
             # Проверка, нет ли уже желания на этой позиции
             cursor.execute('''
@@ -168,12 +126,12 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'isBase64Encoded': False
                 }
             
-            # Вставка нового желания с IP адресом
+            # Вставка нового желания без проверки IP
             cursor.execute('''
-                INSERT INTO wishes (name, address, phone, wish, position_x, position_y, user_ip)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO wishes (name, address, phone, wish, position_x, position_y)
+                VALUES (%s, %s, %s, %s, %s, %s)
                 RETURNING id, name, address, phone, wish, position_x, position_y, created_at
-            ''', (name, address, phone, wish, position_x, position_y, user_ip))
+            ''', (name, address, phone, wish, position_x, position_y))
             
             new_wish = cursor.fetchone()
             conn.commit()
