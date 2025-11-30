@@ -152,6 +152,17 @@ const AddWishModal = ({ onClose, onSubmit }: AddWishModalProps) => {
               <option value="Артикул SVI_456321478965" className="bg-slate-900 text-white">Артикул SVI_456321478965</option>
               <option value="Артикул SVI_456321478962" className="bg-slate-900 text-white">Артикул SVI_456321478962</option>
             </select>
+            <p className="text-white/60 text-sm mt-2">
+              *Все Артикулы вы можете найти на сайте{' '}
+              <a 
+                href="https://desertdvorik.ru" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:text-blue-300 underline transition-colors"
+              >
+                desertdvorik.ru
+              </a>
+            </p>
           </div>
 
           {/* Кнопки */}
