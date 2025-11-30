@@ -190,7 +190,7 @@ const WishTreeComponent = ({ wishes, onAddWish, canAddWish }: WishTreeComponentP
                       {wishes.find(w => w.position.x === pos.x && w.position.y === pos.y)?.name}
                     </div>
                   </div>
-                ) : canAddWish ? (
+                ) : (
                   <button
                     onClick={() => onAddWish(pos)}
                     className="group relative w-16 h-16 rounded-full bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 hover:from-yellow-300 hover:via-amber-400 hover:to-orange-400 border-4 border-white shadow-2xl hover:shadow-[0_0_40px_rgba(251,191,36,0.8)] transition-all duration-300 hover:scale-125 animate-pulse"
@@ -202,7 +202,7 @@ const WishTreeComponent = ({ wishes, onAddWish, canAddWish }: WishTreeComponentP
                     <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white animate-bounce" style={{ animationDelay: `${index * 0.15}s` }}></div>
                     <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white animate-bounce" style={{ animationDelay: `${index * 0.2}s` }}></div>
                   </button>
-                ) : null}
+                )}
               </div>
             );
           })}

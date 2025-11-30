@@ -53,6 +53,18 @@ const WishTree = () => {
   };
 
   const handleAddWish = (position: { x: number; y: number }) => {
+    // Проверяем, есть ли уже желание на этой позиции
+    const positionTaken = wishes.some(w => w.position.x === position.x && w.position.y === position.y);
+    if (positionTaken) {
+      toast({
+        title: "Место занято",
+        description: "На этом месте уже есть желание",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Проверяем, может ли пользователь добавить желание (по IP)
     if (!canAddWish) {
       toast({
         title: "Ограничение",
@@ -61,6 +73,7 @@ const WishTree = () => {
       });
       return;
     }
+    
     setSelectedPosition(position);
     setShowAddModal(true);
   };
@@ -87,6 +100,7 @@ const WishTree = () => {
 
       const data = await response.json();
       setWishes([...wishes, data.wish]);
+      setCanAddWish(false); // Блокируем дальнейшее добавление для этого IP
       setShowAddModal(false);
       setSelectedPosition(null);
       
