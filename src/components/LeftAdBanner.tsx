@@ -12,7 +12,7 @@ const formatCondolences = (num: number): string => {
 };
 
 const LeftAdBanner = () => {
-  const [condolences, setCondolences] = useState(1985352950);
+  const [condolences, setCondolences] = useState(147195000000);
   const [candleClicked, setCandleClicked] = useState(false);
 
   useEffect(() => {
@@ -60,16 +60,16 @@ const LeftAdBanner = () => {
           <div className="text-slate-500 text-xs mb-3 font-semibold uppercase tracking-wider">Памяти артиста</div>
           
           <div className="mb-4 relative">
-            <div className="absolute inset-0 bg-slate-700/30 blur-xl rounded-full"></div>
+            <div className="absolute inset-0 bg-red-700/30 blur-xl rounded-full"></div>
             <div className="relative text-5xl flex items-center gap-2">
-              🕯️
+              🌹
               <span>🖤</span>
             </div>
           </div>
           
           <div className="space-y-2 mb-4">
             <div className="text-slate-300 text-sm font-bold leading-tight">
-              21.11.2025 года скоропостижно<br />скончалась наша исполнительница<br />песен Карина
+              Сегодня нашей любимой Карине ровно 9 дней как наша любимая исполнительница умерла
             </div>
             <div className="text-slate-400 text-xs italic">
               Radio Noumi выражает<br />глубокие соболезнования
