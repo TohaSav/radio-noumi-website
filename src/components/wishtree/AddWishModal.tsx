@@ -25,30 +25,30 @@ const AddWishModal = ({ onClose, onSubmit }: AddWishModalProps) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
-      <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 rounded-2xl border-2 border-white/20 shadow-2xl max-w-lg w-full p-8 relative overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-3 sm:px-4 py-4">
+      <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 rounded-xl sm:rounded-2xl border-2 border-white/20 shadow-2xl max-w-lg w-full p-4 sm:p-6 md:p-8 relative overflow-hidden max-h-[90vh] overflow-y-auto">
         {/* Декоративные элементы */}
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
         <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl"></div>
 
         {/* Заголовок */}
-        <div className="flex items-center justify-between mb-6 relative z-10">
-          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+        <div className="flex items-center justify-between mb-4 sm:mb-6 relative z-10">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white flex items-center gap-1 sm:gap-2">
             🎄 Загадайте желание
           </h2>
           <button
             onClick={onClose}
-            className="text-white/60 hover:text-white transition-colors"
+            className="text-white/60 hover:text-white transition-colors flex-shrink-0"
           >
-            <Icon name="X" size={24} />
+            <Icon name="X" size={20} className="sm:w-6 sm:h-6" />
           </button>
         </div>
 
         {/* Форма */}
-        <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
+        <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4 relative z-10">
           <div>
-            <label className="block text-white/80 text-sm font-medium mb-2">
+            <label className="block text-white/80 text-xs sm:text-sm font-medium mb-1 sm:mb-2">
               Имя *
             </label>
             <input
@@ -56,13 +56,13 @@ const AddWishModal = ({ onClose, onSubmit }: AddWishModalProps) => {
               required
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full px-3 py-2 sm:px-4 sm:py-3 bg-white/10 border border-white/20 rounded-lg text-white text-sm sm:text-base placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               placeholder="Введите ваше имя"
             />
           </div>
 
           <div>
-            <label className="block text-white/80 text-sm font-medium mb-2">
+            <label className="block text-white/80 text-xs sm:text-sm font-medium mb-1 sm:mb-2">
               Адрес (Город, Индекс, Улица, Номер квартиры или номер частного дома) *
             </label>
             <input
@@ -70,13 +70,13 @@ const AddWishModal = ({ onClose, onSubmit }: AddWishModalProps) => {
               required
               value={formData.address}
               onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full px-3 py-2 sm:px-4 sm:py-3 bg-white/10 border border-white/20 rounded-lg text-white text-sm sm:text-base placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               placeholder="Введите ваш адрес"
             />
           </div>
 
           <div>
-            <label className="block text-white/80 text-sm font-medium mb-2">
+            <label className="block text-white/80 text-xs sm:text-sm font-medium mb-1 sm:mb-2">
               Телефон *
             </label>
             <input
@@ -84,25 +84,25 @@ const AddWishModal = ({ onClose, onSubmit }: AddWishModalProps) => {
               required
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full px-3 py-2 sm:px-4 sm:py-3 bg-white/10 border border-white/20 rounded-lg text-white text-sm sm:text-base placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               placeholder="+7 (999) 123-45-67"
             />
           </div>
 
           <div>
-            <label className="block text-white/80 text-sm font-medium mb-2">
+            <label className="block text-white/80 text-xs sm:text-sm font-medium mb-1 sm:mb-2">
               Выберите подарок *
             </label>
             <select
               required
               value={formData.wish}
               onChange={(e) => setFormData({ ...formData, wish: e.target.value })}
-              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all appearance-none cursor-pointer"
+              className="w-full px-3 py-2 sm:px-4 sm:py-3 bg-white/10 border border-white/20 rounded-lg text-white text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all appearance-none cursor-pointer"
               style={{
                 backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
                 backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'right 0.75rem center',
-                backgroundSize: '1.5rem'
+                backgroundPosition: 'right 0.5rem center',
+                backgroundSize: '1.25rem'
               }}
             >
               <option value="" className="bg-slate-900 text-white">Выберите артикул подарка...</option>
@@ -166,17 +166,17 @@ const AddWishModal = ({ onClose, onSubmit }: AddWishModalProps) => {
           </div>
 
           {/* Кнопки */}
-          <div className="flex gap-3 pt-2">
+          <div className="flex gap-2 sm:gap-3 pt-2 sm:pt-4">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition-all"
+              className="flex-1 px-4 py-2 sm:px-6 sm:py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium text-sm sm:text-base transition-all touch-manipulation"
             >
               Отмена
             </button>
             <button
               type="submit"
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white rounded-lg font-medium transition-all shadow-lg hover:shadow-blue-500/50"
+              className="flex-1 px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white rounded-lg font-medium text-sm sm:text-base transition-all shadow-lg hover:shadow-blue-500/50 touch-manipulation"
             >
               Повесить на ёлку
             </button>

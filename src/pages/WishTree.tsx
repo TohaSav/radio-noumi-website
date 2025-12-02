@@ -135,36 +135,36 @@ const WishTree = () => {
 
       {/* Навигация */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-black/50 backdrop-blur-md border-b border-white/10">
-        <div className="flex items-center justify-between p-4 max-w-7xl mx-auto">
+        <div className="flex items-center justify-between p-3 sm:p-4 max-w-7xl mx-auto gap-2">
           <button
             onClick={() => navigate("/")}
-            className="flex items-center gap-2 text-white hover:text-blue-300 transition-colors"
+            className="flex items-center gap-1 sm:gap-2 text-white hover:text-blue-300 transition-colors flex-shrink-0"
           >
-            <Icon name="ArrowLeft" size={24} />
-            <span className="font-medium">Главная</span>
+            <Icon name="ArrowLeft" size={20} className="sm:w-6 sm:h-6" />
+            <span className="font-medium text-sm sm:text-base hidden xs:inline">Главная</span>
           </button>
 
-          <div className="flex items-center gap-3">
-            <h1 className="text-white font-bold text-xl flex items-center gap-2">
-              🎄 Ёлка желаний Десертный дворик
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <h1 className="text-white font-bold text-sm sm:text-lg md:text-xl flex items-center gap-1 sm:gap-2 truncate">
+              🎄 <span className="hidden sm:inline">Ёлка желаний Десертный дворик</span><span className="sm:hidden">Ёлка желаний</span>
             </h1>
             <button
               onClick={() => setShowInfoModal(true)}
-              className="w-8 h-8 rounded-full bg-blue-500/30 border-2 border-blue-400 flex items-center justify-center text-white hover:bg-blue-500/50 transition-colors"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-blue-500/30 border-2 border-blue-400 flex items-center justify-center text-white hover:bg-blue-500/50 transition-colors flex-shrink-0"
             >
-              <Icon name="Info" size={18} />
+              <Icon name="Info" size={16} className="sm:w-[18px] sm:h-[18px]" />
             </button>
           </div>
 
-          <div className="w-32"></div>
+          <div className="hidden sm:block w-24 md:w-32"></div>
         </div>
       </div>
 
       {/* Основной контент */}
-      <div className="relative z-10 pt-24 pb-12 px-4">
+      <div className="relative z-10 pt-16 sm:pt-20 md:pt-24 pb-4 sm:pb-8 md:pb-12 px-2 sm:px-4">
         {loading ? (
           <div className="flex items-center justify-center min-h-[60vh]">
-            <div className="text-white text-xl">Загрузка ёлки... 🎄</div>
+            <div className="text-white text-base sm:text-xl">Загрузка ёлки... 🎄</div>
           </div>
         ) : (
           <WishTreeComponent wishes={wishes} onAddWish={handleAddWish} canAddWish={true} />

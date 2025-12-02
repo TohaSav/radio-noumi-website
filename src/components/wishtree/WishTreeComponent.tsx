@@ -35,7 +35,7 @@ const WishTreeComponent = ({ wishes, onAddWish, canAddWish }: WishTreeComponentP
   ];
 
   return (
-    <div className="fixed inset-0 w-full h-full overflow-hidden">
+    <div className="w-full h-full min-h-[calc(100vh-80px)] overflow-hidden">
       {/* Ёлочный фон с узорами */}
       <div className="absolute inset-0 bg-gradient-to-br from-emerald-900 via-green-800 to-teal-900">
         {/* Декоративные круги-шары */}
@@ -73,8 +73,8 @@ const WishTreeComponent = ({ wishes, onAddWish, canAddWish }: WishTreeComponentP
       </div>
 
       {/* Контейнер с кнопками + */}
-      <div className="relative z-10 w-full h-full flex items-center justify-center p-8">
-        <div className="relative w-full max-w-6xl h-full max-h-[80vh]">
+      <div className="relative z-10 w-full h-full flex items-center justify-center p-2 sm:p-4 md:p-8">
+        <div className="relative w-full max-w-6xl h-full max-h-[85vh] sm:max-h-[80vh]">
           {/* Новогодняя гирлянда по периметру */}
           <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
             <defs>
@@ -167,7 +167,7 @@ const WishTreeComponent = ({ wishes, onAddWish, canAddWish }: WishTreeComponentP
           </div>
 
           {/* Декоративная рамка */}
-          <div className="absolute inset-0 border-4 border-white/20 rounded-3xl backdrop-blur-sm bg-white/5 shadow-2xl"></div>
+          <div className="absolute inset-0 border-2 sm:border-4 border-white/20 rounded-2xl sm:rounded-3xl backdrop-blur-sm bg-white/5 shadow-2xl"></div>
           
           {/* Кнопки желаний */}
           {branchPositions.map((pos, index) => {
@@ -181,24 +181,24 @@ const WishTreeComponent = ({ wishes, onAddWish, canAddWish }: WishTreeComponentP
               >
                 {hasWish ? (
                   <div className="relative group">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-red-400 via-red-500 to-red-600 border-4 border-yellow-400 shadow-2xl cursor-pointer animate-pulse hover:scale-110 transition-transform">
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-3 h-5 bg-yellow-600 rounded-t"></div>
-                      <div className="absolute inset-3 rounded-full bg-gradient-to-br from-white/60 to-transparent"></div>
-                      <div className="absolute inset-0 rounded-full shadow-[0_0_30px_rgba(239,68,68,0.6)]"></div>
+                    <div className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-red-400 via-red-500 to-red-600 border-2 sm:border-3 md:border-4 border-yellow-400 shadow-2xl cursor-pointer animate-pulse hover:scale-110 transition-transform touch-manipulation">
+                      <div className="absolute -top-2 sm:-top-3 left-1/2 -translate-x-1/2 w-2 h-3 sm:w-3 sm:h-5 bg-yellow-600 rounded-t"></div>
+                      <div className="absolute inset-2 sm:inset-3 rounded-full bg-gradient-to-br from-white/60 to-transparent"></div>
+                      <div className="absolute inset-0 rounded-full shadow-[0_0_20px_rgba(239,68,68,0.6)] sm:shadow-[0_0_30px_rgba(239,68,68,0.6)]"></div>
                     </div>
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-2 bg-black/90 text-white text-sm rounded-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-xl border border-white/20">
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 sm:mb-3 px-2 py-1 sm:px-4 sm:py-2 bg-black/90 text-white text-xs sm:text-sm rounded-lg sm:rounded-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-xl border border-white/20 max-w-[150px] sm:max-w-none truncate">
                       {wishes.find(w => w.position.x === pos.x && w.position.y === pos.y)?.name}
                     </div>
                   </div>
                 ) : (
                   <button
                     onClick={() => onAddWish(pos)}
-                    className="group relative w-16 h-16 rounded-full bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 hover:from-yellow-300 hover:via-amber-400 hover:to-orange-400 border-4 border-white shadow-2xl hover:shadow-[0_0_40px_rgba(251,191,36,0.8)] transition-all duration-300 hover:scale-125 animate-pulse"
+                    className="group relative w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 hover:from-yellow-300 hover:via-amber-400 hover:to-orange-400 active:scale-95 border-2 sm:border-3 md:border-4 border-white shadow-xl sm:shadow-2xl hover:shadow-[0_0_30px_rgba(251,191,36,0.8)] sm:hover:shadow-[0_0_40px_rgba(251,191,36,0.8)] transition-all duration-300 hover:scale-110 sm:hover:scale-125 animate-pulse touch-manipulation"
                     style={{ animationDuration: '2s', animationDelay: `${index * 0.1}s` }}
                   >
                     <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/40 to-transparent"></div>
                     <div className="absolute inset-0 rounded-full animate-ping opacity-20 bg-yellow-300"></div>
-                    <span className="relative text-white text-4xl font-bold drop-shadow-lg">+</span>
+                    <span className="relative text-white text-2xl sm:text-3xl md:text-4xl font-bold drop-shadow-lg">+</span>
                     <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white animate-bounce" style={{ animationDelay: `${index * 0.15}s` }}></div>
                     <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white animate-bounce" style={{ animationDelay: `${index * 0.2}s` }}></div>
                   </button>

@@ -6,35 +6,35 @@ interface InfoModalProps {
 
 const InfoModal = ({ onClose }: InfoModalProps) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
-      <div className="bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900 rounded-2xl border-2 border-white/20 shadow-2xl max-w-md w-full p-8 relative overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-3 sm:px-4 py-4">
+      <div className="bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900 rounded-xl sm:rounded-2xl border-2 border-white/20 shadow-2xl max-w-md w-full p-4 sm:p-6 md:p-8 relative overflow-hidden max-h-[90vh] overflow-y-auto">
         {/* Декоративные элементы */}
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-500 via-red-500 to-pink-500"></div>
         <div className="absolute -top-10 -right-10 w-40 h-40 bg-yellow-500/20 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-pink-500/20 rounded-full blur-3xl"></div>
 
         {/* Заголовок */}
-        <div className="flex items-center justify-between mb-6 relative z-10">
-          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+        <div className="flex items-center justify-between mb-4 sm:mb-6 relative z-10">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white flex items-center gap-1 sm:gap-2">
             🎂 Десертный дворик
           </h2>
           <button
             onClick={onClose}
-            className="text-white/60 hover:text-white transition-colors"
+            className="text-white/60 hover:text-white transition-colors flex-shrink-0"
           >
-            <Icon name="X" size={24} />
+            <Icon name="X" size={20} className="sm:w-6 sm:h-6" />
           </button>
         </div>
 
         {/* Контент */}
-        <div className="space-y-4 relative z-10">
-          <p className="text-white/90 text-base leading-relaxed">
+        <div className="space-y-3 sm:space-y-4 relative z-10">
+          <p className="text-white/90 text-sm sm:text-base leading-relaxed">
             <strong className="text-white">Десертный дворик</strong>
             <br />
             Десертный дворик — это домашняя кондитерская компания, которая предлагает для вас свежую и вкусную выпечку.
           </p>
 
-          <p className="text-white/90 text-base leading-relaxed">
+          <p className="text-white/90 text-sm sm:text-base leading-relaxed">
             Вы можете повесить на ёлку своё желание, выбрав товары на нашем сайте:
           </p>
 
@@ -42,12 +42,12 @@ const InfoModal = ({ onClose }: InfoModalProps) => {
             href="http://desertdvorik.ru/"
             target="_blank"
             rel="noopener noreferrer"
-            className="block w-full px-6 py-4 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white rounded-lg font-medium transition-all shadow-lg hover:shadow-pink-500/50 text-center"
+            className="block w-full px-4 py-3 sm:px-6 sm:py-4 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white rounded-lg font-medium text-sm sm:text-base transition-all shadow-lg hover:shadow-pink-500/50 text-center touch-manipulation"
           >
             🍰 Перейти на сайт
           </a>
 
-          <p className="text-white/70 text-xs leading-relaxed pt-2">
+          <p className="text-white/70 text-xs leading-relaxed pt-1 sm:pt-2">
             *Прежде чем вам загадать желание, обязательно посетите сайт и выберите для себя продукцию.
           </p>
         </div>
@@ -55,7 +55,7 @@ const InfoModal = ({ onClose }: InfoModalProps) => {
         {/* Кнопка закрыть */}
         <button
           onClick={onClose}
-          className="mt-6 w-full px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition-all relative z-10"
+          className="mt-4 sm:mt-6 w-full px-4 py-2 sm:px-6 sm:py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium text-sm sm:text-base transition-all relative z-10 touch-manipulation"
         >
           Закрыть
         </button>
