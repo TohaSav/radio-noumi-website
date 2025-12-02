@@ -26,9 +26,9 @@ const Hero = () => {
   } = useTopChart();
 
   return (
-    <section className="relative min-h-screen flex items-start justify-center text-center px-4 pt-4">
+    <section className="relative min-h-screen flex items-start justify-center text-center px-3 sm:px-4 pt-16 sm:pt-4">
       {/* Hero Content */}
-      <div className="max-w-4xl mx-auto space-y-4 opacity-0 animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}>
+      <div className="max-w-4xl mx-auto space-y-3 sm:space-y-4 opacity-0 animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}>
         <EmbeddedRadioPlayer streamUrl="https://myradio24.org/61673" />
 
         {/* Лайки с сердечком */}
@@ -43,23 +43,23 @@ const Hero = () => {
           setHearts={setHearts}
         />
 
-        <p className="text-xl md:text-2xl text-slate-300/80 max-w-2xl mx-auto leading-relaxed font-light">
+        <p className="text-base sm:text-xl md:text-2xl text-slate-300/80 max-w-2xl mx-auto leading-relaxed font-light">
           Музыка, что вдохновляет жить
         </p>
       </div>
 
       {/* Кнопки навигации */}
-      <div className="absolute top-6 right-6 flex gap-3 z-20">
+      <div className="absolute top-4 sm:top-6 right-3 sm:right-6 flex flex-col sm:flex-row gap-2 sm:gap-3 z-20">
         <button
           onClick={() => setShowTopChart(true)}
-          className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 hover:from-purple-700 hover:via-pink-700 hover:to-blue-700 text-white px-6 py-3 rounded-2xl text-sm font-bold transition-all duration-500 hover:scale-110 shadow-xl hover:shadow-purple-500/50 opacity-0 animate-fade-in backdrop-blur-sm border border-white/10" style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}
+          className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 hover:from-purple-700 hover:via-pink-700 hover:to-blue-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-bold transition-all duration-500 hover:scale-110 active:scale-95 shadow-xl hover:shadow-purple-500/50 opacity-0 animate-fade-in backdrop-blur-sm border border-white/10 touch-manipulation whitespace-nowrap" style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}
         >
           🎵 Топ Чарт
         </button>
         
         <button
           onClick={() => navigate('/wish-tree')}
-          className="bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 hover:from-green-700 hover:via-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-2xl text-sm font-bold transition-all duration-500 hover:scale-110 shadow-xl hover:shadow-green-500/50 opacity-0 animate-fade-in backdrop-blur-sm border border-white/10" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}
+          className="bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 hover:from-green-700 hover:via-blue-700 hover:to-purple-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-bold transition-all duration-500 hover:scale-110 active:scale-95 shadow-xl hover:shadow-green-500/50 opacity-0 animate-fade-in backdrop-blur-sm border border-white/10 touch-manipulation whitespace-nowrap" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}
         >
           🎄 Ёлка желаний
         </button>

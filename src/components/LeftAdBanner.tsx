@@ -38,10 +38,10 @@ const LeftAdBanner = () => {
   };
 
   return (
-    <div className="fixed left-2 sm:left-4 top-1/2 -translate-y-1/2 z-40 hidden lg:block">
+    <div className="fixed left-2 sm:left-4 top-1/2 -translate-y-1/2 z-40 hidden md:block">
       <div 
-        className="bg-gradient-to-br from-slate-900/95 via-slate-950/95 to-slate-900/95 backdrop-blur-xl rounded-2xl border border-slate-800/70 shadow-2xl overflow-hidden"
-        style={{ width: '250px', minHeight: '300px' }}
+        className="bg-gradient-to-br from-slate-900/95 via-slate-950/95 to-slate-900/95 backdrop-blur-xl rounded-xl md:rounded-2xl border border-slate-800/70 shadow-2xl overflow-hidden"
+        style={{ width: '200px', minHeight: '280px' }}
       >
         <div className="absolute top-6 left-0 right-0 z-10">
           <div className="relative bg-gradient-to-r from-black via-zinc-900 to-black py-2 shadow-lg">

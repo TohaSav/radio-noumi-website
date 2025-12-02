@@ -106,57 +106,57 @@ const WishTreeAdmin = () => {
 
       {/* Навигация */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-black/50 backdrop-blur-md border-b border-white/10">
-        <div className="flex items-center justify-between p-4 max-w-7xl mx-auto">
+        <div className="flex items-center justify-between p-3 sm:p-4 max-w-7xl mx-auto gap-2">
           <button
             onClick={() => navigate("/wish-tree")}
-            className="flex items-center gap-2 text-white hover:text-blue-300 transition-colors"
+            className="flex items-center gap-1 sm:gap-2 text-white hover:text-blue-300 transition-colors flex-shrink-0"
           >
-            <Icon name="ArrowLeft" size={24} />
-            <span className="font-medium">К ёлке желаний</span>
+            <Icon name="ArrowLeft" size={20} className="sm:w-6 sm:h-6" />
+            <span className="font-medium text-sm sm:text-base hidden xs:inline">К ёлке</span>
           </button>
 
-          <h1 className="text-white font-bold text-xl flex items-center gap-2">
-            🎄 Админ-панель - Все желания
+          <h1 className="text-white font-bold text-sm sm:text-base md:text-xl flex items-center gap-1 sm:gap-2 min-w-0">
+            🎄 <span className="truncate"><span className="hidden sm:inline">Админ-панель - Все желания</span><span className="sm:hidden">Админ</span></span>
           </h1>
 
-          <div className="w-32"></div>
+          <div className="hidden sm:block w-24 md:w-32"></div>
         </div>
       </div>
 
       {/* Основной контент */}
-      <div className="relative z-10 pt-24 pb-12 px-4">
+      <div className="relative z-10 pt-16 sm:pt-20 md:pt-24 pb-4 sm:pb-8 md:pb-12 px-3 sm:px-4">
         <div className="max-w-7xl mx-auto">
           {/* Статистика */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <div className="text-white/60 text-sm mb-2">Всего желаний</div>
-              <div className="text-white text-3xl font-bold">{wishes.length}</div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl p-4 sm:p-6 border border-white/20">
+              <div className="text-white/60 text-xs sm:text-sm mb-1 sm:mb-2">Всего желаний</div>
+              <div className="text-white text-2xl sm:text-3xl font-bold">{wishes.length}</div>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <div className="text-white/60 text-sm mb-2">Сегодня</div>
-              <div className="text-white text-3xl font-bold">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl p-4 sm:p-6 border border-white/20">
+              <div className="text-white/60 text-xs sm:text-sm mb-1 sm:mb-2">Сегодня</div>
+              <div className="text-white text-2xl sm:text-3xl font-bold">
                 {wishes.filter(w => {
                   const today = new Date().toDateString();
                   return new Date(w.createdAt).toDateString() === today;
                 }).length}
               </div>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <div className="text-white/60 text-sm mb-2">Найдено</div>
-              <div className="text-white text-3xl font-bold">{filteredWishes.length}</div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl p-4 sm:p-6 border border-white/20">
+              <div className="text-white/60 text-xs sm:text-sm mb-1 sm:mb-2">Найдено</div>
+              <div className="text-white text-2xl sm:text-3xl font-bold">{filteredWishes.length}</div>
             </div>
           </div>
 
           {/* Поиск */}
-          <div className="mb-6">
+          <div className="mb-4 sm:mb-6">
             <div className="relative">
-              <Icon name="Search" size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
+              <Icon name="Search" size={18} className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-white/40 sm:w-5 sm:h-5" />
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Поиск по имени, телефону, адресу или желанию..."
-                className="w-full pl-12 pr-4 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                placeholder="Поиск..."
+                className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-3 sm:py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg sm:rounded-xl text-white text-sm sm:text-base placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               />
             </div>
           </div>
@@ -173,8 +173,8 @@ const WishTreeAdmin = () => {
               </div>
             </div>
           ) : (
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
-              <div className="overflow-x-auto">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl border border-white/20 overflow-hidden">
+              <div className="overflow-x-auto -mx-3 sm:mx-0">
                 <table className="w-full">
                   <thead className="bg-white/5">
                     <tr>

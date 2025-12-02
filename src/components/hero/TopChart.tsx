@@ -35,24 +35,24 @@ const TopChart = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 rounded-2xl p-6 max-w-2xl w-full max-h-[80vh] relative border border-purple-500/30">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4">
+      <div className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 rounded-xl sm:rounded-2xl p-4 sm:p-6 max-w-2xl w-full max-h-[85vh] sm:max-h-[80vh] relative border border-purple-500/30 overflow-hidden">
         {/* Заголовок */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-            🎵 <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Топ Чарт Radio Noumi</span>
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white flex items-center gap-1 sm:gap-2 min-w-0">
+            🎵 <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent truncate"><span className="hidden sm:inline">Топ Чарт Radio Noumi</span><span className="sm:hidden">Топ Чарт</span></span>
           </h2>
           <button
             onClick={() => setShowTopChart(false)}
-            className="text-white/70 hover:text-white p-2 hover:bg-white/10 rounded-full transition-all"
+            className="text-white/70 hover:text-white p-2 hover:bg-white/10 rounded-full transition-all flex-shrink-0 touch-manipulation"
           >
-            <Icon name="X" size={20} />
+            <Icon name="X" size={18} className="sm:w-5 sm:h-5" />
           </button>
         </div>
 
         {/* Список песен */}
-        <div className="overflow-y-auto max-h-[60vh] custom-scrollbar">
-          <div className="space-y-2">
+        <div className="overflow-y-auto max-h-[65vh] sm:max-h-[60vh] custom-scrollbar">
+          <div className="space-y-1.5 sm:space-y-2">
             {topChartSongs.map((song, index) => {
               const isBestTrack = index === bestTrackIndex;
               const isWorstTrack = index === worstTrackIndex;
@@ -61,7 +61,7 @@ const TopChart = ({
               return (
                 <div
                   key={index}
-                  className={`flex items-center gap-3 p-3 rounded-lg transition-all group ${
+                  className={`flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg transition-all group ${
                     isGoldTrack
                       ? 'bg-gradient-to-r from-yellow-500/30 via-amber-500/30 to-yellow-500/30 animate-pulse border border-yellow-400/60 shadow-xl shadow-yellow-500/30'
                       : isBestTrack
@@ -71,7 +71,7 @@ const TopChart = ({
                       : 'bg-white/5 hover:bg-white/10'
                   }`}
                 >
-                  <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ${
+                  <div className={`flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-white text-xs sm:text-sm font-bold ${
                     isGoldTrack
                       ? 'bg-gradient-to-r from-yellow-500 to-amber-400 animate-pulse shadow-lg shadow-yellow-500/50'
                       : isBestTrack
@@ -84,7 +84,7 @@ const TopChart = ({
                   </div>
                   
                   <div className="flex-1 min-w-0">
-                    <div className={`font-medium truncate transition-colors flex items-center gap-2 ${
+                    <div className={`font-medium text-sm sm:text-base truncate transition-colors flex items-center gap-1 sm:gap-2 ${
                       isGoldTrack
                         ? 'text-yellow-300 font-bold animate-pulse'
                         : isBestTrack
@@ -101,35 +101,35 @@ const TopChart = ({
                   </div>
                 
                 {/* Лайки и дизлайки */}
-                <div className="flex items-center gap-4 text-sm">
+                <div className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm">
                   {/* Лайк */}
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-0.5 sm:gap-1">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         handleSongAction(index, 'like');
                       }}
-                      className="text-green-400 hover:text-green-300 transition-colors p-1 hover:bg-green-400/10 rounded"
+                      className="text-green-400 hover:text-green-300 transition-colors p-1 hover:bg-green-400/10 rounded touch-manipulation"
                     >
                       👍
                     </button>
-                    <span className="text-green-400 font-medium min-w-[50px]">
+                    <span className="text-green-400 font-medium min-w-[35px] sm:min-w-[50px] text-xs sm:text-sm">
                       {formatLikes(songLikes[index]?.likes || 0)}
                     </span>
                   </div>
                   
                   {/* Дизлайк */}
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-0.5 sm:gap-1">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         handleSongAction(index, 'dislike');
                       }}
-                      className="text-red-400 hover:text-red-300 transition-colors p-1 hover:bg-red-400/10 rounded"
+                      className="text-red-400 hover:text-red-300 transition-colors p-1 hover:bg-red-400/10 rounded touch-manipulation"
                     >
                       👎
                     </button>
-                    <span className="text-red-400 font-medium min-w-[30px]">
+                    <span className="text-red-400 font-medium min-w-[25px] sm:min-w-[30px] text-xs sm:text-sm">
                       {songLikes[index]?.dislikes || 0}
                     </span>
                   </div>
@@ -141,8 +141,8 @@ const TopChart = ({
         </div>
 
         {/* Подвал */}
-        <div className="mt-6 pt-4 border-t border-white/10 text-center">
-          <p className="text-white/60 text-sm">
+        <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-white/10 text-center">
+          <p className="text-white/60 text-xs sm:text-sm">
             🔥 Самые популярные треки Radio Noumi
           </p>
         </div>

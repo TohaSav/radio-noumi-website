@@ -117,15 +117,15 @@ const LikesSection = ({
   return (
     <>
       {/* Лайки с сердечком */}
-      <div className="flex flex-col items-center justify-center gap-3 opacity-0 animate-fade-in" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
+      <div className="flex flex-col items-center justify-center gap-2 sm:gap-3 opacity-0 animate-fade-in" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
         <div className="relative">
           <button 
             onClick={handleLike}
-            className={`relative flex items-center justify-center w-20 h-20 rounded-2xl transition-all duration-500 hover:scale-110 cursor-pointer bg-gradient-to-br from-purple-600/20 via-pink-600/20 to-blue-600/20 border-2 border-purple-500/30 hover:border-pink-500/50 backdrop-blur-sm ${
+            className={`relative flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl transition-all duration-500 hover:scale-110 active:scale-95 cursor-pointer bg-gradient-to-br from-purple-600/20 via-pink-600/20 to-blue-600/20 border-2 border-purple-500/30 hover:border-pink-500/50 backdrop-blur-sm touch-manipulation ${
               pulse ? 'scale-125 shadow-2xl shadow-purple-500/50' : 'scale-100'
             }`}
           >
-            <div className={`text-5xl transition-all duration-500 ${
+            <div className={`text-4xl sm:text-5xl transition-all duration-500 ${
               isLiked ? 'text-pink-500' : 'text-purple-400'
             } ${
               pulse ? 'animate-pulse' : ''
@@ -137,7 +137,7 @@ const LikesSection = ({
           {likeTexts.map((likeText) => (
             <div
               key={likeText.id}
-              className="fixed pointer-events-none text-purple-400/90 text-sm font-bold animate-like-float z-50"
+              className="fixed pointer-events-none text-purple-400/90 text-xs sm:text-sm font-bold animate-like-float z-50"
               style={{
                 left: `calc(50vw + ${likeText.x - 50}px)`,
                 top: '50vh',
@@ -149,7 +149,7 @@ const LikesSection = ({
           ))}
         </div>
         
-        <span className="text-lg font-bold bg-gradient-to-r from-purple-300 via-pink-300 to-blue-300 bg-clip-text text-transparent drop-shadow-lg">
+        <span className="text-base sm:text-lg font-bold bg-gradient-to-r from-purple-300 via-pink-300 to-blue-300 bg-clip-text text-transparent drop-shadow-lg">
           {formatNumber(likes)}
         </span>
       </div>
