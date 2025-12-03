@@ -1,5 +1,4 @@
 import { Wish } from "@/pages/WishTree";
-import ChristmasTree from "./ChristmasTree";
 
 interface WishTreeComponentProps {
   wishes: Wish[];
@@ -9,14 +8,12 @@ interface WishTreeComponentProps {
 
 const WishTreeComponent = ({ wishes, onAddWish, canAddWish }: WishTreeComponentProps) => {
   const branchPositions = [
-    // Верхний ряд - 5 игрушек
     { x: 12, y: 12 },
     { x: 28, y: 18 },
     { x: 50, y: 10 },
     { x: 72, y: 18 },
     { x: 88, y: 12 },
     
-    // Второй ряд - 6 игрушек
     { x: 8, y: 28 },
     { x: 25, y: 35 },
     { x: 42, y: 30 },
@@ -24,7 +21,6 @@ const WishTreeComponent = ({ wishes, onAddWish, canAddWish }: WishTreeComponentP
     { x: 75, y: 35 },
     { x: 92, y: 28 },
     
-    // Третий ряд - 6 игрушек
     { x: 15, y: 50 },
     { x: 32, y: 48 },
     { x: 50, y: 52 },
@@ -32,200 +28,289 @@ const WishTreeComponent = ({ wishes, onAddWish, canAddWish }: WishTreeComponentP
     { x: 85, y: 50 },
     { x: 50, y: 42 },
     
-    // Четвертый ряд - 5 игрушек
     { x: 20, y: 68 },
     { x: 38, y: 65 },
     { x: 50, y: 70 },
     { x: 62, y: 65 },
     { x: 80, y: 68 },
     
-    // Нижний ряд - 1 игрушка (центр)
     { x: 50, y: 85 },
   ];
 
-  return (
-    <div className="w-full h-full min-h-[calc(100vh-80px)] overflow-hidden">
-      {/* Ёлочный фон с узорами */}
-      <div className="absolute inset-0 bg-gradient-to-br from-emerald-900 via-green-800 to-teal-900">
-        {/* Декоративные круги-шары */}
-        <div className="absolute top-10 left-10 w-32 h-32 bg-red-500/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-40 h-40 bg-yellow-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute bottom-32 left-1/4 w-48 h-48 bg-blue-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute bottom-20 right-1/3 w-36 h-36 bg-purple-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }}></div>
-        
-        {/* Ёлочные ветки узором */}
-        <svg className="absolute inset-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
-          <pattern id="tree-pattern" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
-            <path d="M 100 20 L 80 60 L 90 60 L 70 100 L 130 100 L 110 60 L 120 60 Z" fill="currentColor" className="text-green-300"/>
-            <circle cx="85" cy="70" r="4" fill="currentColor" className="text-red-400"/>
-            <circle cx="115" cy="70" r="4" fill="currentColor" className="text-yellow-400"/>
-            <circle cx="100" cy="90" r="4" fill="currentColor" className="text-blue-400"/>
-          </pattern>
-          <rect width="100%" height="100%" fill="url(#tree-pattern)"/>
-        </svg>
+  const ornamentColors = [
+    'from-red-400 to-red-600',
+    'from-blue-400 to-blue-600',
+    'from-yellow-300 to-yellow-500',
+    'from-purple-400 to-purple-600',
+    'from-green-400 to-green-600',
+    'from-pink-400 to-pink-600',
+    'from-orange-400 to-orange-600',
+  ];
 
-        {/* Падающие снежинки */}
-        {[...Array(30)].map((_, i) => (
+  return (
+    <div className="w-full h-full min-h-[calc(100vh-80px)] overflow-hidden relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-purple-950 to-pink-950">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/30 via-transparent to-transparent"></div>
+        
+        <div className="absolute top-20 left-10 w-64 h-64 bg-red-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-80 h-80 bg-yellow-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute bottom-32 left-1/4 w-96 h-96 bg-blue-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute bottom-20 right-1/3 w-72 h-72 bg-purple-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+
+        {[...Array(50)].map((_, i) => (
           <div
-            key={`snow-${i}`}
-            className="absolute text-white/40 animate-snow text-2xl"
+            key={`sparkle-${i}`}
+            className="absolute w-1 h-1 bg-white rounded-full animate-sparkle"
             style={{
               left: `${Math.random() * 100}%`,
-              top: `-${Math.random() * 100}px`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${Math.random() * 3 + 6}s`
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${Math.random() * 2 + 2}s`
             }}
-          >
-            ❄
-          </div>
+          ></div>
         ))}
       </div>
 
-      {/* Контейнер с кнопками + */}
       <div className="relative z-10 w-full h-full flex items-center justify-center p-2 sm:p-4 md:p-8">
         <div className="relative w-full max-w-6xl h-full max-h-[85vh] sm:max-h-[80vh]">
-          {/* Новогодняя гирлянда по периметру */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+          <svg className="absolute -inset-4 w-[calc(100%+2rem)] h-[calc(100%+2rem)] pointer-events-none z-40" style={{ filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.3))' }}>
             <defs>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+              <filter id="mega-glow">
+                <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
                 <feMerge>
+                  <feMergeNode in="coloredBlur"/>
                   <feMergeNode in="coloredBlur"/>
                   <feMergeNode in="SourceGraphic"/>
                 </feMerge>
               </filter>
             </defs>
-            {/* Провод гирлянды */}
-            <path d="M 0,20 Q 25,10 50,20 T 100,20 T 150,20 T 200,20 T 250,20 T 300,20 T 350,20 T 400,20 T 450,20 T 500,20 T 550,20 T 600,20 T 650,20 T 700,20 T 750,20 T 800,20" 
-              stroke="#1e3a1a" strokeWidth="3" fill="none" className="opacity-60"/>
-            {/* Лампочки сверху */}
-            {[...Array(20)].map((_, i) => {
-              const colors = ['#ef4444', '#fbbf24', '#3b82f6', '#a855f7', '#10b981', '#ec4899'];
-              const x = (i * 5) + 2.5;
+            
+            <path d="M 40,40 Q 80,20 120,40 T 200,40 T 280,40 T 360,40 T 440,40 T 520,40 T 600,40 T 680,40 T 760,40 T 840,40 T 920,40 T 1000,40 T 1080,40 T 1160,40 T 1240,40" 
+              stroke="#1a5c3a" strokeWidth="4" fill="none" opacity="0.8"/>
+            {[...Array(25)].map((_, i) => {
+              const colors = ['#ff0000', '#ffd700', '#00ff00', '#0080ff', '#ff00ff', '#ff8000', '#00ffff'];
+              const x = i * 50 + 60;
+              const y = i % 2 === 0 ? 30 : 50;
               return (
-                <g key={`top-${i}`}>
-                  <circle cx={`${x}%`} cy="20" r="6" fill={colors[i % colors.length]} 
-                    className="animate-pulse" filter="url(#glow)"
-                    style={{ animationDelay: `${i * 0.15}s`, animationDuration: '1.5s' }}/>
-                  <circle cx={`${x}%`} cy="17" r="2" fill="white" opacity="0.8"/>
+                <g key={`top-bulb-${i}`}>
+                  <line x1={x} y1={y} x2={x} y2={y + 12} stroke="#2d5c3a" strokeWidth="2"/>
+                  <circle cx={x} cy={y + 18} r="10" fill={colors[i % colors.length]} 
+                    className="animate-blink" filter="url(#mega-glow)"
+                    style={{ animationDelay: `${i * 0.08}s` }}/>
+                  <ellipse cx={x} cy={y + 15} rx="6" ry="4" fill="white" opacity="0.6"/>
+                  <circle cx={x - 2} cy={y + 13} r="2" fill="white" opacity="0.9"/>
                 </g>
               );
             })}
-            {/* Провод снизу */}
-            <path d="M 0,98% Q 25,96% 50,98% T 100,98% T 150,98% T 200,98% T 250,98% T 300,98% T 350,98% T 400,98% T 450,98% T 500,98% T 550,98% T 600,98% T 650,98% T 700,98% T 750,98% T 800,98%" 
-              stroke="#1e3a1a" strokeWidth="3" fill="none" className="opacity-60"/>
-            {/* Лампочки снизу */}
-            {[...Array(20)].map((_, i) => {
-              const colors = ['#10b981', '#ec4899', '#ef4444', '#fbbf24', '#3b82f6', '#a855f7'];
-              const x = (i * 5) + 2.5;
+            
+            <path d="M 40,98% Q 80,96% 120,98% T 200,98% T 280,98% T 360,98% T 440,98% T 520,98% T 600,98% T 680,98% T 760,98% T 840,98% T 920,98% T 1000,98% T 1080,98% T 1160,98% T 1240,98%" 
+              stroke="#1a5c3a" strokeWidth="4" fill="none" opacity="0.8"/>
+            {[...Array(25)].map((_, i) => {
+              const colors = ['#00ffff', '#ff00ff', '#ff0000', '#ffd700', '#00ff00', '#0080ff', '#ff8000'];
+              const x = i * 50 + 60;
               return (
-                <g key={`bottom-${i}`}>
-                  <circle cx={`${x}%`} cy="98%" r="6" fill={colors[i % colors.length]} 
-                    className="animate-pulse" filter="url(#glow)"
-                    style={{ animationDelay: `${i * 0.15 + 0.75}s`, animationDuration: '1.5s' }}/>
-                  <circle cx={`${x}%`} cy="calc(98% - 3px)" r="2" fill="white" opacity="0.8"/>
+                <g key={`bottom-bulb-${i}`}>
+                  <line x1={x} y1="98%" x2={x} y2="calc(98% - 12px)" stroke="#2d5c3a" strokeWidth="2"/>
+                  <circle cx={x} cy="calc(98% - 18px)" r="10" fill={colors[i % colors.length]} 
+                    className="animate-blink" filter="url(#mega-glow)"
+                    style={{ animationDelay: `${i * 0.08 + 0.5}s` }}/>
+                  <ellipse cx={x} cy="calc(98% - 21px)" rx="6" ry="4" fill="white" opacity="0.6"/>
+                  <circle cx={x - 2} cy="calc(98% - 23px)" r="2" fill="white" opacity="0.9"/>
+                </g>
+              );
+            })}
+
+            <path d="M 20,60 Q 10,120 20,180 T 20,300 T 20,420 T 20,540 T 20,660 T 20,780" 
+              stroke="#1a5c3a" strokeWidth="4" fill="none" opacity="0.8"/>
+            {[...Array(15)].map((_, i) => {
+              const colors = ['#ff0000', '#0080ff', '#ffd700', '#00ff00', '#ff00ff'];
+              const y = i * 50 + 80;
+              return (
+                <g key={`left-bulb-${i}`}>
+                  <line x1="20" y1={y} x2="32" y2={y} stroke="#2d5c3a" strokeWidth="2"/>
+                  <circle cx="38" cy={y} r="10" fill={colors[i % colors.length]} 
+                    className="animate-blink" filter="url(#mega-glow)"
+                    style={{ animationDelay: `${i * 0.1}s` }}/>
+                  <ellipse cx="38" cy={y - 3} rx="6" ry="4" fill="white" opacity="0.6"/>
+                  <circle cx="36" cy={y - 5} r="2" fill="white" opacity="0.9"/>
+                </g>
+              );
+            })}
+
+            <path d="M 98%,60 Q 99%,120 98%,180 T 98%,300 T 98%,420 T 98%,540 T 98%,660 T 98%,780" 
+              stroke="#1a5c3a" strokeWidth="4" fill="none" opacity="0.8"/>
+            {[...Array(15)].map((_, i) => {
+              const colors = ['#00ff00', '#ff00ff', '#ff0000', '#ffd700', '#0080ff'];
+              const y = i * 50 + 80;
+              return (
+                <g key={`right-bulb-${i}`}>
+                  <line x1="98%" y1={y} x2="calc(98% - 12px)" y2={y} stroke="#2d5c3a" strokeWidth="2"/>
+                  <circle cx="calc(98% - 18px)" cy={y} r="10" fill={colors[i % colors.length]} 
+                    className="animate-blink" filter="url(#mega-glow)"
+                    style={{ animationDelay: `${i * 0.1 + 0.3}s` }}/>
+                  <ellipse cx="calc(98% - 18px)" cy={y - 3} rx="6" ry="4" fill="white" opacity="0.6"/>
+                  <circle cx="calc(98% - 20px)" cy={y - 5} r="2" fill="white" opacity="0.9"/>
                 </g>
               );
             })}
           </svg>
 
-          {/* Мишура по периметру */}
-          <div className="absolute inset-0 rounded-3xl overflow-hidden pointer-events-none" style={{ zIndex: 2 }}>
-            {/* Верхняя мишура */}
-            <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-yellow-400/30 via-yellow-300/20 to-transparent">
-              <div className="absolute inset-0 bg-[repeating-linear-gradient(90deg,transparent,transparent_10px,rgba(255,215,0,0.3)_10px,rgba(255,215,0,0.3)_20px)] animate-pulse"></div>
-              {[...Array(30)].map((_, i) => (
-                <div key={`tinsel-top-${i}`} 
-                  className="absolute w-1 bg-gradient-to-b from-yellow-300 to-transparent opacity-60"
+          <div className="absolute -inset-2 rounded-3xl overflow-hidden pointer-events-none z-30">
+            <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-yellow-300/20 via-yellow-400/10 to-transparent">
+              <div className="absolute inset-0 bg-[repeating-linear-gradient(90deg,rgba(255,215,0,0.3),rgba(255,215,0,0.3)_2px,transparent_2px,transparent_6px)] animate-tinsel-shimmer"></div>
+              {[...Array(40)].map((_, i) => (
+                <div key={`tinsel-strand-top-${i}`} 
+                  className="absolute w-0.5 h-20 bg-gradient-to-b from-yellow-200 via-yellow-300 to-transparent opacity-70"
                   style={{ 
-                    left: `${i * 3.33}%`, 
-                    height: '40px',
-                    animationDelay: `${i * 0.1}s`,
-                    transform: `rotate(${Math.sin(i) * 15}deg)`
+                    left: `${i * 2.5}%`,
+                    transform: `rotate(${Math.sin(i * 0.5) * 20}deg)`,
+                    animationDelay: `${i * 0.05}s`
                   }}>
                 </div>
               ))}
             </div>
             
-            {/* Нижняя мишура */}
-            <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-gold-400/30 via-gold-300/20 to-transparent">
-              <div className="absolute inset-0 bg-[repeating-linear-gradient(90deg,transparent,transparent_10px,rgba(255,215,0,0.3)_10px,rgba(255,215,0,0.3)_20px)] animate-pulse"></div>
-              {[...Array(30)].map((_, i) => (
-                <div key={`tinsel-bottom-${i}`} 
-                  className="absolute w-1 bg-gradient-to-t from-yellow-300 to-transparent opacity-60"
+            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-red-400/20 via-red-300/10 to-transparent">
+              <div className="absolute inset-0 bg-[repeating-linear-gradient(90deg,rgba(255,0,0,0.3),rgba(255,0,0,0.3)_2px,transparent_2px,transparent_6px)] animate-tinsel-shimmer"></div>
+              {[...Array(40)].map((_, i) => (
+                <div key={`tinsel-strand-bottom-${i}`} 
+                  className="absolute w-0.5 h-20 bg-gradient-to-t from-red-300 via-red-200 to-transparent opacity-70"
                   style={{ 
-                    left: `${i * 3.33}%`, 
-                    height: '40px',
+                    left: `${i * 2.5}%`,
                     bottom: 0,
-                    animationDelay: `${i * 0.1}s`,
-                    transform: `rotate(${Math.sin(i) * 15}deg)`
+                    transform: `rotate(${Math.sin(i * 0.5) * 20}deg)`,
+                    animationDelay: `${i * 0.05}s`
                   }}>
                 </div>
               ))}
             </div>
 
-            {/* Левая мишура */}
-            <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-red-400/30 via-red-300/20 to-transparent">
-              <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_10px,rgba(239,68,68,0.3)_10px,rgba(239,68,68,0.3)_20px)] animate-pulse"></div>
+            <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-blue-400/20 via-blue-300/10 to-transparent">
+              <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,rgba(59,130,246,0.3),rgba(59,130,246,0.3)_2px,transparent_2px,transparent_6px)] animate-tinsel-shimmer"></div>
             </div>
 
-            {/* Правая мишура */}
-            <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-blue-400/30 via-blue-300/20 to-transparent">
-              <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_10px,rgba(59,130,246,0.3)_10px,rgba(59,130,246,0.3)_20px)] animate-pulse"></div>
+            <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-green-400/20 via-green-300/10 to-transparent">
+              <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,rgba(34,197,94,0.3),rgba(34,197,94,0.3)_2px,transparent_2px,transparent_6px)] animate-tinsel-shimmer"></div>
             </div>
           </div>
 
-          {/* Декоративная рамка */}
-          <div className="absolute inset-0 border-2 sm:border-4 border-white/20 rounded-2xl sm:rounded-3xl backdrop-blur-sm bg-white/5 shadow-2xl"></div>
+          <div className="absolute inset-0 border-4 border-white/30 rounded-3xl backdrop-blur-md bg-gradient-to-br from-white/10 via-white/5 to-transparent shadow-[0_0_50px_rgba(255,255,255,0.3)]"></div>
           
-          {/* Кнопки желаний */}
-          {branchPositions.map((pos, index) => {
-            const hasWish = wishes.some(w => w.position.x === pos.x && w.position.y === pos.y);
-            
-            return (
-              <div
-                key={index}
-                className="absolute transform -translate-x-1/2 -translate-y-1/2"
-                style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
-              >
-                {hasWish ? (
-                  <div className="relative group">
-                    {/* Смартфоны: 56px, Планшеты: 64px, ПК: 80px */}
-                    <div className="w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-red-400 via-red-500 to-red-600 border-3 md:border-4 border-yellow-400 shadow-2xl cursor-pointer animate-pulse hover:scale-110 transition-transform touch-manipulation">
-                      <div className="absolute -top-2 md:-top-3 left-1/2 -translate-x-1/2 w-2 h-4 md:w-3 md:h-5 bg-yellow-600 rounded-t"></div>
-                      <div className="absolute inset-2 md:inset-3 rounded-full bg-gradient-to-br from-white/60 to-transparent"></div>
-                      <div className="absolute inset-0 rounded-full shadow-[0_0_25px_rgba(239,68,68,0.6)] md:shadow-[0_0_30px_rgba(239,68,68,0.6)]"></div>
+          <div className="relative w-full h-full p-4 sm:p-6 md:p-8">
+            {branchPositions.map((pos, index) => {
+              const wishAtPosition = wishes.find(w => w.position.x === pos.x && w.position.y === pos.y);
+              const isOccupied = !!wishAtPosition;
+              
+              return (
+                <div
+                  key={`position-${index}`}
+                  className="absolute transform -translate-x-1/2 -translate-y-1/2"
+                  style={{
+                    left: `${pos.x}%`,
+                    top: `${pos.y}%`,
+                  }}
+                >
+                  {isOccupied ? (
+                    <div className="relative group cursor-pointer">
+                      <div className={`w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br ${ornamentColors[index % ornamentColors.length]} shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center hover:scale-110 animate-ornament-swing border-4 border-white/30`}
+                        style={{ animationDelay: `${index * 0.1}s` }}>
+                        <div className="absolute inset-2 rounded-full bg-white/20"></div>
+                        <div className="absolute top-1 left-1/2 -translate-x-1/2 w-3 h-3 bg-yellow-400 rounded-full shadow-md"></div>
+                        <span className="text-white text-xs sm:text-sm font-bold drop-shadow-lg z-10">{wishAtPosition.name}</span>
+                        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/40 via-transparent to-transparent"></div>
+                      </div>
+                      
+                      <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:block z-50 animate-fadeIn">
+                        <div className="bg-gradient-to-br from-red-600 to-green-600 text-white px-4 py-3 rounded-2xl shadow-2xl text-sm whitespace-nowrap border-2 border-white/50 backdrop-blur-sm min-w-[200px]">
+                          <div className="font-bold mb-1 text-yellow-200">🎁 {wishAtPosition.name}</div>
+                          <div className="text-xs opacity-90">{wishAtPosition.wish}</div>
+                          <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-green-600"></div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 md:mb-3 px-3 py-1.5 md:px-4 md:py-2 bg-black/90 text-white text-xs md:text-sm rounded-lg md:rounded-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-xl border border-white/20">
-                      {wishes.find(w => w.position.x === pos.x && w.position.y === pos.y)?.name}
+                  ) : canAddWish ? (
+                    <button
+                      onClick={() => onAddWish(pos)}
+                      className="group relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-600 hover:from-yellow-400 hover:via-orange-500 hover:to-red-500 shadow-xl hover:shadow-2xl transition-all duration-500 flex items-center justify-center hover:scale-125 hover:rotate-90 border-4 border-white/50 backdrop-blur-sm animate-pulse-glow"
+                    >
+                      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/30 via-transparent to-transparent"></div>
+                      <div className="absolute inset-0 rounded-full animate-ping-slow bg-white/20"></div>
+                      <span className="text-white text-3xl sm:text-4xl font-bold drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] transition-transform group-hover:scale-110">+</span>
+                      <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 opacity-0 group-hover:opacity-30 blur-md transition-opacity duration-500"></div>
+                    </button>
+                  ) : (
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-gray-600 to-gray-800 opacity-50 shadow-lg flex items-center justify-center border-4 border-white/20">
+                      <span className="text-white text-2xl">✨</span>
                     </div>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => onAddWish(pos)}
-                    className="group relative w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 hover:from-yellow-300 hover:via-amber-400 hover:to-orange-400 active:scale-95 border-3 md:border-4 border-white shadow-2xl hover:shadow-[0_0_35px_rgba(251,191,36,0.8)] md:hover:shadow-[0_0_40px_rgba(251,191,36,0.8)] transition-all duration-300 hover:scale-110 md:hover:scale-125 animate-pulse touch-manipulation"
-                    style={{ animationDuration: '2s', animationDelay: `${index * 0.1}s` }}
-                  >
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/40 to-transparent"></div>
-                    <div className="absolute inset-0 rounded-full animate-ping opacity-20 bg-yellow-300"></div>
-                    {/* Смартфоны: 28px, Планшеты: 32px, ПК: 48px */}
-                    <span className="relative text-white text-[28px] md:text-[32px] lg:text-5xl font-bold drop-shadow-lg">+</span>
-                    <div className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-red-500 rounded-full border-2 border-white animate-bounce" style={{ animationDelay: `${index * 0.15}s` }}></div>
-                    <div className="absolute -bottom-1 -left-1 w-3 h-3 md:w-4 md:h-4 bg-green-500 rounded-full border-2 border-white animate-bounce" style={{ animationDelay: `${index * 0.2}s` }}></div>
-                  </button>
-                )}
-              </div>
-            );
-          })}
+                  )}
+                </div>
+              );
+            })}
+          </div>
 
-          {/* Счётчик желаний */}
-          <div className="absolute -bottom-16 sm:-bottom-20 left-1/2 -translate-x-1/2 px-4 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-green-600/80 to-emerald-600/80 backdrop-blur-md rounded-xl sm:rounded-2xl shadow-2xl border-2 border-white/30">
-            <p className="text-white text-base sm:text-xl font-bold text-center">
-              🎁 Повешено желаний: <span className="text-yellow-300 text-2xl sm:text-3xl">{wishes.length}</span> / {branchPositions.length}
-            </p>
+          <div className="absolute -bottom-8 sm:-bottom-12 left-1/2 -translate-x-1/2 bg-gradient-to-r from-red-600 via-green-600 to-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full shadow-2xl text-sm sm:text-base md:text-lg font-bold border-4 border-white/50 backdrop-blur-md whitespace-nowrap z-50">
+            🎁 Повешено желаний: {wishes.length} / {branchPositions.length}
           </div>
         </div>
       </div>
+
+      <style>{`
+        @keyframes blink {
+          0%, 100% { opacity: 1; filter: brightness(1.5); }
+          50% { opacity: 0.4; filter: brightness(0.8); }
+        }
+        .animate-blink {
+          animation: blink 1.2s ease-in-out infinite;
+        }
+        
+        @keyframes sparkle {
+          0%, 100% { opacity: 0; transform: scale(0); }
+          50% { opacity: 1; transform: scale(1.5); }
+        }
+        .animate-sparkle {
+          animation: sparkle ease-in-out infinite;
+        }
+        
+        @keyframes ornament-swing {
+          0%, 100% { transform: rotate(-3deg); }
+          50% { transform: rotate(3deg); }
+        }
+        .animate-ornament-swing {
+          animation: ornament-swing 3s ease-in-out infinite;
+        }
+        
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(5px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes pulse-glow {
+          0%, 100% { box-shadow: 0 0 20px rgba(255,255,255,0.5), 0 0 40px rgba(255,215,0,0.3); }
+          50% { box-shadow: 0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(255,215,0,0.6); }
+        }
+        .animate-pulse-glow {
+          animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes ping-slow {
+          0% { transform: scale(1); opacity: 0.5; }
+          100% { transform: scale(1.5); opacity: 0; }
+        }
+        .animate-ping-slow {
+          animation: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+        
+        @keyframes tinsel-shimmer {
+          0%, 100% { opacity: 0.7; }
+          50% { opacity: 1; }
+        }
+        .animate-tinsel-shimmer {
+          animation: tinsel-shimmer 2s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   );
 };
