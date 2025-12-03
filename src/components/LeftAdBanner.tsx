@@ -69,7 +69,7 @@ const LeftAdBanner = () => {
           
           <div className="space-y-2 mb-4">
             <div className="text-slate-300 text-sm font-bold leading-tight">
-              Сегодня нашей любимой Карине ровно 9 дней как наша любимая исполнительница умерла
+              Наша любимая исполнительца песен Карина скоропостижно умерла.
             </div>
             <div className="text-slate-400 text-xs italic">
               Radio Noumi выражает<br />глубокие соболезнования
