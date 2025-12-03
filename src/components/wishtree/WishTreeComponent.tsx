@@ -181,26 +181,28 @@ const WishTreeComponent = ({ wishes, onAddWish, canAddWish }: WishTreeComponentP
               >
                 {hasWish ? (
                   <div className="relative group">
-                    <div className="w-14 h-14 sm:w-12 sm:h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-red-400 via-red-500 to-red-600 border-3 md:border-4 border-yellow-400 shadow-2xl cursor-pointer animate-pulse hover:scale-110 transition-transform touch-manipulation">
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-3 h-5 bg-yellow-600 rounded-t"></div>
-                      <div className="absolute inset-3 rounded-full bg-gradient-to-br from-white/60 to-transparent"></div>
-                      <div className="absolute inset-0 rounded-full shadow-[0_0_30px_rgba(239,68,68,0.6)]"></div>
+                    {/* Смартфоны: 56px, Планшеты: 64px, ПК: 80px */}
+                    <div className="w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-red-400 via-red-500 to-red-600 border-3 md:border-4 border-yellow-400 shadow-2xl cursor-pointer animate-pulse hover:scale-110 transition-transform touch-manipulation">
+                      <div className="absolute -top-2 md:-top-3 left-1/2 -translate-x-1/2 w-2 h-4 md:w-3 md:h-5 bg-yellow-600 rounded-t"></div>
+                      <div className="absolute inset-2 md:inset-3 rounded-full bg-gradient-to-br from-white/60 to-transparent"></div>
+                      <div className="absolute inset-0 rounded-full shadow-[0_0_25px_rgba(239,68,68,0.6)] md:shadow-[0_0_30px_rgba(239,68,68,0.6)]"></div>
                     </div>
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-2 bg-black/90 text-white text-sm rounded-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-xl border border-white/20">
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 md:mb-3 px-3 py-1.5 md:px-4 md:py-2 bg-black/90 text-white text-xs md:text-sm rounded-lg md:rounded-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-xl border border-white/20">
                       {wishes.find(w => w.position.x === pos.x && w.position.y === pos.y)?.name}
                     </div>
                   </div>
                 ) : (
                   <button
                     onClick={() => onAddWish(pos)}
-                    className="group relative w-14 h-14 sm:w-12 sm:h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 hover:from-yellow-300 hover:via-amber-400 hover:to-orange-400 active:scale-95 border-3 md:border-4 border-white shadow-2xl hover:shadow-[0_0_40px_rgba(251,191,36,0.8)] transition-all duration-300 hover:scale-125 animate-pulse touch-manipulation"
+                    className="group relative w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 hover:from-yellow-300 hover:via-amber-400 hover:to-orange-400 active:scale-95 border-3 md:border-4 border-white shadow-2xl hover:shadow-[0_0_35px_rgba(251,191,36,0.8)] md:hover:shadow-[0_0_40px_rgba(251,191,36,0.8)] transition-all duration-300 hover:scale-110 md:hover:scale-125 animate-pulse touch-manipulation"
                     style={{ animationDuration: '2s', animationDelay: `${index * 0.1}s` }}
                   >
                     <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/40 to-transparent"></div>
                     <div className="absolute inset-0 rounded-full animate-ping opacity-20 bg-yellow-300"></div>
-                    <span className="relative text-white text-3xl md:text-4xl lg:text-5xl font-bold drop-shadow-lg">+</span>
-                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full border-2 border-white animate-bounce" style={{ animationDelay: `${index * 0.15}s` }}></div>
-                    <div className="absolute -bottom-1 -left-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white animate-bounce" style={{ animationDelay: `${index * 0.2}s` }}></div>
+                    {/* Смартфоны: 28px, Планшеты: 32px, ПК: 48px */}
+                    <span className="relative text-white text-[28px] md:text-[32px] lg:text-5xl font-bold drop-shadow-lg">+</span>
+                    <div className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-red-500 rounded-full border-2 border-white animate-bounce" style={{ animationDelay: `${index * 0.15}s` }}></div>
+                    <div className="absolute -bottom-1 -left-1 w-3 h-3 md:w-4 md:h-4 bg-green-500 rounded-full border-2 border-white animate-bounce" style={{ animationDelay: `${index * 0.2}s` }}></div>
                   </button>
                 )}
               </div>
